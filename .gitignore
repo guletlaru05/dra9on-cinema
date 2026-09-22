@@ -1,0 +1,11 @@
+dist/
+__pycache__/
+*.pyc
+.env
+.env.*
+.openai/
+node_modules/
+work/
+outputs/
+.DS_Store
+Thumbs.db
