@@ -16,6 +16,9 @@ root = Path(args.directory).resolve()
 base = '/' + args.base_path.strip('/') if args.base_path.strip('/') else ''
 origin = args.origin.rstrip('/')
 site = origin + base
+source_data = json.loads((Path(__file__).resolve().parent / 'portfolio-data.json').read_text(encoding='utf-8'))
+expected_ids = {video['id'] for video in source_data['videos']}
+video_count = len(expected_ids)
 
 
 def local_file(url):
@@ -72,7 +75,7 @@ class Page(HTMLParser):
 
 
 html_files = list(root.rglob('*.html'))
-assert len(html_files) == 46, len(html_files)
+assert len(html_files) == 2 * (video_count + 2), len(html_files)
 for path in html_files:
     source = path.read_text(encoding='utf-8')
     page = Page(source)
@@ -99,7 +102,8 @@ for path in html_files:
 catalogs = []
 for filename in ['catalog.js', 'en/catalog.js']:
     data = json.loads((root / filename).read_text(encoding='utf-8').split(' = ', 1)[1].rstrip(';\n'))
-    assert len(data) == 21
+    assert len(data) == video_count
+    assert {work['id'] for work in data} == expected_ids
     for work in data:
         local_file(work['path'])
         local_file(work['image'])
@@ -110,9 +114,9 @@ for ko, en in zip(*catalogs):
     assert ko['name'] in en['searchText'] and en['name'] in ko['searchText']
 
 sitemap = ET.parse(root / 'sitemap.xml').getroot()
-assert len(sitemap) == 44
+assert len(sitemap) == 2 * (video_count + 1)
 for entry in sitemap:
     local_file(entry.find('{http://www.sitemaps.org/schemas/sitemap/0.9}loc').text)
 assert (root / '.nojekyll').exists()
 assert 'Sitemap: ' + site + '/sitemap.xml' in (root / 'robots.txt').read_text(encoding='utf-8')
-print('PASS: 46 pages, 21 videos per language, local assets, language switches, canonical URLs and sitemap.')
+print(f'PASS: {len(html_files)} pages, {video_count} videos per language, local assets, language switches, canonical URLs and sitemap.')

@@ -7,6 +7,7 @@ import json
 import re
 
 EN_NAMES = {
+    '6Wdj9n3Pq9Q': 'When Captain Min Falls',
     'bDqEJXYr2dY': 'You Knew Everything',
     'vrVGZ_HMxQs': "The Enemy I Can't Shoot",
     'dGnjxL64HHY': 'A Night in Mokpojin — Season 2 EP.1–2',
@@ -31,6 +32,7 @@ EN_NAMES = {
 }
 SERIES_SUMMARY = 'An AI-created Korean military fantasy drama. A modern special forces soldier finds himself in Joseon-era Korea.'
 EN_SUMMARIES = {
+    '6Wdj9n3Pq9Q': 'An endless horde. A wounded captain, left to fight alone. A new force is about to enter the battle. Season 2, Episode 5.',
     'bDqEJXYr2dY': SERIES_SUMMARY + ' A masked prince arrives to rescue Yeonhwa, but Min’s comrades are taken again. Captain Min turns his gun on the person who saved him. Season 2, Episode 4.',
     'vrVGZ_HMxQs': SERIES_SUMMARY + ' Yeonhwa has been abducted, and former comrades have become enemies. Season 2, Episode 3.',
     'dGnjxL64HHY': SERIES_SUMMARY + ' Watch Season 2, Episodes 1–2 in one continuous cut.',
