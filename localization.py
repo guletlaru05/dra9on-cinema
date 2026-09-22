@@ -48,6 +48,7 @@ EN_SUMMARIES = {
     'iVwqj1gUPDY': 'The Immortal Crazy X and the n-th Grim Reaper. An original film created with AI by DRA9ON CINEMA.',
 }
 UI = {
+    '드래곤시네마(김용구)': 'DRA9ON CINEMA(YONGGU KIM)',
     'DRA9ON CINEMA | FALL 707 REBOOT · AI 영화 포트폴리오': 'DRA9ON CINEMA | FALL 707 REBOOT · Korean AI Films',
     'AI로 세계관을 실사화하는 DRA9ON CINEMA. FALL 707 REBOOT 시즌 1·2와 오리지널 AI 영화를 감상하고, 영상 제작 포트폴리오를 만나보세요.': 'Watch FALL 707: REBOOT, a Korean military fantasy series set in Joseon, and explore original AI films by DRA9ON CINEMA. Browse episodes, full movies and the filmmaker’s portfolio.',
     'DRA9ON CINEMA — FALL 707 영상 포트폴리오': 'DRA9ON CINEMA — FALL 707 and Original AI Films',
