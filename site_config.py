@@ -6,9 +6,7 @@ PENDING_CONTACT_EMAIL = 'contact@dra9oncinema.com'
 
 SOCIAL_LINKS = [
     {'name': 'YouTube', 'url': 'https://www.youtube.com/@dra9oncinema'},
-    {'name': 'Instagram', 'url': 'TODO'},
-    {'name': 'Facebook', 'url': 'TODO'},
-    {'name': 'TikTok', 'url': 'TODO'},
+    {'name': 'Instagram', 'url': 'https://www.instagram.com/dra9oncinema/'},
 ]
 
 # TODO: Confirm permission to publish, then fill in project, thumbnail, video_url and year.
