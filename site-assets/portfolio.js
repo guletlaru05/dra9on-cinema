@@ -106,3 +106,17 @@ document.querySelectorAll('[data-language]').forEach(a=>{a.addEventListener('cli
   hero.addEventListener('pointercancel', reset);
   hero.addEventListener('lostpointercapture', reset);
 })();
+
+
+// A homepage refresh starts at the hero; normal section links and Back keep working.
+(() => {
+  if (!document.getElementById('hero') || performance.getEntriesByType('navigation')[0]?.type !== 'reload') return;
+  history.scrollRestoration = 'manual';
+  if (location.hash) history.replaceState(history.state, '', location.pathname + location.search);
+  const resetScroll = () => {
+    window.scrollTo({top:0, left:0, behavior:'instant'});
+    requestAnimationFrame(() => window.scrollTo({top:0, left:0, behavior:'instant'}));
+  };
+  window.addEventListener('pageshow', resetScroll, {once:true});
+  window.addEventListener('pagehide', () => { history.scrollRestoration = 'auto'; }, {once:true});
+})();
