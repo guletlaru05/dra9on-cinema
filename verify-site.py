@@ -75,7 +75,7 @@ class Page(HTMLParser):
 
 
 html_files = list(root.rglob('*.html'))
-assert len(html_files) == 2 * (video_count + 2), len(html_files)
+assert len(html_files) == 2 * (video_count + 3), len(html_files)
 for path in html_files:
     source = path.read_text(encoding='utf-8')
     page = Page(source)
@@ -114,7 +114,7 @@ for ko, en in zip(*catalogs):
     assert ko['name'] in en['searchText'] and en['name'] in ko['searchText']
 
 sitemap = ET.parse(root / 'sitemap.xml').getroot()
-assert len(sitemap) == 2 * (video_count + 1)
+assert len(sitemap) == 2 * (video_count + 2)
 for entry in sitemap:
     local_file(entry.find('{http://www.sitemaps.org/schemas/sitemap/0.9}loc').text)
 assert (root / '.nojekyll').exists()

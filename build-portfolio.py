@@ -81,6 +81,8 @@ for v in works:
 print(json.dumps({'works':len(works),'pages':len(paths),'seasons':{'1':len(s1),'2':len(s2)},'origin':origin}))
 
 from localization import localize_site
+from link_page import build_links
+build_links(out, origin, works, head, icon)
 localize_site(out, works, origin, base_path)
 # Public ownership proof for the owner's Google and Naver webmaster properties.
 verification_tag = (

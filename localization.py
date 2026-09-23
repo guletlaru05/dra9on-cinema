@@ -48,6 +48,13 @@ EN_SUMMARIES = {
     'iVwqj1gUPDY': 'The Immortal Crazy X and the n-th Grim Reaper. An original film created with AI by DRA9ON CINEMA.',
 }
 UI = {
+    'DRA9ON CINEMA | 공식 링크': 'DRA9ON CINEMA | Official Links',
+    'FALL 707 최신화, 시즌 1 풀버전, 공식 유튜브와 협업 문의를 한곳에서.': 'Watch the latest FALL 707 episode and Season 1 full movie. Find the official YouTube channel and collaboration contact.',
+    'FALL 707과 오리지널 영화들을 만나보세요.': 'Discover FALL 707 and original films.',
+    '공식 링크': 'Official links',
+    '최신화 보기': 'Watch the latest episode',
+    '시즌 1 풀버전': 'Watch Season 1',
+    '전체 작품 둘러보기': 'Explore all films',
     '작품·이미지·텍스트의 무단 복제, 재업로드 및 상업적 이용을 금합니다. 이용 문의는 이메일로 연락해 주세요.': 'Unauthorized copying, re-uploading, or commercial use of the films, images, and text is prohibited. Please email us for usage inquiries.',
     '낙하 707 리부트 · FALL 707 ': 'FALL 707 ',
     '낙하707: 리부트. ': 'FALL 707: REBOOT. ',
@@ -200,7 +207,7 @@ def localize_site(out, works, origin, base_path=''):
         base_translations[ko['name']] = en['name']
         base_translations[ko['title']] = en['title']
         base_translations[ko['summary']] = en['summary']
-    pages = [out/'index.html', out/'404.html', *sorted((out/'watch').rglob('index.html'))]
+    pages = [out/'index.html', out/'404.html', out/'links/index.html', *sorted((out/'watch').rglob('index.html'))]
     by_path = {v['path']: (v, e) for v, e in zip(works, en_works)}
     for source in pages:
         relative = source.relative_to(out)
@@ -248,7 +255,7 @@ def localize_site(out, works, origin, base_path=''):
         page.write_text(content, encoding='utf-8')
     for asset in asset_dir.iterdir():
         if asset.is_file() and '/assets/build/' + asset.name not in assets.values(): asset.unlink()
-    paths = ['/', *by_path]
+    paths = ['/', '/links/', *by_path]
     sitemap = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
     for path in paths:
         for prefix in ['', '/en']:
