@@ -48,6 +48,7 @@ EN_SUMMARIES = {
     'iVwqj1gUPDY': 'The Immortal Crazy X and the n-th Grim Reaper. An original film created with AI by DRA9ON CINEMA.',
 }
 UI = {
+    '작품·이미지·텍스트의 무단 복제, 재업로드 및 상업적 이용을 금합니다. 이용 문의는 이메일로 연락해 주세요.': 'Unauthorized copying, re-uploading, or commercial use of the films, images, and text is prohibited. Please email us for usage inquiries.',
     '낙하 707 리부트 · FALL 707 ': 'FALL 707 ',
     '낙하707: 리부트. ': 'FALL 707: REBOOT. ',
     '드래곤시네마(김용구)': 'DRA9ON CINEMA(YONGGU KIM)',
