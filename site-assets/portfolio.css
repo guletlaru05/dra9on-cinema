@@ -52,19 +52,10 @@
   .hero .hero-carousel-controls{position:relative;left:auto;bottom:auto;margin:0 var(--gutter) 22px;gap:8px}
 }
 
-/* Commercial work shares the existing episode card typography and artwork treatment. */
-.commercial-section{padding:64px var(--gutter);border-top:1px solid #ffffff12;scroll-margin-top:130px}
-.commercial-inner{max-width:1440px;margin:0 auto}
-.commercial-section .section-eyebrow{color:var(--red);letter-spacing:3px}
-.commercial-section h2{font-size:clamp(26px,3vw,40px);line-height:1.4;letter-spacing:-.8px;margin:16px 0}
-.commercial-intro{color:#a1a3ac;font-size:15px;line-height:1.9;margin:0 0 28px}
-.commercial-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 20px;margin:30px 0}
-.commercial-card .card-image{aspect-ratio:16/9}.commercial-card .card-name svg{width:16px;height:16px;flex-shrink:0}
-.commercial-inner>.contact-block{align-items:flex-start}
 .about-copy>p:not(.section-eyebrow){margin:0 0 20px;line-height:1.95}
 .hero-buttons{flex-wrap:wrap}.footer-links{flex-wrap:wrap}
 #episodes,#originals,#about{scroll-margin-top:130px}
 .nav-link{white-space:nowrap;min-height:44px;display:inline-flex;align-items:center}
 @media(max-width:1100px){.header{gap:20px}.nav{gap:18px}}
-@media(max-width:800px){.commercial-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.header .nav{flex-shrink:0}}
-@media(max-width:520px){.commercial-section{padding:44px var(--gutter)}.commercial-grid{grid-template-columns:1fr}.commercial-intro{font-size:14px}.header-actions>.channel-button{display:none}.nav{gap:20px}.hero-buttons .button{padding:11px 14px;font-size:12px}}
+@media(max-width:800px){.header .nav{flex-shrink:0}}
+@media(max-width:520px){.header-actions>.channel-button{display:none}.nav{gap:20px}.hero-buttons .button{padding:11px 14px;font-size:12px}}
