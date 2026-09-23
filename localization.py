@@ -48,6 +48,8 @@ EN_SUMMARIES = {
     'iVwqj1gUPDY': 'The Immortal Crazy X and the n-th Grim Reaper. An original film created with AI by DRA9ON CINEMA.',
 }
 UI = {
+    '드래곤시네마': 'DRA9ON CINEMA',
+    '드래곤 시네마': 'DRA9ON CINEMA',
     'DRA9ON CINEMA | 공식 링크': 'DRA9ON CINEMA | Official Links',
     'FALL 707 최신화, 시즌 1 풀버전, 공식 유튜브와 협업 문의를 한곳에서.': 'Watch the latest FALL 707 episode and Season 1 full movie. Find the official YouTube channel and collaboration contact.',
     'FALL 707과 오리지널 영화들을 만나보세요.': 'Discover FALL 707 and original films.',
@@ -58,12 +60,12 @@ UI = {
     '작품·이미지·텍스트의 무단 복제, 재업로드 및 상업적 이용을 금합니다. 이용 문의는 이메일로 연락해 주세요.': 'Unauthorized copying, re-uploading, or commercial use of the films, images, and text is prohibited. Please email us for usage inquiries.',
     '낙하 707 리부트 · FALL 707 ': 'FALL 707 ',
     '낙하707: 리부트. ': 'FALL 707: REBOOT. ',
-    'DRA9ON CINEMA | 낙하 707 리부트 · FALL 707': 'DRA9ON CINEMA | FALL 707 REBOOT · Korean AI Films',
+    '드래곤시네마 DRA9ON CINEMA | 낙하 707 · FALL 707': 'DRA9ON CINEMA | FALL 707 REBOOT · Korean AI Films',
     '드래곤시네마의 AI 밀리터리 판타지 〈낙하 707: 리부트〉(낙하707, FALL 707: REBOOT). 시즌 1·2의 에피소드와 몰아보기, 오리지널 AI 영화를 한곳에서 감상하세요.': 'Watch FALL 707: REBOOT, a Korean military fantasy series set in Joseon, and explore original AI films by DRA9ON CINEMA. Browse episodes, full movies and the filmmaker’s portfolio.',
     'DRA9ON CINEMA — 낙하 707 · FALL 707 영상 포트폴리오': 'DRA9ON CINEMA — FALL 707 and Original AI Films',
     'AI로 세계관을 실사화하는 크리에이터. 낙하707: 리부트(FALL 707: REBOOT)와 오리지널 AI 영화 제작.': 'Independent AI filmmaker bringing imagined worlds to life. Creator of FALL 707: REBOOT and original AI films.',
     'AI로 세계관을 실사화하는 크리에이터.': 'Bringing imagined worlds to life through AI film.',
-    'DRA9ON CINEMA는 AI로 세계관을 실사화하는 크리에이터입니다. 밀리터리 판타지 오컬트 스릴러 〈낙하707: 리부트〉(FALL 707: REBOOT)를 비롯해, 장르 영화의 새로운 가능성을 실험합니다.': 'DRA9ON CINEMA brings imagined worlds to life through AI filmmaking. From the military fantasy and occult thriller FALL 707: REBOOT to original genre films, each project explores a new cinematic possibility.',
+    '드래곤시네마(DRA9ON CINEMA)는 AI로 세계관을 실사화하는 크리에이터입니다. 밀리터리 판타지 오컬트 스릴러 〈낙하707: 리부트〉(FALL 707: REBOOT)를 비롯해, 장르 영화의 새로운 가능성을 실험합니다.': 'DRA9ON CINEMA brings imagined worlds to life through AI filmmaking. From the military fantasy and occult thriller FALL 707: REBOOT to original genre films, each project explores a new cinematic possibility.',
     'FALL 707 REBOOT 시즌 2 — 민 대위': 'FALL 707 REBOOT Season 2 — Captain Min',
     '낯선 시대에 떨어졌다.': 'A soldier out of time.',
     '살아남는 방식은, 변하지 않았다.': 'Survival is still the mission.',
