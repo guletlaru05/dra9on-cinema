@@ -72,7 +72,7 @@ if ($('hero')) {
     hero.classList.add('hero-carousel');showSlide(0);updatePause();schedule();
   }
 }
-document.querySelectorAll('[data-language]').forEach(a=>{a.addEventListener('click',()=>{const url=new URL(a.href);url.hash=location.hash;a.href=url.href})});
+
 
 
 // Horizontal gestures change artwork; vertical scrolling and pinch zoom stay native.
@@ -110,7 +110,8 @@ document.querySelectorAll('[data-language]').forEach(a=>{a.addEventListener('cli
 
 // A homepage refresh starts at the hero; normal section links and Back keep working.
 (() => {
-  if (!document.getElementById('hero') || performance.getEntriesByType('navigation')[0]?.type !== 'reload') return;
+  const navigationType = performance.getEntriesByType('navigation')[0]?.type;
+  if (!document.getElementById('hero') || navigationType === 'back_forward' || (navigationType !== 'reload' && location.hash)) return;
   history.scrollRestoration = 'manual';
   if (location.hash) history.replaceState(history.state, '', location.pathname + location.search);
   const resetScroll = () => {
