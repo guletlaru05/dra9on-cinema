@@ -82,8 +82,11 @@ print(json.dumps({'works':len(works),'pages':len(paths),'seasons':{'1':len(s1),'
 
 from localization import localize_site
 localize_site(out, works, origin, base_path)
-# Public ownership proof for the owner's Google Search Console property.
-verification_tag = '<meta name="google-site-verification" content="PYrvbyrAOQQDNSZzhI9SdsjlhtRdl0l_tHM6tUelxnU">'
+# Public ownership proof for the owner's Google and Naver webmaster properties.
+verification_tag = (
+ '<meta name="google-site-verification" content="PYrvbyrAOQQDNSZzhI9SdsjlhtRdl0l_tHM6tUelxnU">'
+ '<meta name="naver-site-verification" content="f8539e272fb651d0f1d9c63533879922377ddd47">'
+)
 for homepage in ('index.html', 'en/index.html'):
  page = out / homepage
  document = page.read_text(encoding='utf-8')
