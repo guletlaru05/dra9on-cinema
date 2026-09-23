@@ -30,6 +30,8 @@ if ($('hero')) {
   const hero=$('hero'), motion=matchMedia('(prefers-reduced-motion: reduce)');
   const season=Math.max(...works.filter(v=>/^s[12]$/.test(v.category)).map(v=>v.season));
   const slides=works.filter(v=>v.category===`s${season}`).sort((a,b)=>b.episode-a.episode);
+  const seasonOneFull=works.find(v=>v.id==='4f6Zguf7c2M');
+  if(seasonOneFull)slides.push(seasonOneFull);
   if (slides.length>1) {
     let index=0, paused=motion.matches, hovered=false, focused=false, visible=true;
     const controls=document.createElement('div');
@@ -44,13 +46,13 @@ if ($('hero')) {
       index=(next+slides.length)%slides.length;
       const v=slides[index], image=hero.querySelector('.hero-image');
       image.src=v.image; image.alt=v.name;
-      hero.querySelector('.hero-kicker').textContent=`FALL 707 · S${v.season} EP.${String(v.episode).padStart(2,'0')}`;
+      hero.querySelector('.hero-kicker').textContent=v.category==='full'?t('FALL 707 · 시즌 1 풀버전','FALL 707 · SEASON 1 FULL MOVIE'):`FALL 707 · S${v.season} EP.${String(v.episode).padStart(2,'0')}`;
       hero.querySelector('.hero-tagline').textContent=v.name;
       hero.querySelector('.hero-description').textContent=v.summary;
       const playButton=hero.querySelector('[data-play]');
       playButton.dataset.play=v.id;
-      playButton.innerHTML=icon('play')+t('이 에피소드 보기','Watch episode');
-      hero.querySelector('.hero-meta').textContent=`2026 · S${v.season} EP.${v.episode} · ${v.duration||''}`;
+      playButton.innerHTML=icon('play')+(v.category==='full'?t('시즌 1 몰아보기','Watch full season'):t('이 에피소드 보기','Watch episode'));
+      hero.querySelector('.hero-meta').textContent=`2026 · ${v.category==='full'?'FULL MOVIE':`S${v.season} EP.${v.episode}`} · ${v.duration||''}`;
       controls.querySelector('.hero-position').textContent=`${String(index+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
     }
     let timer;
