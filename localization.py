@@ -51,7 +51,6 @@ UI = {
     '작품·이미지·텍스트의 무단 복제, 재업로드 및 상업적 이용을 금합니다. 이용 문의는 이메일로 연락해 주세요.': 'Unauthorized copying, re-uploading, or commercial use of the films, images, and text is prohibited. Please email us for usage inquiries.',
     '낙하 707 리부트 · FALL 707 ': 'FALL 707 ',
     '낙하707: 리부트. ': 'FALL 707: REBOOT. ',
-    '드래곤시네마(김용구)': 'DRA9ON CINEMA(YONGGU KIM)',
     'DRA9ON CINEMA | 낙하 707 리부트 · FALL 707': 'DRA9ON CINEMA | FALL 707 REBOOT · Korean AI Films',
     '드래곤시네마의 AI 밀리터리 판타지 〈낙하 707: 리부트〉(낙하707, FALL 707: REBOOT). 시즌 1·2의 에피소드와 몰아보기, 오리지널 AI 영화를 한곳에서 감상하세요.': 'Watch FALL 707: REBOOT, a Korean military fantasy series set in Joseon, and explore original AI films by DRA9ON CINEMA. Browse episodes, full movies and the filmmaker’s portfolio.',
     'DRA9ON CINEMA — 낙하 707 · FALL 707 영상 포트폴리오': 'DRA9ON CINEMA — FALL 707 and Original AI Films',
