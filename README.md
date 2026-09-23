@@ -51,7 +51,7 @@ python verify-site.py --origin https://guletlaru05.github.io --base-path /dra9on
 `site_config.py`에서 연락처(`CONTACT_EMAIL`), SNS(`SOCIAL_LINKS`), 커머셜 작품(`COMMERCIAL_WORKS`), 한국어·영어 소개(`ABOUT_PARAGRAPHS`)를 관리합니다.
 
 - 현재 수신 가능한 기존 이메일을 유지합니다. `contact@dra9oncinema.com` 포워딩과 실제 수신을 확인한 후 `CONTACT_EMAIL`을 `PENDING_CONTACT_EMAIL` 값으로 바꾸세요. 이메일 표시와 복사 기능도 같은 값을 사용합니다.
-- Instagram, Facebook, TikTok의 `TODO`를 실제 HTTPS 프로필 주소로 바꾸면 헤더·푸터에 자동 표시됩니다. 미설정 링크는 노출하지 않습니다.
+- SNS는 YouTube와 Instagram(@dra9oncinema)만 연결합니다. `SOCIAL_LINKS`의 주소를 수정하면 한국어·영어 헤더와 푸터에 함께 반영됩니다.
 - Seegene·ICAK는 비공개 초안 데이터입니다. 공개 가능 여부를 확인하고 프로젝트명, 썸네일, 영상 HTTPS 링크, 연도를 입력하세요. 프로젝트명은 문자열 또는 `{'ko': '한국어', 'en': 'English'}` 형태입니다. 썸네일은 `/assets/` 경로 또는 HTTPS URL이며, 필수 정보가 미완성이면 카드는 숨깁니다.
 - 공유 이미지: `site-assets/assets/og/og-ko.jpg`, `og-en.jpg`를 1200×630 JPEG, 300KB 이하로 교체하세요. 현재 이미지는 hero.jpg를 중앙 기준으로 자른 임시본입니다. 별도 이미지 라이브러리 없이 빌드됩니다.
 - 첫 화 링크는 항상 시즌 1의 1화로 이동합니다. 옆의 배너 작품 링크만 롤링에 따라 변경됩니다.
