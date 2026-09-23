@@ -24,6 +24,7 @@ if($('detail-dialog')){$('detail-close').addEventListener('click',()=>$('detail-
 document.querySelectorAll('.shelf-track').forEach(t=>{t.addEventListener('scroll',()=>updateArrows(t),{passive:true});updateArrows(t)});window.addEventListener('resize',()=>document.querySelectorAll('.shelf-track').forEach(updateArrows));syncSaved();
 if(document.modelContext?.registerTool&&$('browse-results')){const lifecycle=new AbortController();const register=t=>{try{Promise.resolve(document.modelContext.registerTool(t,{signal:lifecycle.signal})).catch(()=>{})}catch{}};register({name:'browse_portfolio',title:t('포트폴리오 검색','Search portfolio'),description:t('검색어로 DRA9ON CINEMA의 작품을 찾아 화면에 표시합니다.','Find and display DRA9ON CINEMA films by search term.'),inputSchema:{type:'object',properties:{query:{type:'string',maxLength:100}},required:['query'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(!input||typeof input.query!=='string'||input.query.length>100||Object.keys(input).some(k=>k!=='query'))throw new Error(t('100자 이하의 검색어를 입력해 주세요.','Enter a search term of up to 100 characters.'));view='all';category='all';query=input.query.trim();$('search').value=query;render();return {works:filtered().map(v=>({id:v.id,title:v.name,url:v.path}))}}});register({name:'set_saved_work',title:t('작품 찜하기','Save film'),description:t('이 브라우저의 찜 목록에 작품을 저장하거나 제거합니다.','Add or remove a film from the list saved in this browser.'),inputSchema:{type:'object',properties:{id:{type:'string'},saved:{type:'boolean'}},required:['id','saved'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(!input||typeof input.id!=='string'||!byId(input.id)||typeof input.saved!=='boolean'||Object.keys(input).some(k=>!['id','saved'].includes(k)))throw new Error(t('올바른 작품 ID와 저장 여부를 입력해 주세요.','Enter a valid film ID and saved state.'));setSaved(input.id,input.saved);return {id:input.id,saved:saved.has(input.id)}}});window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true})}
 
+
 // Carry the current section when switching between the static language routes.
 // Rotate episode artwork only; players are still created exclusively by a click.
 if ($('hero')) {
@@ -57,7 +58,7 @@ if ($('hero')) {
     }
     let timer;
     function schedule(){clearInterval(timer);timer=setInterval(()=>{
-      if(!paused&&!hovered&&!focused&&visible&&!document.hidden&&!hero.hidden&&!document.querySelector('dialog[open]'))showSlide(index+1);
+      if(!hero.hasAttribute("data-swiping")&&!paused&&!hovered&&!focused&&visible&&!document.hidden&&!hero.hidden&&!document.querySelector('dialog[open]'))showSlide(index+1);
     },7000);}
     controls.querySelector('[data-hero-prev]').addEventListener('click',()=>{showSlide(index-1);schedule();});
     controls.querySelector('[data-hero-next]').addEventListener('click',()=>{showSlide(index+1);schedule();});
@@ -72,3 +73,36 @@ if ($('hero')) {
   }
 }
 document.querySelectorAll('[data-language]').forEach(a=>{a.addEventListener('click',()=>{const url=new URL(a.href);url.hash=location.hash;a.href=url.href})});
+
+
+// Horizontal gestures change artwork; vertical scrolling and pinch zoom stay native.
+(() => {
+  const hero = document.getElementById('hero');
+  if (!hero || !hero.querySelector('[data-hero-next]')) return;
+  hero.style.touchAction = 'pan-y pinch-zoom';
+  const image = hero.querySelector('.hero-image');
+  if (image) image.draggable = false;
+  let gesture = null;
+  function reset() { gesture = null; hero.removeAttribute('data-swiping'); }
+  hero.addEventListener('pointerdown', event => {
+    if (!event.isPrimary) { reset(); return; }
+    if (event.button !== 0 || event.target.closest('a,button,input,select,textarea')) return;
+    gesture = {id:event.pointerId, x:event.clientX, y:event.clientY};
+    hero.setAttribute('data-swiping', '');
+    hero.setPointerCapture(event.pointerId);
+  });
+  hero.addEventListener('pointermove', event => {
+    if (!gesture || gesture.id !== event.pointerId) return;
+    const dx = event.clientX - gesture.x, dy = event.clientY - gesture.y;
+    if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) reset();
+  });
+  hero.addEventListener('pointerup', event => {
+    if (!gesture || gesture.id !== event.pointerId) return;
+    const dx = event.clientX - gesture.x, dy = event.clientY - gesture.y;
+    reset();
+    if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    hero.querySelector(dx < 0 ? '[data-hero-next]' : '[data-hero-prev]').click();
+  });
+  hero.addEventListener('pointercancel', reset);
+  hero.addEventListener('lostpointercapture', reset);
+})();
