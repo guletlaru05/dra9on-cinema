@@ -109,9 +109,9 @@ for path in html_files:
         assert page.metas['og:image'] == [site + f'/assets/og/og-{lang}.jpg'], path
         prefix = base + ('/en' if lang == 'en' else '')
         assert any(a.get('href') == prefix + '/watch/fall-707-s1-ep1/' and 'hero-start' in a.get('class', '') for a in page.anchors), path
-        for route in ('/', '/#episodes', '/#originals', '/#commercial', '/#about'):
+        for route in ('/', '/#episodes', '/#originals', '/#about'):
             assert any(a.get('href') == prefix + route and 'nav-link' in a.get('class', '') for a in page.anchors), (path, route)
-        assert source.index('id="more-cuts"') < source.index('id="commercial"') < source.index('id="about"'), path
+        assert source.index('id="more-cuts"') < source.index('id="about"'), path
     ko_relative = relative.removeprefix('en/')
     route = '/' + ko_relative.removesuffix('index.html')
     assert page.switches == {'ko': base + route, 'en': base + '/en' + route}, path

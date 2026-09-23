@@ -1,6 +1,6 @@
 """Generate crawlable English pages alongside the Korean portfolio."""
 from copy import deepcopy
-from site_config import ABOUT_PARAGRAPHS, OG_ALT, COMMERCIAL_WORKS
+from site_config import ABOUT_PARAGRAPHS, OG_ALT
 from hashlib import sha256
 from html import escape
 from html.parser import HTMLParser
@@ -87,7 +87,7 @@ UI = {
     '에피소드 사이의 기다림 없이, FALL 707을 연속으로.': 'Experience FALL 707 in one continuous cut.',
     '상상을, 장면으로.': 'From imagination to cinema.',
     '이야기를, 세계관으로.': 'From stories to worlds.',
-    '프로젝트 함께하기': 'Let’s collaborate',
+    '채널 문의': 'Contact',
     '채널에서 더 보기': 'Explore the channel',
     '시즌 1 몰아보기': 'Watch Season 1',
     'FALL 707 시즌 1 풀무비': 'FALL 707 Season 1 full movie',
@@ -216,15 +216,9 @@ def localize_site(out, works, origin, base_path=''):
         (out/path).write_text('window.PORTFOLIO = ' + json.dumps(published_records, ensure_ascii=False).replace('</', '<\\/') + ';\n', encoding='utf-8')
     base_translations = dict(UI)
     base_translations.update(zip(ABOUT_PARAGRAPHS['ko'], ABOUT_PARAGRAPHS['en']))
-    base_translations.update({OG_ALT['ko']: OG_ALT['en'], '커머셜': 'Commercial',
-        '브랜드의 이야기를, 시네마로.': 'Brand stories, told cinematically.',
-        '브랜드 필름과 광고 영상, 기획부터 연출·편집까지 함께합니다.': 'Brand films and commercials, from concept through direction and edit.',
-        '프로젝트 문의하기': 'Start a Project',
+    base_translations.update({OG_ALT['ko']: OG_ALT['en'],
         '상상을, 장면으로.': 'From imagination to frame.',
         '이야기를, 세계관으로.': 'From story to world.'})
-    for item in COMMERCIAL_WORKS:
-        if isinstance(item['project'], dict):
-            base_translations[item['project']['ko']] = item['project']['en']
     for ko, en in zip(works, en_works):
         base_translations[ko['name']] = en['name']
         base_translations[ko['title']] = en['title']

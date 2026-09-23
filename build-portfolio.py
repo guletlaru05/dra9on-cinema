@@ -3,7 +3,7 @@ import json,re,pathlib,html,argparse
 root=pathlib.Path(__file__).resolve().parent
 from urllib.parse import urlsplit
 import shutil
-from site_config import CONTACT_EMAIL, SOCIAL_LINKS, COMMERCIAL_WORKS, ABOUT_PARAGRAPHS, OG_ALT, ready, web_url
+from site_config import CONTACT_EMAIL, SOCIAL_LINKS, ABOUT_PARAGRAPHS, OG_ALT, ready, web_url
 p = argparse.ArgumentParser()
 p.add_argument('--origin', required=True, help='Host origin, e.g. https://username.github.io')
 p.add_argument('--base-path', default='', help='Project path, e.g. /dra9on-cinema; empty for a custom domain')
@@ -43,24 +43,12 @@ brand='<a href="/" class="wordmark" aria-label="DRA9ON CINEMA 홈"><span>DRA9ON<
 def social_links(css=''):
  return ''.join(f'<a class="{css}" href="{esc(item["url"])}" target="_blank" rel="noopener noreferrer">{esc(item["name"])} {icon("external")}</a>' for item in SOCIAL_LINKS if web_url(item['url']))
 
-def commercial_section():
- cards=[]
- for item in COMMERCIAL_WORKS:
-  thumb=item['thumbnail']
-  if not ready(thumb): continue
-  if not web_url(thumb) and not (thumb.startswith('/assets/') and (root/'site-assets'/thumb.lstrip('/')).is_file()):
-   raise ValueError(f'Invalid commercial thumbnail: {thumb}')
-  project=item['project'].get('ko', '') if isinstance(item['project'], dict) else item['project']
-  if not ready(project) or not web_url(item['video_url']) or not ready(str(item['year'])): continue
-  cards.append(f'<article class="card commercial-card"><a class="card-open" href="{esc(item["video_url"])}" target="_blank" rel="noopener noreferrer"><div class="card-image"><img src="{esc(thumb)}" alt="{esc(project)}" width="720" height="405" loading="lazy"><span class="card-hover-play"><span>{icon("play")}</span></span></div><p class="card-label">{esc(item["client"])} · {esc(item["year"])}</p><h3 class="card-name">{esc(project)} {icon("external")}</h3></a></article>')
- grid='<div class="commercial-grid">'+''.join(cards)+'</div>' if cards else ''
- return f'<section class="commercial-section" id="commercial" aria-labelledby="commercial-title"><div class="commercial-inner"><p class="section-eyebrow">COMMERCIAL WORK</p><h2 id="commercial-title">브랜드의 이야기를, 시네마로.</h2><p class="commercial-intro">브랜드 필름과 광고 영상, 기획부터 연출·편집까지 함께합니다.</p>{grid}<a class="button button-white" href="mailto:{CONTACT_EMAIL}">프로젝트 문의하기 {icon("arrow")}</a></div></section>'
 
 def header(home=False):
- nav='<a class="nav-link" href="/">홈</a><a class="nav-link" href="/#episodes">FALL 707</a><a class="nav-link" href="/#originals">작품집</a><a class="nav-link" href="/#commercial">커머셜</a><a class="nav-link" href="/#about">ABOUT</a>'
+ nav='<a class="nav-link" href="/">홈</a><a class="nav-link" href="/#episodes">FALL 707</a><a class="nav-link" href="/#originals">작품집</a><a class="nav-link" href="/#about">ABOUT</a>'
  search=f'<div class="search-wrap" id="search-wrap"><button class="icon-button" id="search-toggle" aria-label="작품 검색" aria-expanded="false">{icon("search")}</button><input type="search" id="search" placeholder="작품, 에피소드 검색" aria-label="작품 또는 에피소드 검색" autocomplete="off" hidden></div>' if home else ''
  return f'<a class="skip-link" href="#main">콘텐츠로 바로 가기</a><header class="header">{brand}<nav class="nav" aria-label="주 메뉴">{nav}</nav><div class="header-actions">{search}{social_links("channel-button")}</div></header>'
-def footer():return f'<footer>{brand}<p>AI로 세계관을 실사화하는 크리에이터.<br><span>© 2026 DRA9ON CINEMA. All rights reserved.</span><br><span>작품·이미지·텍스트의 무단 복제, 재업로드 및 상업적 이용을 금합니다. 이용 문의는 이메일로 연락해 주세요.</span></p><div class="footer-links">{social_links()}<a href="mailto:{CONTACT_EMAIL}">협업 문의 {icon("arrow")}</a></div></footer>'
+def footer():return f'<footer>{brand}<p>AI로 세계관을 실사화하는 크리에이터.<br><span>© 2026 DRA9ON CINEMA. All rights reserved.</span><br><span>작품·이미지·텍스트의 무단 복제, 재업로드 및 상업적 이용을 금합니다. 이용 문의는 이메일로 연락해 주세요.</span></p><div class="footer-links">{social_links()}<a href="mailto:{CONTACT_EMAIL}">채널 문의 {icon("arrow")}</a></div></footer>'
 def card(v):return f'<article class="card"><a class="card-open" href="{v["path"]}" data-detail="{v["id"]}" aria-label="{esc(v["label"]+" "+v["name"])} 상세 보기"><div class="card-image"><img src="{v["image"]}" alt="{esc(v["name"])} 공식 썸네일" width="720" height="405" loading="lazy"><span class="duration">{esc(v["duration"] or "")}</span><span class="card-hover-play"><span>{icon("play")}</span></span></div><p class="card-label">{v["label"]}</p><h3 class="card-name">{esc(v["name"])}</h3></a><button class="card-save" data-save="{v["id"]}" aria-label="{esc(v["name"])} 찜하기" aria-pressed="false">{icon("plus")}</button></article>'
 def shelf(id,title,subtitle,items):return f'<section class="shelf" id="{id}" aria-labelledby="{id}-title"><div class="shelf-heading"><div><p class="section-eyebrow">{subtitle}</p><h2 class="shelf-title" id="{id}-title">{title}</h2></div><div class="shelf-controls"><button data-scroll="{id}-track" data-direction="-1" aria-label="{title} 이전 보기">{icon("left")}</button><button data-scroll="{id}-track" data-direction="1" aria-label="{title} 다음 보기">{icon("right")}</button></div></div><div class="shelf-track" id="{id}-track">'+''.join(card(v) for v in items)+'</div></section>'
 def head(title,desc,path='/',schema=None):
@@ -81,9 +69,8 @@ main+=shelf('episodes','FALL 707 · 시즌 2','THE STORY CONTINUES',s2)+shelf('s
 main+=f'<section class="feature-strip"><div><p class="section-eyebrow">ONE NIGHT. ONE COMPLETE STORY.</p><h2>한 편의 영화처럼.</h2><p>에피소드 사이의 기다림 없이, FALL 707을 연속으로.</p><a class="button button-white" href="{byid["4f6Zguf7c2M"]["path"]}">{icon("play")}시즌 1 몰아보기</a></div><a href="{byid["4f6Zguf7c2M"]["path"]}" class="feature-art"><img src="/assets/portfolio/4f6Zguf7c2M.jpg" alt="FALL 707 시즌 1 풀무비" width="720" height="405" loading="lazy"></a></section>'
 main+=shelf('originals','세계관은 계속 넓어진다','MORE FROM DRA9ON CINEMA',[v for v in works if v['category']=='original'])+shelf('more-cuts','한 번 더, 깊이 빠져들다','FULL MOVIES & TRAILER',[v for v in works if v['category'] in ['full','trailer']])
 main+='</div><section id="browse-results" hidden aria-labelledby="browse-title"><h1 id="browse-title"></h1><p id="result-count" aria-live="polite"></p><div class="results-grid" id="results-grid"></div><div class="empty-state" id="empty-state" hidden><h2>아직 작품이 없어요.</h2><p>다른 검색어를 입력하거나 보고 싶은 작품의 + 버튼을 눌러주세요.</p><button class="button button-white" id="reset-browse">전체 작품 보기</button></div></section></div>'
-main+=commercial_section()
 about_paragraphs=''.join(f'<p>{esc(text)}</p>' for text in ABOUT_PARAGRAPHS['ko'])
-main+=f'<section class="about-section" id="about"><div class="about-copy"><p class="section-eyebrow">BEHIND THE FRAME</p><h2>상상을, 장면으로.<br><span>이야기를, 세계관으로.</span></h2>{about_paragraphs}<div class="about-tags"><span>AI FILMMAKING</span><span>WORLD BUILDING</span><span>VISUAL STORYTELLING</span></div><div class="about-links"><a class="button button-white" href="mailto:{CONTACT_EMAIL}">프로젝트 함께하기 {icon("arrow")}</a><a class="text-button" href="https://www.youtube.com/@dra9oncinema" target="_blank" rel="noopener noreferrer">채널에서 더 보기 {icon("external")}</a></div></div></section></main>{footer()}{dialogs}</body></html>'
+main+=f'<section class="about-section" id="about"><div class="about-copy"><p class="section-eyebrow">BEHIND THE FRAME</p><h2>상상을, 장면으로.<br><span>이야기를, 세계관으로.</span></h2>{about_paragraphs}<div class="about-tags"><span>AI FILMMAKING</span><span>WORLD BUILDING</span><span>VISUAL STORYTELLING</span></div><div class="about-links"><a class="text-button" href="https://www.youtube.com/@dra9oncinema" target="_blank" rel="noopener noreferrer">채널에서 더 보기 {icon("external")}</a></div></div></section></main>{footer()}{dialogs}</body></html>'
 (out/'index.html').write_text(head('드래곤시네마 DRA9ON CINEMA | 낙하 707 · FALL 707','드래곤시네마의 〈낙하 707: 리부트〉(낙하707, FALL707, FALL 707). 현대 특수부대와 조선 시대가 만나는 밀리터리 판타지·사극 AI 영화. 시즌 1·2와 풀버전을 감상하세요.',schema=schema)+main,encoding='utf-8')
 paths=['/']
 for v in works:
