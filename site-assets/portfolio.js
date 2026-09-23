@@ -121,3 +121,41 @@ if ($('hero')) {
   window.addEventListener('pageshow', resetScroll, {once:true});
   window.addEventListener('pagehide', () => { history.scrollRestoration = 'auto'; }, {once:true});
 })();
+
+
+// Keep collaboration contact usable even without a configured mail app.
+(() => {
+  const contacts = document.querySelectorAll('a[href="mailto:guletlaru05@gmail.com"]');
+  if (!contacts.length) return;
+  const style = document.createElement('style');
+  style.textContent = '.contact-block{min-width:0;display:flex;flex-direction:column;gap:10px}.contact-details{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px}.contact-address{font-size:14px;color:#ddd;overflow-wrap:anywhere;user-select:text}.contact-copy{font:inherit;font-size:12px;color:#eee;background:#252529;border:1px solid #555;border-radius:5px;min-height:44px;padding:8px 12px;cursor:pointer}.contact-copy:focus-visible{outline:2px solid #fff;outline-offset:3px}.contact-status{flex-basis:100%;font-size:12px;color:#bbb}.contact-status:empty{display:none}.bio-links .contact-details{padding:0 18px 12px}';
+  document.head.append(style);
+  contacts.forEach(link => {
+    const block = document.createElement('div');
+    block.className = 'contact-block';
+    link.before(block);
+    block.append(link);
+    const details = document.createElement('div');
+    details.className = 'contact-details';
+    const address = document.createElement('span');
+    address.className = 'contact-address';
+    address.textContent = 'guletlaru05@gmail.com';
+    const copy = document.createElement('button');
+    copy.type = 'button';
+    copy.className = 'contact-copy';
+    copy.textContent = t('이메일 복사', 'Copy email');
+    const status = document.createElement('span');
+    status.className = 'contact-status';
+    status.setAttribute('role', 'status');
+    copy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(address.textContent);
+        status.textContent = t('이메일 주소를 복사했어요.', 'Email address copied.');
+      } catch {
+        status.textContent = t('위 이메일 주소를 길게 누르거나 선택해서 복사해 주세요.', 'Select the email address above to copy it.');
+      }
+    });
+    details.append(address, copy, status);
+    block.append(details);
+  });
+})();
