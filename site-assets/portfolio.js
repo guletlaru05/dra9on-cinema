@@ -24,7 +24,6 @@ if($('detail-dialog')){$('detail-close').addEventListener('click',()=>$('detail-
 document.querySelectorAll('.shelf-track').forEach(t=>{t.addEventListener('scroll',()=>updateArrows(t),{passive:true});updateArrows(t)});window.addEventListener('resize',()=>document.querySelectorAll('.shelf-track').forEach(updateArrows));syncSaved();
 if(document.modelContext?.registerTool&&$('browse-results')){const lifecycle=new AbortController();const register=t=>{try{Promise.resolve(document.modelContext.registerTool(t,{signal:lifecycle.signal})).catch(()=>{})}catch{}};register({name:'browse_portfolio',title:t('포트폴리오 검색','Search portfolio'),description:t('검색어로 DRA9ON CINEMA의 작품을 찾아 화면에 표시합니다.','Find and display DRA9ON CINEMA films by search term.'),inputSchema:{type:'object',properties:{query:{type:'string',maxLength:100}},required:['query'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(!input||typeof input.query!=='string'||input.query.length>100||Object.keys(input).some(k=>k!=='query'))throw new Error(t('100자 이하의 검색어를 입력해 주세요.','Enter a search term of up to 100 characters.'));view='all';category='all';query=input.query.trim();$('search').value=query;render();return {works:filtered().map(v=>({id:v.id,title:v.name,url:v.path}))}}});register({name:'set_saved_work',title:t('작품 찜하기','Save film'),description:t('이 브라우저의 찜 목록에 작품을 저장하거나 제거합니다.','Add or remove a film from the list saved in this browser.'),inputSchema:{type:'object',properties:{id:{type:'string'},saved:{type:'boolean'}},required:['id','saved'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(!input||typeof input.id!=='string'||!byId(input.id)||typeof input.saved!=='boolean'||Object.keys(input).some(k=>!['id','saved'].includes(k)))throw new Error(t('올바른 작품 ID와 저장 여부를 입력해 주세요.','Enter a valid film ID and saved state.'));setSaved(input.id,input.saved);return {id:input.id,saved:saved.has(input.id)}}});window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true})}
 
-
 // Carry the current section when switching between the static language routes.
 // Rotate episode artwork only; players are still created exclusively by a click.
 if ($('hero')) {
@@ -50,8 +49,8 @@ if ($('hero')) {
       hero.querySelector('.hero-kicker').textContent=v.category==='full'?t('FALL 707 · 시즌 1 풀버전','FALL 707 · SEASON 1 FULL MOVIE'):`FALL 707 · S${v.season} EP.${String(v.episode).padStart(2,'0')}`;
       hero.querySelector('.hero-tagline').textContent=v.name;
       hero.querySelector('.hero-description').textContent=v.summary;
-      const playButton=hero.querySelector('[data-play]');
-      playButton.dataset.play=v.id;
+      const playButton=hero.querySelector('.hero-feature-link');
+      playButton.href=v.path;
       playButton.innerHTML=icon('play')+(v.category==='full'?t('시즌 1 몰아보기','Watch full season'):t('이 에피소드 보기','Watch episode'));
       hero.querySelector('.hero-meta').textContent=`2026 · ${v.category==='full'?'FULL MOVIE':`S${v.season} EP.${v.episode}`} · ${v.duration||''}`;
       controls.querySelector('.hero-position').textContent=`${String(index+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
@@ -72,7 +71,6 @@ if ($('hero')) {
     hero.classList.add('hero-carousel');showSlide(0);updatePause();schedule();
   }
 }
-
 
 
 // Horizontal gestures change artwork; vertical scrolling and pinch zoom stay native.
@@ -107,7 +105,6 @@ if ($('hero')) {
   hero.addEventListener('lostpointercapture', reset);
 })();
 
-
 // A homepage refresh starts at the hero; normal section links and Back keep working.
 (() => {
   const navigationType = performance.getEntriesByType('navigation')[0]?.type;
@@ -122,10 +119,9 @@ if ($('hero')) {
   window.addEventListener('pagehide', () => { history.scrollRestoration = 'auto'; }, {once:true});
 })();
 
-
 // Keep collaboration contact usable even without a configured mail app.
 (() => {
-  const contacts = document.querySelectorAll('a[href="mailto:guletlaru05@gmail.com"]');
+  const contacts = document.querySelectorAll('a[href^="mailto:"]');
   if (!contacts.length) return;
   const style = document.createElement('style');
   style.textContent = '.contact-block{min-width:0;display:flex;flex-direction:column;gap:10px}.contact-details{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px}.contact-address{font-size:14px;color:#ddd;overflow-wrap:anywhere;user-select:text}.contact-copy{font:inherit;font-size:12px;color:#eee;background:#252529;border:1px solid #555;border-radius:5px;min-height:44px;padding:8px 12px;cursor:pointer}.contact-copy:focus-visible{outline:2px solid #fff;outline-offset:3px}.contact-status{flex-basis:100%;font-size:12px;color:#bbb}.contact-status:empty{display:none}.bio-links .contact-details{padding:0 18px 12px}';
@@ -139,7 +135,7 @@ if ($('hero')) {
     details.className = 'contact-details';
     const address = document.createElement('span');
     address.className = 'contact-address';
-    address.textContent = 'guletlaru05@gmail.com';
+    address.textContent = decodeURIComponent(link.getAttribute('href').slice(7).split('?')[0]);
     const copy = document.createElement('button');
     copy.type = 'button';
     copy.className = 'contact-copy';
@@ -159,3 +155,12 @@ if ($('hero')) {
     block.append(details);
   });
 })();
+
+document.querySelectorAll('.nav a[href*="#"]').forEach(link => {
+  link.addEventListener('click', () => {
+    if (!$('hero')) return;
+    view='all'; category='all'; query='';
+    if ($('search')) $('search').value='';
+    render();
+  });
+});
