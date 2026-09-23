@@ -1,5 +1,6 @@
 """Generate crawlable English pages alongside the Korean portfolio."""
 from copy import deepcopy
+from site_config import ABOUT_PARAGRAPHS, OG_ALT, COMMERCIAL_WORKS
 from hashlib import sha256
 from html import escape
 from html.parser import HTMLParser
@@ -176,6 +177,8 @@ class EnglishPage(HTMLParser):
             attrs['href'] = attrs['href'].replace(self.origin + '/', self.origin + '/en/', 1)
         if tag == 'meta' and attrs.get('property') == 'og:url':
             attrs['content'] = attrs['content'].replace(self.origin + '/', self.origin + '/en/', 1)
+        if tag == 'meta' and (attrs.get('property') == 'og:image' or attrs.get('name') == 'twitter:image'):
+            attrs['content'] = attrs['content'].replace('/assets/og/og-ko.jpg', '/assets/og/og-en.jpg')
         if tag == 'meta' and attrs.get('property') == 'og:locale': attrs['content'] = 'en_US'
         if tag == 'script' and attrs.get('src') == '/catalog.js': attrs['src'] = '/en/catalog.js'
         if tag == 'iframe': attrs['src'] += '&hl=en&cc_lang_pref=en'
@@ -212,6 +215,16 @@ def localize_site(out, works, origin, base_path=''):
         published_records = [{**record, 'path': base_path + record['path'], 'image': base_path + record['image']} for record in records]
         (out/path).write_text('window.PORTFOLIO = ' + json.dumps(published_records, ensure_ascii=False).replace('</', '<\\/') + ';\n', encoding='utf-8')
     base_translations = dict(UI)
+    base_translations.update(zip(ABOUT_PARAGRAPHS['ko'], ABOUT_PARAGRAPHS['en']))
+    base_translations.update({OG_ALT['ko']: OG_ALT['en'], '커머셜': 'Commercial',
+        '브랜드의 이야기를, 시네마로.': 'Brand stories, told cinematically.',
+        '브랜드 필름과 광고 영상, 기획부터 연출·편집까지 함께합니다.': 'Brand films and commercials, from concept through direction and edit.',
+        '프로젝트 문의하기': 'Start a Project',
+        '상상을, 장면으로.': 'From imagination to frame.',
+        '이야기를, 세계관으로.': 'From story to world.'})
+    for item in COMMERCIAL_WORKS:
+        if isinstance(item['project'], dict):
+            base_translations[item['project']['ko']] = item['project']['en']
     for ko, en in zip(works, en_works):
         base_translations[ko['name']] = en['name']
         base_translations[ko['title']] = en['title']
