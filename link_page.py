@@ -18,7 +18,7 @@ def build_links(out, origin, works, head, icon):
 <a class="bio-row" href="{full['path']}"><span class="bio-index">01</span><span><strong>시즌 1 풀버전</strong><small>FALL 707 · FULL MOVIE · {full['duration']}</small></span>{icon('arrow')}</a>
 <a class="bio-row" href="/"><span class="bio-index">02</span><span><strong>전체 작품 둘러보기</strong><small>OFFICIAL WEBSITE</small></span>{icon('arrow')}</a>
 <a class="bio-row" href="https://www.youtube.com/@dra9oncinema" target="_blank" rel="noopener noreferrer"><span class="bio-index">03</span><span><strong>YouTube</strong><small>@dra9oncinema</small></span>{icon('external')}</a>
-<a class="bio-row" href="mailto:{CONTACT_EMAIL}"><span class="bio-index">04</span><span><strong>협업 문의</strong><small>LET’S CREATE SOMETHING.</small></span>{icon('arrow')}</a>
+<a class="bio-row" href="mailto:{CONTACT_EMAIL}"><span class="bio-index">04</span><span><strong>채널 문의</strong><small>CONTACT DRA9ON CINEMA</small></span>{icon('arrow')}</a>
 </nav><p class="links-signoff">© 2026 DRA9ON CINEMA. All rights reserved.</p></main></body></html>'''
     directory = out / 'links'
     directory.mkdir(exist_ok=True)
