@@ -6,6 +6,8 @@ from urllib.parse import urlsplit, unquote
 import json
 import re
 import xml.etree.ElementTree as ET
+from site_config import CONTACT_EMAIL, OG_ALT
+from image_dimensions import jpeg_size
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--origin', required=True)
@@ -47,10 +49,17 @@ class Page(HTMLParser):
         self.switches = {}
         self.json_chunks = []
         self.in_json = False
+        self.metas = {}
+        self.anchors = []
         self.feed(source)
 
     def handle_starttag(self, tag, pairs):
         attrs = dict(pairs)
+        if tag == 'meta':
+            key = attrs.get('property') or attrs.get('name')
+            self.metas.setdefault(key, []).append(attrs.get('content'))
+        if tag == 'a':
+            self.anchors.append(attrs)
         for key in ['href', 'src', 'poster']:
             if attrs.get(key):
                 local_file(attrs[key])
@@ -82,6 +91,27 @@ for path in html_files:
     relative = path.relative_to(root).as_posix()
     lang = 'en' if relative.startswith('en/') else 'ko'
     assert page.lang == lang, path
+    assert page.metas.get('twitter:card') == ['summary_large_image'], path
+    assert len(page.metas.get('og:image', [])) == 1, path
+    assert page.metas.get('twitter:image') == page.metas['og:image'], path
+    og_file = local_file(page.metas['og:image'][0])
+    assert og_file, path
+    width, height = jpeg_size(og_file)
+    assert page.metas['og:image:width'] == [str(width)], path
+    assert page.metas['og:image:height'] == [str(height)], path
+    assert page.metas['og:locale'] == ['en_US' if lang == 'en' else 'ko_KR'], path
+    contacts = [a['href'] for a in page.anchors if a.get('href', '').startswith('mailto:')]
+    assert contacts and set(contacts) == {'mailto:' + CONTACT_EMAIL}, path
+    assert not any('TODO' in a.get('href', '') for a in page.anchors), path
+    if relative in ('index.html', 'en/index.html'):
+        assert (width, height) == (1200, 630) and og_file.stat().st_size <= 300_000
+        assert page.metas['og:image:alt'] == [OG_ALT[lang]], path
+        assert page.metas['og:image'] == [site + f'/assets/og/og-{lang}.jpg'], path
+        prefix = base + ('/en' if lang == 'en' else '')
+        assert any(a.get('href') == prefix + '/watch/fall-707-s1-ep1/' and 'hero-start' in a.get('class', '') for a in page.anchors), path
+        for route in ('/', '/#episodes', '/#originals', '/#commercial', '/#about'):
+            assert any(a.get('href') == prefix + route and 'nav-link' in a.get('class', '') for a in page.anchors), (path, route)
+        assert source.index('id="more-cuts"') < source.index('id="commercial"') < source.index('id="about"'), path
     ko_relative = relative.removeprefix('en/')
     route = '/' + ko_relative.removesuffix('index.html')
     assert page.switches == {'ko': base + route, 'en': base + '/en' + route}, path
