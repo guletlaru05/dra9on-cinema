@@ -25,4 +25,48 @@ document.querySelectorAll('.shelf-track').forEach(t=>{t.addEventListener('scroll
 if(document.modelContext?.registerTool&&$('browse-results')){const lifecycle=new AbortController();const register=t=>{try{Promise.resolve(document.modelContext.registerTool(t,{signal:lifecycle.signal})).catch(()=>{})}catch{}};register({name:'browse_portfolio',title:t('포트폴리오 검색','Search portfolio'),description:t('검색어로 DRA9ON CINEMA의 작품을 찾아 화면에 표시합니다.','Find and display DRA9ON CINEMA films by search term.'),inputSchema:{type:'object',properties:{query:{type:'string',maxLength:100}},required:['query'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(!input||typeof input.query!=='string'||input.query.length>100||Object.keys(input).some(k=>k!=='query'))throw new Error(t('100자 이하의 검색어를 입력해 주세요.','Enter a search term of up to 100 characters.'));view='all';category='all';query=input.query.trim();$('search').value=query;render();return {works:filtered().map(v=>({id:v.id,title:v.name,url:v.path}))}}});register({name:'set_saved_work',title:t('작품 찜하기','Save film'),description:t('이 브라우저의 찜 목록에 작품을 저장하거나 제거합니다.','Add or remove a film from the list saved in this browser.'),inputSchema:{type:'object',properties:{id:{type:'string'},saved:{type:'boolean'}},required:['id','saved'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(!input||typeof input.id!=='string'||!byId(input.id)||typeof input.saved!=='boolean'||Object.keys(input).some(k=>!['id','saved'].includes(k)))throw new Error(t('올바른 작품 ID와 저장 여부를 입력해 주세요.','Enter a valid film ID and saved state.'));setSaved(input.id,input.saved);return {id:input.id,saved:saved.has(input.id)}}});window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true})}
 
 // Carry the current section when switching between the static language routes.
+// Rotate episode artwork only; players are still created exclusively by a click.
+if ($('hero')) {
+  const hero=$('hero'), motion=matchMedia('(prefers-reduced-motion: reduce)');
+  const season=Math.max(...works.filter(v=>/^s[12]$/.test(v.category)).map(v=>v.season));
+  const slides=works.filter(v=>v.category===`s${season}`).sort((a,b)=>b.episode-a.episode);
+  if (slides.length>1) {
+    let index=0, paused=motion.matches, hovered=false, focused=false, visible=true;
+    const controls=document.createElement('div');
+    controls.className='hero-carousel-controls';
+    controls.setAttribute('role','group');
+    controls.setAttribute('aria-label',t('추천 작품 배너','Featured episode carousel'));
+    controls.innerHTML=`<button type="button" data-hero-prev aria-label="${t('이전 배너','Previous banner')}">←</button><span class="hero-position"></span><button type="button" data-hero-next aria-label="${t('다음 배너','Next banner')}">→</button><button type="button" data-hero-pause></button>`;
+    hero.append(controls);
+    const pause=controls.querySelector('[data-hero-pause]');
+    function updatePause(){pause.textContent=paused?t('자동 전환 시작','Start rotation'):t('자동 전환 정지','Pause rotation');}
+    function showSlide(next){
+      index=(next+slides.length)%slides.length;
+      const v=slides[index], image=hero.querySelector('.hero-image');
+      image.src=v.image; image.alt=v.name;
+      hero.querySelector('.hero-kicker').textContent=`FALL 707 · S${v.season} EP.${String(v.episode).padStart(2,'0')}`;
+      hero.querySelector('.hero-tagline').textContent=v.name;
+      hero.querySelector('.hero-description').textContent=v.summary;
+      const playButton=hero.querySelector('[data-play]');
+      playButton.dataset.play=v.id;
+      playButton.innerHTML=icon('play')+t('이 에피소드 보기','Watch episode');
+      hero.querySelector('.hero-meta').textContent=`2026 · S${v.season} EP.${v.episode} · ${v.duration||''}`;
+      controls.querySelector('.hero-position').textContent=`${String(index+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
+    }
+    let timer;
+    function schedule(){clearInterval(timer);timer=setInterval(()=>{
+      if(!paused&&!hovered&&!focused&&visible&&!document.hidden&&!hero.hidden&&!document.querySelector('dialog[open]'))showSlide(index+1);
+    },7000);}
+    controls.querySelector('[data-hero-prev]').addEventListener('click',()=>{showSlide(index-1);schedule();});
+    controls.querySelector('[data-hero-next]').addEventListener('click',()=>{showSlide(index+1);schedule();});
+    pause.addEventListener('click',()=>{paused=!paused;updatePause();schedule();});
+    hero.addEventListener('mouseenter',()=>{hovered=true;});
+    hero.addEventListener('mouseleave',()=>{hovered=false;schedule();});
+    hero.addEventListener('focusin',()=>{focused=true;});
+    hero.addEventListener('focusout',e=>{focused=hero.contains(e.relatedTarget);schedule();});
+    motion.addEventListener('change',()=>{if(motion.matches){paused=true;updatePause();}});
+    new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;},{threshold:0.15}).observe(hero);
+    hero.classList.add('hero-carousel');showSlide(0);updatePause();schedule();
+  }
+}
 document.querySelectorAll('[data-language]').forEach(a=>{a.addEventListener('click',()=>{const url=new URL(a.href);url.hash=location.hash;a.href=url.href})});
