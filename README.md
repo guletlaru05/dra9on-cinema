@@ -73,3 +73,14 @@ python verify-site.py --origin https://guletlaru05.github.io --base-path /dra9on
 공식 채널: <https://www.youtube.com/@dra9oncinema>
 
 영상 정보, 썸네일, 소개 및 협업 이메일은 공식 채널의 공개 정보를 사용했습니다. 영문 제목이 없는 항목과 소개는 포트폴리오용으로 번역했습니다. 작품과 브랜드의 권리는 DRA9ON CINEMA에 귀속됩니다. YouTube 및 Google과 제휴한 사이트가 아닙니다. 저장소 공개 자체가 작품의 재사용 허가를 뜻하지 않습니다.
+
+
+## Optional GA4 analytics
+
+`site-assets/consent.js` uses existing property `G-TF7X8WSNGW`. Basic Consent Mode v2 blocks loading the Google tag until analytics opt-in; all three advertising signals stay denied. It runs only on the production domain. Local previews never send analytics. Preferences expire after 180 days. Footer cookie settings allow withdrawal; the opt-out flag is set immediately, consent is updated, GA cookies are cleared, and the page reloads. Other tabs reload when consent changes.
+
+The custom `youtube_subscribe_click` event measures button clicks, not completed YouTube subscriptions. Parameters: `button_location` (hero/player/watch), `page_language`, and `link_url`. Review these in GA4 Reports > Engagement > Events or Realtime; custom parameter breakdowns require GA4 custom dimensions. Event and user retention: 2 months, activity reset disabled. Enhanced measurement is off, so query strings and form data are not automatically measured.
+
+Privacy pages: `/privacy/` and `/en/privacy/`. Update `privacy_page.py` when collection changes. Existing YouTube embeds and Google Fonts operate separately from this site's GA4 consent.
+
+Validation: `node test-consent.cjs`, then the existing build and `verify-site.py` commands.

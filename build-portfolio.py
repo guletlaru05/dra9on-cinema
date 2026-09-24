@@ -102,6 +102,8 @@ print(json.dumps({'works':len(works),'pages':len(paths),'seasons':{'1':len(s1),'
 from localization import localize_site
 from link_page import build_links
 build_links(out, origin, works, head, icon)
+from privacy_page import build_privacy
+build_privacy(out, origin, head, header, footer)
 localize_site(out, works, origin, base_path)
 # Public ownership proof for the owner's Google and Naver webmaster properties.
 verification_tag = (
@@ -140,3 +142,15 @@ for homepage in ('index.html', 'en/index.html'):
  page = out / homepage
  document = page.read_text(encoding='utf-8')
  page.write_text(document.replace('</head>', '<link rel="alternate" type="application/rss+xml" title="DRA9ON CINEMA" href="' + origin + '/rss.xml"></head>', 1), encoding='utf-8')
+
+# Local consent manager is included everywhere; it loads Google only after opt-in.
+from hashlib import sha256
+consent_version = sha256((out/'consent.js').read_bytes() + (out/'consent.css').read_bytes()).hexdigest()[:12]
+for page in out.rglob('*.html'):
+ document=page.read_text(encoding='utf-8')
+ en=page.relative_to(out).parts[0]=='en'
+ privacy_url=base_path+('/en' if en else '')+'/privacy/'
+ controls=f'<div class="privacy-controls"><a href="{privacy_url}">{"Privacy policy" if en else "개인정보처리방침"}</a><button type="button" data-cookie-settings>{"Cookie settings" if en else "쿠키 설정"}</button></div>'
+ assets=f'<link rel="stylesheet" href="{base_path}/consent.css?v={consent_version}"><script src="{base_path}/consent.js?v={consent_version}" defer></script>'
+ document=document.replace('</head>',assets+'</head>',1).replace('</body>',controls+'</body>',1)
+ page.write_text(document,encoding='utf-8')
