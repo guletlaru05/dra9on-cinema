@@ -67,7 +67,7 @@ class Page(HTMLParser):
             self.lang = attrs['lang']
         if tag == 'link' and attrs.get('rel') == 'canonical':
             self.canonical = attrs['href']
-        if tag == 'link' and attrs.get('rel') == 'alternate':
+        if tag == 'link' and attrs.get('rel') == 'alternate' and 'hreflang' in attrs:
             self.alternates[attrs['hreflang']] = attrs['href']
         if 'data-language' in attrs:
             self.switches[attrs['data-language']] = attrs['href']
