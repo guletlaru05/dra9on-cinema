@@ -73,3 +73,11 @@
  .hero-social .channel-button:focus-visible{outline:2px solid #fff;outline-offset:3px}
  .hero-social .channel-button svg{width:15px;height:15px}
 }
+
+/* Direct subscription links open YouTube without interrupting playback. */
+.button.subscribe-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:11px 18px;background:#c71930;color:#fff;border:1px solid #e7394e;border-radius:4px;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap}
+.button.subscribe-button:hover{background:#a91428;color:#fff}
+.button.subscribe-button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.subscribe-button svg{width:18px;height:18px;flex-shrink:0}
+.player-footer,.watch-actions{flex-wrap:wrap;align-items:center}
+@media(max-width:520px){.player-footer{gap:12px;padding:14px 16px}.hero-buttons .subscribe-button{min-height:44px}.watch-actions{gap:14px}}
