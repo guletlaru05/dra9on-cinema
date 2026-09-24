@@ -109,3 +109,28 @@ for homepage in ('index.html', 'en/index.html'):
 print('Built Korean and English routes with versioned assets.')
 
 (out / '.nojekyll').touch()
+
+# RSS feed for Naver and feed readers, updated from the published episode catalog.
+from xml.etree import ElementTree as ET
+from datetime import datetime, timezone
+from email.utils import format_datetime
+rss = ET.Element('rss', version='2.0')
+channel = ET.SubElement(rss, 'channel')
+for key, value in [('title', 'DRA9ON CINEMA'), ('link', origin + '/'), ('description', 'DRA9ON CINEMA original films and FALL 707 episodes'), ('language', 'ko')]:
+ ET.SubElement(channel, key).text = value
+for work in sorted(works, key=lambda v: v.get('uploadDate') or '', reverse=True):
+ item = ET.SubElement(channel, 'item')
+ ET.SubElement(item, 'title').text = work['title']
+ url = origin + work['path']
+ ET.SubElement(item, 'link').text = url
+ ET.SubElement(item, 'guid', isPermaLink='true').text = url
+ ET.SubElement(item, 'description').text = '<p><img src="' + origin + work['image'] + '" alt="' + esc(work['name']) + '"></p><p>' + esc(work['summary']) + '</p>'
+ date = (work.get('uploadDate') or '')[:10]
+ if date:
+  ET.SubElement(item, 'pubDate').text = format_datetime(datetime.fromisoformat(date).replace(tzinfo=timezone.utc))
+ET.indent(rss)
+ET.ElementTree(rss).write(out / 'rss.xml', encoding='utf-8', xml_declaration=True)
+for homepage in ('index.html', 'en/index.html'):
+ page = out / homepage
+ document = page.read_text(encoding='utf-8')
+ page.write_text(document.replace('</head>', '<link rel="alternate" type="application/rss+xml" title="DRA9ON CINEMA" href="' + origin + '/rss.xml"></head>', 1), encoding='utf-8')
