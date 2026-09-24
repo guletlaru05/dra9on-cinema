@@ -49,6 +49,7 @@ EN_SUMMARIES = {
     'iVwqj1gUPDY': 'The Immortal Crazy X and the n-th Grim Reaper. An original film created with AI by DRA9ON CINEMA.',
 }
 UI = {
+    'YouTube 구독': 'Subscribe on YouTube',
     '낙하707': 'FALL707',
     '낙하 707': 'FALL 707',
     '밀리터리': 'Military',
