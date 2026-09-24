@@ -59,3 +59,17 @@
 @media(max-width:1100px){.header{gap:20px}.nav{gap:18px}}
 @media(max-width:800px){.header .nav{flex-shrink:0}}
 @media(max-width:520px){.header-actions>.channel-button{display:none}.nav{gap:20px}.hero-buttons .button{padding:11px 14px;font-size:12px}}
+
+/* Direct channel access: desktop header and mobile hero. */
+.header-actions>.channel-button{min-height:44px;white-space:nowrap;border-color:#ffffff45;background:#ffffff0a}
+.header-actions>.channel-button:hover{background:#ffffff18;border-color:#ffffff80}
+.hero-social{display:none}
+@media(max-width:800px){
+ .header-actions>.channel-button{display:none}
+ .hero-social{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 18px}
+ .hero-social .channel-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 16px;font-size:13px;border:1px solid #ffffff45;border-radius:4px;background:#161619e6;color:#fff}
+ .hero-social .channel-button:first-child{border-color:#ed233a80}
+ .hero-social .channel-button:hover{background:#2a2a30}
+ .hero-social .channel-button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+ .hero-social .channel-button svg{width:15px;height:15px}
+}
