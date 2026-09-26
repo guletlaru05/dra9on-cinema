@@ -15,7 +15,7 @@ function updateArrows(track){const prev=document.querySelector(`[data-scroll="${
 function showDetail(id){const v=byId(id);if(!v||!$('detail-dialog'))return;restoreFocus=document.activeElement;selected=v;$('detail-title').textContent=v.name;$('detail-label').textContent=v.label;$('detail-image').src=v.image;$('detail-image').alt=v.name+t(' 공식 썸네일',' official thumbnail');$('detail-description').textContent=v.summary;$('detail-meta').textContent=`DRA9ON CINEMA · ${v.duration||''}`;$('detail-page').href=v.path;syncSaved();$('detail-dialog').showModal()}
 function createPlayer(id){const v=byId(id);if(!v)throw new Error(t('알 수 없는 영상입니다.','Unknown film.'));const frame=document.createElement('iframe');frame.src=`https://www.youtube-nocookie.com/embed/${v.id}?rel=0&playsinline=1&autoplay=0&hl=${en?'en':'ko'}${en?'&cc_lang_pref=en':''}`;frame.title=v.title;frame.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';frame.referrerPolicy='strict-origin-when-cross-origin';frame.allowFullscreen=true;return frame}
 function nextVideo(v){let seq=works.filter(w=>w.category===v.category);if(['s1','s2'].includes(v.category))seq.sort((a,b)=>a.episode-b.episode);return seq[seq.findIndex(w=>w.id===v.id)+1]||(v.category==='s1'?works.find(w=>w.category==='s2'&&w.episode===1):null)}
-function play(id){const v=byId(id);if(!v)return;if(!$('player-dialog')){location.href=v.path;return}if($('detail-dialog').open)$('detail-dialog').close();if(!$('player-dialog').open)restoreFocus=document.activeElement;$('player-title').textContent=`${v.label} · ${v.name}`;$('player-youtube').href=`https://www.youtube.com/watch?v=${v.id}`;const next=nextVideo(v);$('player-next').hidden=!next;if(next)$('player-next').href=next.path;$('player-mount').replaceChildren(createPlayer(id));if(!$('player-dialog').open)$('player-dialog').showModal();let description=$('player-description');if(!description){description=document.createElement('p');description.id='player-description';description.className='player-description';$('player-dialog').append(description)}description.textContent=v.summary;delete $('player-next').dataset.detail;if(next){$('player-next').dataset.detail=next.id;$('player-next').textContent=t('다음 화 보기','Next episode')+' →'}}
+function play(id){const v=byId(id);if(!v)return;if(!$('player-dialog')){location.href=v.path;return}if($('detail-dialog').open)$('detail-dialog').close();if(!$('player-dialog').open)restoreFocus=document.activeElement;$('player-title').textContent=`${v.label} · ${v.name}`;$('player-youtube').href=`https://www.youtube.com/watch?v=${v.id}`;const next=nextVideo(v);$('player-next').hidden=!next;if(next)$('player-next').href=next.path;$('player-mount').replaceChildren(createPlayer(id));if(!$('player-dialog').open)$('player-dialog').showModal();delete $('player-next').dataset.detail;if(next){$('player-next').dataset.detail=next.id;$('player-next').textContent=t('다음 화 보기','Next episode')+' →'}}
 async function share(id){const v=byId(id);if(!v)return;const url=new URL(v.path,location.origin).href;try{await navigator.clipboard.writeText(url);notify(t('작품 링크를 복사했어요','Film link copied'))}catch{notify(t('링크 복사가 제한되어 작품 페이지를 엽니다.','Copy unavailable. Opening the film page.'));location.href=v.path}}
 document.addEventListener('click',e=>{const a=e.target.closest('[data-detail]');if(a&&!e.ctrlKey&&!e.metaKey&&!e.shiftKey&&e.button===0&&$('detail-dialog')){e.preventDefault();play(a.dataset.detail);return}const b=e.target.closest('button');if(!b)return;if(b.dataset.play)play(b.dataset.play);if(b.dataset.save){try{setSaved(b.dataset.save,!saved.has(b.dataset.save))}catch{}}if(b.dataset.share)share(b.dataset.share);if(b.dataset.view){view=b.dataset.view;category='all';query='';$('search').value='';render();window.scrollTo({top:0,behavior:'instant'})}if(b.dataset.category){category=b.dataset.category;view='all';render();window.scrollTo({top:0,behavior:'instant'})}if(b.dataset.scroll){const t=$(b.dataset.scroll);t.scrollBy({left:Number(b.dataset.direction)*t.clientWidth*.85,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth'})}});
 if($('search-toggle')){$('search-toggle').addEventListener('click',()=>{const opening=$('search').hidden;$('search').hidden=!opening;$('search-wrap').classList.toggle('expanded',opening);$('search-toggle').setAttribute('aria-expanded',String(opening));if(opening)$('search').focus();else{query='';$('search').value='';render()}});$('search').addEventListener('input',e=>{query=e.target.value.trim().slice(0,100);render()});$('search').addEventListener('keydown',e=>{if(e.key==='Escape'){$('search-toggle').click();$('search-toggle').focus()}})}
@@ -25,9 +25,52 @@ document.querySelectorAll('.shelf-track').forEach(t=>{t.addEventListener('scroll
 if(document.modelContext?.registerTool&&$('browse-results')){const lifecycle=new AbortController();const register=t=>{try{Promise.resolve(document.modelContext.registerTool(t,{signal:lifecycle.signal})).catch(()=>{})}catch{}};register({name:'browse_portfolio',title:t('포트폴리오 검색','Search portfolio'),description:t('검색어로 DRA9ON CINEMA의 작품을 찾아 화면에 표시합니다.','Find and display DRA9ON CINEMA films by search term.'),inputSchema:{type:'object',properties:{query:{type:'string',maxLength:100}},required:['query'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(!input||typeof input.query!=='string'||input.query.length>100||Object.keys(input).some(k=>k!=='query'))throw new Error(t('100자 이하의 검색어를 입력해 주세요.','Enter a search term of up to 100 characters.'));view='all';category='all';query=input.query.trim();$('search').value=query;render();return {works:filtered().map(v=>({id:v.id,title:v.name,url:v.path}))}}});register({name:'set_saved_work',title:t('작품 찜하기','Save film'),description:t('이 브라우저의 찜 목록에 작품을 저장하거나 제거합니다.','Add or remove a film from the list saved in this browser.'),inputSchema:{type:'object',properties:{id:{type:'string'},saved:{type:'boolean'}},required:['id','saved'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(!input||typeof input.id!=='string'||!byId(input.id)||typeof input.saved!=='boolean'||Object.keys(input).some(k=>!['id','saved'].includes(k)))throw new Error(t('올바른 작품 ID와 저장 여부를 입력해 주세요.','Enter a valid film ID and saved state.'));setSaved(input.id,input.saved);return {id:input.id,saved:saved.has(input.id)}}});window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true})}
 
 // Carry the current section when switching between the static language routes.
-// Rotate episode artwork only; players are still created exclusively by a click.
+// Short, silent local previews are separate from the click-to-play YouTube film.
+function createHeroPreview(hero){
+  const previewRoot=new URL('../previews/',hero.querySelector('.hero-image').src);
+  const video=document.createElement('video'), button=document.createElement('button');
+  const motion=matchMedia('(prefers-reduced-motion: reduce)');
+  video.className='hero-preview';video.muted=true;video.defaultMuted=true;
+  video.playsInline=true;video.preload='none';video.setAttribute('aria-hidden','true');video.tabIndex=-1;
+  button.type='button';button.className='hero-preview-toggle';
+  hero.querySelector('.hero-image').after(video);hero.append(button);
+  let source='',seen=false,ended=false,blocked=false,stopped=false,manual=false,loading=false,userStopped=false,generation=0;
+  function label(){button.textContent=ended||blocked?t('↻ 무음 미리보기','↻ Silent preview'):stopped?t('▶ 미리보기 재생','▶ Play preview'):t('Ⅱ 미리보기 정지','Ⅱ Pause preview');}
+  function allowed(){return seen&&!hero.hidden&&!document.hidden&&!document.querySelector('dialog[open]')&&!stopped&&(manual||(!motion.matches&&!navigator.connection?.saveData));}
+  function sync(){
+    if(!allowed()){video.pause();return;}
+    if(ended||blocked||loading||!source||!video.paused)return;
+    if(video.getAttribute('src')!==source){video.src=source;video.load();}
+    loading=true;const attempt=generation;
+    video.play().catch(error=>{if(attempt!==generation||error.name==='AbortError')return;blocked=true;video.classList.remove('is-playing');label();}).finally(()=>{if(attempt===generation)loading=false;});
+  }
+  video.addEventListener('playing',()=>{if(allowed())video.classList.add('is-playing');else video.pause();});
+  video.addEventListener('ended',()=>{ended=true;video.classList.remove('is-playing');label();});
+  video.addEventListener('error',()=>{blocked=true;video.classList.remove('is-playing');label();});
+  button.addEventListener('click',()=>{
+    manual=true;
+    if(ended||blocked){ended=false;blocked=false;stopped=false;video.currentTime=0;}
+    else stopped=!stopped;
+    userStopped=stopped;label();sync();
+  });
+  new IntersectionObserver(entries=>{seen=entries[0].isIntersecting;sync();},{threshold:0.15}).observe(hero);
+  new MutationObserver(sync).observe(hero,{attributes:true,attributeFilter:['hidden']});
+  document.querySelectorAll('dialog').forEach(dialog=>new MutationObserver(sync).observe(dialog,{attributes:true,attributeFilter:['open']}));
+  document.addEventListener('visibilitychange',sync);
+  motion.addEventListener('change',()=>{manual=false;stopped=motion.matches;label();sync();});
+  return {select(v){
+    generation++;
+    video.pause();video.classList.remove('is-playing');video.removeAttribute('src');video.load();
+    const name=v.category==='full'?'s1-full':`s${v.season}-${v.episode}`;
+    source=new URL(name+'.mp4',previewRoot).href;ended=false;blocked=false;loading=false;
+    stopped=userStopped||motion.matches||!!navigator.connection?.saveData;manual=false;label();sync();
+  }};
+}
 if ($('hero')) {
   const hero=$('hero'), motion=matchMedia('(prefers-reduced-motion: reduce)');
+  const preview=createHeroPreview(hero);
+  const start=works.find(v=>v.category==='s1'&&v.episode===1);
+  if(start)hero.querySelector('.hero-start').dataset.detail=start.id;
   const season=Math.max(...works.filter(v=>/^s[12]$/.test(v.category)).map(v=>v.season));
   const slides=works.filter(v=>v.category===`s${season}`).sort((a,b)=>b.episode-a.episode);
   const seasonOneFull=works.find(v=>v.id==='4f6Zguf7c2M');
@@ -51,14 +94,16 @@ if ($('hero')) {
       hero.querySelector('.hero-description').textContent=v.summary;
       const playButton=hero.querySelector('.hero-feature-link');
       playButton.href=v.path;
+      playButton.dataset.detail=v.id;
       playButton.innerHTML=icon('play')+(v.category==='full'?t('시즌 1 몰아보기','Watch full season'):t('이 에피소드 보기','Watch episode'));
       hero.querySelector('.hero-meta').textContent=`2026 · ${v.category==='full'?'FULL MOVIE':`S${v.season} EP.${v.episode}`} · ${v.duration||''}`;
       controls.querySelector('.hero-position').textContent=`${String(index+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
+      preview.select(v);
     }
     let timer;
     function schedule(){clearInterval(timer);timer=setInterval(()=>{
       if(!hero.hasAttribute("data-swiping")&&!paused&&!hovered&&!focused&&visible&&!document.hidden&&!hero.hidden&&!document.querySelector('dialog[open]'))showSlide(index+1);
-    },7000);}
+    },12000);}
     controls.querySelector('[data-hero-prev]').addEventListener('click',()=>{showSlide(index-1);schedule();});
     controls.querySelector('[data-hero-next]').addEventListener('click',()=>{showSlide(index+1);schedule();});
     pause.addEventListener('click',()=>{paused=!paused;updatePause();schedule();});
@@ -68,7 +113,7 @@ if ($('hero')) {
     hero.addEventListener('focusout',e=>{focused=hero.contains(e.relatedTarget);schedule();});
     motion.addEventListener('change',()=>{if(motion.matches){paused=true;updatePause();}});
     new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;},{threshold:0.15}).observe(hero);
-    hero.classList.add('hero-carousel');showSlide(0);updatePause();schedule();
+    controls.querySelectorAll('[data-hero-prev],[data-hero-next]').forEach(button=>{button.classList.add('hero-side-arrow');hero.append(button)});hero.classList.add('hero-carousel');showSlide(0);updatePause();schedule();
   }
 }
 
@@ -169,6 +214,7 @@ document.querySelectorAll('.nav a[href*="#"]').forEach(link => {
 function decorateCards(root=document){
  root.querySelectorAll('.card').forEach((cardEl,index)=>{
   const link=cardEl.querySelector('[data-detail]'),v=link&&byId(link.dataset.detail);if(!v||cardEl.querySelector('.card-direct'))return;
+  if(['s1','s2'].includes(v.category)){const number=document.createElement('span');number.className='episode-number';number.setAttribute('aria-hidden','true');number.textContent=String(v.episode).padStart(2,'0');link.append(number);cardEl.classList.add('numbered-card')}
   link.setAttribute('aria-label',v.label+' '+v.name+' '+t('영상 화면 열기','Open player'));
   const summary=document.createElement('p');summary.className='card-synopsis';summary.textContent=v.summary;
   const actions=document.createElement('div');actions.className='card-direct';
