@@ -101,8 +101,39 @@
 #player-dialog{width:min(1200px,96vw);max-width:1200px;max-height:94dvh;overflow:auto;border:1px solid #ffffff26;border-radius:8px}
 #player-dialog::backdrop{background:#000e}
 #player-dialog .player-header{position:sticky;top:0;background:#141416;z-index:2}
-.player-description{color:#a9a9b4;font-size:14px;line-height:1.85;padding:0 26px 24px;margin:0;max-width:900px}
+
 #player-dialog .player-footer a{min-height:44px;display:inline-flex;align-items:center}
 @media(max-width:1100px){.browse-mode #results-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 22px}}
-@media(max-width:600px){.browse-mode #results-grid{grid-template-columns:1fr;gap:34px}.browse-mode #browse-title{font-size:34px}.browse-mode #results-grid .card-name{font-size:22px}.browse-mode #results-grid .card-label{margin-top:15px}.card-direct{gap:8px 22px}.card-direct a{font-size:13px}.player-description{padding:0 17px 20px}#player-dialog{width:96vw}.browse-mode #results-grid .card-synopsis{min-height:0}}
+@media(max-width:600px){.browse-mode #results-grid{grid-template-columns:1fr;gap:34px}.browse-mode #browse-title{font-size:34px}.browse-mode #results-grid .card-name{font-size:22px}.browse-mode #results-grid .card-label{margin-top:15px}.card-direct{gap:8px 22px}.card-direct a{font-size:13px}#player-dialog{width:96vw}.browse-mode #results-grid .card-synopsis{min-height:0}}
 #player-next[hidden]{display:none!important}
+
+/* Episode typography and unobstructed screening controls. */
+.numbered-card .card-open{position:relative;display:block}
+.episode-number{display:none}
+.browse-mode .numbered-card .episode-number{font:700 58px/1 Barlow Condensed,sans-serif;color:#b64050;letter-spacing:-2px;pointer-events:none}
+.browse-mode .numbered-card .card-label,.browse-mode .numbered-card .card-name{margin-left:72px}
+.browse-mode .numbered-card .card-open{padding-bottom:6px}
+.hero .hero-side-arrow{position:absolute;z-index:3;top:50%;transform:translateY(-50%);width:46px;height:46px;border:1px solid #ffffff70;border-radius:50%;background:#090b0d99;color:white;font:24px/1 sans-serif;cursor:pointer;display:grid;place-items:center;box-shadow:0 2px 16px #0005}
+.hero .hero-side-arrow:hover{background:#17171deb;border-color:white}
+.hero .hero-side-arrow:focus-visible{outline:2px solid white;outline-offset:4px}
+.hero [data-hero-prev]{left:8px}.hero [data-hero-next]{right:8px}
+#player-dialog .player-header h2{line-height:1.5}#player-dialog .player-footer{border-top:1px solid #ffffff15;background:#101012;padding:18px 24px;gap:14px 28px}
+
+
+@media(max-width:600px){.browse-mode .numbered-card .episode-number{font-size:54px}.browse-mode .numbered-card .card-label,.browse-mode .numbered-card .card-name{margin-left:65px}#player-dialog .player-footer{padding:14px 17px}}
+@media(max-width:520px){.hero .hero-side-arrow{top:calc(121px + 100vw * 9 / 32);width:44px;height:44px;background:#090b0dbb}.hero [data-hero-prev]{left:10px}.hero [data-hero-next]{right:10px}}
+
+.browse-mode .numbered-card .card-open{display:grid;grid-template-columns:64px minmax(0,1fr);column-gap:8px;align-items:start}
+.browse-mode .numbered-card .card-image{grid-column:1/-1;grid-row:1}
+.browse-mode .numbered-card .episode-number{position:static;grid-column:1;grid-row:2/4;margin-top:16px;display:block}
+.browse-mode .numbered-card .card-label{grid-column:2;grid-row:2;margin-left:0}
+.browse-mode .numbered-card .card-name{grid-column:2;grid-row:3;margin-left:0}
+
+/* Silent, lightweight previews sit behind the same readable hero treatment. */
+.hero-preview{position:absolute;inset:0;width:100%;height:100%;max-height:none;object-fit:cover;z-index:-3;pointer-events:none;opacity:0;transition:opacity .45s ease}
+.hero-preview.is-playing{opacity:1}
+.hero-preview-toggle{position:absolute;right:var(--gutter);top:112px;z-index:3;min-height:44px;padding:8px 13px;border:1px solid #ffffff55;border-radius:4px;color:#eee;background:#090b0dcc;font:500 12px var(--font);cursor:pointer}
+.hero-preview-toggle:hover{background:#27272be8}.hero-preview-toggle:focus-visible{outline:2px solid white;outline-offset:4px}
+@media(min-width:521px) and (max-width:800px){.hero-preview-toggle{top:142px}}
+@media(max-width:520px){.hero-preview{top:121px;height:auto;aspect-ratio:16/9}.hero-preview-toggle{top:132px;right:12px;font-size:11px}}
+@media(prefers-reduced-motion:reduce){.hero-preview{transition:none}}
