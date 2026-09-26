@@ -71,6 +71,11 @@ if ($('hero')) {
   const preview=createHeroPreview(hero);
   const start=works.find(v=>v.category==='s1'&&v.episode===1);
   if(start)hero.querySelector('.hero-start').dataset.detail=start.id;
+  // Two primary actions; secondary navigation stays available as quiet text links.
+  const firstLink=hero.querySelector('.hero-start'), social=hero.querySelector('.hero-social');
+  firstLink.className='hero-start';firstLink.textContent=t('1화부터 보기','Start Episode 1');
+  social.prepend(firstLink);social.classList.add('hero-secondary-links');
+  hero.querySelector('.hero-buttons a[href="#episodes"]')?.remove();
   const season=Math.max(...works.filter(v=>/^s[12]$/.test(v.category)).map(v=>v.season));
   const slides=works.filter(v=>v.category===`s${season}`).sort((a,b)=>b.episode-a.episode);
   const seasonOneFull=works.find(v=>v.id==='4f6Zguf7c2M');

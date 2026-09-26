@@ -138,3 +138,14 @@
 @media(min-width:521px) and (max-width:800px){.hero-preview-toggle{top:142px}}
 @media(max-width:520px){.hero-preview{top:121px;height:auto;aspect-ratio:16/9}.hero-preview-toggle{top:132px;right:12px;font-size:11px}}
 @media(prefers-reduced-motion:reduce){.hero-preview{transition:none}}
+
+/* Keep just watch and subscribe as primary hero buttons. */
+.hero .hero-secondary-links{display:flex;align-items:center;flex-wrap:wrap;gap:4px 20px;margin:0 0 14px}
+.hero .hero-secondary-links a,.hero .hero-secondary-links .channel-button{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0;border:0;border-radius:0;background:none;font:500 12px var(--font);color:#c4c4ce;text-decoration:none}
+.hero .hero-secondary-links a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px}
+.hero .hero-secondary-links a:focus-visible{outline:2px solid #fff;outline-offset:4px}
+.hero .hero-secondary-links svg{width:13px;height:13px}
+.hero .hero-feature-link{background:#f0f0eb;border-color:#f0f0eb;color:#111}
+.hero .hero-feature-link:hover{background:#fff;color:#111}
+.hero .hero-carousel-controls [data-hero-pause]{background:none;border-color:transparent;color:#a9a9b4;padding:0 8px;font-size:11px}
+.hero .hero-carousel-controls [data-hero-pause]:hover{color:#fff}
