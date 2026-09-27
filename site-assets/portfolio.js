@@ -2,14 +2,17 @@ const en=document.documentElement.lang==='en',t=(ko,english)=>en?english:ko;
 const works=window.PORTFOLIO||[],byId=id=>works.find(v=>v.id===id),$=id=>document.getElementById(id);
 const statsAssetRoot=new URL('../../',document.currentScript.src);
 let engagementLoad;
+function loadEngagement(){
+  if(!engagementLoad){
+    const load=name=>new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL(name+'?v=20260927-2',statsAssetRoot);script.onload=resolve;script.onerror=reject;document.head.append(script);});
+    engagementLoad=load('engagement-config.js').then(()=>window.D9_ENGAGEMENT_CONFIG?load('engagement.js'):null).catch(()=>{engagementLoad=null;});
+  }
+  return engagementLoad;
+}
 function mountEngagement(id,frame,container){
   if(!container)return;
   container.querySelector('.film-engagement')?.remove();
-  if(!engagementLoad){
-    const load=name=>new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL(name+'?v=20260927-1',statsAssetRoot);script.onload=resolve;script.onerror=reject;document.head.append(script);});
-    engagementLoad=load('engagement-config.js').then(()=>window.D9_ENGAGEMENT_CONFIG?load('engagement.js'):null).catch(()=>{engagementLoad=null;});
-  }
-  engagementLoad.then(()=>{if(frame.isConnected)window.D9Engagement?.attach(id,frame,container);});
+  loadEngagement().then(()=>{if(frame.isConnected)window.D9Engagement?.attach(id,frame,container);});
 }
 const paths={play:'<path d="m8 4 13 8-13 8z" fill="currentColor" stroke="none"/>',plus:'<path d="M12 5v14M5 12h14"/>',check:'<path d="m5 12 4 4L19 6"/>'};
 const icon=n=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[n]||''}</svg>`;
@@ -237,6 +240,11 @@ function decorateCards(root=document){
   const watch=document.createElement('a');watch.href=v.path;watch.dataset.detail=v.id;watch.textContent=t('사이트에서 보기','Watch here');watch.className='card-watch';
   const youtube=document.createElement('a');youtube.href='https://www.youtube.com/watch?v='+encodeURIComponent(v.id);youtube.target='_blank';youtube.rel='noopener noreferrer';youtube.textContent=t('YouTube에서 보기 ↗','Watch on YouTube ↗');
   actions.append(watch,youtube);cardEl.append(summary,actions);
+  const title=cardEl.querySelector('.card-name'),line=document.createElement('div'),stats=document.createElement('span');
+  line.className='card-title-line';stats.className='card-counts';stats.dataset.filmStats=v.id;
+  stats.textContent=t('재생 — · ♡ —','Plays — · ♡ —');
+  title.before(line);line.append(title,stats);
+  loadEngagement().then(()=>window.D9Engagement?.observeCard(stats,v.id));
  });
 }
 decorateCards();
