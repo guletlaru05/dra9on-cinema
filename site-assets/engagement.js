@@ -1,4 +1,4 @@
-/* Loaded only by a film player. No polling and no reads on the catalogue. */
+/* Public catalogue totals are lazy-loaded and cached; identity starts only in a player. */
 (() => {
   const config=window.D9_ENGAGEMENT_CONFIG;
   if(!config)return;
@@ -54,7 +54,36 @@
     });
     return youtubePromise;
   }
+  const totals=new Map(), pending=new Map();
+  const totalKey=id=>'d9-film-totals-'+config.projectId+'-'+id;
+  function showTotal(node,value){
+    const format=n=>Number(n).toLocaleString(en?'en-US':'ko-KR');
+    node.textContent=t('재생 ','Plays ')+format(value.views)+' · ♡ '+format(value.likes);
+    node.setAttribute('aria-label',t('사이트 재생 ','Site plays ')+format(value.views)+t('회, 좋아요 ', ', likes ')+format(value.likes));
+    node.title=t('사이트 내 재생 수 · 좋아요','Site plays · Likes');
+  }
+  function saveTotal(id,value){
+    const total={views:value.views,likes:value.likes,at:Date.now()};totals.set(id,total);
+    try{sessionStorage.setItem(totalKey(id),JSON.stringify(total));}catch{}
+    document.querySelectorAll('[data-film-stats]').forEach(node=>{if(node.dataset.filmStats===id)showTotal(node,total);});
+    return total;
+  }
+  function publicTotal(id){
+    let value=totals.get(id);
+    if(!value)try{value=JSON.parse(sessionStorage.getItem(totalKey(id)));}catch{}
+    if(value&&Number.isFinite(value.views)&&Number.isFinite(value.likes)&&Date.now()-value.at<300000)return Promise.resolve(value);
+    if(!pending.has(id))pending.set(id,fetch('https://firestore.googleapis.com/v1/projects/'+encodeURIComponent(config.projectId)+'/databases/(default)/documents/filmStats/'+encodeURIComponent(id))
+      .then(async response=>{if(response.status===404)return {views:0,likes:0};if(!response.ok)throw new Error('counts unavailable');const body=await response.json();return {views:Number(body.fields?.views?.integerValue||0),likes:Number(body.fields?.likes?.integerValue||0)};})
+      .then(value=>saveTotal(id,value)).finally(()=>pending.delete(id)));
+    return pending.get(id);
+  }
+  const cards=new IntersectionObserver(entries=>entries.forEach(entry=>{
+    if(!entry.isIntersecting)return;
+    cards.unobserve(entry.target);
+    publicTotal(entry.target.dataset.filmStats).then(value=>showTotal(entry.target,value)).catch(()=>{entry.target.title=t('집계를 잠시 불러올 수 없습니다.','Counts temporarily unavailable.');});
+  }),{rootMargin:'120px'});
   window.D9Engagement={
+    observeCard(node,id){node.dataset.filmStats=id;cards.observe(node);},
     attach(id,frame,container){
       container.querySelector('.film-engagement')?.remove();
       const row=document.createElement('div');row.className='film-engagement';
@@ -68,7 +97,7 @@
       const serial=action=>{const next=queue.then(action);queue=next.catch(()=>{});return next;};
       const observer=new MutationObserver(()=>{if(!frame.isConnected){disposed=true;observer.disconnect();}});
       observer.observe(frame.parentNode,{childList:true});
-      function paint(value){if(disposed)return;count.textContent=t('사이트 재생 ','Site plays ')+value.views.toLocaleString(en?'en-US':'ko-KR');like.textContent=(value.liked?'♥ ':'♡ ')+t('좋아요 ','Like ')+value.likes.toLocaleString(en?'en-US':'ko-KR');like.setAttribute('aria-pressed',String(value.liked));like.disabled=false;}
+      function paint(value){saveTotal(id,value);if(disposed)return;count.textContent=t('사이트 재생 ','Site plays ')+value.views.toLocaleString(en?'en-US':'ko-KR');like.textContent=(value.liked?'♥ ':'♡ ')+t('좋아요 ','Like ')+value.likes.toLocaleString(en?'en-US':'ko-KR');like.setAttribute('aria-pressed',String(value.liked));like.disabled=false;}
       function failed(error){console.warn('D9 engagement unavailable',error?.code||error?.message||'unknown');if(!disposed){status.textContent=t('집계를 잠시 불러올 수 없습니다. 영상은 계속 볼 수 있어요.','Counts are temporarily unavailable. You can still watch.');}}
       serial(()=>read(id).then(paint)).catch(failed);
       like.addEventListener('click',async()=>{if(busy)return;busy=true;like.disabled=true;status.textContent='';try{await serial(()=>change(id,'like').then(paint));}catch{failed();}finally{busy=false;if(!disposed)like.disabled=false;}});
