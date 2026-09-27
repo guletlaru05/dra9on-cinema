@@ -48,6 +48,7 @@ def subscribe_button():
  return '<a class="button subscribe-button" href="https://www.youtube.com/@dra9oncinema?sub_confirmation=1" target="_blank" rel="noopener noreferrer">'+icon('play')+'YouTube 구독</a>'
 
 from production_notes import teaser, build_notes
+from min_stickers import home_teaser
 
 def header(home=False):
  nav='<a class="nav-link" href="/">홈</a><a class="nav-link" href="/#episodes">FALL 707</a><a class="nav-link" href="/#originals">작품집</a><a class="nav-link" href="/notes/">제작 비하인드</a><a class="nav-link" href="/#about">ABOUT</a>'
@@ -77,7 +78,7 @@ main+=shelf('episodes','FALL 707 · 시즌 2','THE STORY CONTINUES',s2)+shelf('s
 main+=f'<section class="feature-strip"><div><p class="section-eyebrow">ONE NIGHT. ONE COMPLETE STORY.</p><h2>한 편의 영화처럼.</h2><p>에피소드 사이의 기다림 없이, FALL 707을 연속으로.</p><a class="button button-white" href="{byid["4f6Zguf7c2M"]["path"]}">{icon("play")}시즌 1 몰아보기</a></div><a href="{byid["4f6Zguf7c2M"]["path"]}" class="feature-art"><img src="/assets/portfolio/4f6Zguf7c2M.jpg" alt="FALL 707 시즌 1 풀무비" width="720" height="405" loading="lazy"></a></section>'
 main+=shelf('originals','세계관은 계속 넓어진다','MORE FROM DRA9ON CINEMA',[v for v in works if v['category']=='original'])+shelf('more-cuts','한 번 더, 깊이 빠져들다','FULL MOVIES & TRAILER',[v for v in works if v['category'] in ['full','trailer']])
 main+='</div><section id="browse-results" hidden aria-labelledby="browse-title"><h1 id="browse-title"></h1><p id="result-count" aria-live="polite"></p><div class="results-grid" id="results-grid"></div><div class="empty-state" id="empty-state" hidden><h2>아직 작품이 없어요.</h2><p>다른 검색어를 입력하거나 보고 싶은 작품의 + 버튼을 눌러주세요.</p><button class="button button-white" id="reset-browse">전체 작품 보기</button></div></section></div>'
-main+=teaser()
+main+=home_teaser()+teaser()
 about_paragraphs=''.join(f'<p>{esc(text)}</p>' for text in ABOUT_PARAGRAPHS['ko'])
 main+=f'<section class="about-section" id="about"><div class="about-copy"><p class="section-eyebrow">BEHIND THE FRAME</p><h2>상상을, 장면으로.<br><span>이야기를, 세계관으로.</span></h2>{about_paragraphs}<div class="about-tags"><span>AI FILMMAKING</span><span>WORLD BUILDING</span><span>VISUAL STORYTELLING</span></div><div class="about-links"><a class="text-button" href="https://www.youtube.com/@dra9oncinema" target="_blank" rel="noopener noreferrer">채널에서 더 보기 {icon("external")}</a></div></div></section></main>{footer()}{dialogs}</body></html>'
 (out/'index.html').write_text(head('드래곤시네마 DRA9ON CINEMA | 낙하 707 · FALL 707','드래곤시네마의 〈낙하 707: 리부트〉(낙하707, FALL707, FALL 707). 현대 특수부대와 조선 시대가 만나는 밀리터리 판타지·사극 AI 영화. 시즌 1·2와 풀버전을 감상하세요.',schema=schema)+main,encoding='utf-8')
