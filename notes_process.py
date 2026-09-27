@@ -24,10 +24,30 @@ for ko,en,kob,enb in STEPS: TRANSLATIONS.update({escape(ko):escape(en),escape(ko
 for items in SCENES.values():
  for ko,en,kob,enb,url in items: TRANSLATIONS.update({ko:en,kob:enb})
 
+TABLE_LABELS=[('제작 단계','Stage'),('담당·도구','Creator / tool'),('작업 내용','What I did'),('시즌별 변화 한눈에 보기','The seasons at a glance'),('구분','Detail'),('시즌 1','Season 1'),('시즌 2 · 3개월 후','Season 2 · three months later'),('기획부터 영상과 웹페이지까지 작업하는 검은 후드 제작자','The black-hooded creator working from ideas to films and webpages')]
+ROWS=[
+('아이디어','Ideas','직접 구상','My own concept','밀리터리에서 무당 빌런·좀비 중심의 세계로','From a military premise to a world of shamans and zombies'),
+('시나리오','Screenplay','Claude · GPT','Claude · GPT','직접 짠 아이디어를 함께 시나리오로 작성','Developed my ideas into a screenplay together'),
+('캐릭터 시트','Character sheets','GPT Image 2','GPT Image 2','시즌별 의상·헤어·인물 분위기 구체화','Defined each season’s costume, hair and presence'),
+('프롬프트','Prompts','직접 만든 프롬프트 스킬','My custom prompt skills','스킬을 기준으로 프롬프트 작성','Wrote prompts using those skills as a framework'),
+('영상 제작','Video','Seedance 2.0 → 2.5','Seedance 2.0 → 2.5','시즌 1 6화부터 2.5 사용','Switched to 2.5 from Season 1, Episode 6'),
+('비하인드 페이지','Behind-the-scenes page','HTML','HTML','글과 그림을 읽기 편한 웹페이지로 구성','Organized the text and art into a readable webpage')]
+COMPARE=[('의상','Costume','검은 군복','Black uniform','위장무늬 군복','Camouflage uniform'),('헤어','Hair','포니테일','Ponytail','단발','Short bob'),('성격·분위기','Personality / presence','인간적인 면이 드러나는 모습','A visible human side','더 냉정하고 카리스마 있게','Colder and more commanding'),('얼굴 상처','Facial injury','없음','None','3화부터 발생','Begins in Episode 3')]
+for pair in TABLE_LABELS:TRANSLATIONS.update([pair])
+for row in ROWS+COMPARE:
+ for i in (0,2,4):TRANSLATIONS[row[i]]=row[i+1]
+
+def table(headers,rows,label):
+ out=f'<div class="note-table-wrap" role="region" aria-label="{escape(label)}" tabindex="0"><table class="note-table"><caption>{escape(label)}</caption><thead><tr>'+''.join(f'<th scope="col">{escape(h)}</th>' for h in headers)+'</tr></thead><tbody>'
+ for row in rows:
+  out+='<tr><th scope="row">'+escape(row[0])+'</th>'+''.join(f'<td>{escape(row[i])}</td>' for i in (2,4))+'</tr>'
+ return out+'</tbody></table></div>'
+
 def render(season):
  out=f'<section class="note-process"><p class="section-eyebrow">SCENE NOTES</p><h2>{SCENE_TITLE[0]}</h2><p class="note-disclosure">{SPOILER[0]}</p>'
  for ko,en,kob,enb,url in SCENES[season]:
   out+=f'<article><h3>{escape(ko)}</h3><p>{escape(kob)}</p><a href="{escape(url)}" target="_blank" rel="noopener noreferrer">{WATCH[0]}</a></article>'
- out+=f'</section><section class="note-process"><p class="section-eyebrow">MY WORKFLOW</p><h2>{TITLE[0]}</h2><p>{INTRO[0]}</p><ol>'
- for ko,en,kob,enb in STEPS:out+=f'<li><h3>{escape(ko)}</h3><p>{escape(kob)}</p></li>'
- return out+'</ol></section>'
+ out+=f'</section><section class="note-process"><p class="section-eyebrow">MY WORKFLOW</p><h2>{TITLE[0]}</h2><img class="workflow-art" src="/assets/notes/creator-workflow.png" width="1536" height="1024" loading="lazy" alt="{TABLE_LABELS[7][0]}"><p>{INTRO[0]}</p>'
+ out+=table([x[0] for x in TABLE_LABELS[:3]],ROWS,TITLE[0])
+ out+=table([TABLE_LABELS[i][0] for i in (4,5,6)],COMPARE,TABLE_LABELS[3][0])
+ return out+'</section>'
