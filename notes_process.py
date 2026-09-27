@@ -1,5 +1,6 @@
 """Creator-confirmed process and scene companion notes."""
 from html import escape
+from min_stickers import render as render_stickers, TRANSLATIONS as STICKER_TRANSLATIONS
 
 TITLE=('이렇게 만들었습니다','How I made it')
 INTRO=('아이디어는 제가 짜고, AI 도구들과 함께 시나리오와 이미지를 구체화했습니다. 제가 사용한 제작 흐름을 정리해 봤습니다.','I developed the ideas, then worked with AI tools to shape the screenplay and images. Here is the workflow I used.')
@@ -34,6 +35,7 @@ ROWS=[
 ('비하인드 페이지','Behind-the-scenes page','HTML','HTML','글과 그림을 읽기 편한 웹페이지로 구성','Organized the text and art into a readable webpage')]
 COMPARE=[('소속·계급','Unit / rank','대한민국 육군 707특수임무단 대위','Captain, Republic of Korea Army, 707th Special Mission Group','대한민국 육군 707특수임무단 대위','Captain, Republic of Korea Army, 707th Special Mission Group'),('의상','Costume','검은 군복','Black uniform','궁궐 화재 이후, 먼저 조선에 떨어진 707 대원의 위장무늬 군복','After the palace fire: camouflage clothes from a 707 soldier who arrived in Joseon before her'),('헤어','Hair','포니테일','Ponytail','단발','Short bob'),('성격·분위기','Personality / presence','인간적인 면이 드러나는 모습','A visible human side','더 냉정하고 카리스마 있게','Colder and more commanding'),('얼굴 상처','Facial injury','없음','None','3화부터 발생','Begins in Episode 3')]
 for pair in TABLE_LABELS:TRANSLATIONS.update([pair])
+TRANSLATIONS.update(STICKER_TRANSLATIONS)
 for row in ROWS+COMPARE:
  for i in (0,2,4):TRANSLATIONS[row[i]]=row[i+1]
 
@@ -50,4 +52,4 @@ def render(season):
  out+=f'</section><section class="note-process"><p class="section-eyebrow">MY WORKFLOW</p><h2>{TITLE[0]}</h2><img class="workflow-art" src="/assets/notes/creator-workflow.png" width="1536" height="1024" loading="lazy" alt="{TABLE_LABELS[7][0]}"><p>{INTRO[0]}</p>'
  out+=table([x[0] for x in TABLE_LABELS[:3]],ROWS,TITLE[0])
  out+=table([TABLE_LABELS[i][0] for i in (4,5,6)],COMPARE,TABLE_LABELS[3][0])
- return out+'</section>'
+ return out+'</section>'+render_stickers()
