@@ -1,0 +1,45 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function film(id) {
+      return id in ['6Wdj9n3Pq9Q','bDqEJXYr2dY','vrVGZ_HMxQs','dGnjxL64HHY','WZ0ozLABZwE','l2G5ITnriFQ','4f6Zguf7c2M','BY0ZT5SK8qY','hoFQL2ON9m4','6CCZA8el6Mk','gTdqOtFvcDM','HP-B3jZLs3w','NV9PeKvKv7c','y4t5NDVqPyU','pBti3GK2nkc','j95SyBMQiNI','VCd4T8sLFjg','OLSjUGODAeE','L53hio-gtv0','Byh-aCKSDgo','UxrkaAvtsNI','iVwqj1gUPDY'];
+    }
+    function previousReaction(id) {
+      let path = /databases/$(database)/documents/filmStats/$(id)/reactions/$(request.auth.uid);
+      return exists(path) ? get(path).data : {'liked':false, 'viewedAt':timestamp.date(1970,1,1)};
+    }
+    function previousStats(id) {
+      let path = /databases/$(database)/documents/filmStats/$(id);
+      return exists(path) ? get(path).data : {'views':0, 'likes':0};
+    }
+    function validChange(id) {
+      let before = previousReaction(id);
+      let after = getAfter(/databases/$(database)/documents/filmStats/$(id)/reactions/$(request.auth.uid)).data;
+      let old = previousStats(id);
+      let next = getAfter(/databases/$(database)/documents/filmStats/$(id)).data;
+      let viewing = after.viewedAt != before.viewedAt;
+      let liking = after.liked != before.liked;
+      return after.keys().hasOnly(['liked','viewedAt'])
+        && after.liked is bool && after.viewedAt is timestamp
+        && ((viewing && !liking && after.viewedAt == request.time
+             && request.time >= before.viewedAt + duration.value(24, 'h'))
+            || (liking && !viewing))
+        && next.keys().hasOnly(['views','likes','updatedAt'])
+        && next.views is int && next.likes is int
+        && next.views == old.views + (viewing ? 1 : 0)
+        && next.likes == old.likes + (after.liked ? 1 : 0) - (before.liked ? 1 : 0)
+        && next.likes >= 0 && next.views >= 0 && next.updatedAt == request.time;
+    }
+    match /filmStats/{id} {
+      allow get: if film(id);
+      allow list, delete: if false;
+      allow create, update: if film(id) && signedIn() && validChange(id);
+      match /reactions/{uid} {
+        allow get: if film(id) && signedIn() && request.auth.uid == uid;
+        allow list, delete: if false;
+        allow create, update: if film(id) && signedIn() && request.auth.uid == uid && validChange(id);
+      }
+    }
+  }
+}
