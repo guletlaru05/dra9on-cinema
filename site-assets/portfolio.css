@@ -149,3 +149,10 @@
 .hero .hero-feature-link:hover{background:#fff;color:#111}
 .hero .hero-carousel-controls [data-hero-pause]{background:none;border-color:transparent;color:#a9a9b4;padding:0 8px;font-size:11px}
 .hero .hero-carousel-controls [data-hero-pause]:hover{color:#fff}
+
+.film-engagement{display:flex;align-items:center;flex-wrap:wrap;gap:10px 20px;flex-basis:100%;padding-top:12px;border-top:1px solid #ffffff18;font-size:13px;color:#b6b6bf}
+.film-engagement button{min-height:44px;padding:8px 14px;background:transparent;border:1px solid #ffffff30;border-radius:5px;font:inherit;color:#e8e8ee;cursor:pointer}
+.film-engagement button[aria-pressed="true"]{color:#ff7184;border-color:#c71930}
+.film-engagement button:disabled{opacity:.55;cursor:default}
+.film-engagement button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.engagement-status{flex-basis:100%;font-size:12px;color:#aaa}.engagement-status:empty{display:none}
