@@ -260,7 +260,7 @@ if(document.body.dataset.page==='watch'){const frame=document.querySelector('.wa
  function paint() {
   pending = 0;
   const rect = hero.getBoundingClientRect();
-  const shift = enabled.matches ? Math.min(100, Math.max(0, -rect.top * .14)) : 0;
+  const shift = enabled.matches ? Math.min(260, Math.max(0, -rect.top * .35)) : 0;
   hero.style.setProperty('--hero-parallax', `${shift.toFixed(2)}px`);
  }
  function schedule() { if (!pending) pending = requestAnimationFrame(paint); }
