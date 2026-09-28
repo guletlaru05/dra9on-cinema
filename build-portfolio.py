@@ -108,6 +108,8 @@ from link_page import build_links
 build_links(out, origin, works, head, icon)
 from privacy_page import build_privacy
 build_privacy(out, origin, head, header, footer)
+from terms_page import build_terms
+build_terms(out, origin, head, header, footer)
 build_notes(out, origin, head, header, footer)
 localize_site(out, works, origin, base_path)
 # Public ownership proof for the owner's Google and Naver webmaster properties.
@@ -155,7 +157,8 @@ for page in out.rglob('*.html'):
  document=page.read_text(encoding='utf-8')
  en=page.relative_to(out).parts[0]=='en'
  privacy_url=base_path+('/en' if en else '')+'/privacy/'
- controls=f'<div class="privacy-controls"><a href="{privacy_url}">{"Privacy policy" if en else "개인정보처리방침"}</a><button type="button" data-cookie-settings>{"Cookie settings" if en else "쿠키 설정"}</button></div>'
+ terms_url=base_path+('/en' if en else '')+'/terms/'
+ controls=f'<div class="privacy-controls"><a href="{terms_url}">{"Terms of use" if en else "이용약관"}</a><a href="{privacy_url}">{"Privacy policy" if en else "개인정보처리방침"}</a><button type="button" data-cookie-settings>{"Cookie settings" if en else "쿠키 설정"}</button></div>'
  assets=f'<link rel="stylesheet" href="{base_path}/consent.css?v={consent_version}"><script src="{base_path}/consent.js?v={consent_version}" defer></script>'
  document=document.replace('</head>',assets+'</head>',1).replace('</body>',controls+'</body>',1)
  page.write_text(document,encoding='utf-8')
