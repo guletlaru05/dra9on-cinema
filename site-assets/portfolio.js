@@ -274,3 +274,37 @@ if(document.body.dataset.page==='watch'){const frame=document.querySelector('.wa
  window.addEventListener('pageshow', schedule);
  sync();
 })();
+
+// Reveal shelves once as they enter the viewport; content stays visible without JS.
+(() => {
+ const shelves = [...document.querySelectorAll('body[data-page="home"] #home-rows > .shelf')];
+ const motion = matchMedia('(prefers-reduced-motion: reduce)');
+ if (!shelves.length || !('IntersectionObserver' in window)) return;
+ let observer;
+ function setup() {
+  observer?.disconnect();
+  shelves.forEach(shelf => shelf.classList.remove('shelf-reveal-pending'));
+  if (motion.matches) return;
+  observer = new IntersectionObserver(entries => {
+   entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.remove('shelf-reveal-pending');
+    entry.target.dataset.revealed = 'true';
+    observer.unobserve(entry.target);
+   });
+  }, {threshold:0, rootMargin:'0px 0px -45px 0px'});
+  shelves.forEach(shelf => {
+   shelf.classList.add('shelf-reveal');
+   shelf.querySelectorAll('.card').forEach((card,index) => card.style.setProperty('--reveal-delay', `${Math.min(index,5)*65}ms`));
+   if (shelf.dataset.revealed || shelf.getBoundingClientRect().top < innerHeight - 45) return;
+   shelf.classList.add('shelf-reveal-pending');
+   observer.observe(shelf);
+  });
+ }
+ motion.addEventListener('change', setup);
+ document.addEventListener('focusin', event => {
+  const shelf = event.target.closest('.shelf-reveal-pending');
+  if (shelf) { shelf.classList.remove('shelf-reveal-pending'); shelf.dataset.revealed='true'; observer?.unobserve(shelf); }
+ });
+ setup();
+})();
