@@ -250,3 +250,27 @@ function decorateCards(root=document){
 decorateCards();
 
 if(document.body.dataset.page==='watch'){const frame=document.querySelector('.watch-screen iframe');if(frame)mountEngagement(document.body.dataset.id,frame,document.querySelector('.watch-actions'));}
+
+// Keep hero media slightly behind the normal scroll pace on desktop only.
+(() => {
+ const hero = document.querySelector('body[data-page="home"] #hero');
+ if (!hero) return;
+ const enabled = matchMedia('(min-width: 801px) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+ let pending = 0;
+ function paint() {
+  pending = 0;
+  const rect = hero.getBoundingClientRect();
+  const shift = enabled.matches ? Math.min(100, Math.max(0, -rect.top * .14)) : 0;
+  hero.style.setProperty('--hero-parallax', `${shift.toFixed(2)}px`);
+ }
+ function schedule() { if (!pending) pending = requestAnimationFrame(paint); }
+ function sync() {
+  window.removeEventListener('scroll', schedule);
+  if (enabled.matches) window.addEventListener('scroll', schedule, {passive:true});
+  schedule();
+ }
+ enabled.addEventListener('change', sync);
+ window.addEventListener('resize', schedule, {passive:true});
+ window.addEventListener('pageshow', schedule);
+ sync();
+})();
