@@ -84,6 +84,8 @@ UI = {
     '모든 이야기의 시작, 시즌 1': 'Where it all begins · Season 1',
     '세계관은 계속 넓어진다': 'More worlds to discover',
     '한 번 더, 깊이 빠져들다': 'Full movies & trailers',
+    'FALL 707 몰아보기': 'FALL 707 · Full Movies',
+    '예고편': 'Trailers',
     '한 편의 영화처럼.': 'The whole story. One sitting.',
     '에피소드 사이의 기다림 없이, FALL 707을 연속으로.': 'Experience FALL 707 in one continuous cut.',
     '상상을, 장면으로.': 'From imagination to cinema.',
