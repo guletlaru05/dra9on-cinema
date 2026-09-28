@@ -216,3 +216,9 @@
  body[data-page="home"] .hero{overflow:hidden}
  body[data-page="home"] .hero .hero-image,body[data-page="home"] .hero .hero-preview{transform:translate3d(0,var(--hero-parallax,0px),0)}
 }
+
+@media(prefers-reduced-motion:no-preference){
+ .shelf-reveal .shelf-heading,.shelf-reveal .card{transition:opacity .65s ease,translate .65s cubic-bezier(.22,.61,.36,1)}
+ .shelf-reveal .card{transition-delay:var(--reveal-delay,0ms)}
+ .shelf-reveal-pending .shelf-heading,.shelf-reveal-pending .card{opacity:0;translate:0 32px}
+}
