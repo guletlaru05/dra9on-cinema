@@ -162,3 +162,31 @@ for page in out.rglob('*.html'):
  assets=f'<link rel="stylesheet" href="{base_path}/consent.css?v={consent_version}"><script src="{base_path}/consent.js?v={consent_version}" defer></script>'
  document=document.replace('</head>',assets+'</head>',1).replace('</body>',controls+'</body>',1)
  page.write_text(document,encoding='utf-8')
+
+# GitHub Pages does not support custom response headers. Apply the supported
+# CSP directives in HTML, before any resources; frame-ancestors needs a header.
+import base64
+import re
+for page in out.rglob('*.html'):
+ document=page.read_text(encoding='utf-8')
+ inline_hashes=[]
+ for attrs, code in re.findall(r'<script\b([^>]*)>(.*?)</script>',document,re.S|re.I):
+  if not re.search(r'\bsrc\s*=',attrs,re.I):
+   inline_hashes.append("'sha256-"+base64.b64encode(sha256(code.encode('utf-8')).digest()).decode('ascii')+"'")
+ policy="; ".join([
+  "default-src 'self'",
+  "script-src 'self' https://www.gstatic.com/firebasejs/ https://www.youtube.com https://www.googletagmanager.com "+' '.join(inline_hashes),
+  "script-src-attr 'none'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  "img-src 'self' data: https:",
+  "media-src 'self'",
+  "connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebaseinstallations.googleapis.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com",
+  "frame-src https://www.youtube-nocookie.com https://www.youtube.com https://dra9on-cinema-stats.firebaseapp.com",
+  "object-src 'none'", "base-uri 'none'", "form-action 'none'",
+  "upgrade-insecure-requests"
+ ])
+ marker='<meta charset="utf-8">'
+ assert marker in document, f'Missing charset: {page}'
+ document=document.replace(marker,marker+'<meta http-equiv="Content-Security-Policy" content="'+esc(policy)+'">',1)
+ page.write_text(document,encoding='utf-8')
