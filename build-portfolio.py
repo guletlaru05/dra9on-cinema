@@ -175,14 +175,14 @@ for page in out.rglob('*.html'):
    inline_hashes.append("'sha256-"+base64.b64encode(sha256(code.encode('utf-8')).digest()).decode('ascii')+"'")
  policy="; ".join([
   "default-src 'self'",
-  "script-src 'self' https://www.gstatic.com/firebasejs/ https://www.youtube.com https://www.googletagmanager.com "+' '.join(inline_hashes),
+  "script-src 'self' https://www.gstatic.com/firebasejs/ https://www.gstatic.com/recaptcha/ https://www.google.com/recaptcha/ https://www.youtube.com https://www.googletagmanager.com "+' '.join(inline_hashes),
   "script-src-attr 'none'",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: https:",
   "media-src 'self'",
-  "connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebaseinstallations.googleapis.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com",
-  "frame-src https://www.youtube-nocookie.com https://www.youtube.com https://dra9on-cinema-stats.firebaseapp.com",
+  "connect-src 'self' https://firebaseappcheck.googleapis.com https://www.google.com/recaptcha/ https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebaseinstallations.googleapis.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com",
+  "frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/ https://www.youtube-nocookie.com https://www.youtube.com https://dra9on-cinema-stats.firebaseapp.com",
   "object-src 'none'", "base-uri 'none'", "form-action 'none'",
   "upgrade-insecure-requests"
  ])
