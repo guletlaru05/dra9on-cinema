@@ -4,12 +4,26 @@
   if(!config)return;
   const en=document.documentElement.lang==='en', t=(ko,eng)=>en?eng:ko;
   const version='12.3.0', sdk='https://www.gstatic.com/firebasejs/'+version+'/';
-  const cache=new Map();let servicePromise;
+  const cache=new Map();let servicePromise,applicationPromise;
+  function protectedApplication(){
+    if(!applicationPromise)applicationPromise=Promise.all([
+      import(sdk+'firebase-app.js'),import(sdk+'firebase-app-check.js')
+    ]).then(([app,check])=>{
+      const application=app.getApps().find(item=>item.name==='d9-engagement')||app.initializeApp(config,'d9-engagement');
+      if(!config.appCheckSiteKey)throw new Error('App Check configuration missing');
+      const protection=check.initializeAppCheck(application,{
+        provider:new check.ReCaptchaEnterpriseProvider(config.appCheckSiteKey),
+        isTokenAutoRefreshEnabled:true
+      });
+      return {application,protection,check};
+    });
+    return applicationPromise;
+  }
   function services(){
     if(!servicePromise)servicePromise=Promise.all([
-      import(sdk+'firebase-app.js'),import(sdk+'firebase-auth.js'),import(sdk+'firebase-firestore.js')
-    ]).then(async([app,auth,db])=>{
-      const application=app.getApps().find(item=>item.name==='d9-engagement')||app.initializeApp(config,'d9-engagement');
+      protectedApplication(),import(sdk+'firebase-auth.js'),import(sdk+'firebase-firestore.js')
+    ]).then(async([{application,protection,check},auth,db])=>{
+      await check.getToken(protection);
       const identity=auth.getAuth(application);
       await identity.authStateReady();
       if(!identity.currentUser)await auth.signInAnonymously(identity);
@@ -72,7 +86,9 @@
     let value=totals.get(id);
     if(!value)try{value=JSON.parse(sessionStorage.getItem(totalKey(id)));}catch{}
     if(value&&Number.isFinite(value.views)&&Number.isFinite(value.likes)&&Date.now()-value.at<300000)return Promise.resolve(value);
-    if(!pending.has(id))pending.set(id,fetch('https://firestore.googleapis.com/v1/projects/'+encodeURIComponent(config.projectId)+'/databases/(default)/documents/filmStats/'+encodeURIComponent(id))
+    if(!pending.has(id))pending.set(id,protectedApplication()
+      .then(({protection,check})=>check.getToken(protection))
+      .then(({token})=>fetch('https://firestore.googleapis.com/v1/projects/'+encodeURIComponent(config.projectId)+'/databases/(default)/documents/filmStats/'+encodeURIComponent(id),{headers:{'X-Firebase-AppCheck':token}}))
       .then(async response=>{if(response.status===404)return {views:0,likes:0};if(!response.ok)throw new Error('counts unavailable');const body=await response.json();return {views:Number(body.fields?.views?.integerValue||0),likes:Number(body.fields?.likes?.integerValue||0)};})
       .then(value=>saveTotal(id,value)).finally(()=>pending.delete(id)));
     return pending.get(id);

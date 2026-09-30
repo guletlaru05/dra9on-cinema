@@ -4,7 +4,7 @@ const statsAssetRoot=new URL('../../',document.currentScript.src);
 let engagementLoad;
 function loadEngagement(){
   if(!engagementLoad){
-    const load=name=>new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL(name+'?v=20260927-2',statsAssetRoot);script.onload=resolve;script.onerror=reject;document.head.append(script);});
+    const load=name=>new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL(name+'?v=20261001-appcheck',statsAssetRoot);script.onload=resolve;script.onerror=reject;document.head.append(script);});
     engagementLoad=load('engagement-config.js').then(()=>window.D9_ENGAGEMENT_CONFIG?load('engagement.js'):null).catch(()=>{engagementLoad=null;});
   }
   return engagementLoad;
