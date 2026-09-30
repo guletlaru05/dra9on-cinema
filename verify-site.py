@@ -152,4 +152,16 @@ for entry in sitemap:
     local_file(entry.find('{http://www.sitemaps.org/schemas/sitemap/0.9}loc').text)
 assert (root / '.nojekyll').exists()
 assert 'Sitemap: ' + site + '/sitemap.xml' in (root / 'robots.txt').read_text(encoding='utf-8')
-print(f'PASS: {len(html_files)} pages, {video_count} videos per language, local assets, language switches, canonical URLs and sitemap.')
+from html import unescape
+for page in html_files:
+    document = page.read_text(encoding='utf-8')
+    policies = re.findall(r'<meta http-equiv="Content-Security-Policy" content="([^"]+)"', document)
+    assert len(policies) == 1, f'Missing/duplicate CSP: {page}'
+    policy = unescape(policies[0])
+    for directive in ["object-src 'none'", "base-uri 'none'", "form-action 'none'", "script-src-attr 'none'"]:
+        assert directive in policy, (page, directive)
+    script_policy = next(part.strip() for part in policy.split(';') if part.strip().startswith('script-src '))
+    assert "'unsafe-inline'" not in script_policy and "'unsafe-eval'" not in script_policy
+    assert document.index('Content-Security-Policy') < document.index('<script'), page
+    assert not re.search(r'\son\w+\s*=', document), f'Inline event handler blocked by CSP: {page}'
+print(f'PASS: {len(html_files)} pages, {video_count} videos per language, local assets, language switches, canonical URLs, sitemap and CSP.')
