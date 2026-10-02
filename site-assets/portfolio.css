@@ -224,3 +224,11 @@
 }
 
 [hidden]{display:none!important}.release-notice{width:100%;height:100%;min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;background:linear-gradient(135deg,#17191c,#090a0b);color:#eee}.release-notice h2{font-size:clamp(20px,3vw,36px);margin:12px 0}.release-notice p{color:#bfc0c5;font-size:14px}
+
+/* Dedicated watch pages: large player with a same-collection episode rail. */
+.watch-main{width:100%;max-width:1920px;margin-inline:auto;padding-inline:clamp(18px,4vw,80px)}
+.watch-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(270px,340px);gap:32px;align-items:start}
+.watch-primary{min-width:0}.watch-screen{width:100%;aspect-ratio:16/9}
+.watch-episodes{display:flex;flex-direction:column;gap:10px;position:sticky;top:110px;max-height:calc(100dvh - 135px);overflow-y:auto;overscroll-behavior:contain}
+.watch-episodes h2{margin:0 0 12px}.episode-item{min-width:0;min-height:76px;flex-shrink:0}.episode-item>div{min-width:0}.episode-item img{width:112px;aspect-ratio:16/9;object-fit:cover;flex-shrink:0}.episode-item[aria-current="page"]{border-left:3px solid var(--red);background:#ffffff09}.episode-item:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+@media(max-width:1000px){.watch-layout{grid-template-columns:minmax(0,1fr);gap:24px}.watch-episodes{position:static;max-height:none;overflow:visible}.watch-main{padding-inline:clamp(16px,3vw,30px)}}
