@@ -23,7 +23,7 @@ data=json.loads((root/'portfolio-data.json').read_text(encoding='utf-8'))
 esc=lambda s:html.escape(str(s),quote=True)
 icons={'play':'<path d="m8 4 13 8-13 8z" fill="currentColor" stroke="none"/>','arrow':'<path d="M5 12h14m-6-6 6 6-6 6"/>','plus':'<path d="M12 5v14M5 12h14"/>','search':'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>','left':'<path d="m15 5-7 7 7 7"/>','right':'<path d="m9 5 7 7-7 7"/>','close':'<path d="m6 6 12 12M6 18 18 6"/>','external':'<path d="M14 4h6v6M20 4 10 14M10 4H4v16h16v-6"/>'}
 def icon(n):return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+icons[n]+'</svg>'
-custom={'4f6Zguf7c2M':'FALL 707 시즌 1 — 몰아보기','dGnjxL64HHY':'목포진의 밤 — 시즌 2 EP.1–2','pBti3GK2nkc':'조선귀살특무대','j95SyBMQiNI':'검은 마탑의 청소부','VCd4T8sLFjg':'타깃 : 부재중','OLSjUGODAeE':'그녀가 다시 눈을 뜨다','L53hio-gtv0':'죽지도 않는 미친X과 n번째 저승사자 2','Byh-aCKSDgo':'악령퇴마 관리과 퇴마사','UxrkaAvtsNI':'아이언 레버넌트','iVwqj1gUPDY':'죽지도 않는 미친X과 n번째 저승사자'}
+custom={'F-MEc4hmxJU':'끝난 줄 알았어? · 시즌 2 최종화','4f6Zguf7c2M':'FALL 707 시즌 1 — 몰아보기','dGnjxL64HHY':'목포진의 밤 — 시즌 2 EP.1–2','pBti3GK2nkc':'조선귀살특무대','j95SyBMQiNI':'검은 마탑의 청소부','VCd4T8sLFjg':'타깃 : 부재중','OLSjUGODAeE':'그녀가 다시 눈을 뜨다','L53hio-gtv0':'죽지도 않는 미친X과 n번째 저승사자 2','Byh-aCKSDgo':'악령퇴마 관리과 퇴마사','UxrkaAvtsNI':'아이언 레버넌트','iVwqj1gUPDY':'죽지도 않는 미친X과 n번째 저승사자'}
 works=[]
 for v in data['videos']:
  title=v['title'];fall='FALL 707' in title;season=2 if 'S2' in title else 1 if fall else 0

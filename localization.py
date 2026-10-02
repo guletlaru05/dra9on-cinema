@@ -8,7 +8,7 @@ import json
 import re
 
 EN_NAMES = {
-    'F-MEc4hmxJU': 'Season 2, Episode 6',
+    'F-MEc4hmxJU': 'You Thought It Was Over? · Season 2 Finale',
     '6Wdj9n3Pq9Q': 'When Captain Min Falls',
     'bDqEJXYr2dY': 'You Knew Everything',
     'vrVGZ_HMxQs': "The Enemy I Can't Shoot",
@@ -34,7 +34,7 @@ EN_NAMES = {
 }
 SERIES_SUMMARY = 'An AI-created Korean military fantasy drama. A modern special forces soldier finds himself in Joseon-era Korea.'
 EN_SUMMARIES = {
-    'F-MEc4hmxJU': 'FALL 707: REBOOT, Season 2, Episode 6. Captain Min’s story continues.',
+    'F-MEc4hmxJU': 'She thought saving her comrades would end it. But the hand holding them has not let go. In the Season 2 finale, Captain Min faces a choice no commander should have to make.',
     '6Wdj9n3Pq9Q': 'An endless horde. A wounded captain, left to fight alone. A new force is about to enter the battle. Season 2, Episode 5.',
     'bDqEJXYr2dY': SERIES_SUMMARY + ' A masked prince arrives to rescue Yeonhwa, but Min’s comrades are taken again. Captain Min turns his gun on the person who saved him. Season 2, Episode 4.',
     'vrVGZ_HMxQs': SERIES_SUMMARY + ' Yeonhwa has been abducted, and former comrades have become enemies. Season 2, Episode 3.',
