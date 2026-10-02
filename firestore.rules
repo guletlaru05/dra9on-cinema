@@ -3,7 +3,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn() { return request.auth != null; }
     function film(id) {
-      return id in ['6Wdj9n3Pq9Q','bDqEJXYr2dY','vrVGZ_HMxQs','dGnjxL64HHY','WZ0ozLABZwE','l2G5ITnriFQ','4f6Zguf7c2M','BY0ZT5SK8qY','hoFQL2ON9m4','6CCZA8el6Mk','gTdqOtFvcDM','HP-B3jZLs3w','NV9PeKvKv7c','y4t5NDVqPyU','pBti3GK2nkc','j95SyBMQiNI','VCd4T8sLFjg','OLSjUGODAeE','L53hio-gtv0','Byh-aCKSDgo','UxrkaAvtsNI','iVwqj1gUPDY'];
+      return id in ['F-MEc4hmxJU','6Wdj9n3Pq9Q','bDqEJXYr2dY','vrVGZ_HMxQs','dGnjxL64HHY','WZ0ozLABZwE','l2G5ITnriFQ','4f6Zguf7c2M','BY0ZT5SK8qY','hoFQL2ON9m4','6CCZA8el6Mk','gTdqOtFvcDM','HP-B3jZLs3w','NV9PeKvKv7c','y4t5NDVqPyU','pBti3GK2nkc','j95SyBMQiNI','VCd4T8sLFjg','OLSjUGODAeE','L53hio-gtv0','Byh-aCKSDgo','UxrkaAvtsNI','iVwqj1gUPDY'];
     }
     function previousReaction(id) {
       let path = /databases/$(database)/documents/filmStats/$(id)/reactions/$(request.auth.uid);
