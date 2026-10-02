@@ -36,7 +36,7 @@ for v in data['videos']:
  summary=korean[0] if korean else f'DRA9ON CINEMA의 {name}. 공식 채널에서 공개한 오리지널 영상 작품을 감상하세요.'
  summary=summary.split('\nA Korean')[0].split('\nDRA9ON CINEMA')[0].strip()
  if len(summary)>420:summary=summary[:417].rsplit(' ',1)[0]+'…'
- works.append({**{k:v.get(k) for k in ['id','title','duration','uploadDate','seconds']},'name':name,'category':cat,'season':season,'episode':ep,'label':label,'path':f'/watch/{slug}/','image':f'/assets/portfolio/{v["id"]}.jpg','summary':summary})
+ works.append({**{k:v.get(k) for k in ['id','title','duration','uploadDate','seconds','releaseAt','preview']},'name':name,'category':cat,'season':season,'episode':ep,'label':label,'path':f'/watch/{slug}/','image':f'/assets/portfolio/{v["id"]}.jpg','summary':summary})
 byid={v['id']:v for v in works};s1=sorted([v for v in works if v['category']=='s1'],key=lambda v:v['episode']);s2=sorted([v for v in works if v['category']=='s2'],key=lambda v:v['episode'])
 (out/'catalog.js').write_text('window.PORTFOLIO = '+json.dumps(works,ensure_ascii=False).replace('</','<\\/')+';\n',encoding='utf-8')
 brand='<a href="/" class="wordmark" aria-label="DRA9ON CINEMA 홈"><span>DRA9ON</span><span class="brand-sub">CINEMA</span></a>'
@@ -140,9 +140,9 @@ for work in sorted(works, key=lambda v: v.get('uploadDate') or '', reverse=True)
  ET.SubElement(item, 'link').text = url
  ET.SubElement(item, 'guid', isPermaLink='true').text = url
  ET.SubElement(item, 'description').text = '<p><img src="' + origin + work['image'] + '" alt="' + esc(work['name']) + '"></p><p>' + esc(work['summary']) + '</p>'
- date = (work.get('uploadDate') or '')[:10]
+ date = work.get('uploadDate') or ''
  if date:
-  ET.SubElement(item, 'pubDate').text = format_datetime(datetime.fromisoformat(date).replace(tzinfo=timezone.utc))
+  ET.SubElement(item, 'pubDate').text = format_datetime(datetime.fromisoformat(date))
 ET.indent(rss)
 ET.ElementTree(rss).write(out / 'rss.xml', encoding='utf-8', xml_declaration=True)
 for homepage in ('index.html', 'en/index.html'):
@@ -161,6 +161,20 @@ for page in out.rglob('*.html'):
  controls=f'<div class="privacy-controls"><a href="{terms_url}">{"Terms of use" if en else "이용약관"}</a><a href="{privacy_url}">{"Privacy policy" if en else "개인정보처리방침"}</a><button type="button" data-cookie-settings>{"Cookie settings" if en else "쿠키 설정"}</button></div>'
  assets=f'<link rel="stylesheet" href="{base_path}/consent.css?v={consent_version}"><script src="{base_path}/consent.js?v={consent_version}" defer></script>'
  document=document.replace('</head>',assets+'</head>',1).replace('</body>',controls+'</body>',1)
+ page.write_text(document,encoding='utf-8')
+
+# Scheduled episodes ship as announcement pages; the browser unlocks at releaseAt.
+release_version = sha256((out/'release.js').read_bytes()).hexdigest()[:12]
+for page in out.rglob('*.html'):
+ document=page.read_text(encoding='utf-8')
+ english=page.relative_to(out).parts[0]=='en'
+ for work in works:
+  if not work.get('releaseAt'):continue
+  if f'data-id="{work["id"]}"' in document:
+   document=re.sub(r'<iframe src="([^"]+)"',r'<iframe hidden data-release-src="\1"',document,count=1)
+   label='Premieres October 2, 18:10 KST (09:10 UTC)' if english else '10월 2일 오후 6시 10분 공개 (한국 시간)'
+   document=document.replace('<div class="watch-screen">','<div class="watch-screen"><div class="release-notice" role="status"><p>FALL 707 · S2 EP.06</p><h2>'+label+'</h2><p>'+('Playback opens automatically at the scheduled time.' if english else '공개 시각이 되면 재생 화면이 자동으로 열립니다.')+'</p></div>',1)
+ document=re.sub(r'(<script[^>]+src="[^"]*/?portfolio(?:\.[a-f0-9]+)?\.js[^>]*>)',lambda m:'<script src="'+base_path+'/release.js?v='+release_version+'" defer></script>'+m.group(1),document,count=1)
  page.write_text(document,encoding='utf-8')
 
 # GitHub Pages does not support custom response headers. Apply the supported
