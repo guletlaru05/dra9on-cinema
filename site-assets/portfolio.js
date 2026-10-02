@@ -327,3 +327,17 @@ document.addEventListener('d9:released',({detail})=>{
  if(document.body.dataset.id===v.id){const frame=document.querySelector('.watch-screen iframe');if(frame)mountEngagement(v.id,frame,document.querySelector('.watch-actions'));}
  const next=$('player-next');if(next&&$('player-dialog')?.open){const current=works.find(w=>$('player-title').textContent===`${w.label} · ${w.name}`);if(current&&nextVideo(current)?.id===v.id){next.hidden=false;next.href=v.path;next.dataset.detail=v.id;next.textContent=t('다음 화 보기','Next episode')+' →';}}
 });
+
+// Clear exits from every dedicated watch page, including direct/shared links.
+if(document.body.dataset.page==='watch'){
+ const home=en?'/en/':'/';
+ const nav=document.createElement('nav');nav.className='watch-return';nav.setAttribute('aria-label',t('재생 화면 나가기','Leave watch page'));
+ const back=document.createElement('a');back.href=home;back.textContent=t('← 이전 화면','← Back');
+ back.addEventListener('click',event=>{
+  if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey||event.button!==0)return;
+  let internal=false;try{internal=new URL(document.referrer).origin===location.origin}catch{}
+  if(internal&&history.length>1){event.preventDefault();history.back();}
+ });
+ const close=document.createElement('a');close.href=home;close.textContent=t('홈으로 닫기 ×','Close to home ×');
+ nav.append(back,close);document.querySelector('.watch-main').prepend(nav);
+}
