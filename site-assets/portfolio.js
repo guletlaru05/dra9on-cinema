@@ -94,7 +94,12 @@ if ($('hero')) {
   social.prepend(firstLink);social.classList.add('hero-secondary-links');
   hero.querySelector('.hero-buttons a[href="#episodes"]')?.remove();
   const season=Math.max(...works.filter(v=>/^s[12]$/.test(v.category)).map(v=>v.season));
-  const slides=works.filter(v=>v.category===`s${season}`&&isReleased(v)).sort((a,b)=>b.episode-a.episode);
+  const seasonTwoFull=works.find(v=>v.id==='sFw17ZPE42A');
+  const featuredSlides=()=>[
+    ...(seasonTwoFull&&isReleased(seasonTwoFull)?[seasonTwoFull]:[]),
+    ...works.filter(v=>v.category===`s${season}`&&isReleased(v)).sort((a,b)=>b.episode-a.episode)
+  ];
+  const slides=featuredSlides();
   const seasonOneFull=works.find(v=>v.id==='4f6Zguf7c2M');
   if(seasonOneFull)slides.push(seasonOneFull);
   if (slides.length>1) {
@@ -111,18 +116,18 @@ if ($('hero')) {
       index=(next+slides.length)%slides.length;
       const v=slides[index], image=hero.querySelector('.hero-image');
       image.src=v.image; image.alt=v.name;
-      hero.querySelector('.hero-kicker').textContent=v.category==='full'?t('FALL 707 · 시즌 1 풀버전','FALL 707 · SEASON 1 FULL MOVIE'):`FALL 707 · S${v.season} EP.${String(v.episode).padStart(2,'0')}`;
+      hero.querySelector('.hero-kicker').textContent=v.category==='full'?t(`FALL 707 · 시즌 ${v.season} 풀버전`,`FALL 707 · SEASON ${v.season} FULL MOVIE`):`FALL 707 · S${v.season} EP.${String(v.episode).padStart(2,'0')}`;
       hero.querySelector('.hero-tagline').textContent=v.name;
       hero.querySelector('.hero-description').textContent=v.summary;
       const playButton=hero.querySelector('.hero-feature-link');
       playButton.href=v.path;
       playButton.dataset.detail=v.id;
-      playButton.innerHTML=icon('play')+(v.category==='full'?t('시즌 1 몰아보기','Watch full season'):t('이 에피소드 보기','Watch episode'));
-      hero.querySelector('.hero-meta').textContent=`2026 · ${v.category==='full'?'FULL MOVIE':`S${v.season} EP.${v.episode}`} · ${v.duration||''}`;
+      playButton.innerHTML=icon('play')+(v.category==='full'?t(`시즌 ${v.season} 몰아보기`,`Watch Season ${v.season}`):t('이 에피소드 보기','Watch episode'));
+      hero.querySelector('.hero-meta').textContent=`2026 · ${v.category==='full'?`SEASON ${v.season} · FULL MOVIE`:`S${v.season} EP.${v.episode}`} · ${v.duration||''}`;
       controls.querySelector('.hero-position').textContent=`${String(index+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
       preview.select(v);
     }
-    document.addEventListener('d9:released',()=>{slides.splice(0,slides.length,...works.filter(v=>v.category===`s${season}`&&isReleased(v)).sort((a,b)=>b.episode-a.episode));if(seasonOneFull)slides.push(seasonOneFull);showSlide(0);});
+    document.addEventListener('d9:released',()=>{slides.splice(0,slides.length,...featuredSlides());if(seasonOneFull)slides.push(seasonOneFull);showSlide(0);});
     let timer;
     function schedule(){clearInterval(timer);timer=setInterval(()=>{
       if(!hero.hasAttribute("data-swiping")&&!paused&&!hovered&&!focused&&visible&&!document.hidden&&!hero.hidden&&!document.querySelector('dialog[open]'))showSlide(index+1);
