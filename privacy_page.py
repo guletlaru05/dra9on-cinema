@@ -3,7 +3,7 @@ from html import escape
 from site_config import CONTACT_EMAIL
 COPY = [
 ('개인정보처리방침', 'Privacy policy'),
-('시행일: 2026년 10월 1일', 'Effective date: October 1, 2026'),
+('시행일: 2026년 10월 10일', 'Effective date: October 10, 2026'),
 ('운영자와 문의', 'Operator and contact'),
 ('DRA9ON CINEMA는 이 사이트를 운영합니다. 개인정보 관련 문의, 열람·삭제·동의 철회 요청은 아래 이메일로 보내주세요.', 'DRA9ON CINEMA operates this site. Contact the email below with privacy questions or requests for access, deletion or withdrawal of consent.'),
 ('선택적 방문 통계', 'Optional analytics'),
@@ -20,6 +20,8 @@ COPY = [
 ('작품 재생 수와 좋아요', 'Film plays and likes'),
 ('작품 플레이어를 열면 Firebase 익명 인증으로 브라우저에 임의 식별자를 저장합니다. 작품별 좋아요 상태와 마지막 집계 재생 시각을 Google Firebase에 저장하며, 전체 재생 수와 좋아요 합계만 공개합니다. 이름이나 이메일 입력은 요구하지 않습니다. 같은 브라우저의 같은 작품 재생은 24시간마다 최대 한 번 집계하며, 좋아요는 다시 눌러 취소할 수 있습니다. 이는 정확한 방문자 수나 YouTube 조회수가 아닙니다.', 'Opening a film player stores a random identifier in your browser using Firebase anonymous authentication. Google Firebase stores your per-film like state and last counted play timestamp; only aggregate play and like totals are public. No name or email is requested. Plays of the same film in the same browser are counted at most once per 24 hours, and likes can be undone. These are not unique visitor counts or YouTube views.'),
 ('조회수·좋아요 기능의 자동화된 악용을 줄이기 위해 Firebase App Check와 Google reCAPTCHA Enterprise를 사용합니다. 집계를 불러올 때 IP 주소, 브라우저·기기 및 상호작용 신호가 Google에 전달되어 보안 검증에 사용될 수 있으며, 검증 토큰을 브라우저에 임시 저장합니다. 이 처리는 광고나 GA4 분석을 위한 것이 아니며 Google 개인정보처리방침과 서비스 약관이 적용됩니다. 검증 실패 또는 무료 한도 초과 시 집계가 표시되지 않을 수 있으나 영상은 계속 볼 수 있습니다. 이 기능은 GA4와 별개로 작동합니다. 식별자는 브라우저 저장소를 지우면 초기화되지만 서버의 기존 기록이 자동 삭제되지는 않습니다. 기록은 집계 운영 기간 동안 보관하며 삭제 요청은 운영자에게 문의할 수 있습니다. Firestore 데이터 저장 위치는 서울이며, 인증 및 서비스 운영 정보는 Google 정책에 따라 국외에서 처리될 수 있습니다.', 'Firebase App Check and Google reCAPTCHA Enterprise help reduce automated abuse of plays and likes. Loading counts may send IP address, browser, device and interaction signals to Google for security verification, with verification tokens temporarily stored in the browser. This processing is separate from advertising and GA4 analytics and is subject to Google privacy policies and terms. If verification fails or the free quota is exhausted, counts may be unavailable while videos remain watchable. This feature operates separately from GA4. Clearing browser storage resets your browser identity but does not automatically delete existing server records. Records are retained while the counting feature operates; contact the operator for deletion requests. Firestore data is stored in Seoul; authentication and service-operation data may be processed internationally under Google policies.'),
+('운영자 전용 자료실', 'Owner-only study library'),
+('개인 제작 자료실은 등록된 운영자 Google 계정만 이용합니다. Firebase Authentication은 로그인 계정의 이메일, 확인 상태와 사용자 식별자를 처리하여 권한을 확인합니다. 자료 본문과 업데이트 시각은 Firestore에 비공개로 저장하며, 등록된 계정 외에는 서버 접근 규칙으로 읽기와 수정을 제한합니다. 공개 저장소에는 자료 본문을 넣지 않습니다. 로그인 상태는 현재 브라우저 세션에 보관하고, 자료 본문은 영구 브라우저 캐시에 저장하지 않으며 로그아웃하면 화면에서 비웁니다. 자료실에서는 GA4를 실행하지 않습니다. App Check 보안 검증은 별도로 작동할 수 있습니다.', 'The private study library is restricted to the registered owner Google account. Firebase Authentication processes the account email, verification state and user identifier to check authorization. Library content and update timestamps are stored privately in Firestore; server rules restrict reading and editing to the registered account. Library content is excluded from the public repository. Sign-in state is retained for the current browser session; content is not kept in a persistent browser cache and is cleared from the page on sign-out. GA4 does not run in the library. App Check security verification may operate separately.'),
 ('정책 변경', 'Changes'),
 ('처리 방식이 바뀌면 이 페이지와 시행일을 갱신하며, 동의 범위가 바뀌면 다시 동의를 요청합니다.', 'We update this page and its effective date when processing changes, and request consent again if the scope of consent changes.'),
 ]
@@ -27,7 +29,7 @@ TRANSLATIONS = dict(COPY)
 def build_privacy(out, origin, head, header, footer):
  title=COPY[0][0]
  body='<body class="watch-page"><div>'+header()+'</div><main id="main" class="privacy-copy"><h1>'+title+'</h1><p>'+COPY[1][0]+'</p>'
- headings={2,4,6,9,12,15,18}
+ headings={2,4,6,9,12,15,18,20}
  for i,(ko,en) in enumerate(COPY[2:],2):
   tag='h2' if i in headings else 'p'
   body+=f'<{tag}>{escape(ko)}</{tag}>'
@@ -36,3 +38,4 @@ def build_privacy(out, origin, head, header, footer):
  path=out/'privacy';path.mkdir(exist_ok=True)
  schema={'@context':'https://schema.org','@type':'WebPage','name':title,'url':origin+'/privacy/'}
  (path/'index.html').write_text(head(title+' | DRA9ON CINEMA',title,'/privacy/',schema)+body,encoding='utf-8')
+
