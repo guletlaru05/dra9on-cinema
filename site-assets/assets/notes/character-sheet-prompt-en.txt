@@ -1,7 +1,7 @@
 Create a cinematic reference sheet for a new fictional character.
 
-Character: a fictional Korean adult woman aged 20 with refined Korean idol-level beauty, youthful soft facial contours and clear expressive eyes. Long dark-brown hair in a half-up style, natural skin texture and a calm expression. Do not imitate a real person or celebrity.
-Fixed outfit: a subdued burgundy long-sleeve court gown, thin brass belt and simple leather slippers. Keep the same outfit and hairstyle in every view.
+Character: a fictional Korean adult woman aged 20 with refined Korean idol-level beauty, a newly designed identity, a youthful soft oval face, large almond-shaped eyes and a small refined nose. Long dark-brown hair in a half-up style, natural skin texture and a calm expression. Do not imitate a real person or celebrity.
+Fixed outfit: a duke’s daughter’s lavish ivory and powder-blue silk gown, silver-embroidered bodice, lace long sleeves, pearl trim, jeweled necklace, delicate silver tiara and matching elegant shoes. Keep the same outfit and hairstyle in every view.
 Layout: landscape 3:2 canvas. Front and side full-body views on the left; front, three-quarter and side portraits on the right. Show the entire body, including shoes, in full-body views.
 Environment: plain charcoal-gray studio background and soft neutral lighting. Avoid oversaturation, strong backlight and heavily retouched skin.
 Consistency: preserve the eye shape, nose, jawline, facial proportions, hair length, gown neckline and sleeve silhouette across views. Use relaxed natural poses.
