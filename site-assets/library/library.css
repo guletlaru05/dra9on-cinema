@@ -13,3 +13,4 @@
 .lesson-checks{display:grid;gap:10px}.lesson-checks label{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:6px;font-size:14px}.lesson-checks input{width:18px;height:18px;flex:0 0 18px;margin-top:4px;accent-color:var(--red);padding:0}.lesson-checks label:has(input:checked){border-color:#88636a;color:#b9b6b0}
 
 #load-panel{padding:20px;margin-top:24px;border:1px solid var(--line);border-left:3px solid var(--red);border-radius:8px;background:var(--panel)}#load-panel h2{font-size:22px;margin:0 0 10px}#load-progress{white-space:pre-wrap;font-size:15px}#retry-load{background:var(--red);border-color:var(--red)}
+#detail-content .full-explanation{white-space:pre-wrap;line-height:1.9}#detail-content .source-warning{padding:1rem;border-left:3px solid #d52445;background:#21151a;line-height:1.7}
