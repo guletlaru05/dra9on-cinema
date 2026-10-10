@@ -272,7 +272,7 @@ def localize_site(out, works, origin, base_path=''):
     asset_dir = out/'assets'/'build'
     asset_dir.mkdir(parents=True, exist_ok=True)
     assets = {}
-    for name in ['styles.css', 'portfolio.css', 'portfolio.js', 'catalog.js', 'en/catalog.js']:
+    for name in ['styles.css', 'portfolio.css', 'portfolio.js', 'catalog.js', 'en/catalog.js', 'min-stickers.js']:
         content = (out/name).read_bytes()
         stem, ext = name.replace('/', '-').rsplit('.', 1)
         destination = f'{stem}.{sha256(content).hexdigest()[:12]}.{ext}'
@@ -280,7 +280,9 @@ def localize_site(out, works, origin, base_path=''):
         assets['/' + name] = '/assets/build/' + destination
     for page in out.rglob('*.html'):
         content = page.read_text(encoding='utf-8')
-        for old, new in assets.items(): content = content.replace('"' + old + '"', '"' + new + '"')
+        for old, new in assets.items():
+            content = content.replace('"' + old + '"', '"' + new + '"')
+            content = re.sub(r'(src=")' + re.escape(old) + r'\?[^"\s]*(")', lambda m: m[1] + new + m[2], content)
         if base_path:
             # Prefix only local URL attributes; canonical/schema URLs already use the full origin.
             content = re.sub(r'(\b(?:href|src|poster)=")(/(?!/))', lambda m: m[1] + base_path + m[2], content)
@@ -296,4 +298,3 @@ def localize_site(out, works, origin, base_path=''):
                 sitemap += f'<xhtml:link rel="alternate" hreflang="{lang}" href="{origin}{url}"/>'
             sitemap += '</url>'
     (out/'sitemap.xml').write_text(sitemap + '</urlset>', encoding='utf-8')
-
