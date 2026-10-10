@@ -5,7 +5,7 @@ import {initializeAppCheck,ReCaptchaEnterpriseProvider} from "https://www.gstati
 const $=id=>document.getElementById(id);
 let entries=[],groups=[],generation=0,ready=false;
 const message=t=>$("status").textContent=t;
-function clear(){entries=[];groups=[];$("cards").replaceChildren();$("categories").replaceChildren();$("category").replaceChildren(new Option("전체 분야",""));$("kind").replaceChildren(new Option("전체 종류",""));$("search").value="";$("overview").textContent="";$("result").textContent="";$("library").hidden=true;}
+function clear(){entries=[];groups=[];$("cards").replaceChildren();$("categories").replaceChildren();$("learning-path").replaceChildren();$("category").replaceChildren(new Option("전체 분야",""));$("kind").replaceChildren(new Option("전체 종류",""));$("tool").replaceChildren(new Option("전체 툴",""));$("search").value="";$("overview").textContent="";$("result").textContent="";$("library").hidden=true;}
 function validate(value){
  if(!value||value.version!==1||!Array.isArray(value.categories)||!Array.isArray(value.items)||value.items.length>500)throw Error("지원하지 않는 자료 형식입니다.");
  const categories=value.categories;
@@ -14,16 +14,25 @@ function validate(value){
   if(!item||typeof item.title!=="string"||typeof item.body!=="string"||typeof item.kind!=="string"||!Array.isArray(item.categories)||!item.categories.every(x=>categories.includes(x)))throw Error("자료 항목을 확인하세요.");
   if(!Array.isArray(item.links)||item.links.some(x=>{try{return typeof x.label!=="string"||new URL(x.url).protocol!=="https:";}catch{return true;}}))throw Error("출처 링크는 HTTPS 주소여야 합니다.");
   if(item.prompt!=null&&typeof item.prompt!=="string")throw Error("프롬프트 형식을 확인하세요.");
+  if(item.summary!=null&&typeof item.summary!=="string")throw Error("요약 형식을 확인하세요.");
+  if(item.tools!=null&&(!Array.isArray(item.tools)||item.tools.some(x=>typeof x!=="string")))throw Error("툴 분류를 확인하세요.");
+  if(item.sections!=null&&(!Array.isArray(item.sections)||item.sections.some(x=>typeof x.title!=="string"||typeof x.text!=="string")))throw Error("설명 형식을 확인하세요.");
+  if(item.image!=null&&(!/^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(item.image.data)||item.image.data.length>150000||typeof item.image.alt!=="string"||typeof item.image.caption!=="string"))throw Error("예시 이미지는 작은 JPEG 파일이어야 합니다.");
  }
+ if(value.learningPath!=null&&(!Array.isArray(value.learningPath)||value.learningPath.some(x=>typeof x.title!=="string"||typeof x.text!=="string"||!categories.includes(x.category))))throw Error("학습 순서를 확인하세요.");
  return value;
 }
 function el(tag,text,className){const node=document.createElement(tag);if(text!=null)node.textContent=text;if(className)node.className=className;return node;}
 function render(){
- const query=$("search").value.trim().toLocaleLowerCase(),category=$("category").value,kind=$("kind").value;
- const shown=entries.filter(x=>(!category||x.categories.includes(category))&&(!kind||x.kind===kind)&&(!query||[x.title,x.body,x.prompt||"",...(x.tags||[])].join(" ").toLocaleLowerCase().includes(query)));
+ const query=$("search").value.trim().toLocaleLowerCase(),category=$("category").value,kind=$("kind").value,tool=$("tool").value;
+ const shown=entries.filter(x=>(!category||x.categories.includes(category))&&(!kind||x.kind===kind)&&(!tool||(x.tools||["툴 공통"]).includes(tool))&&(!query||[x.title,x.body,x.prompt||"",...(x.tags||[]),...(x.tools||[])].join(" ").toLocaleLowerCase().includes(query)));
  $("cards").replaceChildren();
  for(const item of shown){
-  const card=el("article",null,"card");card.append(el("div",item.kind+" / "+item.categories.join(" · "),"meta"),el("h2",item.title),el("p",item.body));
+  const card=el("article",null,"card");card.append(el("div",item.kind+" / "+item.categories.join(" · "),"meta"),el("h2",item.title),el("p",item.summary||item.body));
+  if(item.image){const figure=el("figure"),img=el("img");img.src=item.image.data;img.alt=item.image.alt;img.loading="lazy";img.decoding="async";img.width=900;img.height=510;figure.append(img,el("figcaption",item.image.caption));card.append(figure);}
+  for(const section of item.sections||[]){const detail=el("details");detail.append(el("summary",section.title),el("p",section.text));card.append(detail);}
+  if(item.summary){const detail=el("details");detail.append(el("summary","상세 설명 · 출처 메모"),el("p",item.body));card.append(detail);}
+  if(item.tools?.length)card.append(el("p",item.tools.join(" / "),"tags"));
   if(item.prompt){const details=el("details"),pre=el("pre",item.prompt),copy=el("button","프롬프트 복사");copy.type="button";copy.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(item.prompt);copy.textContent="복사 완료";}catch{message("프롬프트 텍스트를 길게 눌러 복사하세요.");}});details.append(el("summary","응용 프롬프트 펼치기"),pre,copy);card.append(details);}
   if(item.tags?.length)card.append(el("p",item.tags.map(x=>"#"+x).join(" "),"tags"));
   for(const source of item.links){const a=el("a",source.label+" ↗");a.href=source.url;a.target="_blank";a.rel="noopener noreferrer";card.append(a);}
@@ -35,6 +44,8 @@ function render(){
 function display(value){
  entries=value.items;groups=value.categories;$("category").replaceChildren(new Option("전체 분야",""));groups.forEach(x=>$("category").add(new Option(x,x)));
  $("kind").replaceChildren(new Option("전체 종류",""));[...new Set(entries.map(x=>x.kind))].forEach(x=>$("kind").add(new Option(x,x)));
+ $("tool").replaceChildren(new Option("전체 툴",""));[...new Set(entries.flatMap(x=>x.tools||["툴 공통"]))].sort().forEach(x=>$("tool").add(new Option(x,x)));
+ $("learning-path").replaceChildren();for(const step of value.learningPath||[]){const b=el("button");b.type="button";b.append(el("strong",step.title),el("span",step.text));b.addEventListener("click",()=>{$("category").value=step.category;$("kind").value="";$("tool").value="";$("search").value="";render();$("result").scrollIntoView({block:"start"});});$("learning-path").append(b);}
  $("categories").replaceChildren();for(const x of ["",...groups]){const b=el("button",x||"전체");b.type="button";b.dataset.category=x;b.addEventListener("click",()=>{$("category").value=x;render();});$("categories").append(b);}
  $("overview").textContent=entries.length+"개 자료 · "+groups.length+"개 분야 · "+(value.updated||"")+" · 출처 요약 / 직접 작성한 학습 예시";
  $("library").hidden=false;render();
@@ -63,8 +74,7 @@ async function boot(){
   try{if(file.size>750000)throw Error("자료 파일은 750KB 이하로 준비하세요.");const value=validate(JSON.parse(await file.text())),payload=JSON.stringify(value);message("비공개 자료를 저장하고 있습니다.");await setDoc(ref,{payload,updatedAt:serverTimestamp()});if(ticket!==generation)return;display(value);message("비공개 자료 업데이트 완료.");}
   catch(error){message("저장하지 못했습니다. "+(error.code||error.message));}
  });
- ["search","category","kind"].forEach(x=>$(x).addEventListener(x==="search"?"input":"change",render));
+ ["search","category","kind","tool"].forEach(x=>$(x).addEventListener(x==="search"?"input":"change",render));
  ready=true;
 }
 boot().catch(error=>message("자료실을 시작하지 못했습니다. "+(error.code||error.message)));
-
