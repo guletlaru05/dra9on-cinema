@@ -31,6 +31,22 @@ service cloud.firestore {
         && next.likes == old.likes + (after.liked ? 1 : 0) - (before.liked ? 1 : 0)
         && next.likes >= 0 && next.views >= 0 && next.updatedAt == request.time;
     }
+    // Private study corpus: verified Google owner only; no anonymous/list access.
+    function libraryOwner() {
+      return request.auth != null
+        && request.auth.token.email == 'guletlaru05@gmail.com'
+        && request.auth.token.email_verified == true
+        && request.auth.token.firebase.sign_in_provider == 'google.com';
+    }
+    match /privateLibrary/{id} {
+      allow get: if id == 'main' && libraryOwner();
+      allow list, delete: if false;
+      allow create, update: if id == 'main' && libraryOwner()
+        && request.resource.data.keys().hasOnly(['payload','updatedAt'])
+        && request.resource.data.payload is string
+        && request.resource.data.payload.size() <= 750000
+        && request.resource.data.updatedAt == request.time;
+    }
     match /filmStats/{id} {
       allow get: if film(id);
       allow list, delete: if false;
@@ -43,3 +59,4 @@ service cloud.firestore {
     }
   }
 }
+
