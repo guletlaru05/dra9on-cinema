@@ -90,7 +90,8 @@ assert 'noindex,nofollow,noarchive' in library_source
 assert 'id="login"' in library_source and 'id="cards"' in library_source
 assert not (root/'library/private-library.json').exists()
 html_files = [page for page in root.rglob('*.html') if page != library]
-assert len(html_files) == 2 * (video_count + 8), len(html_files)
+from tutorials import ROUTES as TUTORIAL_ROUTES
+assert len(html_files) == 2 * (video_count + 8 + len(TUTORIAL_ROUTES)), len(html_files)
 for path in html_files:
     source = path.read_text(encoding='utf-8')
     assert source.count('/consent.js?v=') == 1, path
@@ -153,7 +154,7 @@ for ko, en in zip(*catalogs):
     assert ko['name'] in en['searchText'] and en['name'] in ko['searchText']
 
 sitemap = ET.parse(root / 'sitemap.xml').getroot()
-assert len(sitemap) == 2 * (video_count + 7)
+assert len(sitemap) == 2 * (video_count + 7 + len(TUTORIAL_ROUTES))
 for entry in sitemap:
     local_file(entry.find('{http://www.sitemaps.org/schemas/sitemap/0.9}loc').text)
 assert (root / '.nojekyll').exists()
@@ -171,4 +172,3 @@ for page in html_files:
     assert document.index('Content-Security-Policy') < document.index('<script'), page
     assert not re.search(r'\son\w+\s*=', document), f'Inline event handler blocked by CSP: {page}'
 print(f'PASS: {len(html_files)} pages, {video_count} videos per language, local assets, language switches, canonical URLs, sitemap and CSP.')
-

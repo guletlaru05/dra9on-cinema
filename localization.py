@@ -182,7 +182,10 @@ class EnglishPage(HTMLParser):
         for key in ['alt', 'aria-label', 'placeholder', 'title', 'content']:
             if key in attrs: attrs[key] = self.translate(attrs[key])
         if tag == 'a' and attrs.get('href', '').startswith('/') and attrs['href'] != '/library/':
-            attrs['href'] = '/en' + attrs['href']
+            if attrs['href'].startswith('/assets/'):
+                attrs['href'] = attrs['href'].replace('character-sheet-prompt-ko.txt', 'character-sheet-prompt-en.txt')
+            else:
+                attrs['href'] = '/en' + attrs['href']
         if tag == 'link' and attrs.get('rel') == 'canonical':
             attrs['href'] = attrs['href'].replace(self.origin + '/', self.origin + '/en/', 1)
         if tag == 'meta' and attrs.get('property') == 'og:url':
@@ -204,7 +207,7 @@ class EnglishPage(HTMLParser):
                 if isinstance(value, dict):
                     result = {k: translated(v) for k, v in value.items()}
                     if 'url' in result: result['url'] = result['url'].replace(self.origin + '/', self.origin + '/en/', 1)
-                    if result.get('@type') == 'ProfilePage': result['inLanguage'] = 'en'
+                    if result.get('@type') in ('ProfilePage','Article'): result['inLanguage'] = 'en'
                     return result
                 if isinstance(value, list): return [translated(v) for v in value]
                 return self.translate(value) if isinstance(value, str) else value
@@ -231,6 +234,9 @@ def localize_site(out, works, origin, base_path=''):
     base_translations.update(TERMS_TRANSLATIONS)
     from production_notes import TRANSLATIONS as NOTE_TRANSLATIONS, ROUTES as NOTE_ROUTES
     base_translations.update(NOTE_TRANSLATIONS)
+    from tutorials import TRANSLATIONS as TUTORIAL_TRANSLATIONS, ROUTES as TUTORIAL_ROUTES
+    base_translations.update(TUTORIAL_TRANSLATIONS)
+    NOTE_ROUTES = [*NOTE_ROUTES, *TUTORIAL_ROUTES]
     base_translations.update(zip(ABOUT_PARAGRAPHS['ko'], ABOUT_PARAGRAPHS['en']))
     base_translations.update({OG_ALT['ko']: OG_ALT['en'],
         '상상을, 장면으로.': 'From imagination to frame.',
