@@ -408,7 +408,7 @@ if ($('hero')) {
 
 (() => {
 
-  const contacts = document.querySelectorAll('a[href^="mailto:"]');
+  const contacts = document.querySelectorAll('a[href^="mailto:"]:not(.question-topic)');
 
   if (!contacts.length) return;
 
