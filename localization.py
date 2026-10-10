@@ -181,6 +181,8 @@ class EnglishPage(HTMLParser):
         if tag == 'script': self.in_json = attrs.get('type') == 'application/ld+json'
         for key in ['alt', 'aria-label', 'placeholder', 'title', 'content']:
             if key in attrs: attrs[key] = self.translate(attrs[key])
+        if tag == 'a' and attrs.get('href', '').startswith('mailto:'):
+            attrs['href'] = self.translate(attrs['href'])
         if tag == 'a' and attrs.get('href', '').startswith('/') and attrs['href'] != '/library/':
             if attrs['href'].startswith('/assets/'):
                 attrs['href'] = attrs['href'].replace('character-sheet-prompt-ko.txt', 'character-sheet-prompt-en.txt')
@@ -236,7 +238,9 @@ def localize_site(out, works, origin, base_path=''):
     base_translations.update(NOTE_TRANSLATIONS)
     from tutorials import TRANSLATIONS as TUTORIAL_TRANSLATIONS, ROUTES as TUTORIAL_ROUTES
     base_translations.update(TUTORIAL_TRANSLATIONS)
-    NOTE_ROUTES = [*NOTE_ROUTES, *TUTORIAL_ROUTES]
+    from questions import TRANSLATIONS as QUESTION_TRANSLATIONS, ROUTES as QUESTION_ROUTES
+    base_translations.update(QUESTION_TRANSLATIONS)
+    NOTE_ROUTES = [*NOTE_ROUTES, *TUTORIAL_ROUTES, *QUESTION_ROUTES]
     base_translations.update(zip(ABOUT_PARAGRAPHS['ko'], ABOUT_PARAGRAPHS['en']))
     base_translations.update({OG_ALT['ko']: OG_ALT['en'],
         '상상을, 장면으로.': 'From imagination to frame.',
