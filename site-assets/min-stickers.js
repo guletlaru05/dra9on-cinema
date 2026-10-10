@@ -1,9 +1,18 @@
 document.querySelectorAll('.min-stickers').forEach(section => {
+  const prepareArtwork=()=>section.classList.add('sticker-art-ready');
+  if('IntersectionObserver' in window){
+    const artObserver=new IntersectionObserver(entries=>{
+      if(entries.some(entry=>entry.isIntersecting)){prepareArtwork();artObserver.disconnect();}
+    },{rootMargin:'200px'});
+    artObserver.observe(section);
+  }else prepareArtwork();
+  section.addEventListener('focusin',prepareArtwork);
+
   const dialog = section.querySelector('.sticker-dialog');
   const gallery = section.querySelector('.sticker-gallery');
   const showAll = section.querySelector('.sticker-show-all');
   if (gallery && showAll) {
-    showAll.addEventListener('click', () => gallery.showModal());
+    showAll.addEventListener('click', () => {prepareArtwork();gallery.showModal();});
     gallery.querySelector('.gallery-close').addEventListener('click', () => gallery.close());
     gallery.addEventListener('close', () => showAll.focus());
     gallery.addEventListener('click', event => {
@@ -16,7 +25,7 @@ document.querySelectorAll('.min-stickers').forEach(section => {
   let opener;
   section.querySelectorAll('[data-sticker]').forEach(button => {
     button.addEventListener('click', () => {
-      opener = button;
+      prepareArtwork();opener = button;
       artwork.className = `min-sprite min-sprite-${button.dataset.sticker}`;
       caption.textContent = button.getAttribute('aria-label');
       dialog.showModal();
