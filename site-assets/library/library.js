@@ -1,4 +1,4 @@
-import {createLibraryUI} from "./library-ui.js?v=20261011-guides3";
+import {createLibraryUI} from "./library-ui.js?v=20261011-lessons4";
 import {initializeApp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,getRedirectResult,signOut,onAuthStateChanged,setPersistence,browserSessionPersistence} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 import {initializeFirestore,memoryLocalCache,doc,getDocFromServer,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
@@ -20,7 +20,13 @@ function validate(value){
   if(item.tools!=null&&(!Array.isArray(item.tools)||item.tools.some(x=>typeof x!=="string")))throw Error("툴 분류를 확인하세요.");
   if(item.sections!=null&&(!Array.isArray(item.sections)||item.sections.some(x=>typeof x.title!=="string"||typeof x.text!=="string")))throw Error("설명 형식을 확인하세요.");
   if(item.image!=null&&(!/^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(item.image.data)||item.image.data.length>150000||typeof item.image.alt!=="string"||typeof item.image.caption!=="string"))throw Error("예시 이미지는 작은 JPEG 파일이어야 합니다.");
+  if(item.imageRef?.aspect!=null&&(!Number.isFinite(item.imageRef.aspect)||item.imageRef.aspect<0.5||item.imageRef.aspect>3))throw Error("이미지 비율을 확인하세요.");
   if(item.imageRef!=null&&(!value.imageSources?.[item.imageRef.key]||!Number.isInteger(item.imageRef.row)||!Number.isInteger(item.imageRef.col)||item.imageRef.row<0||item.imageRef.row>3||item.imageRef.col<0||item.imageRef.col>2||typeof item.imageRef.alt!=="string"))throw Error("씬 예시 위치를 확인하세요.");
+  if(item.checks!=null&&(!Array.isArray(item.checks)||item.checks.length>20||item.checks.some(x=>typeof x!=="string")))throw Error("체크리스트 형식을 확인하세요.");
+  if(item.examples!=null){if(!Array.isArray(item.examples)||item.examples.length>8)throw Error("비교 예시 형식을 확인하세요.");for(const example of item.examples){if(!example||typeof example.title!=="string"||typeof example.caption!=="string"||!example.imageRef)throw Error("비교 예시 설명을 확인하세요.");
+   if(example.imageRef.aspect!=null&&(!Number.isFinite(example.imageRef.aspect)||example.imageRef.aspect<0.5||example.imageRef.aspect>3))throw Error("예시 비율을 확인하세요.");
+   if(example.imageRef!=null&&(!value.imageSources?.[example.imageRef.key]||!Number.isInteger(example.imageRef.row)||!Number.isInteger(example.imageRef.col)||example.imageRef.row<0||example.imageRef.row>3||example.imageRef.col<0||example.imageRef.col>2||typeof example.imageRef.alt!=="string"))throw Error("씬 예시 위치를 확인하세요.");
+  }}
  }
  if(value.learningPath!=null&&(!Array.isArray(value.learningPath)||value.learningPath.some(x=>typeof x.title!=="string"||typeof x.text!=="string"||!categories.includes(x.category))))throw Error("학습 순서를 확인하세요.");
  return value;
