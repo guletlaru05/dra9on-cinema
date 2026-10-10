@@ -91,6 +91,8 @@ assert 'id="login"' in library_source and 'id="cards"' in library_source
 assert not (root/'library/private-library.json').exists()
 html_files = [page for page in root.rglob('*.html') if page != library]
 from tutorials import ROUTES as TUTORIAL_ROUTES
+from questions import ROUTES as QUESTION_ROUTES
+TUTORIAL_ROUTES = [*TUTORIAL_ROUTES, *QUESTION_ROUTES]
 assert len(html_files) == 2 * (video_count + 8 + len(TUTORIAL_ROUTES)), len(html_files)
 for path in html_files:
     source = path.read_text(encoding='utf-8')
@@ -111,7 +113,7 @@ for path in html_files:
     assert page.metas['og:image:height'] == [str(height)], path
     assert page.metas['og:locale'] == ['en_US' if lang == 'en' else 'ko_KR'], path
     contacts = [a['href'] for a in page.anchors if a.get('href', '').startswith('mailto:')]
-    assert contacts and set(contacts) == {'mailto:' + CONTACT_EMAIL}, path
+    assert contacts and {url.split('?', 1)[0] for url in contacts} == {'mailto:' + CONTACT_EMAIL}, path
     assert not any('TODO' in a.get('href', '') for a in page.anchors), path
     if relative in ('index.html', 'en/index.html'):
         assert (width, height) == (1200, 630) and og_file.stat().st_size <= 300_000

@@ -50,10 +50,11 @@ def subscribe_button():
 
 from production_notes import teaser, build_notes
 from tutorials import teaser as tutorial_teaser, build_tutorials
+from questions import build_questions
 from min_stickers import home_teaser
 
 def header(home=False):
- nav='<a class="nav-link" href="/">홈</a><a class="nav-link" href="/#episodes">FALL 707</a><a class="nav-link" href="/#originals">작품집</a><a class="nav-link" href="/notes/">제작 비하인드</a><a class="nav-link" href="/tutorials/">튜토리얼</a><a class="nav-link" href="/#about">ABOUT</a>'
+ nav='<a class="nav-link" href="/">홈</a><a class="nav-link" href="/#episodes">FALL 707</a><a class="nav-link" href="/#originals">작품집</a><a class="nav-link" href="/notes/">제작 비하인드</a><a class="nav-link" href="/tutorials/">튜토리얼</a><a class="nav-link" href="/questions/">질문과 답변</a><a class="nav-link" href="/#about">ABOUT</a>'
  search=f'<div class="search-wrap" id="search-wrap"><button class="icon-button" id="search-toggle" aria-label="작품 검색" aria-expanded="false">{icon("search")}</button><input type="search" id="search" placeholder="작품, 에피소드 검색" aria-label="작품 또는 에피소드 검색" autocomplete="off" hidden></div>' if home else ''
  return f'<a class="skip-link" href="#main">콘텐츠로 바로 가기</a><header class="header">{brand}<nav class="nav" aria-label="주 메뉴">{nav}</nav><div class="header-actions">{search}{social_links("channel-button")}</div></header>'
 def footer():return f'<footer>{brand}<p>AI로 세계관을 실사화하는 크리에이터.<br><span>© 2026 DRA9ON CINEMA. All rights reserved.</span><br><span>작품·이미지·텍스트의 무단 복제, 재업로드 및 상업적 이용을 금합니다. 이용 문의는 이메일로 연락해 주세요.</span></p><div class="footer-links">{social_links()}<a href="/library/">PRIVATE LIBRARY</a><a href="mailto:{CONTACT_EMAIL}">채널 문의 {icon("arrow")}</a></div></footer>'
@@ -115,6 +116,7 @@ from terms_page import build_terms
 build_terms(out, origin, head, header, footer)
 build_notes(out, origin, head, header, footer)
 build_tutorials(out, origin, head, header, footer)
+build_questions(out, origin, head, header, footer)
 localize_site(out, works, origin, base_path)
 # Public ownership proof for the owner's Google and Naver webmaster properties.
 verification_tag = (
