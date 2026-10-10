@@ -181,7 +181,7 @@ class EnglishPage(HTMLParser):
         if tag == 'script': self.in_json = attrs.get('type') == 'application/ld+json'
         for key in ['alt', 'aria-label', 'placeholder', 'title', 'content']:
             if key in attrs: attrs[key] = self.translate(attrs[key])
-        if tag == 'a' and attrs.get('href', '').startswith('/'):
+        if tag == 'a' and attrs.get('href', '').startswith('/') and attrs['href'] != '/library/':
             attrs['href'] = '/en' + attrs['href']
         if tag == 'link' and attrs.get('rel') == 'canonical':
             attrs['href'] = attrs['href'].replace(self.origin + '/', self.origin + '/en/', 1)
@@ -296,3 +296,4 @@ def localize_site(out, works, origin, base_path=''):
                 sitemap += f'<xhtml:link rel="alternate" hreflang="{lang}" href="{origin}{url}"/>'
             sitemap += '</url>'
     (out/'sitemap.xml').write_text(sitemap + '</urlset>', encoding='utf-8')
+

@@ -83,7 +83,13 @@ class Page(HTMLParser):
             self.in_json = False
 
 
-html_files = list(root.rglob('*.html'))
+library = root/'library/index.html'
+assert library.is_file(), 'Private library shell missing'
+library_source = library.read_text(encoding='utf-8')
+assert 'noindex,nofollow,noarchive' in library_source
+assert 'id="login"' in library_source and 'id="cards"' in library_source
+assert not (root/'library/private-library.json').exists()
+html_files = [page for page in root.rglob('*.html') if page != library]
 assert len(html_files) == 2 * (video_count + 8), len(html_files)
 for path in html_files:
     source = path.read_text(encoding='utf-8')
@@ -165,3 +171,4 @@ for page in html_files:
     assert document.index('Content-Security-Policy') < document.index('<script'), page
     assert not re.search(r'\son\w+\s*=', document), f'Inline event handler blocked by CSP: {page}'
 print(f'PASS: {len(html_files)} pages, {video_count} videos per language, local assets, language switches, canonical URLs, sitemap and CSP.')
+

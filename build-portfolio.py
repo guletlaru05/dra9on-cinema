@@ -55,7 +55,7 @@ def header(home=False):
  nav='<a class="nav-link" href="/">홈</a><a class="nav-link" href="/#episodes">FALL 707</a><a class="nav-link" href="/#originals">작품집</a><a class="nav-link" href="/notes/">제작 비하인드</a><a class="nav-link" href="/#about">ABOUT</a>'
  search=f'<div class="search-wrap" id="search-wrap"><button class="icon-button" id="search-toggle" aria-label="작품 검색" aria-expanded="false">{icon("search")}</button><input type="search" id="search" placeholder="작품, 에피소드 검색" aria-label="작품 또는 에피소드 검색" autocomplete="off" hidden></div>' if home else ''
  return f'<a class="skip-link" href="#main">콘텐츠로 바로 가기</a><header class="header">{brand}<nav class="nav" aria-label="주 메뉴">{nav}</nav><div class="header-actions">{search}{social_links("channel-button")}</div></header>'
-def footer():return f'<footer>{brand}<p>AI로 세계관을 실사화하는 크리에이터.<br><span>© 2026 DRA9ON CINEMA. All rights reserved.</span><br><span>작품·이미지·텍스트의 무단 복제, 재업로드 및 상업적 이용을 금합니다. 이용 문의는 이메일로 연락해 주세요.</span></p><div class="footer-links">{social_links()}<a href="mailto:{CONTACT_EMAIL}">채널 문의 {icon("arrow")}</a></div></footer>'
+def footer():return f'<footer>{brand}<p>AI로 세계관을 실사화하는 크리에이터.<br><span>© 2026 DRA9ON CINEMA. All rights reserved.</span><br><span>작품·이미지·텍스트의 무단 복제, 재업로드 및 상업적 이용을 금합니다. 이용 문의는 이메일로 연락해 주세요.</span></p><div class="footer-links">{social_links()}<a href="/library/">PRIVATE LIBRARY</a><a href="mailto:{CONTACT_EMAIL}">채널 문의 {icon("arrow")}</a></div></footer>'
 def card(v):return f'<article class="card"><a class="card-open" href="{v["path"]}" data-detail="{v["id"]}" aria-label="{esc(v["label"]+" "+v["name"])} 상세 보기"><div class="card-image"><img src="{v["image"]}" alt="{esc(v["name"])} 공식 썸네일" width="720" height="405" loading="lazy"><span class="duration">{esc(v["duration"] or "")}</span><span class="card-hover-play"><span>{icon("play")}</span></span></div><p class="card-label">{v["label"]}</p><h3 class="card-name">{esc(v["name"])}</h3></a><button class="card-save" data-save="{v["id"]}" aria-label="{esc(v["name"])} 찜하기" aria-pressed="false">{icon("plus")}</button></article>'
 def shelf(id,title,subtitle,items):return f'<section class="shelf" id="{id}" aria-labelledby="{id}-title"><div class="shelf-heading"><div><p class="section-eyebrow">{subtitle}</p><h2 class="shelf-title" id="{id}-title">{title}</h2></div><div class="shelf-controls"><button data-scroll="{id}-track" data-direction="-1" aria-label="{title} 이전 보기">{icon("left")}</button><button data-scroll="{id}-track" data-direction="1" aria-label="{title} 다음 보기">{icon("right")}</button></div></div><div class="shelf-track" id="{id}-track">'+''.join(card(v) for v in items)+'</div></section>'
 def head(title,desc,path='/',schema=None):
@@ -100,7 +100,7 @@ for v in works:
   body+=f'<a href="{sibling["path"]}" class="episode-item{" active" if sibling==v else ""}"{current}><img src="{sibling["image"]}" alt="" width="160" height="90" loading="lazy"><div><span>{sibling["label"]} · {sibling["duration"] or ""}</span><strong>{esc(sibling["name"])}</strong></div></a>'
  body+=f'</aside></div></main>{footer()}<div class="toast" id="toast" role="status" aria-live="polite"></div></body></html>'
  folder=out/v['path'].strip('/');folder.mkdir(parents=True,exist_ok=True);(folder/'index.html').write_text(head(page_title,('낙하707: 리부트. ' if v['season'] else '')+v['summary'][:170],v['path'],schema)+body,encoding='utf-8');paths.append(v['path'])
-(out/'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {origin}/sitemap.xml\n',encoding='utf-8')
+(out/'robots.txt').write_text(f'User-agent: *\nAllow: /\nDisallow: /library/\nSitemap: {origin}/sitemap.xml\n',encoding='utf-8')
 (out/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f'<url><loc>{esc(origin+p)}</loc></url>' for p in paths)+'</urlset>',encoding='utf-8')
 (out/'404.html').write_text(head('페이지를 찾을 수 없습니다 | DRA9ON CINEMA','홈에서 다른 작품을 만나보세요.')+f'<body class="watch-page">{header()}<main class="not-found"><p class="section-eyebrow">404 · SCENE NOT FOUND</p><h1>이 장면은 찾을 수 없어요.</h1><a href="/" class="button button-white">작품 둘러보기</a></main>{footer()}</body></html>',encoding='utf-8')
 print(json.dumps({'works':len(works),'pages':len(paths),'seasons':{'1':len(s1),'2':len(s2)},'origin':origin}))
@@ -156,6 +156,7 @@ for homepage in ('index.html', 'en/index.html'):
 from hashlib import sha256
 consent_version = sha256((out/'consent.js').read_bytes() + (out/'consent.css').read_bytes()).hexdigest()[:12]
 for page in out.rglob('*.html'):
+ if page.relative_to(out).as_posix() == 'library/index.html':continue  # No analytics on private study pages.
  document=page.read_text(encoding='utf-8')
  en=page.relative_to(out).parts[0]=='en'
  privacy_url=base_path+('/en' if en else '')+'/privacy/'
