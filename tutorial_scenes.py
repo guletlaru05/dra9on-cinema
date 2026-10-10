@@ -3,14 +3,14 @@ from html import escape
 
 def render(t):
     scenes=[
-      ('01 / ESTABLISHING SHOT','character-scene-wide-duchess20-v3-center-wm.webp',
+      ('01 / ESTABLISHING SHOT','character-scene-wide-duchess20-v3-center-soft-wm.webp',
        '공간을 먼저 보여주기','Show the space first',
        '넓은 성 안에 인물을 작게 배치하면, 인물이 어디에 있는지 한 컷으로 전달됩니다.',
        'A small figure inside a wide castle hall tells us where the character is in one shot.',
        '눈높이 · 와이드 · 창빛 · 공간 소개','Eye level · Wide · Window light · Setting',
        '기준 시트를 첨부합니다. 같은 20세 성인인 가상의 로판 여주인공, 긴 갈색 반묶음 머리와 아이보리·파우더 블루 실크 드레스, 은빛 자수와 진주 장식, 레이스 긴소매와 작은 은빛 티아라를 그대로 유지합니다. 오래된 성의 넓은 돌벽 홀, 높은 아치 창문, 멀리 열린 문이 보입니다. 여주인공은 화면 오른쪽 1/3 지점의 창가에 전신으로 작게 서서 빈 문을 바라봅니다. 카메라는 눈높이, 35mm 렌즈 느낌의 와이드 숏, 16:9. 앞쪽 기둥·중간의 인물·뒤쪽 문으로 깊이를 나눕니다. 흐린 오후의 부드럽고 차가운 창빛, 배경의 작은 따뜻한 촛불. 차분한 색과 자연스러운 피부, 실사 시대극 영화 무드. 네온색과 마법 효과 없이 이미지 가운데 반투명 DRA9ON CINEMA 워터마크.',
        'Attach the reference sheet. Preserve the same fictional adult romantic-fantasy heroine aged 20, long brown half-up hair, ivory and powder-blue silk gown, silver embroidery, pearl trim, lace long sleeves and delicate silver tiara. Show a wide old stone castle hall with tall arched windows and an open distant doorway. The heroine stands full-body near the window in the right third, looking toward the empty doorway. Eye-level camera, a 35mm-style wide shot, 16:9. Layer a foreground column, the character in the middle and the doorway in the distance. Soft cool window light on an overcast afternoon with a small warm background candle. Restrained colors, natural skin and a live-action period-film mood. No neon or magic effects. Semi-transparent DRA9ON CINEMA watermark across the center.'),
-      ('02 / REACTION SHOT','character-scene-close-duchess20-v3-center-wm.webp',
+      ('02 / REACTION SHOT','character-scene-close-duchess20-v3-center-soft-wm.webp',
        '표정으로 다음 이야기를 만들기','Let expression carry the next beat',
        '같은 인물을 가까이 보여주고, 눈빛과 입술의 작은 변화로 긴장감을 만듭니다.',
        'Move closer to the same character; small changes in the eyes and lips create tension.',

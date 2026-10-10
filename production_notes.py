@@ -2,7 +2,7 @@
 from html import escape as e
 from notes_process import render as render_process, TRANSLATIONS as PROCESS_TRANSLATIONS
 PATH='/notes/fall-707-beginnings/'
-ART='/assets/notes/fall-707-season1-occult-center-wm.webp'
+ART='/assets/notes/fall-707-season1-occult-center-soft-wm.webp'
 TITLE=('습작에서 다시 시작한, 낙하 707 시즌 1','From early experiments to FALL 707 Season 1')
 INTRO=('좋아해서 시작했고, 그만둘까 고민했고, 기다려 준 사람들 덕분에 다시 만들었습니다. 낙하 707의 첫 번째 제작 비하인드입니다.','It began with something I loved. I nearly stopped. Then the people waiting for the next episode gave me a reason to start again. This is the first FALL 707 production note.')
 NOTICE=('창작자의 경험을 바탕으로 재구성한 일러스트입니다. 실제 제작 화면이나 댓글 캡처가 아닙니다.','Illustrations reconstruct the creator’s experience. They are not archival screenshots or captures of actual comments.')
@@ -30,7 +30,7 @@ S2_PANELS=[
 ]
 S2_ASIDES=[('캐릭터도, 분위기도 시즌에 맞게.','A design and a mood for each season.'),('찾는 사람은 없고, 방해는 많고.','No squad in sight. Plenty of obstacles.'),('같은 사람이어도, 같은 표정일 수는 없으니까.','The same person does not always wear the same expression.'),('제작자의 판타지 버튼: ON.','Creator’s fantasy switch: ON.'),('제작자 메모: 상처를 미리 그리지 말 것.','Creator’s note: do not add the wound too early.'),('짧은 영상으로 시작했는데, 여기까지 왔네요.','A short video brought us all the way here.')]
 S1_CHARACTER=('민 대위는 대한민국 육군 707특수임무단 대위입니다. 시즌 1에서는 검은 군복과 포니테일, 인간적인 면이 드러나는 모습으로 구성했습니다. 이 후기의 얼굴에는 이후 시즌에 생기는 상처를 넣지 않았습니다.','Min is a captain in the Republic of Korea Army’s 707th Special Mission Group. Season 1 presented her in a black uniform and ponytail, with her human side visible. The later facial injury is not included in this afterword’s Season 1 illustrations.')
-NOTES=[{'path':PATH,'season':1,'art':ART,'title':TITLE,'intro':INTRO,'panels':PANELS,'asides':ASIDES,'extra':S1_CHARACTER}, {'path':'/notes/fall-707-season-2/','season':2,'art':'/assets/notes/fall-707-season2-occult-center-wm.webp','title':S2_TITLE,'intro':S2_INTRO,'panels':S2_PANELS,'asides':S2_ASIDES}]
+NOTES=[{'path':PATH,'season':1,'art':ART,'title':TITLE,'intro':INTRO,'panels':PANELS,'asides':ASIDES,'extra':S1_CHARACTER}, {'path':'/notes/fall-707-season-2/','season':2,'art':'/assets/notes/fall-707-season2-occult-center-soft-wm.webp','title':S2_TITLE,'intro':S2_INTRO,'panels':S2_PANELS,'asides':S2_ASIDES}]
 ROUTES=['/notes/']+[n['path'] for n in NOTES]
 INDEX_TITLE=('만드는 사람의 이야기','Stories from the creator')
 INDEX_INTRO=('AI 영상 뒤에 있는 고민과 선택들. 검은 후드 제작자와 함께 읽는 낙하 707의 시즌별 제작 후기입니다.','The choices and doubts behind the AI films. Read the FALL 707 season afterwords with the black-hooded creator.')
