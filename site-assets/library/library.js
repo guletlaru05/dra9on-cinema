@@ -1,4 +1,4 @@
-import {createLibraryUI} from "./library-ui.js?v=20261011-scenes2";
+import {createLibraryUI} from "./library-ui.js?v=20261011-guides3";
 import {initializeApp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,getRedirectResult,signOut,onAuthStateChanged,setPersistence,browserSessionPersistence} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 import {initializeFirestore,memoryLocalCache,doc,getDocFromServer,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
