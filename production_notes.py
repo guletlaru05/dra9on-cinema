@@ -2,7 +2,7 @@
 from html import escape as e
 from notes_process import render as render_process, TRANSLATIONS as PROCESS_TRANSLATIONS
 PATH='/notes/fall-707-beginnings/'
-ART='/assets/notes/fall-707-season1-occult.png'
+ART='/assets/notes/fall-707-season1-occult.webp'
 TITLE=('습작에서 다시 시작한, 낙하 707 시즌 1','From early experiments to FALL 707 Season 1')
 INTRO=('좋아해서 시작했고, 그만둘까 고민했고, 기다려 준 사람들 덕분에 다시 만들었습니다. 낙하 707의 첫 번째 제작 비하인드입니다.','It began with something I loved. I nearly stopped. Then the people waiting for the next episode gave me a reason to start again. This is the first FALL 707 production note.')
 NOTICE=('창작자의 경험을 바탕으로 재구성한 일러스트입니다. 실제 제작 화면이나 댓글 캡처가 아닙니다.','Illustrations reconstruct the creator’s experience. They are not archival screenshots or captures of actual comments.')
@@ -30,7 +30,7 @@ S2_PANELS=[
 ]
 S2_ASIDES=[('캐릭터도, 분위기도 시즌에 맞게.','A design and a mood for each season.'),('찾는 사람은 없고, 방해는 많고.','No squad in sight. Plenty of obstacles.'),('같은 사람이어도, 같은 표정일 수는 없으니까.','The same person does not always wear the same expression.'),('제작자의 판타지 버튼: ON.','Creator’s fantasy switch: ON.'),('제작자 메모: 상처를 미리 그리지 말 것.','Creator’s note: do not add the wound too early.'),('짧은 영상으로 시작했는데, 여기까지 왔네요.','A short video brought us all the way here.')]
 S1_CHARACTER=('민 대위는 대한민국 육군 707특수임무단 대위입니다. 시즌 1에서는 검은 군복과 포니테일, 인간적인 면이 드러나는 모습으로 구성했습니다. 이 후기의 얼굴에는 이후 시즌에 생기는 상처를 넣지 않았습니다.','Min is a captain in the Republic of Korea Army’s 707th Special Mission Group. Season 1 presented her in a black uniform and ponytail, with her human side visible. The later facial injury is not included in this afterword’s Season 1 illustrations.')
-NOTES=[{'path':PATH,'season':1,'art':ART,'title':TITLE,'intro':INTRO,'panels':PANELS,'asides':ASIDES,'extra':S1_CHARACTER}, {'path':'/notes/fall-707-season-2/','season':2,'art':'/assets/notes/fall-707-season2-occult.png','title':S2_TITLE,'intro':S2_INTRO,'panels':S2_PANELS,'asides':S2_ASIDES}]
+NOTES=[{'path':PATH,'season':1,'art':ART,'title':TITLE,'intro':INTRO,'panels':PANELS,'asides':ASIDES,'extra':S1_CHARACTER}, {'path':'/notes/fall-707-season-2/','season':2,'art':'/assets/notes/fall-707-season2-occult.webp','title':S2_TITLE,'intro':S2_INTRO,'panels':S2_PANELS,'asides':S2_ASIDES}]
 ROUTES=['/notes/']+[n['path'] for n in NOTES]
 INDEX_TITLE=('만드는 사람의 이야기','Stories from the creator')
 INDEX_INTRO=('AI 영상 뒤에 있는 고민과 선택들. 검은 후드 제작자와 함께 읽는 낙하 707의 시즌별 제작 후기입니다.','The choices and doubts behind the AI films. Read the FALL 707 season afterwords with the black-hooded creator.')
@@ -39,7 +39,7 @@ TRANSLATIONS.update([S2_TITLE,S2_INTRO,S1_CHARACTER,INDEX_TITLE,INDEX_INTRO,*LAB
 TRANSLATIONS.update(PROCESS_TRANSLATIONS)
 for title in [S2_TITLE,INDEX_TITLE]:TRANSLATIONS[title[0]+' | DRA9ON CINEMA']=title[1]+' | DRA9ON CINEMA'
 def artwork(note,i,alt):
- return f'<div class="note-art note-art-{i}" role="img" aria-label="{e(alt)}"><img src="{note["art"]}" alt="" width="1374" height="1145" loading="lazy"></div>'
+ return f'<div class="note-art note-art-{i}" role="img" aria-label="{e(alt)}"><img src="{note["art"]}" alt="" width="1374" height="1145" loading="lazy" decoding="async"></div>'
 def tiles():
  return '<div class="note-tiles">'+''.join(f'<a class="note-tile" href="{n["path"]}">{artwork(n,1,n["panels"][1][3][0])}<div><p class="section-eyebrow">{LABELS[n["season"]-1][0]}</p><h3>{e(n["title"][0])}</h3><span>{EXTRA[1][0]} →</span></div></a>' for n in NOTES)+'</div>'
 def teaser():
@@ -61,3 +61,4 @@ def build_notes(out,origin,head,header,footer):
  schema={'@context':'https://schema.org','@type':'CollectionPage','name':INDEX_TITLE[0],'url':origin+'/notes/'}
  body=f'<body class="watch-page">{header()}<main class="notes-index" id="main">{teaser()}</main>{footer()}</body></html>'
  (out/'notes/index.html').write_text(head(INDEX_TITLE[0]+' | DRA9ON CINEMA',INDEX_INTRO[0],'/notes/',schema)+body,encoding='utf-8')
+
