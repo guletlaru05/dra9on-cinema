@@ -1,10 +1,11 @@
 """Original public exercises; never reads the owner's private library."""
 from html import escape
 from site_config import CONTACT_EMAIL
+from tutorial_scenes import render as render_scenes
 
 ROUTES = ['/tutorials/', '/tutorials/character-sheet/']
 TRANSLATIONS = {}
-ART = '/assets/notes/character-sheet-example.webp'
+ART = '/assets/notes/character-sheet-youth20.webp'
 
 def t(ko, en):
     TRANSLATIONS[ko] = en
@@ -16,7 +17,7 @@ DESC = t('로판 AI 캐릭터 시트 입문: 외모와 의상을 먼저 정하�
 ALT = t('로판 드레스를 입은 여성의 정면·측면 전신과 세 가지 얼굴 각도를 비교하는 캐릭터 시트 실습 예시', 'Practice character sheet comparing front and side full-body views and three portrait angles of a woman in a romantic-fantasy gown')
 PROMPT_KO = '''새로운 가상 로판 여주인공의 영화 제작용 캐릭터 레퍼런스 시트를 만들어 주세요.
 
-인물: 20대 후반의 가상 동아시아 여성. 한국 아이돌처럼 세련되고 아름다운 외모. 긴 짙은 갈색 머리, 반묶음 스타일, 자연스러운 피부 결, 차분한 표정. 실존 인물이나 유명인의 얼굴을 따라 하지 않습니다.
+인물: 20세 성인인 가상의 한국 여성. 한국 아이돌처럼 세련되고 아름다운 외모, 앳되고 부드러운 얼굴선과 맑은 눈매. 긴 짙은 갈색 머리, 반묶음 스타일, 자연스러운 피부 결, 차분한 표정. 실존 인물이나 유명인의 얼굴을 따라 하지 않습니다.
 고정 의상: 차분한 버건디색 긴소매 궁정 드레스, 얇은 황동색 벨트, 단순한 가죽 실내화. 모든 컷에서 같은 의상과 같은 헤어스타일을 유지합니다.
 구성: 가로 3:2 캔버스. 왼쪽에 정면 전신과 측면 전신, 오른쪽에 정면 얼굴·45도 얼굴·측면 얼굴. 전신 컷에는 머리부터 신발까지 모두 보이게 합니다.
 환경: 단색 짙은 회색 스튜디오 배경, 부드럽고 중립적인 조명. 과한 채도, 강한 역광, 필터 같은 피부 보정은 피합니다.
@@ -24,21 +25,24 @@ PROMPT_KO = '''새로운 가상 로판 여주인공의 영화 제작용 캐릭�
 표기: 오른쪽 아래에 작은 DRA9ON CINEMA 워터마크만 넣고, 다른 글씨나 장식은 넣지 않습니다.'''
 PROMPT_EN = '''Create a cinematic reference sheet for a new fictional character.
 
-Character: a fictional East Asian woman in her late twenties with refined Korean idol-level beauty, long dark-brown hair in a half-up style, natural skin texture and a calm expression. Do not imitate a real person or celebrity.
+Character: a fictional Korean adult woman aged 20 with refined Korean idol-level beauty, youthful soft facial contours and clear expressive eyes. Long dark-brown hair in a half-up style, natural skin texture and a calm expression. Do not imitate a real person or celebrity.
 Fixed outfit: a subdued burgundy long-sleeve court gown, thin brass belt and simple leather slippers. Keep the same outfit and hairstyle in every view.
 Layout: landscape 3:2 canvas. Front and side full-body views on the left; front, three-quarter and side portraits on the right. Show the entire body, including shoes, in full-body views.
 Environment: plain charcoal-gray studio background and soft neutral lighting. Avoid oversaturation, strong backlight and heavily retouched skin.
 Consistency: preserve the eye shape, nose, jawline, facial proportions, hair length, gown neckline and sleeve silhouette across views. Use relaxed natural poses.
 Text: only a small DRA9ON CINEMA watermark at the bottom right; no other text or decoration.'''
 TRANSLATIONS[PROMPT_KO] = PROMPT_EN
+LESSONS=[{'path':ROUTES[1],'date':'2026-10-11','art':ART,'title':TITLE,'alt':ALT}]
 
 def teaser():
-    return f'''<section class="tutorial-teaser" id="tutorials"><div><p class="section-eyebrow">FILMMAKING / FIELD NOTES</p><h2>{t('장면을 만드는 첫걸음.', 'Your first step into a scene.')}</h2><p>{t('작품을 보다가 제작 과정이 궁금해졌다면. 직접 따라 해보는 작은 실습부터 시작하세요.', 'Curious about how the films are made? Start with a small hands-on exercise.')}</p></div><a class="tutorial-preview" href="/tutorials/character-sheet/"><img src="{ART}" width="1536" height="1024" loading="lazy" decoding="async" alt="{ALT}"><div><p class="section-eyebrow">01 / CHARACTER DESIGN</p><h3>{TITLE}</h3><span>{t('로판 캐릭터 시트 기초 · 강좌 열기', 'Romantic-fantasy character basics · Open lesson')} →</span></div></a></section>'''
+    cards=''.join(f'''<a class="tutorial-preview" href="{lesson['path']}"><img src="{lesson['art']}" width="1536" height="1024" loading="lazy" decoding="async" alt="{lesson['alt']}"><div><p class="section-eyebrow">CHARACTER / SCENE / LIGHT</p><h3>{lesson['title']}</h3><p class="tutorial-card-date"><time datetime="{lesson['date']}">{lesson['date'].replace('-','.')}</time> · {t("캐릭터 · 씬 · 조명", "Character · Scene · Light")}</p><span>{t('로판 캐릭터 시트 기초 · 강좌 열기', 'Romantic-fantasy character basics · Open lesson')} →</span></div></a>''' for lesson in sorted(LESSONS,key=lambda item:item['date'],reverse=True))
+    return f'''<section class="tutorial-teaser" id="tutorials"><div><p class="section-eyebrow">FILMMAKING / FIELD NOTES</p><h2>{t('장면을 만드는 첫걸음.', 'Your first step into a scene.')}</h2><p>{t('작품을 보다가 제작 과정이 궁금해졌다면. 직접 따라 해보는 작은 실습부터 시작하세요.', 'Curious about how the films are made? Start with a small hands-on exercise.')}</p></div><div class="tutorial-lesson-list">{cards}</div></section>'''
 
 def build_tutorials(out, origin, head, header, footer):
     intro = f'''<p class="tutorial-intro">{t('처음 만드는 사람도 한 단계씩. 완성된 작품 뒤의 제작 방법을 공개 실습으로 풀어봅니다.', 'One step at a time, even for first-time creators. Explore the process behind the films through original public exercises.')}</p>'''
     index_title = t('작품 뒤의 방법, 직접 해보세요.', 'Behind the films. Try the process.')
-    body = f'<body class="watch-page">{header()}<main class="tutorial-main" id="main"><a class="note-back" href="/">← {t("사이트로 돌아가기", "Back to the site")}</a><p class="section-eyebrow">DRA9ON CINEMA / TUTORIALS</p><h1>{index_title}</h1>{intro}{teaser()}<p class="tutorial-notice">{t("직접 구성한 공개 실습입니다. 개인 자료실의 수집 원문이나 비급서를 공개하지 않습니다.", "These are original public exercises. Collected source texts and the private guidebook remain in the owner-only library.")}</p></main>{footer()}</body></html>'
+    topics = '<nav class="tutorial-topics" aria-label="' + t('강좌 주제','Lesson topics') + '">' + ''.join('<a href="/tutorials/character-sheet/' + anchor + '">' + t(ko,en) + '</a>' for anchor,ko,en in [('#step-1','캐릭터','Character'),('#scene-examples','씬 이미지','Scene images'),('#lighting','조명·무드','Light and mood')]) + '</nav>'
+    body = f'<body class="watch-page">{header()}<main class="tutorial-main" id="main"><a class="note-back" href="/">← {t("사이트로 돌아가기", "Back to the site")}</a><p class="section-eyebrow">DRA9ON CINEMA / TUTORIALS</p><h1>{index_title}</h1>{intro}{topics}{teaser()}<p class="tutorial-notice">{t("직접 구성한 공개 실습을 제작일과 주제별로 차곡차곡 모읍니다.", "Original public exercises, collected over time by publication date and topic.")}</p></main>{footer()}</body></html>'
     schema = {'@context':'https://schema.org','@type':'CollectionPage','name':index_title,'url':origin+ROUTES[0]}
     write(out, ROUTES[0], page_head(head, index_title, DESC, ROUTES[0], schema)+body)
     sections = []
@@ -59,8 +63,9 @@ def build_tutorials(out, origin, head, header, footer):
        '시트를 참고로 첨부하고 “같은 인물이 흐린 날 성 안의 창가에 서 있는 중간 거리 컷, 의상과 머리 유지”를 요청해 보세요. 배경이 바뀌어도 얼굴과 의상이 이어지는지 확인합니다. 한 번에 액션·표정·조명·카메라를 모두 바꾸기보다 배경 하나만 바꿔야 문제 원인을 찾기 쉽습니다.',
        'Attach the sheet and request a medium shot of the same character standing beside a window inside a castle on an overcast day, keeping the outfit and hair unchanged. Check whether identity survives the new setting. Change only the background first; changing action, expression, light and camera together makes errors harder to diagnose.'),
     ]
+    summaries=[('외모·머리·의상·신발을 먼저 고정하세요.','Fix appearance, hair, outfit and shoes first.'),('잘 보이는 얼굴 한 장을 기준으로 저장하세요.','Save one clearly visible face as your reference.'),('전신 두 컷과 얼굴 세 컷을 비교하세요.','Compare two full-body views and three portraits.'),('다른 얼굴이나 의상만 좁혀서 수정하세요.','Target only the mismatched face or outfit.'),('같은 인물을 새로운 공간에서 확인하세요.','Check the same character in a new setting.')]
     for i, (ko,en,body_ko,body_en) in enumerate(steps,1):
-        sections.append(f'<section class="tutorial-step" id="step-{i}"><span class="tutorial-number">{i:02}</span><div><h2>{t(ko,en)}</h2><p>{t(body_ko,body_en)}</p></div></section>')
+        sections.append(f'<section class="tutorial-step" id="step-{i}"><span class="tutorial-number">{i:02}</span><div><h2>{t(ko,en)}</h2><p>{t(*summaries[i-1])}</p><details class="tutorial-explain"><summary>{t("방법 자세히 보기", "Read the detailed method")}</summary><p>{t(body_ko,body_en)}</p></details></div></section>')
     comparison = [('얼굴이 달라짐','The face changes','기준 얼굴을 다시 첨부하고 눈매·코·턱선부터 비교','Reattach the reference; compare eyes, nose and jawline first'),('의상이 바뀜','The outfit changes','드레스 색·네크라인·소매·벨트·신발을 고정 문장에 명시','Specify gown color, neckline, sleeves, belt and shoes in the fixed description'),('신발이나 머리가 잘림','Shoes or hair are cropped','전신 컷에 머리부터 신발까지 보이도록 요청','Request full-body views including the head and shoes'),('조명이 너무 강함','Lighting is too harsh','단색 배경과 중립 조명으로 기준 시트를 다시 확인','Check the reference under neutral lighting against a plain background')]
     fixes=''.join(f'<div><dt>{t(a,b)}</dt><dd>{t(c,d)}</dd></div>' for a,b,c,d in comparison)
     prompt_html=escape(PROMPT_KO)
@@ -71,16 +76,22 @@ def build_tutorials(out, origin, head, header, footer):
       ('색온도와 무드','Color temperature and mood','창빛은 차갑게, 배경 촛불은 따뜻하게 설정하면 인물과 공간이 분리됩니다. 화면 전체를 주황색으로 칠하기보다 빛의 출처를 각각 적으세요. 차분한 색감과 낮은 채도는 별도로 지정합니다.','Cool window light and a warm background candle separate the character from the room. Describe each source instead of turning everything orange. Specify restrained color and low saturation separately.'),
       ('구도와 비교 방법','Framing and comparison','두 컷의 인물·의상·포즈·카메라 위치를 고정하고 조명만 바꿉니다. 머리부터 허리까지 보이는 중간 거리, 눈높이 카메라로 시작하세요. AI가 각도까지 바꾸면 같은 구도로 다시 요청해야 조명 차이를 판단하기 쉽습니다.','Keep character, clothes, pose and camera position fixed; change only lighting. Start with an eye-level medium shot. If AI changes the angle too, request matching framing before comparing the light.'),
     ]
-    lighting_grid=''.join(f'<div><dt>{t(a,b)}</dt><dd>{t(c,d)}</dd></div>' for a,b,c,d in lighting_rows)
+    light_summaries=[('창빛의 방향부터 정합니다.','Choose the window-light direction first.'),('그림자 속 얼굴도 읽히게 합니다.','Keep the face readable in shadow.'),('차가운 창빛과 따뜻한 촛불을 나눕니다.','Separate cool window light from warm candlelight.'),('같은 구도로 조명만 비교합니다.','Compare lighting with the framing held fixed.')]
+    lighting_grid=''.join(f'<div><dt>{t(a,b)}</dt><dd>{t(*light_summaries[i])}<details class="tutorial-explain"><summary>{t("설명 펼치기", "Read the explanation")}</summary><p>{t(c,d)}</p></details></dd></div>' for i,(a,b,c,d) in enumerate(lighting_rows))
     scene_ko='''첨부한 기준 시트와 같은 가상의 로판 여주인공입니다. 얼굴, 긴 반묶음 머리, 버건디 긴소매 드레스와 황동 벨트를 유지합니다. 성 안의 돌벽과 큰 창문 옆에 차분하게 서 있습니다. 눈높이 카메라, 머리부터 허리까지 보이는 중간 거리 컷, 16:9. 화면 왼쪽 45도에서 부드러운 흐린 날 창빛이 들어옵니다. 반대쪽 얼굴은 보조광을 약하게 하되 눈과 턱의 형태는 읽히게 합니다. 배경의 작은 촛불만 따뜻하고 창빛은 차가운 색입니다. 낮은 채도와 절제된 명암, 자연스러운 피부 결, 실사 시대극 영화 무드. 과한 피부 보정, 네온색, 빛나는 마법 효과는 없습니다. 오른쪽 아래 작은 DRA9ON CINEMA 워터마크.'''
     scene_en='''Use the same fictional romantic-fantasy heroine as the attached reference sheet. Preserve her face, long half-up hair, burgundy long-sleeve gown and brass belt. She stands calmly beside a large window and stone wall inside a castle. Eye-level camera, medium shot from head to waist, 16:9. Soft overcast window light enters from frame left at roughly 45 degrees. Keep fill on the opposite cheek low, but preserve readable eyes and jaw shape. Only a small background candle is warm; the window light is cool. Low saturation, restrained contrast, natural skin texture, live-action period-film mood. No heavy skin retouching, neon colors or glowing magic. Small DRA9ON CINEMA watermark at the bottom right.'''
     TRANSLATIONS[scene_ko]=scene_en
-    lighting=f'''<section id="lighting" class="tutorial-lighting"><p class="section-eyebrow">LIGHT / CONTRAST / MOOD</p><h2>{t('같은 얼굴, 빛이 바꾸는 분위기.', 'Same face. A different mood through light.')}</h2><p>{t('A는 얼굴 확인용 중립 조명, B는 성 안의 긴장감을 만드는 측면 조명입니다. 아래 이미지는 조명 차이를 설명하기 위한 AI 생성 예시로, 완벽히 통제된 촬영 실험은 아닙니다.', 'A uses neutral light to check identity; B uses side light for tension inside the castle. These are AI-generated illustrations of lighting choices, not a perfectly controlled photographic experiment.')}</p><figure class="tutorial-figure"><a href="/assets/notes/character-lighting-example.webp" target="_blank" rel="noopener"><img src="/assets/notes/character-lighting-example.webp" width="1536" height="1024" loading="lazy" decoding="async" alt="{t('같은 로판 여주인공을 중립 조명 A와 측면 조명 B로 비교한 실습 이미지', 'Practice comparison of the same romantic-fantasy heroine under neutral light A and side light B')}"></a><figcaption>{t('A · 중립 조명 / B · 영화 무드 조명', 'A · Neutral light / B · Cinematic mood')}</figcaption></figure><dl class="tutorial-fixes">{lighting_grid}</dl><details class="tutorial-prompt"><summary>{t('성 안의 장면 실습 프롬프트 · 전체 보기', 'Castle scene practice prompt · Read in full')}</summary><pre tabindex="0"><code>{escape(scene_ko)}</code></pre><p>{t('더 밝게 바꾸려면 보조광만 늘리고, 더 쓸쓸하게 바꾸려면 배경 촛불만 빼보세요. 한 번에 한 항목씩 수정하고 결과를 비교합니다.', 'For a brighter version, increase fill only. For a lonelier mood, remove only the background candle. Change one setting at a time and compare the results.')}</p></details></section>'''
+    lighting=f'''<section id="lighting" class="tutorial-lighting"><p class="section-eyebrow">LIGHT / CONTRAST / MOOD</p><h2>{t('같은 얼굴, 빛이 바꾸는 분위기.', 'Same face. A different mood through light.')}</h2><p>{t('A는 얼굴 확인용 중립 조명, B는 성 안의 긴장감을 만드는 측면 조명입니다. 아래 이미지는 조명 차이를 설명하기 위한 AI 생성 예시로, 완벽히 통제된 촬영 실험은 아닙니다.', 'A uses neutral light to check identity; B uses side light for tension inside the castle. These are AI-generated illustrations of lighting choices, not a perfectly controlled photographic experiment.')}</p><figure class="tutorial-figure"><a href="/assets/notes/character-lighting-youth20.webp" target="_blank" rel="noopener"><img src="/assets/notes/character-lighting-youth20.webp" width="1536" height="1024" loading="lazy" decoding="async" alt="{t('같은 로판 여주인공을 중립 조명 A와 측면 조명 B로 비교한 실습 이미지', 'Practice comparison of the same romantic-fantasy heroine under neutral light A and side light B')}"></a><figcaption>{t('A · 중립 조명 / B · 영화 무드 조명', 'A · Neutral light / B · Cinematic mood')}</figcaption></figure><dl class="tutorial-fixes">{lighting_grid}</dl><details class="tutorial-prompt"><summary>{t('성 안의 장면 실습 프롬프트 · 전체 보기', 'Castle scene practice prompt · Read in full')}</summary><pre tabindex="0"><code>{escape(scene_ko)}</code></pre><p>{t('더 밝게 바꾸려면 보조광만 늘리고, 더 쓸쓸하게 바꾸려면 배경 촛불만 빼보세요. 한 번에 한 항목씩 수정하고 결과를 비교합니다.', 'For a brighter version, increase fill only. For a lonelier mood, remove only the background candle. Change one setting at a time and compare the results.')}</p></details></section>'''
     article=article.replace('<section class="tutorial-prompt" id="practice-prompt">',lighting+'<section class="tutorial-prompt" id="practice-prompt">').replace('/assets/tutorials/character-sheet-prompt-ko.txt','/assets/notes/character-sheet-prompt-ko.txt')
     article=article.replace('<a href="#checklist">','<a href="#lighting">'+t('조명·무드·명암','Light, mood and contrast')+'</a><a href="#checklist">')
+    article=article.replace('<nav class="tutorial-toc"',render_scenes(t)+'<nav class="tutorial-toc"',1)
+    article=article.replace('<a href="#step-1">','<a href="#scene-examples">'+t('씬 예시','Scene examples')+'</a><a href="#step-1">',1)
+    article=article.replace('<pre tabindex="0"><code>'+prompt_html,'<details class="tutorial-full-prompt"><summary>'+t('캐릭터 시트 전체 프롬프트 펼치기','Read the complete character-sheet prompt')+'</summary><pre tabindex="0"><code>'+prompt_html,1)
+    article=article.replace('</code></pre></section>','</code></pre></details></section>',1)
+    article=article.replace('<div class="tutorial-meta">','<p class="tutorial-date"><time datetime="2026-10-11">2026.10.11</time> · '+t('캐릭터 · 씬 · 조명','Character · Scene · Light')+'</p><div class="tutorial-meta">',1)
     TRANSLATIONS[escape(TITLE)+' | DRA9ON CINEMA'] = TRANSLATIONS[TITLE]+' | DRA9ON CINEMA'
     TRANSLATIONS[index_title+' | DRA9ON CINEMA'] = TRANSLATIONS[index_title]+' | DRA9ON CINEMA'
-    schema={'@context':'https://schema.org','@type':'Article','headline':TITLE,'description':DESC,'image':origin+ART,'url':origin+ROUTES[1],'inLanguage':'ko','datePublished':'2026-10-11','author':{'@type':'Organization','name':'DRA9ON CINEMA'}}
+    schema={'@context':'https://schema.org','@type':'Article','headline':TITLE,'description':DESC,'image':origin+ART,'url':origin+ROUTES[1],'inLanguage':'ko','datePublished':'2026-10-11','dateModified':'2026-10-11','author':{'@type':'Organization','name':'DRA9ON CINEMA'}}
     write(out,ROUTES[1],page_head(head,TITLE,DESC,ROUTES[1],schema)+article)
 
 def page_head(head,title,description,path,schema):
