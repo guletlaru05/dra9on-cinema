@@ -1,5 +1,5 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged,setPersistence,browserSessionPersistence} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,getRedirectResult,signOut,onAuthStateChanged,setPersistence,browserSessionPersistence} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 import {initializeFirestore,memoryLocalCache,doc,getDocFromServer,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 import {initializeAppCheck,ReCaptchaEnterpriseProvider} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app-check.js";
 const $=id=>document.getElementById(id);
@@ -55,6 +55,8 @@ async function boot(){
  const config=window.D9_ENGAGEMENT_CONFIG,app=initializeApp(config,"d9-private-library"),auth=getAuth(app),db=initializeFirestore(app,{localCache:memoryLocalCache()});
  if(config.appCheckSiteKey)initializeAppCheck(app,{provider:new ReCaptchaEnterpriseProvider(config.appCheckSiteKey),isTokenAutoRefreshEnabled:true});
  await setPersistence(auth,browserSessionPersistence);
+ getRedirectResult(auth).catch(error=>message("로그인 결과를 확인하지 못했습니다. "+(error.code||error.message)));
+ $("login-redirect").addEventListener("click",async()=>{const provider=new GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account"});try{await signInWithRedirect(auth,provider);}catch(error){message("로그인하지 못했습니다. "+(error.code||error.message));}});
  const ref=doc(db,"privateLibrary","main");
  $("login").addEventListener("click",async()=>{if(!ready)return;$("login").disabled=true;message("Google 로그인 창에서 계정을 선택하세요.");try{const provider=new GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account"});await signInWithPopup(auth,provider);}catch(error){message(error.code==="auth/popup-blocked"?"팝업을 허용하고 다시 로그인하세요. 인앱 브라우저에서는 Safari 또는 Chrome으로 열어주세요.":"로그인하지 못했습니다. "+(error.code||"네트워크 연결을 확인하세요."));}finally{$("login").disabled=false;}});
  $("logout").addEventListener("click",async()=>{generation++;clear();await signOut(auth);});
