@@ -190,15 +190,20 @@ for page in out.rglob('*.html'):
  for attrs, code in re.findall(r'<script\b([^>]*)>(.*?)</script>',document,re.S|re.I):
   if not re.search(r'\bsrc\s*=',attrs,re.I):
    inline_hashes.append("'sha256-"+base64.b64encode(sha256(code.encode('utf-8')).digest()).decode('ascii')+"'")
+ # Firebase popup sign-in loads Google's iframe transport dynamically.
+ # Keep these additional origins limited to the private library shell.
+ private_library = page.relative_to(out).as_posix() == 'library/index.html'
+ auth_scripts = " https://apis.google.com" if private_library else ""
+ auth_connections = " https://dra9on-cinema-stats.firebaseapp.com" if private_library else ""
  policy="; ".join([
   "default-src 'self'",
-  "script-src 'self' https://www.gstatic.com/firebasejs/ https://www.gstatic.com/recaptcha/ https://www.google.com/recaptcha/ https://www.youtube.com https://www.googletagmanager.com "+' '.join(inline_hashes),
+  "script-src 'self' https://www.gstatic.com/firebasejs/ https://www.gstatic.com/recaptcha/ https://www.google.com/recaptcha/ https://www.youtube.com https://www.googletagmanager.com "+' '.join(inline_hashes)+auth_scripts,
   "script-src-attr 'none'",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: https:",
   "media-src 'self'",
-  "connect-src 'self' https://content-firebaseappcheck.googleapis.com https://firebaseappcheck.googleapis.com https://www.google.com/recaptcha/ https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebaseinstallations.googleapis.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com",
+  "connect-src 'self' https://content-firebaseappcheck.googleapis.com https://firebaseappcheck.googleapis.com https://www.google.com/recaptcha/ https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebaseinstallations.googleapis.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com"+auth_connections,
   "frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/ https://www.youtube-nocookie.com https://www.youtube.com https://dra9on-cinema-stats.firebaseapp.com",
   "object-src 'none'", "base-uri 'none'", "form-action 'none'",
   "upgrade-insecure-requests"
