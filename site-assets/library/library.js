@@ -1,5 +1,5 @@
-import {deadline,loadPrivatePayload} from "./library-transport.js?v=20261011-collections7";
-import {createLibraryUI} from "./library-ui.js?v=20261011-collections7";
+import {deadline,loadPrivatePayload} from "./library-transport.js?v=20261011-beginner8";
+import {createLibraryUI} from "./library-ui.js?v=20261011-beginner8";
 import {initializeApp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,getRedirectResult,signOut,onAuthStateChanged,setPersistence,browserSessionPersistence,getIdToken} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 import {initializeFirestore,memoryLocalCache,doc,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
