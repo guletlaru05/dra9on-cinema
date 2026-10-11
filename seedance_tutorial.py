@@ -1,0 +1,72 @@
+"""Original public image-to-video exercise, with official reference links."""
+from html import escape
+
+PATH='/tutorials/seedance-2-5/'
+ART='/assets/notes/seedance-storyboard-v1.webp'
+TITLE_KO='한 장의 씬을, 움직이는 장면으로.'
+TITLE_EN='Turn one still into a moving scene.'
+DESC_KO='시댄스 2.5 입문: 참고 이미지의 역할을 나누고, 인물 동작과 카메라를 따로 적어 영상 한 컷을 만드는 실습.'
+DESC_EN='A Seedance 2.5 beginner exercise: assign image roles, separate acting from camera motion and plan one continuous video shot.'
+PROMPT_KO='''이미지→영상 또는 참고 이미지 기반 생성. 30초, 16:9, 실사 로판 영화의 단일 연속 숏입니다.
+참고 역할: 첨부한 씬 이미지는 시작 구도·성 안의 배치·창빛 방향을 정합니다. 캐릭터 시트를 함께 넣을 수 있는 참고 모드라면 시트는 얼굴·머리·의상만 정합니다. 시트의 분할 화면과 스튜디오 배경은 영상에 가져오지 않습니다. 얼굴과 의상은 시트, 공간과 시작 구도는 씬 이미지가 우선합니다.
+고정: 가상의 한국 여성인 20세 성인 공작영애, 긴 갈색 반묶음 머리, 작은 은빛 티아라, 아이보리·파우더 블루 실크 드레스, 은빛 자수, 레이스 긴소매와 진주. 같은 인물과 의상을 유지합니다. 성 안의 높은 창문, 돌기둥, 먼 문과 촛불의 위치를 유지합니다.
+0–8초 / 인물: 창가에 가만히 서 있습니다. 손은 허리 앞에 자연스럽게 모읍니다. 숨을 천천히 쉬고 한 번 자연스럽게 눈을 깜빡입니다. / 카메라: 눈높이 와이드에서 시작합니다. 앞쪽 기둥, 중간의 인물, 뒤쪽 문이 보입니다. 카메라는 움직이지 않고 공간을 먼저 보여줍니다.
+8–16초 / 인물: 화면 오른쪽 먼 문에서 들리는 소리에 먼저 눈을 움직이고, 이어 고개를 조금 돌립니다. 몸과 발은 창가에 머뭅니다. / 카메라: 같은 시선 축에서 인물을 향해 천천히 직선으로 전진합니다. 회전하거나 광학 줌을 하지 않습니다. 전신에서 무릎 위 정도까지 자연스럽게 가까워집니다.
+16–26초 / 인물: 입술이 살짝 굳고 눈빛에 경계가 생깁니다. 놀라서 입을 벌리거나 과장되게 울지 않습니다. / 카메라: 같은 직선 경로로 느리게 전진하여 허리 위 중간 거리에서 멈춥니다. 초점은 얼굴에 두고 창문과 문은 뒤로 부드럽게 흐려집니다.
+26–30초 / 인물: 화면 오른쪽의 문을 바라보는 경계 어린 표정을 유지합니다. / 카메라: 멈춘 구도를 유지하고 마지막 프레임을 안정적으로 남깁니다. 컷 전환이나 검은 화면으로 끝내지 않습니다.
+빛과 색: 부드러운 차가운 창빛, 배경의 작은 따뜻한 촛불, 낮은 채도와 자연스러운 피부 결. 얼굴의 어두운 쪽도 눈과 턱이 읽힙니다. 영상 중 조명의 방향과 시간대가 바뀌지 않습니다.
+소리: 대사와 음악은 없습니다. 약한 실내 공기 소리와 8초 무렵 먼 문 쪽의 작은 발소리만 요청합니다. 자막이나 임의의 문구는 넣지 않습니다.
+마지막 상태: 인물은 창가에서 화면 오른쪽을 보고, 손은 허리 앞에 있으며, 카메라는 허리 위 눈높이로 멈춥니다. 다음 반응 숏으로 이어갈 수 있는 끝 프레임입니다.'''
+PROMPT_EN='''Image-to-video or reference-guided generation. A 30-second, 16:9 live-action romantic-fantasy scene in one continuous shot.
+Reference roles: the scene image defines the opening composition, castle layout and window-light direction. If the selected reference mode accepts a character sheet too, use it only for identity, hair and clothes. Do not transfer its panel layout or studio background. The sheet takes priority for identity and costume; the scene image for space and opening framing.
+Locks: the same fictional Korean adult duke’s daughter aged 20, long brown half-up hair, delicate silver tiara, ivory and powder-blue silk gown, silver embroidery, lace long sleeves and pearls. Preserve identity and costume. Keep the castle windows, columns, distant doorway and candles in their established places.
+0–8s / Acting: she stands quietly by the window, hands naturally together at her waist, breathing gently and blinking once. / Camera: start at eye level in a wide shot, with a foreground column, middle-distance heroine and distant door. Hold the camera still to establish the space.
+8–16s / Acting: her eyes move first toward a sound at the distant doorway on frame right, then her head turns slightly. Her body and feet remain by the window. / Camera: slowly dolly straight toward her on the same viewing axis. No rotation or optical zoom. Move naturally from full-body to above-knee framing.
+16–26s / Acting: her lips tighten slightly and her eyes become guarded. No exaggerated open-mouth surprise or crying. / Camera: continue slowly on the same straight path, ending in an eye-level waist-up medium shot. Focus on her face; the window and doorway soften behind her.
+26–30s / Acting: hold the guarded gaze toward the doorway on frame right. / Camera: stop and hold a stable final composition, with no cut or fade to black.
+Light and color: soft cool window light, a small warm background candle, muted colors and natural skin texture. Keep eyes and jaw readable on the shadow side. Maintain the light direction and time of day throughout.
+Audio: no dialogue or music. Request faint room ambience and one quiet distant footstep near 8s. No subtitles or invented text.
+Final state: she remains by the window looking right, hands at her waist; the camera holds an eye-level waist-up shot. Leave a usable final frame for the next reaction shot.'''
+
+def build(out,origin,head,header,footer,t):
+    title=t(TITLE_KO,TITLE_EN);desc=t(DESC_KO,DESC_EN)
+    t(TITLE_KO+' | DRA9ON CINEMA',TITLE_EN+' | DRA9ON CINEMA')
+    steps=[
+      ('입력 이미지를 준비합니다.','Prepare the input image.',
+       '시트는 인물의 기준이고, 씬 이미지는 영상의 시작 구도입니다. 첫 실습은 인물 한 명·한 공간으로 좁히세요. 직접 만든 글씨 없는 원본 씬을 준비하고 얼굴·손·의상을 먼저 확인합니다. 이 강좌의 워터마크 이미지는 설명용입니다. 생성에 넣으면 글씨까지 따라올 수 있으니 자신의 깨끗한 원본을 사용하세요.',
+       'The sheet defines the character; the scene image defines the opening frame. Start with one person in one space. Use your own clean scene original and check the face, hands and outfit first. The watermarked lesson illustrations are teaching examples; feeding them into generation may carry the text into the video.'),
+      ('영상 모드와 이미지 역할을 고릅니다.','Choose the mode and image roles.',
+       'Dreamina의 AI Video에서 계정에 보이는 Seedance 2.5를 선택합니다. 한 씬을 움직일 때는 Image to video, 여러 자료의 역할을 나눌 때는 Omni reference가 표시되는지 확인하세요. 단일 이미지 모드에는 분할 시트보다 완성된 씬 한 장을 넣습니다. 참고 모드에서는 시트=얼굴·의상, 씬=공간·구도처럼 적고, 충돌할 때 무엇이 우선인지 정합니다. 태그는 화면에 표시된 것을 그대로 사용하세요.',
+       'In Dreamina AI Video, select Seedance 2.5 if it is available to your account. Look for Image to video for one still, or Omni reference for assigning several inputs. Use a finished scene rather than a divided sheet in single-image mode. In reference mode, assign the sheet to identity and costume and the scene to space and framing. State priority when they conflict and use the exact tags shown by your interface.'),
+      ('인물과 카메라의 움직임을 따로 씁니다.','Write acting and camera motion separately.',
+       '“영화처럼 멋있게”만 적으면 움직임이 모호합니다. 인물은 “문 쪽으로 눈을 먼저 움직인 뒤 고개를 조금 돌린다”, 카메라는 “눈높이 와이드에서 같은 축으로 천천히 전진해 허리 위에서 멈춘다”처럼 구분하세요. 아래는 움직임을 계획한 새 AI 스토리보드이며 실제 생성 영상 캡처가 아닙니다. 동작 순서와 끝 구도를 미리 정해봅니다.',
+       '“Make it cinematic” leaves motion vague. Separate acting—eyes move toward the door, then a small head turn—from the camera: a slow straight push from an eye-level wide shot to waist-up framing. The storyboard below is a newly generated planning illustration, not frames captured from a generated video. Plan the action order and end composition first.'),
+      ('화면에 있는 설정으로 짧게 시험합니다.','Test with the settings your interface offers.',
+       '가로 장면은 16:9, 테스트 해상도는 선택 가능할 때 720p로 시작합니다. 아래 프롬프트는 30초 구성이므로 30초가 표시되는 모드에서 사용하세요. 더 짧은 길이만 보이면 시간 구간과 동작을 함께 줄입니다. 프롬프트에 “30초”라고 쓴다고 UI 제한이 바뀌지는 않습니다. 생성 버튼을 누르기 전에 길이·비율·예상 크레딧을 확인하세요. 이 강좌를 읽는 것은 무료지만 외부 도구의 생성은 그 서비스 이용 조건을 따릅니다.',
+       'Use 16:9 for this landscape scene and 720p for testing when offered. The prompt below is planned for 30s: use it in a mode that displays that duration. If only shorter clips are offered, shorten the timeline and action together. Writing “30s” cannot override interface limits. Before generating, check duration, ratio and the displayed credit estimate. Reading this lesson is free; generation follows the external service’s terms.'),
+      ('결과를 세 구간으로 나눠 확인합니다.','Review the beginning, middle and ending.',
+       '처음에는 입력 구도와 얼굴, 중간에는 손·눈·걷는 방향·카메라 경로, 끝에는 의상·소품·시선과 멈춘 구도를 봅니다. 원본 씬과 첫 프레임을 나란히 놓고 비교하세요. 얼굴이 바뀌었다면 기준 이미지 역할부터, 카메라가 튄다면 이동 지시부터 고칩니다. 소리도 별도로 들어 대사 없는 실습에 음악이나 임의의 말이 생기지 않았는지 확인합니다.',
+       'Check opening identity and composition; middle-frame hands, eyes, movement direction and camera path; then the final costume, props, gaze and stable framing. Compare the input with the first frame. Repair reference roles for identity drift or camera direction for jumps. Listen separately for unwanted music or speech in this dialogue-free exercise.'),
+      ('한 항목만 수정하고 편집으로 연결합니다.','Repair one layer and assemble the edit.',
+       '얼굴·조명·카메라를 한꺼번에 바꾸지 마세요. 수정할 항목을 정하고 참고 역할, 인물 동작, 카메라 시작·끝, 소리까지 포함한 완성 프롬프트를 다시 씁니다. Video edit 또는 부분 수정이 실제 화면에 보이면 입력 영상과 수정 범위를 지정하고, 나머지 상태를 유지하도록 요청하세요. 이 기능의 표시 여부와 범위는 계정·모드에 따라 다릅니다. 없는 기능은 원본 설정을 유지해 다시 생성합니다. 통과한 컷은 편집기에 넣어 시작·끝의 불안정한 프레임을 잘라내고, 다음 컷과 시선·방향·소리를 이어줍니다.',
+       'Change one layer at a time. Rewrite a complete brief including roles, acting, camera start/end and audio. If Video edit or a local-edit control is actually available, provide the source video and bound the intended change while preserving the rest. Availability and scope vary by account and mode. Otherwise regenerate with the original setup retained. Trim unstable head/tail frames in an editor and connect the next shot through gaze, direction and sound.'),
+    ]
+    input_img='/assets/notes/character-scene-wide-duchess20-v3-center-soft-wm.webp'
+    sections=[]
+    for i,(ko,en,bko,ben) in enumerate(steps,1):
+        visual=''
+        if i in (1,3):
+            src=input_img if i==1 else ART
+            caption=t('입력 씬 예시 · 창가의 인물과 공간을 먼저 확정','Input scene example · Establish the character and space') if i==1 else t('01 공간 소개 → 02 시선·고개 반응 → 03 가까워진 끝 구도 · 영상화 계획 예시','01 Establish → 02 Eyes and head react → 03 Closer ending · Illustrative video plan')
+            visual_class=' video-storyboard' if i==3 else ''
+            width,height=(2048,768) if i==3 else (1672,941)
+            visual=f'<figure class="tutorial-comparison{visual_class}"><a href="{src}" target="_blank" rel="noopener"><img src="{src}" width="{width}" height="{height}" loading="lazy" decoding="async" alt="{caption}"></a><figcaption><p>{caption}</p></figcaption></figure>'
+        sections.append(f'<section class="tutorial-step" id="video-step-{i}"><span class="tutorial-number">{i:02}</span><div><h2>{t(ko,en)}</h2>{visual}<p>{t(bko,ben)}</p></div></section>')
+    length=t(f'프롬프트 길이: {len(PROMPT_KO)}/5000자',f'Prompt length: {len(PROMPT_EN)}/5000 characters')
+    sources=[('https://dreamina.capcut.com/seedance/how-to-use-seedance-2-5','Dreamina · 공식 사용 흐름','Dreamina · Official workflow'),('https://dreamina.capcut.com/seedance/seedance-2-5-prompt','Dreamina · 공식 프롬프트 가이드','Dreamina · Official prompt guide'),('https://www.capcut.com/tools/dreamina-seedance-2-5-desktop','CapCut · 데스크톱 모드와 설정','CapCut · Desktop modes and settings')]
+    links=''.join(f'<a class="text-button" href="{url}" target="_blank" rel="noopener">{t(ko,en)} ↗</a>' for url,ko,en in sources)
+    body=f'''<body class="watch-page">{header()}<main class="tutorial-main" id="main"><a class="note-back" href="/tutorials/">← {t('튜토리얼 목록','All tutorials')}</a><header class="tutorial-heading"><p class="section-eyebrow">02 / SEEDANCE 2.5 / IMAGE TO VIDEO</p><h1>{title}</h1><p class="tutorial-intro">{desc}</p><p class="tutorial-date"><time datetime="2026-10-11">2026.10.11</time> · {t('이미지 → 영상 · 초보자 실습','Image → Video · Beginner exercise')}</p></header><nav class="tutorial-toc"><a href="#video-step-1">{t('사용 순서','Workflow')}</a><a href="#video-prompt">{t('전체 영상 프롬프트','Full video prompt')}</a><a href="#video-repair">{t('수정과 편집','Repair and edit')}</a></nav><p class="tutorial-notice">{t('공식 사용 흐름을 참고해 드래곤시네마가 구성한 원본 실습입니다. 버튼 이름과 사용 가능한 모델·길이·해상도·편집 기능은 실제 계정 화면을 기준으로 확인하세요.','An original DRA9ON CINEMA exercise informed by official workflow guides. Verify control names, available models, durations, resolutions and editing features in your own interface.')}</p>{''.join(sections[:4])}<section class="tutorial-prompt" id="video-prompt"><p class="section-eyebrow">ONE SCENE / ONE CAMERA PATH</p><h2>{t('복사해서 시작하는 전체 영상 프롬프트','A complete video prompt to start with')}</h2><p>{t('참고 모드에서는 화면의 이미지 태그를 역할 문장에 넣고, 단일 이미지 모드에서는 시트 관련 문장을 빼세요. 초 단위는 연출 계획이며 프레임 단위 실행을 보장하지 않습니다.','In reference mode, insert the interface’s image tags into the role descriptions. In single-image mode, remove the sheet-specific instruction. Timing is an intended direction, not a frame-accurate guarantee.')}</p><a class="text-button" href="/assets/notes/seedance-practice-ko.txt" download>{t('전체 프롬프트 TXT 다운로드','Download full prompt TXT')} ↓</a><details class="tutorial-full-prompt"><summary>{t('영상 프롬프트 전체 펼치기','Read the complete video prompt')}</summary><pre tabindex="0"><code>{t(PROMPT_KO,PROMPT_EN)}</code></pre><p>{length}</p></details></section><div id="video-repair">{''.join(sections[4:])}</div><aside class="tutorial-ending"><h2>{t('시트를 만들고, 한 컷씩 이어갑니다.','Build the reference, then connect one shot at a time.')}</h2><div class="tutorial-actions"><a class="button button-glass" href="/tutorials/character-sheet/">{t('시트·씬·조명 강좌','Sheet, scene and lighting lesson')} →</a><a class="button button-white" href="/questions/">{t('제작자에게 질문하기','Ask the creator')} →</a></div><p class="tutorial-notice">{t('확인한 공식 자료 · 2026.10.11','Official references checked · 2026.10.11')}</p><div class="tutorial-actions">{links}</div></aside></main>{footer()}</body></html>'''
+    schema={'@context':'https://schema.org','@type':'Article','headline':TITLE_KO,'description':DESC_KO,'image':origin+ART,'url':origin+PATH,'inLanguage':'ko','datePublished':'2026-10-11','dateModified':'2026-10-11','author':{'@type':'Organization','name':'DRA9ON CINEMA'}}
+    dst=out/PATH.strip('/');dst.mkdir(parents=True,exist_ok=True)
+    (dst/'index.html').write_text(head(title+' | DRA9ON CINEMA',desc,PATH,schema).replace('property="og:type" content="video.episode"','property="og:type" content="article"')+body,encoding='utf-8')
+

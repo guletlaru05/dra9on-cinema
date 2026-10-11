@@ -186,6 +186,7 @@ class EnglishPage(HTMLParser):
         if tag == 'a' and attrs.get('href', '').startswith('/') and attrs['href'] != '/library/':
             if attrs['href'].startswith('/assets/'):
                 attrs['href'] = attrs['href'].replace('character-sheet-prompt-ko.txt', 'character-sheet-prompt-en.txt')
+                attrs['href'] = attrs['href'].replace('seedance-practice-ko.txt', 'seedance-practice-en.txt')
             else:
                 attrs['href'] = '/en' + attrs['href']
         if tag == 'link' and attrs.get('rel') == 'canonical':
