@@ -287,3 +287,18 @@ html.site-menu-open{overflow:hidden}
 @media(min-width:1600px){.tutorial-main .tutorial-lesson-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:800px){.site-menu-panel{width:100vw;max-width:100vw;padding:0 24px max(28px,env(safe-area-inset-bottom));border:0}.site-menu-heading{padding:20px 0}.header .site-menu .nav-link{font-size:23px;min-height:58px;padding:13px 12px}.tutorial-main{width:calc(100% - 40px);padding-top:36px}.tutorial-main .tutorial-lesson-list{grid-template-columns:1fr;gap:24px}.tutorial-main .tutorial-preview>div{padding:22px}.tutorial-main .tutorial-scene-grid{grid-template-columns:1fr}.tutorial-main .tutorial-teaser{padding-top:24px}}
 @media(prefers-reduced-motion:no-preference){.site-menu-panel[open]{animation:menu-slide-in .22s ease-out}@keyframes menu-slide-in{from{transform:translateX(50px);opacity:0}to{transform:translateX(0);opacity:1}}}
+
+/* One shared edge alignment across public pages, including ultrawide screens. */
+:root{--site-gutter:clamp(22px,4.3vw,180px)}
+body,body[data-page="home"]{--gutter:var(--site-gutter)}
+body .header,body .catalog,body footer{padding-inline:var(--site-gutter)}
+.tutorial-main,.production-note,.privacy-copy{width:calc(100% - 2 * var(--site-gutter));max-width:none;margin-inline:auto;padding-inline:0}
+.watch-main{width:100%;max-width:none;padding-inline:var(--site-gutter)}
+.notes-index{padding-inline:var(--site-gutter)}
+.notes-index .notes-teaser,.notes-index .notes-library{max-width:none;margin-inline:0;padding-inline:0}
+.production-note .note-intro{max-width:none;margin-inline:0;text-align:left}
+.production-note .note-intro>p:not(.section-eyebrow){margin-inline:0;max-width:850px}
+.production-note .comic-sequence{max-width:1100px}
+.privacy-copy p,.privacy-copy ul,.privacy-copy ol{max-width:850px}
+.tutorial-main .tutorial-preview img,.tutorial-main .tutorial-preview img[src*="seedance-storyboard"]{height:auto;aspect-ratio:16/9;object-fit:cover;object-position:center;display:block}
+@media(max-width:800px){.tutorial-main,.production-note,.privacy-copy{width:calc(100% - 2 * var(--site-gutter))}.watch-main{padding-inline:var(--site-gutter)}}
