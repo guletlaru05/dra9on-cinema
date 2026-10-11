@@ -101,7 +101,10 @@ def build_tutorials(out, origin, head, header, footer):
     TRANSLATIONS[escape(TITLE)+' | DRA9ON CINEMA'] = TRANSLATIONS[TITLE]+' | DRA9ON CINEMA'
     TRANSLATIONS[index_title+' | DRA9ON CINEMA'] = TRANSLATIONS[index_title]+' | DRA9ON CINEMA'
     schema={'@context':'https://schema.org','@type':'Article','headline':TITLE,'description':DESC,'image':origin+ART,'url':origin+ROUTES[1],'inLanguage':'ko','datePublished':'2026-10-11','dateModified':'2026-10-11','author':{'@type':'Organization','name':'DRA9ON CINEMA'}}
-    write(out,ROUTES[1],page_head(head,TITLE,DESC,ROUTES[1],schema)+article)
+    from tutorial_workbench import enhance
+    article, workbench_style = enhance(article, out, t)
+    article_head = page_head(head,TITLE,DESC,ROUTES[1],schema).replace('</head>',workbench_style+'</head>')
+    write(out,ROUTES[1],article_head+article)
     build_seedance(out,origin,head,header,footer,t)
     build_platform(out,origin,head,header,footer,t)
     build_languages(out,origin,head,header,footer,t)
