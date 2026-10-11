@@ -3,7 +3,7 @@ from html import escape
 from site_config import CONTACT_EMAIL
 COPY = [
 ('개인정보처리방침', 'Privacy policy'),
-('시행일: 2026년 10월 10일', 'Effective date: October 10, 2026'),
+('시행일: 2026년 10월 11일', 'Effective date: October 11, 2026'),
 ('운영자와 문의', 'Operator and contact'),
 ('DRA9ON CINEMA는 이 사이트를 운영합니다. 개인정보 관련 문의, 열람·삭제·동의 철회 요청은 아래 이메일로 보내주세요.', 'DRA9ON CINEMA operates this site. Contact the email below with privacy questions or requests for access, deletion or withdrawal of consent.'),
 ('선택적 방문 통계', 'Optional analytics'),
@@ -22,6 +22,10 @@ COPY = [
 ('조회수·좋아요 기능의 자동화된 악용을 줄이기 위해 Firebase App Check와 Google reCAPTCHA Enterprise를 사용합니다. 집계를 불러올 때 IP 주소, 브라우저·기기 및 상호작용 신호가 Google에 전달되어 보안 검증에 사용될 수 있으며, 검증 토큰을 브라우저에 임시 저장합니다. 이 처리는 광고나 GA4 분석을 위한 것이 아니며 Google 개인정보처리방침과 서비스 약관이 적용됩니다. 검증 실패 또는 무료 한도 초과 시 집계가 표시되지 않을 수 있으나 영상은 계속 볼 수 있습니다. 이 기능은 GA4와 별개로 작동합니다. 식별자는 브라우저 저장소를 지우면 초기화되지만 서버의 기존 기록이 자동 삭제되지는 않습니다. 기록은 집계 운영 기간 동안 보관하며 삭제 요청은 운영자에게 문의할 수 있습니다. Firestore 데이터 저장 위치는 서울이며, 인증 및 서비스 운영 정보는 Google 정책에 따라 국외에서 처리될 수 있습니다.', 'Firebase App Check and Google reCAPTCHA Enterprise help reduce automated abuse of plays and likes. Loading counts may send IP address, browser, device and interaction signals to Google for security verification, with verification tokens temporarily stored in the browser. This processing is separate from advertising and GA4 analytics and is subject to Google privacy policies and terms. If verification fails or the free quota is exhausted, counts may be unavailable while videos remain watchable. This feature operates separately from GA4. Clearing browser storage resets your browser identity but does not automatically delete existing server records. Records are retained while the counting feature operates; contact the operator for deletion requests. Firestore data is stored in Seoul; authentication and service-operation data may be processed internationally under Google policies.'),
 ('운영자 전용 자료실', 'Owner-only study library'),
 ('개인 제작 자료실은 등록된 운영자 Google 계정만 이용합니다. Firebase Authentication은 로그인 계정의 이메일, 확인 상태와 사용자 식별자를 처리하여 권한을 확인합니다. 자료 본문과 업데이트 시각은 Firestore에 비공개로 저장하며, 등록된 계정 외에는 서버 접근 규칙으로 읽기와 수정을 제한합니다. 공개 저장소에는 자료 본문을 넣지 않습니다. 로그인 상태는 현재 브라우저 세션에 보관하고, 자료 본문은 영구 브라우저 캐시에 저장하지 않으며 로그아웃하면 화면에서 비웁니다. 자료실에서는 GA4를 실행하지 않습니다. App Check 보안 검증은 별도로 작동할 수 있습니다.', 'The private study library is restricted to the registered owner Google account. Firebase Authentication processes the account email, verification state and user identifier to check authorization. Library content and update timestamps are stored privately in Firestore; server rules restrict reading and editing to the registered account. Library content is excluded from the public repository. Sign-in state is retained for the current browser session; content is not kept in a persistent browser cache and is cleared from the page on sign-out. GA4 does not run in the library. App Check security verification may operate separately.'),
+('공개 커뮤니티 게시판', 'Public community board'),
+('게시에 동의하면 닉네임·제목·본문·분야·익명 사용자 식별자·접수 및 수정 시각·제작자 답변·답변 시각을 Firebase Firestore에 저장합니다. 글과 닉네임, 답변은 누구나 볼 수 있는 공개 게시판에 게시됩니다. 이름·전화번호·이메일·비밀번호 등 개인정보를 적지 마세요. 닉네임은 본인 인증된 이름이 아니며 방문자와 제작자의 표시는 구분됩니다.', 'When you agree to publish, your nickname, title, text, topic, anonymous user identifier, creation/update times, creator reply and reply time are stored in Firebase Firestore. Posts, nicknames and replies appear on a public board readable by anyone. Do not include names, phone numbers, email addresses or passwords. Visitor nicknames are not verified identities and are labelled separately from the creator.'),
+('회원가입이나 방문자 로그인 화면 없이 Firebase Authentication의 익명 로그인으로 글쓰기용 브라우저 식별자를 생성합니다. 로그인 상태는 이 브라우저에 보관하며, 같은 식별자로 10분에 한 번 게시하도록 서버에서 제한합니다. 운영자 답변·숨기기·복원은 등록된 제작자 Google 계정으로만 가능합니다. 숨긴 글은 공개 컬렉션에서 내려가고 제작자 전용 보관함에 저장됩니다. 게시글·답변·보관 기록은 게시판 운영 중 보관하며 수정·삭제 요청은 운영자 이메일로 보내주세요. 브라우저 저장소를 지워도 서버의 글은 자동 삭제되지 않습니다.', 'Firebase Authentication creates an anonymous browser identity for posting, without registration or a visitor sign-in screen. Sign-in state is retained in this browser; server rules limit the same identity to one post per 10 minutes. Only the registered creator Google account may reply, hide or restore posts. Hidden posts leave the public collection and are stored in an owner-only archive. Posts, replies and archived records are retained while the board operates; contact the operator by email for edit or deletion requests. Clearing browser storage does not automatically delete server posts.'),
+('게시판은 GA4 분석 동의와 별개입니다. Google LLC의 Firebase와 App Check 보안 검증을 사용하며 데이터는 네트워크로 전송됩니다. Firestore는 서울 리전에 저장하고 인증 및 서비스 운영 데이터는 Google 정책에 따라 국외에서 처리될 수 있습니다. 글 본문을 분석 이벤트로 전송하지 않습니다. 무료 한도 소진 또는 보안 검증 실패 시 게시판 이용이 일시적으로 불가능할 수 있습니다.', 'The board operates separately from GA4 consent. It uses Google LLC Firebase and App Check security verification and transmits data over the network. Firestore uses the Seoul region; authentication and service-operation data may be processed internationally under Google policies. Post contents are not sent as analytics events. Free quota exhaustion or security verification failure may temporarily prevent board use.'),
 ('정책 변경', 'Changes'),
 ('처리 방식이 바뀌면 이 페이지와 시행일을 갱신하며, 동의 범위가 바뀌면 다시 동의를 요청합니다.', 'We update this page and its effective date when processing changes, and request consent again if the scope of consent changes.'),
 ]
@@ -29,7 +33,7 @@ TRANSLATIONS = dict(COPY)
 def build_privacy(out, origin, head, header, footer):
  title=COPY[0][0]
  body='<body class="watch-page"><div>'+header()+'</div><main id="main" class="privacy-copy"><h1>'+title+'</h1><p>'+COPY[1][0]+'</p>'
- headings={2,4,6,9,12,15,18,20}
+ headings={2,4,6,9,12,15,18,20,24}
  for i,(ko,en) in enumerate(COPY[2:],2):
   tag='h2' if i in headings else 'p'
   body+=f'<{tag}>{escape(ko)}</{tag}>'
@@ -38,4 +42,3 @@ def build_privacy(out, origin, head, header, footer):
  path=out/'privacy';path.mkdir(exist_ok=True)
  schema={'@context':'https://schema.org','@type':'WebPage','name':title,'url':origin+'/privacy/'}
  (path/'index.html').write_text(head(title+' | DRA9ON CINEMA',title,'/privacy/',schema)+body,encoding='utf-8')
-

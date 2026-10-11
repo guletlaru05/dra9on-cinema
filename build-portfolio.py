@@ -196,7 +196,7 @@ for page in out.rglob('*.html'):
    inline_hashes.append("'sha256-"+base64.b64encode(sha256(code.encode('utf-8')).digest()).decode('ascii')+"'")
  # Firebase popup sign-in loads Google's iframe transport dynamically.
  # Keep these additional origins limited to the private library shell.
- private_library = page.relative_to(out).as_posix() == 'library/index.html'
+ private_library = page.relative_to(out).as_posix() in ['library/index.html','questions/index.html','en/questions/index.html']
  auth_scripts = " https://apis.google.com" if private_library else ""
  auth_connections = " https://dra9on-cinema-stats.firebaseapp.com" if private_library else ""
  policy="; ".join([
