@@ -29,18 +29,78 @@ export const platforms = [
   caution:'임시 업로드는 세션 간 유지되지 않을 수 있습니다. 저장 참고를 팀과 공유하는 설정은 개인 자료의 공유 범위를 확인한 뒤 선택하세요.',
   source:'https://help.runwayml.com/hc/en-us/articles/52963720640275-Using-reference-media-to-guide-your-generations'}
 ];
+platforms.push(
+ {name:'지크 / ZCRE',tool:'ZCRE',focus:'인물 기준을 만든 뒤 씬 이미지와 영상으로 연결하기',input:'캐릭터의 얼굴·의상 기준과 공간 이미지를 준비합니다. 공식 홈페이지와 사용 가이드에서 현재 작업 메뉴와 모델을 확인하세요.',reference:'자료를 업로드한 뒤 해당 모델이 제공하는 참조 방식으로 연결합니다. 외모 기준, 공간 기준, 시작 프레임을 구분해서 기록합니다.',edit:'생성 모델 선택과 기존 영상 수정은 서로 다른 단계입니다. 현재 화면의 편집 기능을 확인한 뒤 원본 구간·변경 대상·보존할 조건을 지정하세요.',exercise:['인물의 얼굴과 의상을 기준 시트로 고릅니다.','같은 인물로 문이 보이는 씬 이미지 한 장을 만듭니다.','얼굴·머리·소품·빛 방향을 승인한 뒤 영상 입력으로 연결합니다.','지원 길이에서 고개를 돌리는 한 동작을 시험합니다.','전체 구간을 확인하고 인물 기준 또는 움직임 하나만 바꿉니다.'],caution:'학습 제안입니다. 실제 서비스의 업로드 제한·모델·비용은 화면에서 확인합니다.',source:'https://docs.zcre.ai/'},
+ {name:'빠나나AI / BBANANA',tool:'BBANANA',focus:'캐릭터·3D 앵글·통합생성을 제작 단계로 나누기',input:'공식 홈에서 캐릭터, 3D 앵글, 통합생성, 캔버스 메뉴를 확인했습니다. BBANANA는 플랫폼 이름이며 Nano Banana라는 이미지 모델과 구분합니다.',reference:'캐릭터는 인물 기준을, 3D 앵글은 포즈·조명·카메라 구도를 준비하는 용도로 계획합니다. 최종 생성 모델의 실제 입력 슬롯과 멘션은 별도로 확인하세요.',edit:'새 이미지·영상 생성, 캔버스의 연결 작업, 기존 영상 수정은 같은 기능이 아닙니다. 원하는 작업 메뉴와 지원 모델을 먼저 고릅니다.',exercise:['캐릭터 기준 이미지와 같은 의상을 준비합니다.','3D 앵글에서 눈높이 정면의 포즈와 빛을 계획합니다.','동일 인물로 낮은 측면 구도를 비교합니다.','통합생성에서 선택 영상 모델의 참조 입력을 확인합니다.','짧은 한 컷을 시험하고 얼굴·구도·빛이 유지되는지 봅니다.'],caution:'MCP 연결과 사이트 사용은 별개입니다. 자료실은 외부 계정에 연결되거나 대신 생성하지 않습니다. 생성 전 표시 크레딧을 확인하세요.',source:'https://www.bbanana.ai/'}
+);
+const platformScenes=[
+ ['03-filmmaking-emotion',3,0,'대사와 호흡을 계획하는 연기 씬'],
+ ['04-editing-camera',2,2,'카메라 동선을 비교하는 복도 씬'],
+ ['06-character-storyboard',0,0,'같은 인물의 참고 모습을 정하는 시트 예시'],
+ ['drama-study-20261011',2,0,'시작 이미지의 공간과 구도를 읽는 와이드 씬'],
+ ['06-character-storyboard',0,1,'인물 기준을 실제 씬으로 연결하는 예시'],
+ ['04-editing-camera',3,0,'조명과 앵글을 계획하는 촬영 예시']
+];
+const workflows=[
+ [
+ ['01 · 모드 결정','I2V는 시작 이미지를 움직이는 실습, 참고 모드는 자료별 역할을 나누는 실습, Edit는 원본 영상의 일부를 고치는 실습으로 생각하세요. 첫 과제는 한 인물이 인기척을 듣고 고개를 돌리는 컷입니다.'],
+ ['02 · 참조 역할표','씬은 방·빛·시작 구도, 시트는 얼굴·머리·의상, 동작 영상은 몸의 리듬으로 나눕니다. 충돌할 때 얼굴은 시트가 우선이라는 조건을 적고 시트 배경과 패널은 가져오지 않게 합니다.'],
+ ['03 · 실제 멘션 삽입','업로드 후 입력창의 @ 목록에서 첨부를 선택하세요. 아래 사이트 글의 예시 번호를 그대로 타이핑하지 말고 자신의 화면에서 삽입된 태그를 유지합니다. 업로드 순서가 바뀌면 역할표도 확인하세요.'],
+ ['04 · 한 컷 연출문','인물은 제자리에서 문으로 눈을 돌린 뒤 고개를 따라 돌립니다. 카메라는 눈높이 고정, 빛은 창 쪽 부드러운 광원, 소리는 짧은 들숨과 옷 마찰로 정해봅니다. 인물과 카메라 동작을 다른 문장으로 씁니다.'],
+ ['05 · 영상 수정','부분 수정이 보이면 원본의 시간 구간과 바꿀 대상 하나를 지정합니다. 예를 들어 3–6초 뒤쪽 벽의 포스터만 제거하고 얼굴·의상·카메라·소리는 보존하는 실습입니다. 없는 기능을 프롬프트로 활성화할 수는 없습니다.'],
+ ['06 · 승인과 재시도','전체를 정상 속도로 보고 시작·중간·끝을 정지해 얼굴과 방 구조를 비교합니다. 대사 타이밍, 원치 않는 BGM, 손 변형을 따로 기록합니다. 한 번에 한 조건만 바꾸고 기존 프롬프트에 모순된 지시를 덧붙이지 않습니다.']
+ ],
+ [
+ ['01 · 프리셋 읽기','Static은 고정 구도를, Dolly In은 카메라가 인물에게 전진하는 의도를 공부하는 출발점입니다. 공식 움직임 예시를 보고 시작 화면·중간 배경 변화·끝 구도를 각각 적어보세요.'],
+ ['02 · 같은 씬으로 비교','인물이 가만히 있는 동일 시작 이미지로 고정과 전진을 시험하는 과제를 설계합니다. 인물 행동을 바꾸면 카메라 차이를 비교하기 어려워집니다. 얼굴·빛·방은 그대로 두는 것이 이번 실습의 기준입니다.'],
+ ['03 · 3D Jutsu는 별도 작업','공식 3D Jutsu 안내는 공간 배치·카메라·조명 등을 편집 가능한 3D 씬으로 계획하는 흐름을 설명합니다. 카메라 프리셋을 고르는 것과 다릅니다. 문·테이블·인물 위치를 배치하는 작은 과제를 먼저 정하세요.'],
+ ['04 · 경로 검수','카메라가 벽을 지나지 않는지, 인물이 프레임에서 사라지지 않는지, 끝 구도가 다음 컷에 연결되는지 봅니다. 조명과 재질을 풍부하게 만들기 전에 공간 동선을 먼저 승인하는 실습입니다.'],
+ ['05 · 참고와 최종 결과 구분','프리비즈는 공간과 경로의 설명 자료입니다. 최종 인물의 외모와 의상은 별도 기준을 쓰고 회색 재질·마네킹이 그대로 영상에 들어가지 않도록 역할을 적습니다. 실제 지원 입력은 선택 생성 모델을 따릅니다.'],
+ ['06 · 결과 기록','사용한 모델·프리셋 또는 3D 씬 경로·시작 이미지·프롬프트를 묶어 기록합니다. 얼굴이 변했다면 외모 기준, 화면이 휘었다면 경로와 구도부터 수정하세요.']
+ ],
+ [
+ ['01 · 버전부터 확인','연결한 공식 다중 이미지 발표는 Kling 1.6 당시 자료입니다. 이를 최신 4.0 메뉴 설명처럼 쓰지 않습니다. 현재 계정의 모델과 참고 입력 기능이 보이는지 확인한 뒤 과제를 시작하세요.'],
+ ['02 · 이미지 역할 나누기','인물 사진은 얼굴, 의상 사진은 옷, 공간 이미지는 배경 기준으로 기록합니다. 사람 두 명이면 A와 B를 따로 명명하고 옷의 색도 구분하세요. 모든 이미지를 같은 역할로 넣지 않습니다.'],
+ ['03 · 작은 행동 한 번','한 사람이 테이블에서 컵을 드는 행동부터 시험합니다. 컵의 위치와 잡는 손, 끝에서 컵이 놓일 위치를 정하세요. 두 사람의 싸움이나 여러 컷 전환은 첫 실습에서 제외합니다.'],
+ ['04 · 얼굴과 소품 비교','시작·중간·끝에서 얼굴, 옷깃, 컵의 개수가 같은지 봅니다. 컵을 들기 전 손 안에 복제된 컵이 생기거나 얼굴이 다른 참고 인물로 바뀌지 않는지 확인합니다.'],
+ ['05 · 한 조건만 바꾸기','모델·참고 이미지를 고정하고 행동 크기 또는 카메라만 바꾸는 비교를 합니다. 문제가 반복되면 얼굴이 선명한 기준 사진을 먼저 승인하고 불필요한 참고를 줄입니다.']
+ ],
+ [
+ ['01 · 시작 이미지 검사','시작 씬이 인물·옷·빛·구도를 담당하는 실습입니다. 얼굴이 흐리거나 손이 잘린 이미지를 넣고 긴 문장으로 모두 고치려 하지 마세요. 영상으로 만들기 전에 시작 컷 자체를 승인합니다.'],
+ ['02 · 동작 중심 문장','문으로 눈을 돌린다, 한 걸음 이동한다처럼 화면에서 보이는 동작을 적습니다. 이미지에 이미 있는 옷과 배경을 반복해서 길게 설명하기보다 바뀔 행동과 카메라의 의도를 분리하세요.'],
+ ['03 · 참고 미디어 연결','지원 모델에서 @를 입력하고 업로드 목록의 미디어를 선택하는 공식 안내가 있습니다. 모델마다 입력 종류가 다르므로 Seedance의 태그 철자를 복사하지 않습니다. 실제 삽입된 표시를 유지합니다.'],
+ ['04 · 고정과 전진 비교','같은 시작 씬으로 고정 카메라 버전과 천천히 전진하는 버전을 계획합니다. 인물 행동은 유지해 배경 원근·얼굴 크기·움직임 안정성의 차이를 관찰하세요.'],
+ ['05 · 수정 기록','손이나 얼굴이 흔들리면 문제가 나타난 시간과 행동을 적고 동작을 작게 줄여봅니다. 참고 영상 입력과 기존 영상 편집은 다른 기능이므로 수정 도구를 쓸 때는 그 도구의 공식 안내를 별도로 읽습니다.']
+ ],
+ [
+ ['01 · 시트 승인','같은 얼굴·머리·체형·의상을 보여주는 인물 기준을 고릅니다. 정면과 측면에서 다른 사람처럼 보이면 씬 생성으로 넘어가지 말고 기준 시트부터 수정하는 과제입니다.'],
+ ['02 · 씬 만들기','문이 있는 방에 인물이 서 있는 한 컷을 설계합니다. 인물 기준은 시트, 방과 빛은 공간 기준으로 나누고 소품 위치를 적습니다. 여러 장면을 동시에 만들지 않습니다.'],
+ ['03 · 이미지에서 영상','지원되는 영상 모델을 선택하고 참조 입력과 길이를 확인합니다. 같은 장면에서 인기척을 듣고 고개를 돌리는 작은 행동으로 얼굴·의상·공간 유지 여부를 시험하세요.'],
+ ['04 · 부분 수정 검토','원본 대부분이 좋고 작은 소품만 문제일 때 편집 기능을 확인합니다. 바꿀 대상, 시간, 보존할 인물과 조명을 적고 원본과 결과를 나란히 검수합니다.'],
+ ['05 · 내 제작 묶음','시트·시작 씬·영상·전체 프롬프트·실패 시간대를 한 묶음으로 보관합니다. 서비스의 메뉴·모델이 바뀌어도 같은 승인 기준으로 다시 공부할 수 있도록 작업 목적을 함께 기록하세요.']
+ ],
+ [
+ ['01 · 도구와 모델 구분','빠나나AI의 캐릭터·3D 앵글·통합생성은 작업 메뉴입니다. 그 안에서 고르는 생성 모델과 구분하세요. 어떤 단계에서 어떤 메뉴를 썼는지 기록하면 결과를 재현할 조건을 찾기 쉽습니다.'],
+ ['02 · 캐릭터 기준','일관된 인물 장면을 위한 캐릭터 기준을 준비합니다. 얼굴·머리·의상이 같은지 먼저 승인하고 공간과 포즈가 바뀌어도 유지할 속성을 적습니다.'],
+ ['03 · 앵글과 빛 계획','공식 홈은 3D 마네킹으로 포즈·조명·앵글을 잡는 기능을 소개합니다. 정면 눈높이에서 시작한 뒤 낮은 측면을 비교하는 실습을 계획하세요. 마네킹은 인물 얼굴의 최종 결과를 대신하는 자료가 아닙니다.'],
+ ['04 · 선택 모델에 연결','준비한 이미지로 통합생성의 영상 모델을 확인합니다. 지원 미디어 종류와 태그를 화면에서 확인하고 참조 역할을 다시 배정합니다. 다른 플랫폼의 멘션 번호를 그대로 쓰지 않습니다.'],
+ ['05 · 비용과 검수','생성 버튼 전에 길이·비율·크레딧을 확인하세요. 결과는 얼굴 유지·구도·빛·손·동작으로 검사하고 하나의 조건만 바꾸어 다시 비교합니다. 이 자료실에서 읽는 것만으로 외부 생성이 실행되지는 않습니다.']
+ ]
+];
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!=null)n.textContent=text;if(cls)n.className=cls;return n;};
-export function renderPlatforms(target,onStudy){
+export function renderPlatforms(target,onStudy,libraryValue={}){
  target.replaceChildren();
  const intro=el('section',null,'platform-notice');intro.append(el('p','OFFICIAL SOURCES / CHECKED 2026.10.11','eyebrow'),el('h3','플랫폼은 작업실, 모델은 영상 생성 엔진'),el('p','같은 모델도 서비스·계정·모드에 따라 입력 방식과 기능이 다릅니다. 아래는 공식 공개 자료를 정리한 안내이며, 실습 순서는 드래곤시네마의 제안입니다. 링크를 열어 최신 지원 조건을 확인하세요.'));
  target.append(intro);
  const flow=el('ol',null,'platform-flow');for(const text of ['목적 고르기','모델·모드 확인','첨부 역할 지정','짧게 테스트','비교·수정'])flow.append(el('li',text));target.append(flow);
  const grid=el('div',null,'platform-grid');
- for(const p of platforms){const card=el('article',null,'platform-card');card.append(el('p',p.tool,'eyebrow'),el('h3',p.name),el('p',p.focus,'platform-focus'));
+ for(const [index,p] of platforms.entries()){const card=el('article',null,'platform-card');const [key,row,col,alt]=platformScenes[index];if(libraryValue.imageSources?.[key]){const fig=el('figure'),v=el('div',null,'visual scene-tile'),img=el('img');img.src=libraryValue.imageSources[key];img.alt=alt+' · 학습용 AI 예시';img.loading='lazy';img.decoding='async';img.style.width='300%';img.style.height='400%';img.style.left=(-col*100)+'%';img.style.top=(-row*100)+'%';v.style.aspectRatio=key==='drama-study-20261011'?'1.3333':'2.3578';v.append(img,el('span','DRA9ON · STUDY EXAMPLE','example-mark'));fig.append(v,el('figcaption',alt+' · 자체 제작 학습 예시이며 이 플랫폼의 실제 화면·생성 결과가 아닙니다.'));card.append(fig);}card.append(el('p',p.tool,'eyebrow'),el('h3',p.name),el('p',p.focus,'platform-focus'));
  const dl=el('dl');for(const [label,key] of [['입력 자료','input'],['멘션·참고 연결','reference'],['영상 수정','edit']])dl.append(el('dt',label),el('dd',p[key]));card.append(dl);
  const details=el('details');details.append(el('summary','처음 해보는 실습 · 5단계'));const steps=el('ol');p.exercise.forEach(x=>steps.append(el('li',x)));details.append(steps,el('p',p.caution,'muted'));card.append(details);
+ for(const [title,text] of workflows[index]){const section=el('section',null,'platform-stage');section.append(el('h4',title),el('p',text));card.append(section);}
  const links=el('div',null,'platform-links');const source=el('a','공식 기능 안내 ↗');source.href=p.source;source.target='_blank';source.rel='noopener noreferrer';links.append(source);
  if(p.lesson){const a=el('a','시댄스 전체 튜토리얼 ↗');a.href=p.lesson;a.target='_blank';a.rel='noopener noreferrer';links.append(a);}
+ if(p.tool==='Higgsfield'){const a=el('a','공식 3D Jutsu 안내 ↗');a.href='https://higgsfield.ai/blog/higgsfield-3d-jutsu';a.target='_blank';a.rel='noopener noreferrer';links.append(a);}
  const study=el('button','자료실의 관련 자료 보기');study.type='button';study.addEventListener('click',()=>onStudy(p.tool));links.append(study);card.append(links);grid.append(card);}
  target.append(grid);
  const cost=el('section',null,'platform-notice');cost.append(el('h3','무료 안내와 영상 생성 비용은 별개입니다.'),el('p','이 안내를 읽는 것만으로 외부 플랫폼의 크레딧이 차감되지는 않습니다. 영상 생성·영상 수정·업스케일은 각 서비스의 이용 조건을 따릅니다. 생성 버튼을 누르기 전에 표시된 예상 크레딧, 길이, 해상도, 무료 잔여량을 확인하세요. 고정 가격표는 두지 않습니다.'),el('p','WendVega는 정확한 서비스 주소가 확인되지 않아 기능 설명을 보류했습니다. 이름이 비슷한 서비스를 임의로 연결하지 않습니다.','muted'));target.append(cost);

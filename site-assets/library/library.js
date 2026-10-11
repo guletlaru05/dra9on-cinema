@@ -1,5 +1,5 @@
-import {deadline,loadPrivatePayload} from "./library-transport.js?v=20261011-menu10";
-import {createLibraryUI} from "./library-ui.js?v=20261011-menu10";
+import {deadline,loadPrivatePayload,packPrivatePayload} from "./library-transport.js?v=20261011-detail12";
+import {createLibraryUI} from "./library-ui.js?v=20261011-detail12";
 import {initializeApp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,getRedirectResult,signOut,onAuthStateChanged,setPersistence,browserSessionPersistence,getIdToken} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 import {initializeFirestore,memoryLocalCache,doc,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
@@ -66,7 +66,7 @@ async function boot(){
  $("import").addEventListener("change",async event=>{
   const file=event.target.files[0];event.target.value="";if(!file)return;if(!auth.currentUser){message("먼저 로그인하세요.");return;}
   const ticket=generation;
-  try{if(file.size>750000)throw Error("자료 파일은 750KB 이하로 준비하세요.");const value=validate(JSON.parse(await file.text())),payload=JSON.stringify(value);message("비공개 자료를 저장하고 있습니다.");await setDoc(ref,{payload,updatedAt:serverTimestamp()});if(ticket!==generation)return;display(value);message("비공개 자료 업데이트 완료.");}
+  try{if(file.size>2500000)throw Error("자료 파일은 2.5MB 이하로 준비하세요.");const value=validate(JSON.parse(await file.text())),payload=await packPrivatePayload(JSON.stringify(value));if(new TextEncoder().encode(payload).length>750000)throw Error("압축된 자료는 750KB 이하로 준비하세요.");message("비공개 자료를 저장하고 있습니다.");await setDoc(ref,{payload,updatedAt:serverTimestamp()});if(ticket!==generation)return;display(value);message("비공개 자료 업데이트 완료.");}
   catch(error){message("저장하지 못했습니다. "+(error.code||error.message));}
  });
 
