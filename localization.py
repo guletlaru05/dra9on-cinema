@@ -262,13 +262,25 @@ def localize_site(out, works, origin, base_path=''):
             translations[ko['summary']] = en['summary']
             translations[ko['summary'][:170]] = en['summary'][:170]
         korean = source.read_text(encoding='utf-8')
+        # This lesson intentionally keeps the Korean sample verbatim in English.
+        # Shield only explicit Korean sample blocks, never the surrounding UI.
+        protected = {}
+        parser_input = korean
+        if path == '/tutorials/seedance-languages/':
+            def protect_sample(match):
+                key = 'LANGUAGE_SAMPLE_' + str(len(protected)) + '_PRESERVE'
+                protected[key] = match.group(0)
+                return key
+            parser_input = re.sub(r'<(pre|td)\b[^>]*\blang="ko"[^>]*>.*?</\1>', protect_sample, korean, flags=re.S)
         parser = EnglishPage(translations, origin)
-        parser.feed(korean)
+        parser.feed(parser_input)
         english = ''.join(parser.parts)
         # Fail the build instead of silently publishing untranslated content.
         if re.search('[가-힣]', english):
             residual = re.findall(r'[^<>]*[가-힣][^<>]*', english)
             raise ValueError(f'Untranslated copy in {relative}: {residual[:4]}')
+        for key, sample in protected.items():
+            english = english.replace(key, sample)
         for lang, document in [('ko', korean), ('en', english)]:
             english_path = '/en' + path
             alternates = ''.join(f'<link rel="alternate" hreflang="{code}" href="{origin}{url}">' for code, url in [('ko', path), ('en', english_path), ('x-default', english_path)])
