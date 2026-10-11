@@ -1,5 +1,29 @@
 const en=document.documentElement.lang==='en',t=(ko,english)=>en?english:ko;
 
+// Keep the crawlable navigation links, moving the same nodes into a compact
+// native disclosure on every public page that has the shared header.
+(()=>{
+ const header=document.querySelector('header.header'),nav=header?.querySelector('.nav'),actions=header?.querySelector('.header-actions');
+ if(!nav||!actions)return;
+ const menu=document.createElement('details');menu.className='site-menu';
+ const toggle=document.createElement('summary');toggle.className='site-menu-toggle';toggle.setAttribute('aria-label',t('사이트 메뉴','Site menu'));
+ const bars=document.createElement('span');bars.className='site-menu-bars';bars.setAttribute('aria-hidden','true');
+ for(let i=0;i<3;i++)bars.append(document.createElement('i'));
+ const label=document.createElement('span');label.className='site-menu-label';label.textContent=t('메뉴','Menu');toggle.append(bars,label);
+ const panel=document.createElement('div');panel.className='site-menu-panel';
+ const top=document.createElement('div');top.className='site-menu-heading';const brand=document.createElement('span');brand.textContent='DRA9ON CINEMA';
+ const close=document.createElement('button');close.type='button';close.className='site-menu-close';close.textContent=t('닫기 ×','Close ×');top.append(brand,close);
+ panel.append(top,nav);
+ const social=document.createElement('div');social.className='site-menu-social';for(const link of [...actions.querySelectorAll('.channel-button')])social.append(link);
+ if(social.childElementCount)panel.append(social);
+ menu.append(toggle,panel);actions.append(menu);header.classList.add('compact-navigation');
+ const shut=(focus=false)=>{menu.open=false;if(focus)toggle.focus();};
+ close.addEventListener('click',()=>shut(true));
+ menu.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();shut(true);}});
+ nav.addEventListener('click',event=>{if(event.target.closest('a'))shut();});
+ document.addEventListener('pointerdown',event=>{if(menu.open&&!menu.contains(event.target))shut();});
+})();
+
 const works=window.PORTFOLIO||[],byId=id=>works.find(v=>v.id===id),$=id=>document.getElementById(id);
 
 const isReleased=v=>window.D9Release?.released(v)??true;
