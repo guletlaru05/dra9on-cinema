@@ -12,7 +12,9 @@ def render(t):
     ko='''시댄스 2.5 영상 프롬프트 작성을 도와주세요. 아래는 실제 작업 조건입니다.
 사용 도구와 화면에 표시된 모드: [예: Dreamina / 이미지 → 영상]
 화면에서 선택 가능한 길이·비율·해상도: [직접 확인한 값]
-첨부 이미지 역할: [이미지 1은 시작 씬 / 이미지 2는 인물 외모 기준 — 해당 모드가 지원할 때만]
+첨부 멘션과 역할: [화면에서 삽입한 이미지 1 멘션] = 시작 씬의 공간·구도·빛 / [화면에서 삽입한 이미지 2 멘션] = 인물 얼굴·머리·의상 기준. 해당 참고 모드가 지원할 때만 사용합니다.
+멘션 연결: 최종 문장을 생성 화면에 붙여넣은 뒤 위 자리표시자를 실제 업로드 멘션으로 교체합니다. 일반 글자로 “이미지 1”만 쓰지 않습니다.
+우선순위: 인물 외모·의상은 시트, 공간·시작 구도는 씬. 시트의 패널과 스튜디오 배경은 제외합니다.
 유지할 것: [얼굴, 헤어스타일, 의상, 공간 구조, 시간대]
 보여줄 사건: [한 문장으로 사건을 작성]
 인물 동작: [눈 → 고개 → 손 → 몸의 순서와 이동 방향]
@@ -27,7 +29,9 @@ def render(t):
     en='''Help me write a Seedance 2.5 video prompt using these actual production conditions.
 Tool and mode shown in my interface: [e.g. Dreamina / image to video]
 Available duration, aspect ratio and resolution: [values verified in my interface]
-Reference roles: [image 1 is the opening scene; image 2 is the character identity reference, only if this mode supports it]
+Inserted mentions and roles: [inserted image 1 mention] = opening space, framing and light; [inserted image 2 mention] = face, hair and costume, only when supported by this reference mode.
+Mention connection: after pasting the final prompt into the generation interface, replace these placeholders by selecting the actual uploaded-reference mentions. Plain text saying “image 1” is not a connected reference.
+Priority: sheet for identity and costume; scene for space and opening framing. Exclude sheet panels and studio background.
 Keep fixed: [face, hairstyle, costume, spatial layout and time of day]
 Scene event: [one sentence]
 Character action: [eyes, head, hands, body, movement direction and order]
