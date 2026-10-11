@@ -34,6 +34,7 @@ service cloud.firestore {
     // Private study corpus: verified Google owner only; no anonymous/list access.
     function libraryOwner() {
       return request.auth != null
+        && request.auth.token.keys().hasAll(['email','email_verified'])
         && request.auth.token.email == 'guletlaru05@gmail.com'
         && request.auth.token.email_verified == true
         && request.auth.token.firebase.sign_in_provider == 'google.com';
@@ -47,6 +48,85 @@ service cloud.firestore {
         && request.resource.data.payload.size() <= 750000
         && request.resource.data.updatedAt == request.time;
     }
+    // Public nickname board. Owner-only answers and recoverable moderation.
+    function validPost(d) {
+      return d.keys().hasAll(['nickname','title','body','topic','authorUid','official','answer','answeredAt','createdAt','updatedAt'])
+        && d.keys().hasOnly(['nickname','title','body','topic','authorUid','official','answer','answeredAt','createdAt','updatedAt'])
+        && d.nickname is string && d.nickname.size() >= 2 && d.nickname.size() <= 24
+        && d.title is string && d.title.size() >= 2 && d.title.size() <= 120
+        && d.body is string && d.body.size() >= 10 && d.body.size() <= 3000
+        && d.topic in ['story','making','other']
+        && d.authorUid is string && d.authorUid.size() > 0 && d.authorUid.size() <= 128
+        && d.official is bool && d.answer is string && d.answer.size() <= 5000
+        && d.createdAt is timestamp && d.createdAt <= request.time && d.updatedAt == request.time
+        && ((d.answer == '' && d.answeredAt == null)
+            || (d.answer.size() >= 2 && d.answeredAt is timestamp
+                && d.answeredAt >= d.createdAt && d.answeredAt <= request.time));
+    }
+    function mayPost() {
+      let rate = /databases/$(database)/documents/communityLimits/$(request.auth.uid);
+      return !exists(rate) || request.time >= get(rate).data.lastAt + duration.value(10,'m');
+    }
+    match /communityPosts/{id} {
+      allow get: if true;
+      allow list: if request.query.limit != null && request.query.limit <= 10;
+      allow create: if signedIn() && validPost(request.resource.data)
+        && (( !libraryOwner()
+              && request.resource.data.authorUid == request.auth.uid
+              && request.resource.data.official == false
+              && request.resource.data.answer == '' && request.resource.data.answeredAt == null
+              && request.resource.data.createdAt == request.time && mayPost()
+              && getAfter(/databases/$(database)/documents/communityLimits/$(request.auth.uid)).data.lastPostId == id
+              && getAfter(/databases/$(database)/documents/communityLimits/$(request.auth.uid)).data.lastAt == request.time)
+            || (libraryOwner()
+              && ((request.resource.data.official == true
+                    && request.resource.data.authorUid == request.auth.uid
+                    && request.resource.data.nickname == 'DRA9ON CINEMA'
+                    && request.resource.data.createdAt == request.time)
+                  || (exists(/databases/$(database)/documents/communityArchive/$(id))
+                    && get(/databases/$(database)/documents/communityArchive/$(id)).data.state == 'hidden'
+                    && request.resource.data.diff(get(/databases/$(database)/documents/communityArchive/$(id)).data.post).affectedKeys().hasOnly(['updatedAt'])
+                    && getAfter(/databases/$(database)/documents/communityArchive/$(id)).data.state == 'restored'))));
+      allow update: if libraryOwner() && validPost(request.resource.data)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['answer','answeredAt','updatedAt'])
+        && request.resource.data.answer.size() >= 2 && request.resource.data.answeredAt == request.time;
+      // Removal requires an exact owner-only archived copy in the same batch.
+      allow delete: if libraryOwner()
+        && getAfter(/databases/$(database)/documents/communityArchive/$(id)).data.post == resource.data
+        && getAfter(/databases/$(database)/documents/communityArchive/$(id)).data.state == 'hidden';
+    }
+    match /communityLimits/{uid} {
+      allow get: if signedIn() && request.auth.uid == uid;
+      allow list, delete: if false;
+      allow create, update: if signedIn() && !libraryOwner() && request.auth.uid == uid
+        && request.resource.data.keys().hasAll(['lastAt','lastPostId'])
+        && request.resource.data.keys().hasOnly(['lastAt','lastPostId'])
+        && request.resource.data.lastAt == request.time
+        && request.resource.data.lastPostId is string && request.resource.data.lastPostId.size() <= 128
+        && mayPost()
+        && getAfter(/databases/$(database)/documents/communityPosts/$(request.resource.data.lastPostId)).data.authorUid == uid
+        && getAfter(/databases/$(database)/documents/communityPosts/$(request.resource.data.lastPostId)).data.createdAt == request.time;
+    }
+    match /communityArchive/{id} {
+      allow get: if libraryOwner();
+      allow list: if libraryOwner() && request.query.limit != null && request.query.limit <= 20;
+      allow create: if libraryOwner()
+        && request.resource.data.keys().hasAll(['post','archivedAt','state'])
+        && request.resource.data.keys().hasOnly(['post','archivedAt','state'])
+        && request.resource.data.post == get(/databases/$(database)/documents/communityPosts/$(id)).data
+        && request.resource.data.archivedAt == request.time && request.resource.data.state == 'hidden'
+        && !existsAfter(/databases/$(database)/documents/communityPosts/$(id));
+      allow update: if libraryOwner()
+        && ((request.resource.data.diff(resource.data).affectedKeys().hasOnly(['state'])
+              && resource.data.state == 'hidden' && request.resource.data.state == 'restored'
+              && getAfter(/databases/$(database)/documents/communityPosts/$(id)).data.diff(resource.data.post).affectedKeys().hasOnly(['updatedAt']))
+            || (request.resource.data.keys().hasAll(['post','archivedAt','state'])
+              && request.resource.data.keys().hasOnly(['post','archivedAt','state'])
+              && request.resource.data.post == get(/databases/$(database)/documents/communityPosts/$(id)).data
+              && request.resource.data.archivedAt == request.time && request.resource.data.state == 'hidden'
+              && !existsAfter(/databases/$(database)/documents/communityPosts/$(id))));
+      allow delete: if false;
+    }
     match /filmStats/{id} {
       allow get: if film(id);
       allow list, delete: if false;
@@ -59,4 +139,3 @@ service cloud.firestore {
     }
   }
 }
-
