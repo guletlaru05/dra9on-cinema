@@ -302,3 +302,5 @@ body .header,body .catalog,body footer{padding-inline:var(--site-gutter)}
 .privacy-copy p,.privacy-copy ul,.privacy-copy ol{max-width:850px}
 .tutorial-main .tutorial-preview img,.tutorial-main .tutorial-preview img[src*="seedance-storyboard"]{height:auto;aspect-ratio:16/9;object-fit:cover;object-position:center;display:block}
 @media(max-width:800px){.tutorial-main,.production-note,.privacy-copy{width:calc(100% - 2 * var(--site-gutter))}.watch-main{padding-inline:var(--site-gutter)}}
+/* Legal pages load consent.css later; retain the same outer alignment. */
+body .privacy-copy{width:calc(100% - 2 * var(--site-gutter));max-width:none;margin-inline:auto;padding-inline:0}
