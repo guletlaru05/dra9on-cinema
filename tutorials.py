@@ -2,6 +2,7 @@
 from html import escape
 from site_config import CONTACT_EMAIL
 from tutorial_scenes import render as render_scenes
+from tutorial_comparisons import render as render_comparison
 
 ROUTES = ['/tutorials/', '/tutorials/character-sheet/']
 TRANSLATIONS = {}
@@ -65,7 +66,8 @@ def build_tutorials(out, origin, head, header, footer):
     ]
     summaries=[('외모·머리·의상·신발을 먼저 고정하세요.','Fix appearance, hair, outfit and shoes first.'),('잘 보이는 얼굴 한 장을 기준으로 저장하세요.','Save one clearly visible face as your reference.'),('전신 두 컷과 얼굴 세 컷을 비교하세요.','Compare two full-body views and three portraits.'),('다른 얼굴이나 의상만 좁혀서 수정하세요.','Target only the mismatched face or outfit.'),('같은 인물을 새로운 공간에서 확인하세요.','Check the same character in a new setting.')]
     for i, (ko,en,body_ko,body_en) in enumerate(steps,1):
-        sections.append(f'<section class="tutorial-step" id="step-{i}"><span class="tutorial-number">{i:02}</span><div><h2>{t(ko,en)}</h2><p>{t(*summaries[i-1])}</p><details class="tutorial-explain"><summary>{t("방법 자세히 보기", "Read the detailed method")}</summary><p>{t(body_ko,body_en)}</p></details></div></section>')
+        example=render_comparison(['identity','reference','views','crop','scene'][i-1],t)
+        sections.append(f'<section class="tutorial-step" id="step-{i}"><span class="tutorial-number">{i:02}</span><div><h2>{t(ko,en)}</h2><p>{t(*summaries[i-1])}</p>{example}<details class="tutorial-explain"><summary>{t("방법 자세히 보기", "Read the detailed method")}</summary><p>{t(body_ko,body_en)}</p></details></div></section>')
     comparison = [('얼굴이 달라짐','The face changes','기준 얼굴을 다시 첨부하고 눈매·코·턱선부터 비교','Reattach the reference; compare eyes, nose and jawline first'),('의상이 바뀜','The outfit changes','드레스 색·네크라인·소매·자수·티아라·신발을 고정 문장에 명시','Specify gown color, neckline, sleeves, embroidery, tiara and shoes in the fixed description'),('신발이나 머리가 잘림','Shoes or hair are cropped','전신 컷에 머리부터 신발까지 보이도록 요청','Request full-body views including the head and shoes'),('조명이 너무 강함','Lighting is too harsh','단색 배경과 중립 조명으로 기준 시트를 다시 확인','Check the reference under neutral lighting against a plain background')]
     fixes=''.join(f'<div><dt>{t(a,b)}</dt><dd>{t(c,d)}</dd></div>' for a,b,c,d in comparison)
     prompt_html=escape(PROMPT_KO)
@@ -77,7 +79,7 @@ def build_tutorials(out, origin, head, header, footer):
       ('구도와 비교 방법','Framing and comparison','두 컷의 인물·의상·포즈·카메라 위치를 고정하고 조명만 바꿉니다. 머리부터 허리까지 보이는 중간 거리, 눈높이 카메라로 시작하세요. AI가 각도까지 바꾸면 같은 구도로 다시 요청해야 조명 차이를 판단하기 쉽습니다.','Keep character, clothes, pose and camera position fixed; change only lighting. Start with an eye-level medium shot. If AI changes the angle too, request matching framing before comparing the light.'),
     ]
     light_summaries=[('창빛의 방향부터 정합니다.','Choose the window-light direction first.'),('그림자 속 얼굴도 읽히게 합니다.','Keep the face readable in shadow.'),('차가운 창빛과 따뜻한 촛불을 나눕니다.','Separate cool window light from warm candlelight.'),('같은 구도로 조명만 비교합니다.','Compare lighting with the framing held fixed.')]
-    lighting_grid=''.join(f'<div><dt>{t(a,b)}</dt><dd>{t(*light_summaries[i])}<details class="tutorial-explain"><summary>{t("설명 펼치기", "Read the explanation")}</summary><p>{t(c,d)}</p></details></dd></div>' for i,(a,b,c,d) in enumerate(lighting_rows))
+    lighting_grid=''.join(f'<div><dt>{t(a,b)}</dt><dd>{t(*light_summaries[i])}{render_comparison(["direction","contrast","temperature","framing"][i],t)}<details class="tutorial-explain"><summary>{t("설명 펼치기", "Read the explanation")}</summary><p>{t(c,d)}</p></details></dd></div>' for i,(a,b,c,d) in enumerate(lighting_rows))
     scene_ko='''첨부한 기준 시트와 같은 가상의 로판 여주인공입니다. 얼굴, 긴 반묶음 머리, 아이보리·파우더 블루 실크 드레스, 은빛 자수와 레이스 긴소매, 진주 장식과 작은 은빛 티아라를 유지합니다. 성 안의 돌벽과 큰 창문 옆에 차분하게 서 있습니다. 눈높이 카메라, 머리부터 허리까지 보이는 중간 거리 컷, 16:9. 화면 왼쪽 45도에서 부드러운 흐린 날 창빛이 들어옵니다. 반대쪽 얼굴은 보조광을 약하게 하되 눈과 턱의 형태는 읽히게 합니다. 배경의 작은 촛불만 따뜻하고 창빛은 차가운 색입니다. 낮은 채도와 절제된 명암, 자연스러운 피부 결, 실사 시대극 영화 무드. 과한 피부 보정, 네온색, 빛나는 마법 효과는 없습니다. 이미지 가운데 반투명 DRA9ON CINEMA 워터마크.'''
     scene_en='''Use the same fictional romantic-fantasy heroine as the attached reference sheet. Preserve her face, long half-up hair, ivory and powder-blue silk gown, silver embroidery, lace long sleeves, pearl trim and delicate silver tiara. She stands calmly beside a large window and stone wall inside a castle. Eye-level camera, medium shot from head to waist, 16:9. Soft overcast window light enters from frame left at roughly 45 degrees. Keep fill on the opposite cheek low, but preserve readable eyes and jaw shape. Only a small background candle is warm; the window light is cool. Low saturation, restrained contrast, natural skin texture, live-action period-film mood. No heavy skin retouching, neon colors or glowing magic. Semi-transparent DRA9ON CINEMA watermark across the center.'''
     TRANSLATIONS[scene_ko]=scene_en
@@ -85,6 +87,7 @@ def build_tutorials(out, origin, head, header, footer):
     article=article.replace('<section class="tutorial-prompt" id="practice-prompt">',lighting+'<section class="tutorial-prompt" id="practice-prompt">').replace('/assets/tutorials/character-sheet-prompt-ko.txt','/assets/notes/character-sheet-prompt-ko.txt')
     article=article.replace('<a href="#checklist">','<a href="#lighting">'+t('조명·무드·명암','Light, mood and contrast')+'</a><a href="#checklist">')
     article=article.replace('<nav class="tutorial-toc"',render_scenes(t)+'<nav class="tutorial-toc"',1)
+    article=article.replace(''.join(sections), '<p class="tutorial-notice">'+t('아래 비교 이미지는 항목별 차이를 보여주려고 새로 만든 AI 실습 예시입니다. 특정 도구의 실제 전후 결과나 완전히 통제된 촬영 실험은 아닙니다. A·B 설명을 읽고, 이미지에서 바뀐 부분을 직접 찾아보세요.','The comparisons below are newly generated AI teaching examples, not before-and-after captures from a specific tool or controlled photographic experiments. Read the A/B labels and find the illustrated differences.')+'</p>'+''.join(sections),1)
     article=article.replace('<a href="#step-1">','<a href="#scene-examples">'+t('씬 예시','Scene examples')+'</a><a href="#step-1">',1)
     article=article.replace('<pre tabindex="0"><code>'+prompt_html,'<details class="tutorial-full-prompt"><summary>'+t('캐릭터 시트 전체 프롬프트 펼치기','Read the complete character-sheet prompt')+'</summary><pre tabindex="0"><code>'+prompt_html,1)
     article=article.replace('</code></pre></section>','</code></pre></details></section>',1)
