@@ -166,6 +166,13 @@ if '0I75_YXhMSM' in expected_ids:
         watch = Page(watch_source)
         assert watch.json_chunks[0]['duration'] == 'PT1227.79S'
         assert watch.json_chunks[0]['embedUrl'].endswith('/0I75_YXhMSM')
+        if lang == 'en':
+            from html import unescape
+            from localization import EN_SUMMARIES
+            expected_summary = EN_SUMMARIES['0I75_YXhMSM']
+            synopsis = re.search(r'<p class="watch-description">(.*?)</p>', watch_source, re.S)
+            assert synopsis and unescape(synopsis.group(1)) == expected_summary, 'Season 3 English synopsis was truncated'
+            assert watch.json_chunks[0]['description'] == expected_summary
         assert 'id="episode-captions-title"' in watch_source and 'CC' in watch_source
         assert 'id="episode-story-cards" tabindex="0"' in watch_source
         gallery = [img for img in watch.images if img.get('src', '').startswith(gallery_asset)]
