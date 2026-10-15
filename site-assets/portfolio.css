@@ -304,3 +304,18 @@ body .header,body .catalog,body footer{padding-inline:var(--site-gutter)}
 @media(max-width:800px){.tutorial-main,.production-note,.privacy-copy{width:calc(100% - 2 * var(--site-gutter))}.watch-main{padding-inline:var(--site-gutter)}}
 /* Legal pages load consent.css later; retain the same outer alignment. */
 body .privacy-copy{width:calc(100% - 2 * var(--site-gutter));max-width:none;margin-inline:auto;padding-inline:0}
+
+/* Season 3 story cards share the film shelves' keyboard and scroll controls. */
+.episode-captions{margin:28px 0;padding:20px 22px;border:1px solid #ffffff20;border-radius:6px;background:#ffffff04}
+.episode-captions h2{margin:0 0 8px;font-size:17px}.episode-captions p{margin:7px 0;color:#c4c4ce;line-height:1.8;font-size:14px}
+.episode-captions .episode-caption-languages{color:#a9a9b4;font-size:12px}
+.episode-promo{margin:38px 0 24px;min-width:0}.episode-promo-heading{display:flex;justify-content:space-between;align-items:center;gap:18px}
+.episode-promo h2{margin:7px 0 0;font-size:clamp(20px,1.5vw,28px);line-height:1.5}.episode-promo .section-eyebrow{margin:0}
+.episode-promo .shelf-controls{flex-shrink:0}.episode-promo .shelf-controls button{min-width:44px;min-height:44px}
+.episode-promo-intro{max-width:760px;color:#c4c4ce;font-size:15px;line-height:1.85}.episode-promo-help{color:#a9a9b4;font-size:12px;line-height:1.8}
+.episode-promo .episode-card-track{list-style:none;grid-auto-columns:minmax(240px,32%);gap:16px;margin:18px 0 20px;padding:4px 3px 14px;scroll-snap-type:x proximity;scroll-padding-inline:3px}
+.episode-card-track>li{min-width:0;scroll-snap-align:start}.episode-card-track figure{margin:0}.episode-card-track figure>a{display:block;border:1px solid #ffffff25;border-radius:6px;overflow:hidden}
+.episode-card-track img{display:block;width:100%;height:auto;aspect-ratio:1122/1402}.episode-card-track figcaption{display:flex;gap:10px;align-items:baseline;margin-top:10px;color:#d8d8de;font-size:12px;line-height:1.7}
+.episode-card-track figcaption>span{flex-shrink:0;color:#8fb8c5;font-size:10px;letter-spacing:.08em}.episode-card-track:focus-visible,.episode-card-track a:focus-visible{outline:2px solid #a6dbe9;outline-offset:3px}
+.episode-fiction-note{margin-top:16px;color:#a9a9b4;font-size:12px}
+@media(max-width:600px){.episode-promo-heading{align-items:flex-start}.episode-promo h2{font-size:20px}.episode-promo .episode-card-track{grid-auto-columns:84%;gap:13px}.episode-promo .shelf-controls{gap:5px}.episode-captions{padding:16px}.episode-promo-intro{font-size:14px}}

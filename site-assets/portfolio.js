@@ -102,7 +102,7 @@ function card(v){return `<article class="card"><a class="card-open" href="${v.pa
 
 function filtered(){return works.filter(v=>(view==='all'||(view==='fall'?!!v.season:v.category==='original'))&&(category==='all'||(category==='saved'?saved.has(v.id):v.category===category))&&(!query||`${v.name} ${v.title} ${v.label} ${v.searchText||''} ${v.season?'FALL 707 낙하707 낙하 707':''}`.toLowerCase().includes(query.toLowerCase())))}
 
-function render(){if(!$('browse-results'))return;const home=category==='all'&&view==='all'&&!query;document.body.classList.toggle('browse-mode',!home);$('hero').hidden=!home;$('home-rows').hidden=!home;$('browse-results').hidden=home;document.querySelectorAll('[data-category]').forEach(b=>{const yes=b.dataset.category===category;b.classList.toggle('active',yes);b.setAttribute('aria-pressed',String(yes))});document.querySelectorAll('[data-view]').forEach(b=>{const yes=b.dataset.view===view;b.classList.toggle('active',yes);yes?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});if(!home){const result=filtered();if(category==='s1'||category==='s2')result.sort((a,b)=>a.episode-b.episode);const labels={ost:'FALL 707 · OST',all:t('모든 작품','All films'),s1:t('FALL 707 · 시즌 1','FALL 707 · Season 1'),s2:t('FALL 707 · 시즌 2','FALL 707 · Season 2'),full:t('몰아보기','Full movies'),original:t('오리지널 작품','Original films'),saved:t('찜한 작품','My list')};$('browse-title').textContent=query?(en?`Results for “${query}”`:`“${query}” 검색 결과`):category!=='all'?labels[category]:view==='fall'?'FALL 707: REBOOT':view==='original'?t('오리지널 작품','Original films'):t('모든 작품','All films');$('result-count').textContent=`${result.length}${t('편',result.length===1?' film':' films')}${category==='saved'?t(' · 이 브라우저에 저장된 목록',' · Saved in this browser'):''}`;$('results-grid').innerHTML=result.map(card).join('');decorateCards($('results-grid')); $('empty-state').hidden=result.length>0}syncSaved();document.querySelectorAll('.shelf-track').forEach(updateArrows)}
+function render(){if(!$('browse-results'))return;const home=category==='all'&&view==='all'&&!query;document.body.classList.toggle('browse-mode',!home);$('hero').hidden=!home;$('home-rows').hidden=!home;$('browse-results').hidden=home;document.querySelectorAll('[data-category]').forEach(b=>{const yes=b.dataset.category===category;b.classList.toggle('active',yes);b.setAttribute('aria-pressed',String(yes))});document.querySelectorAll('[data-view]').forEach(b=>{const yes=b.dataset.view===view;b.classList.toggle('active',yes);yes?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});if(!home){const result=filtered();if(['s1','s2','s3'].includes(category))result.sort((a,b)=>a.episode-b.episode);const labels={ost:'FALL 707 · OST',all:t('모든 작품','All films'),s1:t('FALL 707 · 시즌 1','FALL 707 · Season 1'),s2:t('FALL 707 · 시즌 2','FALL 707 · Season 2'),s3:t('FALL 707 · 시즌 3','FALL 707 · Season 3'),full:t('몰아보기','Full movies'),original:t('오리지널 작품','Original films'),saved:t('찜한 작품','My list')};$('browse-title').textContent=query?(en?`Results for “${query}”`:`“${query}” 검색 결과`):category!=='all'?labels[category]:view==='fall'?'FALL 707: REBOOT':view==='original'?t('오리지널 작품','Original films'):t('모든 작품','All films');$('result-count').textContent=`${result.length}${t('편',result.length===1?' film':' films')}${category==='saved'?t(' · 이 브라우저에 저장된 목록',' · Saved in this browser'):''}`;$('results-grid').innerHTML=result.map(card).join('');decorateCards($('results-grid')); $('empty-state').hidden=result.length>0}syncSaved();document.querySelectorAll('.shelf-track').forEach(updateArrows)}
 
 function updateArrows(track){const prev=document.querySelector(`[data-scroll="${track.id}"][data-direction="-1"]`),next=document.querySelector(`[data-scroll="${track.id}"][data-direction="1"]`);if(prev)prev.disabled=track.scrollLeft<=2;if(next)next.disabled=track.scrollLeft+track.clientWidth>=track.scrollWidth-3}
 
@@ -110,7 +110,7 @@ function showDetail(id){const v=byId(id);if(!v||!$('detail-dialog'))return;resto
 
 function createPlayer(id){const v=byId(id);if(!v)throw new Error(t('알 수 없는 영상입니다.','Unknown film.'));const frame=document.createElement('iframe');frame.src=`https://www.youtube-nocookie.com/embed/${v.id}?rel=0&playsinline=1&autoplay=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}&hl=${en?'en':'ko'}${en?'&cc_lang_pref=en':''}`;frame.title=v.title;frame.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';frame.referrerPolicy='strict-origin-when-cross-origin';frame.allowFullscreen=true;return frame}
 
-function nextVideo(v){let seq=works.filter(w=>w.category===v.category&&isReleased(w));if(['s1','s2'].includes(v.category))seq.sort((a,b)=>a.episode-b.episode);return seq[seq.findIndex(w=>w.id===v.id)+1]||(v.category==='s1'?works.find(w=>w.category==='s2'&&w.episode===1):null)}
+function nextVideo(v){if(v.id==='sFw17ZPE42A')return works.find(w=>w.category==='s3'&&w.episode===1&&isReleased(w))||null;let seq=works.filter(w=>w.category===v.category&&isReleased(w));if(/^s[1-3]$/.test(v.category))seq.sort((a,b)=>a.episode-b.episode);return seq[seq.findIndex(w=>w.id===v.id)+1]||(/^s[1-3]$/.test(v.category)?works.find(w=>w.category===`s${v.season+1}`&&w.episode===1&&isReleased(w)):null)}
 
 function play(id){const v=byId(id);if(v)location.href=v.path;}
 
@@ -242,12 +242,13 @@ if ($('hero')) {
 
   hero.querySelector('.hero-buttons a[href="#episodes"]')?.remove();
 
-  const season=Math.max(...works.filter(v=>/^s[12]$/.test(v.category)).map(v=>v.season));
+  const season=Math.max(...works.filter(v=>/^s[1-3]$/.test(v.category)&&isReleased(v)).map(v=>v.season));
 
   const seasonTwoFull=works.find(v=>v.id==='sFw17ZPE42A');
   const featuredSlides=()=>[
+    ...works.filter(v=>v.category===`s${season}`&&isReleased(v)).sort((a,b)=>b.episode-a.episode),
     ...(seasonTwoFull&&isReleased(seasonTwoFull)?[seasonTwoFull]:[]),
-    ...works.filter(v=>v.category===`s${season}`&&isReleased(v)).sort((a,b)=>b.episode-a.episode)
+    ...works.filter(v=>v.category==='s2'&&v.season!==season&&isReleased(v)).sort((a,b)=>b.episode-a.episode)
   ];
   const slides=featuredSlides();
   const seasonOneFull=works.find(v=>v.id==='4f6Zguf7c2M');
@@ -295,6 +296,8 @@ if ($('hero')) {
 
       playButton.innerHTML=icon('play')+(v.category==='full'?t(`시즌 ${v.season} 몰아보기`,`Watch Season ${v.season}`):t('이 에피소드 보기','Watch episode'));
       hero.querySelector('.hero-meta').textContent=`2026 · ${v.category==='full'?`SEASON ${v.season} · FULL MOVIE`:`S${v.season} EP.${v.episode}`} · ${v.duration||''}`;
+      const badge=hero.querySelector('.new-episode:not(.upcoming-episode)');
+      if(badge){badge.hidden=v.category==='full'||v.season!==season;if(!badge.hidden)badge.querySelector('strong').textContent=`S${v.season} EP.${String(v.episode).padStart(2,'0')}`;}
       controls.querySelector('.hero-position').textContent=`${String(index+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
 
       preview.select(v);
@@ -530,7 +533,7 @@ function decorateCards(root=document){
 
   const link=cardEl.querySelector('[data-detail]'),v=link&&byId(link.dataset.detail);if(!v||cardEl.querySelector('.card-direct'))return;
 
-  if(['s1','s2'].includes(v.category)){const number=document.createElement('span');number.className='episode-number';number.setAttribute('aria-hidden','true');number.textContent=String(v.episode).padStart(2,'0');link.append(number);cardEl.classList.add('numbered-card')}
+  if(['s1','s2','s3'].includes(v.category)){const number=document.createElement('span');number.className='episode-number';number.setAttribute('aria-hidden','true');number.textContent=String(v.episode).padStart(2,'0');link.append(number);cardEl.classList.add('numbered-card')}
 
   link.setAttribute('aria-label',v.label+' '+v.name+' '+t('재생 페이지 열기','Open watch page'));
 
