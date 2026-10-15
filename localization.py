@@ -270,7 +270,8 @@ def localize_site(out, works, origin, base_path=''):
             ko, en = by_path[path]
             # Several videos share a Korean synopsis; metadata must match this film.
             translations[ko['summary']] = en['summary']
-            translations[ko['summary'][:170]] = en['summary'][:170]
+            if len(ko['summary']) > 170:
+                translations[ko['summary'][:170]] = en['summary'][:170]
         korean = source.read_text(encoding='utf-8')
         # This lesson intentionally keeps the Korean sample verbatim in English.
         # Shield only explicit Korean sample blocks, never the surrounding UI.
