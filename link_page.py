@@ -4,7 +4,7 @@ from site_config import CONTACT_EMAIL
 
 
 def build_links(out, origin, works, head, icon):
-    latest = max((v for v in works if v['category'] in ('s1', 's2')),
+    latest = max((v for v in works if v['category'] in ('s1', 's2', 's3')),
                  key=lambda v: (v['season'], v['episode']))
     full = next(v for v in works if v['id'] == '4f6Zguf7c2M')
     schema = {'@context': 'https://schema.org', '@type': 'WebPage',

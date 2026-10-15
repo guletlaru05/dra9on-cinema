@@ -1,11 +1,12 @@
 # DRA9ON CINEMA
 
-FALL 707: REBOOT와 오리지널 AI 영화를 소개하는 한국어·영어 포트폴리오입니다. 공식 YouTube 영상 22편을 임베드합니다.
+FALL 707: REBOOT와 오리지널 AI 영화를 소개하는 한국어·영어 포트폴리오입니다. 공식 YouTube 영상 26편을 임베드합니다.
 
 ## 기능
 
 - 한국어 홈과 영어 `/en/`, 언어별 작품 상세 페이지
 - 작품 검색, 시즌별 탐색, 다음 화 이동, 링크 복사, 브라우저에 저장되는 찜 목록
+- 시즌 3 첫 화와 시즌 2 몰아보기의 이어 보기, 시즌 3 첫 화의 5장 카드뉴스와 7개 언어 CC 안내
 - 모바일 화면 지원, 키보드 탐색, 언어별 검색 메타데이터와 사이트맵
 - 설치할 패키지나 API 키 없이 Python 3.10 이상으로 빌드
 - 영상 파일은 YouTube에서 제공하며, 이 사이트에는 OpenAI API 호출이 없습니다.
@@ -60,11 +61,12 @@ python verify-site.py --origin https://guletlaru05.github.io --base-path /dra9on
 | 영상 정보 | `portfolio-data.json` |
 | 페이지 구성·한국어 문구 | `build-portfolio.py` |
 | 영어 작품명·소개·문구 | `localization.py` |
+| 시즌 3 첫 화의 카드뉴스·CC 안내 | `episode_extras.py`, `site-assets/assets/fall707-s3-ep1/` |
 | 디자인 | `site-assets/styles.css`, `site-assets/portfolio.css` |
 | 검색·재생·찜 동작 | `site-assets/portfolio.js` |
 | 썸네일·메인 이미지 | `site-assets/assets/portfolio/` |
 
-`dist/`는 빌드 결과이며 직접 수정하거나 커밋하지 않습니다. 공식 채널 콘텐츠를 2026-09-22에 시즌 2 5화까지 확인한 스냅샷이며 새 영상은 자동으로 추가되지 않습니다. 새 영상을 추가할 때 데이터·공식 썸네일·영어 번역을 함께 갱신하세요. 영상 자막·더빙을 생성하지 않으며 자막 선택은 YouTube에서 제공하는 범위에 따릅니다.
+`dist/`는 빌드 결과이며 직접 수정하거나 커밋하지 않습니다. 공식 채널 콘텐츠를 2026-10-15에 시즌 3 1화까지 반영한 스냅샷이며 새 영상은 자동으로 추가되지 않습니다. 새 영상을 추가할 때 데이터·공식 썸네일·영어 번역을 함께 갱신하세요. 영상 자막·더빙을 생성하지 않으며 자막 선택은 YouTube 플레이어의 CC와 설정에서 제공합니다.
 
 검색 노출과 순위는 검색엔진이 결정합니다. 실제 공개 후 Search Console에서 소유권을 확인하고 `sitemap.xml`을 제출할 수 있습니다.
 

@@ -8,6 +8,7 @@ import json
 import re
 
 EN_NAMES = {
+    '0I75_YXhMSM': 'She Opened the Forbidden Door',
     'sFw17ZPE42A': 'I Cannot Leave Them Behind · Season 2 Full Movie',
     'BwOk1ZoKJnE': 'FALL 707 · Seasons 1 & 2 Vocal OST Collection',
     'F-MEc4hmxJU': 'You Thought It Was Over? · Season 2 Finale',
@@ -36,6 +37,7 @@ EN_NAMES = {
 }
 SERIES_SUMMARY = 'An AI-created Korean military fantasy drama. A modern special forces soldier finds himself in Joseon-era Korea.'
 EN_SUMMARIES = {
+    '0I75_YXhMSM': 'Six months after that night, a fragile peace is interrupted when Sergeant Kim begins to show disturbing symptoms. Sergeant Han is still missing. Someone at court is watching. To find her comrade, Captain Min Seo-a faces a hidden path and a forbidden door.',
     'sFw17ZPE42A': 'She came to save her soldiers. Now they are attacking her. Follow Captain Min through Joseon-era darkness and the mystery of the black bell. Watch FALL 707: REBOOT Season 2, Episodes 1–6, in one continuous film.',
     'BwOk1ZoKJnE': 'Thirteen vocal OST tracks with subtitle-free highlights from Seasons 1 and 2, including previously unreleased AI-generated shots left out of the final episodes.',
     'F-MEc4hmxJU': 'She thought saving her comrades would end it. But the hand holding them has not let go. In the Season 2 finale, Captain Min faces a choice no commander should have to make.',
@@ -55,6 +57,12 @@ EN_SUMMARIES = {
     'iVwqj1gUPDY': 'The Immortal Crazy X and the n-th Grim Reaper. An original film created with AI by DRA9ON CINEMA.',
 }
 UI = {
+    'FALL 707 REBOOT 시즌 3 — 민 대위': 'FALL 707 REBOOT Season 3 — Captain Min',
+    '열지 말라던 문…': 'She was warned never to open it…',
+    '그녀는 들어갔다.': 'She went in.',
+    '시즌 1–3': 'Seasons 1–3',
+    '시즌 3': 'Season 3',
+    '드래곤시네마의 〈낙하 707: 리부트〉(낙하707, FALL707, FALL 707). 현대 특수부대와 조선 시대가 만나는 밀리터리 판타지·사극 AI 영화. 시즌 1·2·3과 풀버전을 감상하세요.': 'Watch FALL 707: REBOOT, a Korean military fantasy series set in Joseon, and explore original AI films by DRA9ON CINEMA. Browse Seasons 1–3, full movies and the filmmaker’s portfolio.',
     '낙하 707 · OST': 'FALL 707 · Soundtracks',
     'YouTube 구독': 'Subscribe on YouTube',
     '낙하707': 'FALL707',
@@ -231,6 +239,8 @@ def localize_site(out, works, origin, base_path=''):
         published_records = [{**record, 'path': base_path + record['path'], 'image': base_path + record['image']} for record in records]
         (out/path).write_text('window.PORTFOLIO = ' + json.dumps(published_records, ensure_ascii=False).replace('</', '<\\/') + ';\n', encoding='utf-8')
     base_translations = dict(UI)
+    from episode_extras import TRANSLATIONS as EPISODE_TRANSLATIONS
+    base_translations.update(EPISODE_TRANSLATIONS)
     from privacy_page import TRANSLATIONS
     base_translations.update(TRANSLATIONS)
     from terms_page import TRANSLATIONS as TERMS_TRANSLATIONS

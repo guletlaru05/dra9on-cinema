@@ -51,6 +51,7 @@ class Page(HTMLParser):
         self.in_json = False
         self.metas = {}
         self.anchors = []
+        self.images = []
         self.feed(source)
 
     def handle_starttag(self, tag, pairs):
@@ -60,6 +61,8 @@ class Page(HTMLParser):
             self.metas.setdefault(key, []).append(attrs.get('content'))
         if tag == 'a':
             self.anchors.append(attrs)
+        if tag == 'img':
+            self.images.append(attrs)
         for key in ['href', 'src', 'poster']:
             if attrs.get(key):
                 local_file(attrs[key])
@@ -140,6 +143,40 @@ for path in html_files:
             assert schema['@type'] == 'VideoObject'
             assert schema['embedUrl'].startswith('https://www.youtube-nocookie.com/embed/')
     assert 'about-identity' not in source and 'avatar.jpg' not in source, path
+
+# The Season 3 release must be reachable in both languages, with accessible
+# public story cards and a cross-season route from the previous full movie.
+if '0I75_YXhMSM' in expected_ids:
+    episode_route = '/watch/fall-707-s3-ep1/'
+    gallery_asset = base + '/assets/fall707-s3-ep1/'
+    for lang, prefix in [('ko', ''), ('en', '/en')]:
+        route_prefix = base + prefix
+        homepage = (root/(prefix.lstrip('/') + '/index.html').lstrip('/')).read_text(encoding='utf-8')
+        home = Page(homepage)
+        hero = next(img for img in home.images if 'hero-image' in img.get('class', '').split())
+        assert hero['src'] == base + '/assets/portfolio/0I75_YXhMSM.jpg'
+        assert any(a.get('href') == route_prefix + episode_route and 'hero-feature-link' in a.get('class', '') for a in home.anchors)
+        assert 'data-category="s3"' in homepage
+        assert homepage.index('id="episodes"') < homepage.index('id="season-two"')
+        assert 'upcoming-episode' not in homepage
+        links = Page((root/(prefix.lstrip('/') + '/links/index.html').lstrip('/')).read_text(encoding='utf-8'))
+        assert any(a.get('href') == route_prefix + episode_route and 'bio-feature' in a.get('class', '') for a in links.anchors)
+        watch_path = root/(prefix.lstrip('/') + episode_route + 'index.html').lstrip('/')
+        watch_source = watch_path.read_text(encoding='utf-8')
+        watch = Page(watch_source)
+        assert watch.json_chunks[0]['duration'] == 'PT1227.79S'
+        assert watch.json_chunks[0]['embedUrl'].endswith('/0I75_YXhMSM')
+        assert 'id="episode-captions-title"' in watch_source and 'CC' in watch_source
+        assert 'id="episode-story-cards" tabindex="0"' in watch_source
+        gallery = [img for img in watch.images if img.get('src', '').startswith(gallery_asset)]
+        assert len(gallery) == 5
+        for index, img in enumerate(gallery, 1):
+            assert img['width'] == '1122' and img['height'] == '1402'
+            assert img['loading'] == 'lazy' and img['decoding'] == 'async'
+            assert img['alt'].startswith(f'카드 {index}/5.' if lang == 'ko' else f'Card {index} of 5.')
+        assert any(a.get('href') == 'https://www.instagram.com/p/Degx3lXCeUp/' and a.get('rel') == 'noopener noreferrer' for a in watch.anchors)
+        previous = Page((root/(prefix.lstrip('/') + '/watch/fall-707-season-2-full/index.html').lstrip('/')).read_text(encoding='utf-8'))
+        assert any(a.get('href') == route_prefix + episode_route and a.get('class') == 'next-episode' for a in previous.anchors)
 
 catalogs = []
 for filename in ['catalog.js', 'en/catalog.js']:
