@@ -7,8 +7,9 @@ from seedance_tutorial import build as build_seedance, PATH as SEEDANCE_PATH, AR
 from platform_tutorial import build as build_platform, teaser as platform_teaser, PATH as PLATFORM_PATH
 from seedance_languages import build as build_languages, teaser as languages_teaser, PATH as LANGUAGES_PATH
 from camera_tutorial import build as build_camera, teaser as camera_teaser, PATH as CAMERA_PATH
+from previs_tutorial import build as build_previs, teaser as previs_teaser, PATH as PREVIS_PATH
 
-ROUTES = ['/tutorials/', '/tutorials/character-sheet/', SEEDANCE_PATH, PLATFORM_PATH, LANGUAGES_PATH, CAMERA_PATH]
+ROUTES = ['/tutorials/', '/tutorials/character-sheet/', SEEDANCE_PATH, PLATFORM_PATH, LANGUAGES_PATH, CAMERA_PATH, PREVIS_PATH]
 TRANSLATIONS = {}
 ART = '/assets/notes/character-sheet-duchess20-v3-center-soft-wm.webp'
 
@@ -44,13 +45,14 @@ def teaser():
     cards=''.join(f'''<a class="tutorial-preview" href="{lesson['path']}"><img src="{lesson['art']}" width="1536" height="1024" loading="lazy" decoding="async" alt="{lesson['alt']}"><div><p class="section-eyebrow">{'SEEDANCE 2.5 / IMAGE TO VIDEO' if lesson.get('video') else 'CHARACTER / SCENE / LIGHT'}</p><h3>{lesson['title']}</h3><p class="tutorial-card-date"><time datetime="{lesson['date']}">{lesson['date'].replace('-','.')}</time> · {t("밀리터리 · 이미지 · 영상", "Military · Image · Video") if lesson.get('video') else t("캐릭터 · 씬 · 조명", "Character · Scene · Light")}</p><span>{t('시댄스 2.5 영상화 · 강좌 열기','Seedance 2.5 image to video · Open lesson') if lesson.get('video') else t('로판 캐릭터 시트 기초 · 강좌 열기', 'Romantic-fantasy character basics · Open lesson')} →</span></div></a>''' for lesson in sorted(LESSONS,key=lambda item:item['date'],reverse=True))
     cards+=platform_teaser(t)
     cards+=languages_teaser(t)
-    cards=camera_teaser(t)+cards
+    cards=previs_teaser(t)+camera_teaser(t)+cards
     return f'''<section class="tutorial-teaser" id="tutorials"><div><p class="section-eyebrow">FILMMAKING / FIELD NOTES</p><h2>{t('장면을 만드는 첫걸음.', 'Your first step into a scene.')}</h2><p>{t('작품을 보다가 제작 과정이 궁금해졌다면. 직접 따라 해보는 작은 실습부터 시작하세요.', 'Curious about how the films are made? Start with a small hands-on exercise.')}</p></div><div class="tutorial-lesson-list">{cards}</div></section>'''
 
 def build_tutorials(out, origin, head, header, footer):
     intro = f'''<p class="tutorial-intro">{t('처음 만드는 사람도 한 단계씩. 로판·현대 드라마·밀리터리·오컬트·SF 장면으로 제작 방법을 직접 실습합니다.', 'One step at a time, even for first-time creators. Practice filmmaking through romantic fantasy, contemporary drama, military, occult and science-fiction examples.')}</p>'''
     index_title = t('작품 뒤의 방법, 직접 해보세요.', 'Behind the films. Try the process.')
     topics = '<nav class="tutorial-topics" aria-label="' + t('강좌 주제','Lesson topics') + '">' + ''.join('<a href="/tutorials/character-sheet/' + anchor + '">' + t(ko,en) + '</a>' for anchor,ko,en in [('#step-1','캐릭터','Character'),('#scene-examples','씬 이미지','Scene images'),('#lighting','조명·무드','Light and mood')]) + '<a href="'+SEEDANCE_PATH+'">'+t('시댄스 2.5 · 영상화','Seedance 2.5 · Video')+'</a></nav>'
+    topics=topics.replace('</nav>','<a href="'+PREVIS_PATH+'">'+t('블렌더 · 프리비즈','Blender · Previs')+'</a></nav>')
     body = f'<body class="watch-page">{header()}<main class="tutorial-main" id="main"><a class="note-back" href="/">← {t("사이트로 돌아가기", "Back to the site")}</a><p class="section-eyebrow">DRA9ON CINEMA / TUTORIALS</p><h1>{index_title}</h1>{intro}{topics}{teaser()}<p class="tutorial-notice">{t("직접 구성한 공개 실습을 제작일과 주제별로 차곡차곡 모읍니다.", "Original public exercises, collected over time by publication date and topic.")}</p></main>{footer()}</body></html>'
     schema = {'@context':'https://schema.org','@type':'CollectionPage','name':index_title,'url':origin+ROUTES[0]}
     write(out, ROUTES[0], page_head(head, index_title, DESC, ROUTES[0], schema)+body)
@@ -111,6 +113,7 @@ def build_tutorials(out, origin, head, header, footer):
     build_platform(out,origin,head,header,footer,t)
     build_languages(out,origin,head,header,footer,t)
     build_camera(out,origin,head,header,footer,t)
+    build_previs(out,origin,head,header,footer,t)
 
 def page_head(head,title,description,path,schema):
     return head(title+' | DRA9ON CINEMA',description,path,schema).replace('property="og:type" content="video.episode"','property="og:type" content="article"' if path==ROUTES[1] else 'property="og:type" content="website"')
