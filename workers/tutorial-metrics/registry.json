@@ -103,6 +103,10 @@
     "canonicalPath": "/tutorials/character-sheet/",
     "type": "tutorial"
   },
+  "/en/tutorials/cinematic-aesthetics/": {
+    "canonicalPath": "/tutorials/cinematic-aesthetics/",
+    "type": "tutorial"
+  },
   "/en/tutorials/claude-mcp-newtake/": {
     "canonicalPath": "/tutorials/claude-mcp-newtake/",
     "type": "tutorial"
@@ -409,6 +413,10 @@
   },
   "/tutorials/character-sheet/": {
     "canonicalPath": "/tutorials/character-sheet/",
+    "type": "tutorial"
+  },
+  "/tutorials/cinematic-aesthetics/": {
+    "canonicalPath": "/tutorials/cinematic-aesthetics/",
     "type": "tutorial"
   },
   "/tutorials/claude-mcp-newtake/": {
