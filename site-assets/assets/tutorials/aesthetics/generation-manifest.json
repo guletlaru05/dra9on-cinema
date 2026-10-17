@@ -1,0 +1,76 @@
+[
+  {
+    "id": "aesthetics-base",
+    "file": "aesthetics-base.webp",
+    "tool": "ZCRE MCP",
+    "model": "midjourney-v8.2",
+    "ratio": "16:9",
+    "width": 1440,
+    "height": 807,
+    "bytes": 94376,
+    "originalDimensions": [
+      1456,
+      816
+    ],
+    "prompt": "A cinematic live-action still from an original speculative mystery film, a forgotten botanical archive inside a deep-sea research station, atmospheric but physically believable production design. One fictional adult woman archivist aged 26, shoulder-length dark auburn hair, plain charcoal long coat, gray work trousers and worn black shoes, no real-person likeness, no insignia. Eye-level wide framing, 35mm lens feel, full figure visible including shoes. She stands slightly right of center beside a waist-high oxidized metal archive cabinet, quietly examining a single dull brass specimen case held in both hands. A deep unlit passage occupies the left half of the frame; thick frosted glass partitions and a few restrained silhouettes of preserved plants create layered depth in the back. Clearly organized focal hierarchy: her face and hands first, the brass case second, the passage third. Restrained palette of charcoal, desaturated deep green and one small aged-brass accent. Broad soft light from above-left, minimal neutral fill so dark fabric retains visible texture. The background is two stops darker than the subject. Rich blacks with readable detail, natural skin texture, aged painted steel, subtle fabric fibers, gentle optical softness and fine photographic grain. Quiet, elegant, uneasy, tactile, low-saturation cinematic color, never glossy commercial beauty lighting. One single edge-to-edge landscape still, not a collage, no letterbox bars, no decorative borders. No text, subtitles, signs, logos, watermarks, recognizable fictional franchises, neon glow, magical particles, weapons or extra people.",
+    "parameters": {
+      "prompt": "A cinematic live-action still from an original speculative mystery film, a forgotten botanical archive inside a deep-sea research station, atmospheric but physically believable production design. One fictional adult woman archivist aged 26, shoulder-length dark auburn hair, plain charcoal long coat, gray work trousers and worn black shoes, no real-person likeness, no insignia. Eye-level wide framing, 35mm lens feel, full figure visible including shoes. She stands slightly right of center beside a waist-high oxidized metal archive cabinet, quietly examining a single dull brass specimen case held in both hands. A deep unlit passage occupies the left half of the frame; thick frosted glass partitions and a few restrained silhouettes of preserved plants create layered depth in the back. Clearly organized focal hierarchy: her face and hands first, the brass case second, the passage third. Restrained palette of charcoal, desaturated deep green and one small aged-brass accent. Broad soft light from above-left, minimal neutral fill so dark fabric retains visible texture. The background is two stops darker than the subject. Rich blacks with readable detail, natural skin texture, aged painted steel, subtle fabric fibers, gentle optical softness and fine photographic grain. Quiet, elegant, uneasy, tactile, low-saturation cinematic color, never glossy commercial beauty lighting. One single edge-to-edge landscape still, not a collage, no letterbox bars, no decorative borders. No text, subtitles, signs, logos, watermarks, recognizable fictional franchises, neon glow, magical particles, weapons or extra people.",
+      "aspect_ratio": "16:9",
+      "resolution": "1k",
+      "num_images": 4,
+      "quality": 1,
+      "stylize": 75,
+      "chaos": 0,
+      "raw": true,
+      "seed": 471039
+    }
+  },
+  {
+    "id": "aesthetics-space",
+    "file": "aesthetics-space.webp",
+    "tool": "Higgsfield MCP",
+    "model": "gpt_image_2_5",
+    "ratio": "16:9",
+    "width": 1344,
+    "height": 752,
+    "bytes": 55052,
+    "originalDimensions": [
+      1344,
+      752
+    ],
+    "prompt": "Use the attached image as the sole visual reference for the fictional adult archivist, her face, dark auburn hair, charcoal coat, gray trousers, black shoes, brass specimen case and the deep-sea botanical archive. Create one new 16:9 cinematic still exploring spacious asymmetric composition. Keep the person standing still, the specimen case held in both hands and the same quiet restrained expression. Eye-level 35mm-style wide framing with her whole body and shoes visible. Place her around the right third of the frame. Keep the left half as a deep dark passage with simple large shapes, not a featureless black block. Use a few soft foreground plant silhouettes to frame the scene without covering her face or hands. Keep the existing soft upper-left light direction and the charcoal, muted deep-green and aged-brass palette. Establish a readable visual hierarchy: face and hands first, the small brass case second, the empty passage third. Reduce small distracting props and competing bright highlights. Preserve realistic matte metal, fine cloth texture and natural skin, gentle highlight roll-off and subtle photographic grain. Keep detail in dark areas without brightening the whole scene. No new people, new costumes, extra lamps, neon, oversaturated greens, glossy plastic skin, heavy HDR, text, logos, watermarks, collage, decorative frame or letterbox bars. Do not copy panels or captions. The result should feel quietly unsettling and spacious, not like a game concept render.",
+    "parameters": {
+      "model": "gpt_image_2_5",
+      "variant": "flare",
+      "quality": "medium",
+      "resolution": "1k",
+      "aspect_ratio": "16:9",
+      "count": 1,
+      "prompt": "Use the attached image as the sole visual reference for the fictional adult archivist, her face, dark auburn hair, charcoal coat, gray trousers, black shoes, brass specimen case and the deep-sea botanical archive. Create one new 16:9 cinematic still exploring spacious asymmetric composition. Keep the person standing still, the specimen case held in both hands and the same quiet restrained expression. Eye-level 35mm-style wide framing with her whole body and shoes visible. Place her around the right third of the frame. Keep the left half as a deep dark passage with simple large shapes, not a featureless black block. Use a few soft foreground plant silhouettes to frame the scene without covering her face or hands. Keep the existing soft upper-left light direction and the charcoal, muted deep-green and aged-brass palette. Establish a readable visual hierarchy: face and hands first, the small brass case second, the empty passage third. Reduce small distracting props and competing bright highlights. Preserve realistic matte metal, fine cloth texture and natural skin, gentle highlight roll-off and subtle photographic grain. Keep detail in dark areas without brightening the whole scene. No new people, new costumes, extra lamps, neon, oversaturated greens, glossy plastic skin, heavy HDR, text, logos, watermarks, collage, decorative frame or letterbox bars. Do not copy panels or captions. The result should feel quietly unsettling and spacious, not like a game concept render."
+    }
+  },
+  {
+    "id": "aesthetics-tactile",
+    "file": "aesthetics-tactile.webp",
+    "tool": "Higgsfield MCP",
+    "model": "gpt_image_2_5",
+    "ratio": "16:9",
+    "width": 1344,
+    "height": 752,
+    "bytes": 50804,
+    "originalDimensions": [
+      1344,
+      752
+    ],
+    "prompt": "Use the attached image as the sole visual reference for the fictional adult archivist, her face, dark auburn hair, charcoal coat, brass specimen case and the deep-sea botanical archive. Create one new 16:9 cinematic still exploring an intimate, tactile composition rather than a wide establishing shot. Keep the person standing still, the specimen case held in both hands and the same quiet restrained expression. Eye-level 65mm-style waist-up medium framing. Include the face, both hands and the entire brass case; do not cut through fingers or the case. Keep the subject slightly right of center, with a modest area of dark negative space to the left of her gaze. Background glass partitions and plant silhouettes remain softly recognizable without small sharp distractions. Keep the same soft upper-left light direction and the charcoal, muted deep-green and aged-brass palette. The brass must look aged and understated, not bright yellow or glowing. Make subtle skin variation, matte cloth fibers and slightly worn metal readable without artificial sharpness. Dark but legible exposure, soft highlight roll-off, nuanced shadows and fine photographic grain. No new people, changed facial design, new costume, extra jewelry, extra lamps, orange-and-teal blockbuster grade, neon, plastic beauty skin, heavy HDR, text, logos, watermarks, collage, decorative frame or letterbox bars. This is a closer still frame, not a moving camera shot or a sequence.",
+    "parameters": {
+      "model": "gpt_image_2_5",
+      "variant": "flare",
+      "quality": "medium",
+      "resolution": "1k",
+      "aspect_ratio": "16:9",
+      "count": 1,
+      "prompt": "Use the attached image as the sole visual reference for the fictional adult archivist, her face, dark auburn hair, charcoal coat, brass specimen case and the deep-sea botanical archive. Create one new 16:9 cinematic still exploring an intimate, tactile composition rather than a wide establishing shot. Keep the person standing still, the specimen case held in both hands and the same quiet restrained expression. Eye-level 65mm-style waist-up medium framing. Include the face, both hands and the entire brass case; do not cut through fingers or the case. Keep the subject slightly right of center, with a modest area of dark negative space to the left of her gaze. Background glass partitions and plant silhouettes remain softly recognizable without small sharp distractions. Keep the same soft upper-left light direction and the charcoal, muted deep-green and aged-brass palette. The brass must look aged and understated, not bright yellow or glowing. Make subtle skin variation, matte cloth fibers and slightly worn metal readable without artificial sharpness. Dark but legible exposure, soft highlight roll-off, nuanced shadows and fine photographic grain. No new people, changed facial design, new costume, extra jewelry, extra lamps, orange-and-teal blockbuster grade, neon, plastic beauty skin, heavy HDR, text, logos, watermarks, collage, decorative frame or letterbox bars. This is a closer still frame, not a moving camera shot or a sequence."
+    }
+  }
+]

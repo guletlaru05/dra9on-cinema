@@ -267,7 +267,9 @@ for lang, prefix in [('ko',''),('en','/en')]:
     for route in ['/', '/tutorials/']:
         listing = Page((root/(prefix+route+'index.html').lstrip('/')).read_text(encoding='utf-8'))
         latest = next(anchor for anchor in listing.anchors if 'tutorial-preview' in anchor.get('class','').split())
-        assert latest['href'] == base+prefix+NEWTAKE_PATH, 'New article is not the latest tutorial'
+        from aesthetics_tutorial import PATH as AESTHETICS_PATH
+        assert latest['href'] == base+prefix+AESTHETICS_PATH, 'New article is not the latest tutorial'
+        assert any(a.get('href') == base+prefix+NEWTAKE_PATH for a in listing.anchors), 'Newtake tutorial must stay in the list'
 
 catalogs = []
 for filename in ['catalog.js', 'en/catalog.js']:

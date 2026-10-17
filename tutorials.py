@@ -10,8 +10,9 @@ from camera_tutorial import build as build_camera, teaser as camera_teaser, PATH
 from previs_tutorial import build as build_previs, teaser as previs_teaser, PATH as PREVIS_PATH
 from video_repair_tutorial import build as build_video_repair, teaser as video_repair_teaser, PATH as VIDEO_REPAIR_PATH
 from newtake_tutorial import build as build_newtake, teaser as newtake_teaser, PATH as NEWTAKE_PATH
+from aesthetics_tutorial import build as build_aesthetics, teaser as aesthetics_teaser, PATH as AESTHETICS_PATH
 
-ROUTES = ['/tutorials/', '/tutorials/character-sheet/', SEEDANCE_PATH, PLATFORM_PATH, LANGUAGES_PATH, CAMERA_PATH, PREVIS_PATH, VIDEO_REPAIR_PATH, NEWTAKE_PATH]
+ROUTES = ['/tutorials/', '/tutorials/character-sheet/', SEEDANCE_PATH, PLATFORM_PATH, LANGUAGES_PATH, CAMERA_PATH, PREVIS_PATH, VIDEO_REPAIR_PATH, NEWTAKE_PATH, AESTHETICS_PATH]
 TRANSLATIONS = {}
 ART = '/assets/notes/character-sheet-duchess20-v3-center-soft-wm.webp'
 
@@ -47,7 +48,7 @@ def teaser():
     cards=''.join(f'''<a class="tutorial-preview" href="{lesson['path']}"><img src="{lesson['art']}" width="1536" height="1024" loading="lazy" decoding="async" alt="{lesson['alt']}"><div><p class="section-eyebrow">{'SEEDANCE 2.5 / IMAGE TO VIDEO' if lesson.get('video') else 'CHARACTER / SCENE / LIGHT'}</p><h3>{lesson['title']}</h3><p class="tutorial-card-date"><time datetime="{lesson['date']}">{lesson['date'].replace('-','.')}</time> · {t("밀리터리 · 이미지 · 영상", "Military · Image · Video") if lesson.get('video') else t("캐릭터 · 씬 · 조명", "Character · Scene · Light")}</p><span>{t('시댄스 2.5 영상화 · 강좌 열기','Seedance 2.5 image to video · Open lesson') if lesson.get('video') else t('로판 캐릭터 시트 기초 · 강좌 열기', 'Romantic-fantasy character basics · Open lesson')} →</span></div></a>''' for lesson in sorted(LESSONS,key=lambda item:item['date'],reverse=True))
     cards+=platform_teaser(t)
     cards+=languages_teaser(t)
-    cards=newtake_teaser(t)+video_repair_teaser(t)+previs_teaser(t)+camera_teaser(t)+cards
+    cards=aesthetics_teaser(t)+newtake_teaser(t)+video_repair_teaser(t)+previs_teaser(t)+camera_teaser(t)+cards
     return f'''<section class="tutorial-teaser" id="tutorials"><div><p class="section-eyebrow">FILMMAKING / FIELD NOTES</p><h2>{t('장면을 만드는 첫걸음.', 'Your first step into a scene.')}</h2><p>{t('작품을 보다가 제작 과정이 궁금해졌다면. 직접 따라 해보는 작은 실습부터 시작하세요.', 'Curious about how the films are made? Start with a small hands-on exercise.')}</p></div><div class="tutorial-lesson-list">{cards}</div></section>'''
 
 def build_tutorials(out, origin, head, header, footer):
@@ -57,6 +58,7 @@ def build_tutorials(out, origin, head, header, footer):
     topics=topics.replace('</nav>','<a href="'+PREVIS_PATH+'">'+t('블렌더 · 프리비즈','Blender · Previs')+'</a></nav>')
     topics=topics.replace('</nav>','<a href="'+VIDEO_REPAIR_PATH+'">'+t('영상 · 부분 수정','Video · Local repair')+'</a></nav>')
     topics=topics.replace('</nav>','<a href="'+NEWTAKE_PATH+'">Claude · MCP · Newtake</a></nav>')
+    topics=topics.replace('</nav>','<a href="'+AESTHETICS_PATH+'">'+t('미감 · 여백·색·질감','Visual taste · Space, color and texture')+'</a></nav>')
     body = f'<body class="watch-page">{header()}<main class="tutorial-main" id="main"><a class="note-back" href="/">← {t("사이트로 돌아가기", "Back to the site")}</a><p class="section-eyebrow">DRA9ON CINEMA / TUTORIALS</p><h1>{index_title}</h1>{intro}{topics}{teaser()}<p class="tutorial-notice">{t("직접 구성한 공개 실습을 제작일과 주제별로 차곡차곡 모읍니다.", "Original public exercises, collected over time by publication date and topic.")}</p></main>{footer()}</body></html>'
     schema = {'@context':'https://schema.org','@type':'CollectionPage','name':index_title,'url':origin+ROUTES[0]}
     write(out, ROUTES[0], page_head(head, index_title, DESC, ROUTES[0], schema)+body)
@@ -120,6 +122,7 @@ def build_tutorials(out, origin, head, header, footer):
     build_previs(out,origin,head,header,footer,t)
     build_video_repair(out,origin,head,header,footer,t)
     build_newtake(out,origin,head,header,footer,t)
+    build_aesthetics(out,origin,head,header,footer,t)
 
 def page_head(head,title,description,path,schema):
     return head(title+' | DRA9ON CINEMA',description,path,schema).replace('property="og:type" content="video.episode"','property="og:type" content="article"' if path==ROUTES[1] else 'property="og:type" content="website"')
