@@ -67,7 +67,7 @@ def header(home=False):
  nav='<a class="nav-link" href="/">홈</a><a class="nav-link" href="/#episodes">FALL 707</a><a class="nav-link" href="/#originals">작품집</a><a class="nav-link" href="/notes/">제작 비하인드</a><a class="nav-link" href="/tutorials/">튜토리얼</a><a class="nav-link" href="/questions/">질문과 답변</a><a class="nav-link" href="/#collaboration">협업 문의</a><a class="nav-link" href="/#about">ABOUT</a>'
  search=f'<div class="search-wrap" id="search-wrap"><button class="icon-button" id="search-toggle" aria-label="작품 검색" aria-expanded="false">{icon("search")}</button><input type="search" id="search" placeholder="작품, 에피소드 검색" aria-label="작품 또는 에피소드 검색" autocomplete="off" hidden></div>' if home else ''
  return f'<a class="skip-link" href="#main">콘텐츠로 바로 가기</a><header class="header">{brand}<nav class="nav" aria-label="주 메뉴">{nav}</nav><div class="header-actions">{search}{social_links("channel-button")}</div></header>'
-def footer():return f'<footer>{brand}<p>AI로 세계관을 실사화하는 크리에이터.<br><span>© 2026 DRA9ON CINEMA. All rights reserved.</span><br><span>작품·이미지·텍스트의 무단 복제, 재업로드 및 상업적 이용을 금합니다. 이용 문의는 이메일로 연락해 주세요.</span></p><div class="footer-links">{social_links()}<a href="/library/">PRIVATE LIBRARY</a><a href="/#collaboration">Collaboration / Business {icon("arrow")}</a><a href="mailto:{CONTACT_EMAIL}">채널 문의 {icon("arrow")}</a></div></footer>'
+def footer():return f'<footer>{brand}<p>AI로 세계관을 실사화하는 크리에이터.<br><span>© 2026 DRA9ON CINEMA. All rights reserved.</span><br><span>작품·이미지·텍스트의 무단 복제, 재업로드 및 상업적 이용을 금합니다. 이용 문의는 이메일로 연락해 주세요.</span></p><div class="footer-links">{social_links()}<a href="/library/">PRIVATE LIBRARY</a><a class="press-kit-link" href="/press/">Press Kit</a><a href="/#collaboration">Collaboration / Business {icon("arrow")}</a><a href="mailto:{CONTACT_EMAIL}">채널 문의 {icon("arrow")}</a></div></footer>'
 def card(v):return f'<article class="card"><a class="card-open" href="{v["path"]}" data-detail="{v["id"]}" aria-label="{esc(v["label"]+" "+v["name"])} 상세 보기"><div class="card-image"><img src="{v["image"]}" alt="{esc(v["name"])} 공식 썸네일" width="720" height="405" loading="lazy" decoding="async"><span class="duration">{esc(v["duration"] or "")}</span><span class="card-hover-play"><span>{icon("play")}</span></span></div><p class="card-label">{v["label"]}</p><h3 class="card-name">{esc(v["name"])}</h3></a><button class="card-save" data-save="{v["id"]}" aria-label="{esc(v["name"])} 찜하기" aria-pressed="false">{icon("plus")}</button></article>'
 def shelf(id,title,subtitle,items):return f'<section class="shelf" id="{id}" aria-labelledby="{id}-title"><div class="shelf-heading"><div><p class="section-eyebrow">{subtitle}</p><h2 class="shelf-title" id="{id}-title">{title}</h2></div><div class="shelf-controls"><button data-scroll="{id}-track" data-direction="-1" aria-label="{title} 이전 보기">{icon("left")}</button><button data-scroll="{id}-track" data-direction="1" aria-label="{title} 다음 보기">{icon("right")}</button></div></div><div class="shelf-track" id="{id}-track">'+''.join(card(v) for v in items)+'</div></section>'
 def head(title,desc,path='/',schema=None):
@@ -108,6 +108,7 @@ main+='</div><section id="browse-results" hidden aria-labelledby="browse-title">
 main+=home_teaser()+teaser()+tutorial_teaser()+render_collaboration(icon)
 about_paragraphs=''.join(f'<p>{esc(text)}</p>' for text in ABOUT_PARAGRAPHS['ko'])
 main+=f'<section class="about-section" id="about"><div class="about-copy"><p class="section-eyebrow">BEHIND THE FRAME</p><h2>상상을, 장면으로.<br><span>이야기를, 세계관으로.</span></h2>{about_paragraphs}<div class="about-tags"><span>AI FILMMAKING</span><span>WORLD BUILDING</span><span>VISUAL STORYTELLING</span></div><div class="about-links"><a class="text-button" href="https://www.youtube.com/@dra9oncinema" target="_blank" rel="noopener noreferrer">채널에서 더 보기 {icon("external")}</a></div></div></section></main>{footer()}{dialogs}</body></html>'
+main=main.replace('<div class="about-links">','<div class="about-links"><a class="text-button press-kit-link" href="/press/">Press Kit</a>',1)
 (out/'index.html').write_text(head('드래곤시네마 DRA9ON CINEMA | 낙하 707 · FALL 707','드래곤시네마의 〈낙하 707: 리부트〉(낙하707, FALL 707). 현대 특수부대와 조선 시대가 만나는 밀리터리 판타지·사극 AI 영화. 시즌 1·2·3과 풀버전을 감상하세요.',schema=schema)+main,encoding='utf-8')
 paths=['/']
 for v in works:
@@ -143,6 +144,8 @@ build_terms(out, origin, head, header, footer)
 build_notes(out, origin, head, header, footer)
 build_tutorials(out, origin, head, header, footer)
 build_questions(out, origin, head, header, footer)
+from presskit import build_press
+build_press(out, origin, works, data, head, header, footer)
 localize_site(out, works, origin, base_path)
 # Public ownership proof for the owner's Google and Naver webmaster properties.
 verification_tag = (

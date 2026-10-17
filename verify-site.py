@@ -112,7 +112,8 @@ assert any('library.js' in script.get('data-service-src','') and 'src' not in sc
 html_files = [page for page in root.rglob('*.html') if page != library]
 from tutorials import ROUTES as TUTORIAL_ROUTES
 from questions import ROUTES as QUESTION_ROUTES
-TUTORIAL_ROUTES = [*TUTORIAL_ROUTES, *QUESTION_ROUTES]
+from presskit import ROUTES as PRESS_ROUTES
+TUTORIAL_ROUTES = [*TUTORIAL_ROUTES, *QUESTION_ROUTES, *PRESS_ROUTES]
 assert len(html_files) == 2 * (video_count + 8 + len(TUTORIAL_ROUTES)), len(html_files)
 for path in html_files:
     source = path.read_text(encoding='utf-8')
