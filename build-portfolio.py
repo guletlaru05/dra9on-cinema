@@ -175,6 +175,10 @@ for page in out.rglob('*.html'):
  document=document.replace('</head>',assets+'</head>',1).replace('</body>',controls+'</body>',1)
  page.write_text(document,encoding='utf-8')
 
+# The public visit ledger is added after translation, with its own hashed assets.
+from visitor_counter import inject_visitor_counter
+inject_visitor_counter(out, base_path)
+
 # Scheduled episodes ship as announcement pages; the browser unlocks at releaseAt.
 release_version = sha256((out/'release.js').read_bytes()).hexdigest()[:12]
 for page in out.rglob('*.html'):

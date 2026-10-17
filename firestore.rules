@@ -137,5 +137,63 @@ service cloud.firestore {
         allow create, update: if film(id) && signedIn() && request.auth.uid == uid && validChange(id);
       }
     }
+    // Insert inside match /databases/{database}/documents, preserving live rules.
+    // Counts are consenting browser-days, not verified people or GA4 users.
+    function siteVisitDay() {
+      return int((request.time.toMillis() + 32400000) / 86400000);
+    }
+    // The affected document uses resource/request.resource without access calls.
+    // Only the other two documents need exists/get/getAfter: at most 6 per write,
+    // or 18 for all three writes, even without the Rules access-call cache.
+    function validSiteVisit(kind) {
+      let day = siteVisitDay();
+      let summaryPath = /databases/$(database)/documents/siteVisits/summary;
+      let dayPath = /databases/$(database)/documents/siteVisitDays/$(string(day));
+      let browserPath = /databases/$(database)/documents/siteVisitBrowsers/$(request.auth.uid);
+      let oldSummary = kind == 'summary'
+        ? (request.method == 'create' ? {'total':0, 'startedAt':request.time} : resource.data)
+        : (exists(summaryPath) ? get(summaryPath).data : {'total':0, 'startedAt':request.time});
+      let oldDay = kind == 'day'
+        ? (request.method == 'create' ? {'visits':0} : resource.data)
+        : (exists(dayPath) ? get(dayPath).data : {'visits':0});
+      let oldBrowser = kind == 'browser'
+        ? (request.method == 'create' ? {'day':-1} : resource.data)
+        : (exists(browserPath) ? get(browserPath).data : {'day':-1});
+      let summary = kind == 'summary' ? request.resource.data : getAfter(summaryPath).data;
+      let daily = kind == 'day' ? request.resource.data : getAfter(dayPath).data;
+      let browser = kind == 'browser' ? request.resource.data : getAfter(browserPath).data;
+      return oldBrowser.day < day
+        && summary.keys().hasAll(['total','startedAt','updatedAt'])
+        && summary.keys().hasOnly(['total','startedAt','updatedAt'])
+        && summary.total is int && summary.total == oldSummary.total + 1
+        && summary.total > 0 && summary.startedAt is timestamp
+        && summary.startedAt == oldSummary.startedAt
+        && summary.updatedAt == request.time
+        && daily.keys().hasAll(['day','visits','updatedAt'])
+        && daily.keys().hasOnly(['day','visits','updatedAt'])
+        && daily.day is int && daily.day == day
+        && daily.visits is int && daily.visits == oldDay.visits + 1
+        && daily.visits > 0 && daily.visits <= summary.total
+        && daily.updatedAt == request.time
+        && browser.keys().hasAll(['day','visitedAt'])
+        && browser.keys().hasOnly(['day','visitedAt'])
+        && browser.day is int && browser.day == day
+        && browser.visitedAt == request.time;
+    }
+    match /siteVisits/{id} {
+      allow get: if id == 'summary';
+      allow list, delete: if false;
+      allow create, update: if id == 'summary' && request.auth != null && validSiteVisit('summary');
+    }
+    match /siteVisitDays/{id} {
+      allow get: if id.matches('^[0-9]{1,8}$');
+      allow list, delete: if false;
+      allow create, update: if request.auth != null && id == string(siteVisitDay()) && validSiteVisit('day');
+    }
+    match /siteVisitBrowsers/{uid} {
+      allow get: if request.auth != null && request.auth.uid == uid;
+      allow list, delete: if false;
+      allow create, update: if request.auth != null && request.auth.uid == uid && validSiteVisit('browser');
+    }
   }
 }
