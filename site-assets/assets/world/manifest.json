@@ -258,18 +258,5 @@
       766
     ],
     "kind": "production portrait"
-  },
-  "yuna-action": {
-    "width": 1440,
-    "height": 548,
-    "sourceEpisode": "S2 EP.06",
-    "timeSeconds": 545,
-    "crop": [
-      0,
-      80,
-      2048,
-      860
-    ],
-    "kind": "action still"
   }
 }

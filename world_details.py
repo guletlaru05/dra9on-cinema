@@ -12,7 +12,6 @@ COPY=[
  ('707 대원들','Unit 707','707部隊','Unidad 707'),('조선의 인연','Connections in Joseon','朝鮮で結ばれた縁','Vínculos en Joseon'),('목포진','Mokpojin','モクポジン','Mokpojin'),('검은 종','The black bell','黒い鈴','La campana negra'),
  ('처음 보는 분께. FALL 707 세계관과 인물 관계부터 살펴보세요.','New here? Explore the world and characters of FALL 707.','初めての方へ。FALL 707の世界と人物関係からどうぞ。','¿Primera visita? Descubre el mundo y los personajes de FALL 707.'),
  ('궁궐과 목포진의 사람들','People of the palace and Mokpojin','宮殿とモクポジンの人々','Las personas del palacio y Mokpojin'),
- ('유나 · 시즌 2 EP.06 액션 스틸','Yuna · Season 2 EP.06 action still','ユナ・シーズン2第6話のアクションスチル','Yuna · Imagen de acción de la temporada 2, episodio 6'),
 ]
 CAST=[
  ('sergeant-han',('한 중사 · 707 돌격대원','Sergeant Han · 707 assault operator','ハン軍曹・707部隊突撃隊員','Sargento Han · Operador de asalto del 707'),('민서아와 함께 작전에 투입된 돌격대원. 사라진 동료들을 찾는 대위의 여정에서 빼놓을 수 없는 인물이다.','An assault operator deployed with Min Seo-a. He is central to the captain’s search for her missing teammates.','ミン・ソアと作戦に参加した突撃隊員。行方不明の仲間を捜す大尉の旅に、欠かせない存在だ。','Operador de asalto que participó en la misión de Min Seo-a. Es una figura central en la búsqueda de sus compañeros desaparecidos.')),
@@ -65,8 +64,7 @@ def photo(out,name,alt):
 def cast_html(out):
  result=''
  for name,label,description in CAST:
-  result+='<article id="person-'+name+'"'+(' class="world-yuna-feature"' if name=='yuna' else '')+'>'+photo(out,name,label[0])+'<h3>'+label[0]+'</h3><p>'+description[0]+'</p>'
-  if name=='yuna':result+='<figure class="world-yuna-action">'+photo(out,'yuna-action','유나 · 시즌 2 EP.06 액션 스틸')+'<figcaption>유나 · 시즌 2 EP.06 액션 스틸</figcaption></figure>'
+  result+='<article id="person-'+name+'">'+photo(out,name,label[0])+'<h3>'+label[0]+'</h3><p>'+description[0]+'</p>'
   result+='</article>'
  return result
 

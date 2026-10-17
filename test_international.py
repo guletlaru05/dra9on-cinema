@@ -34,6 +34,7 @@ class InternationalPages(unittest.TestCase):
    self.assertNotIn('S3',source)
    self.assertNotIn('시즌 3',source)
    self.assertIn('world-relationship-map',source)
+   self.assertNotIn('yuna-action',source)
    self.assertIn('fall-707-season-1-full/',source)
    self.assertIn('fall-707-season-2-full/',source)
    for name in ('captain-min','prince-iseo','yeonhwa'):
