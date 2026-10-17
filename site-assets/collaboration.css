@@ -20,8 +20,9 @@
 .collaboration-programs{margin-top:34px;padding-top:24px;border-top:1px solid #ffffff1c}
 .collaboration-programs h3{font-size:12px;font-weight:500;color:#bcbcc6;margin:0 0 15px;line-height:1.7}
 .collaboration-programs ul{display:flex;flex-wrap:wrap;gap:10px 14px;list-style:none;margin:0;padding:0}
-.collaboration-programs li{display:flex;align-items:center;gap:12px;border:1px solid #ffffff28;padding:12px 16px;border-radius:4px;font-size:16px;line-height:1.5}
+.collaboration-programs li{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;border:1px solid #ffffff28;padding:12px 16px;border-radius:4px;font-size:16px;line-height:1.5;max-width:100%}
 .collaboration-programs li span{font-size:10px;letter-spacing:1px;color:#ff8998}
+.collaboration-programs li small{flex-basis:100%;font-size:12px;line-height:1.7;color:#bcbcc6}
 .collaboration-programs+.collaboration-audience{margin-top:26px}
 .collaboration-audience{margin-top:49px;padding:27px 0 25px;border-top:1px solid #ffffff1c;border-bottom:1px solid #ffffff1c}
 .collaboration-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,185px),1fr));gap:28px;margin:24px 0 19px;max-width:1000px}
