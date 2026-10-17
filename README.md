@@ -55,6 +55,14 @@ python verify-site.py --origin https://guletlaru05.github.io --base-path /dra9on
 
 ## 수정할 파일
 
+### 협업 문의
+
+홈의 `/#collaboration`과 영어 `/en/#collaboration`에 제작 분야, 공개 제작 사례, 이메일 의뢰 항목을 안내합니다. 모든 공개 페이지의 메뉴·푸터와 프로필용 `/links/`에서 연결됩니다. `collaboration.py`의 `STATS`, `CASES`, `UPDATED_AT`와 `site-assets/collaboration.css`를 관리하세요.
+
+수치는 2026-10-17 공개 프로필에서 확인한 YouTube 구독자 1.38만, Instagram 팔로워 9.4만의 스냅샷입니다. 자동 갱신되거나 플랫폼 간 중복이 제거된 사람 수가 아닙니다. Facebook은 올바른 공식 페이지와 수치 확인 전까지 표시하지 않습니다. 뉴테이크 광고, Dreamina CPP, 빠나나 AI 도구 활용 사례를 구분하며 유료 협찬·공식 제휴 관계를 일괄 주장하지 않습니다.
+
+공개 영상 26편의 한·영 시청 페이지에는 기존 `VideoObject`가 있으며, 빌드 검사는 영상 ID·썸네일·게시 시각·길이·임베드 주소가 원본 데이터와 일치하는지 확인합니다. 빈 이미지 주소도 빌드 오류로 처리합니다. 검색 결과의 썸네일 노출은 검색엔진이 결정합니다.
+
 ### 채널 소개·연락처 설정
 
 `site_config.py`에서 연락처(`CONTACT_EMAIL`), SNS(`SOCIAL_LINKS`), 한국어·영어 소개(`ABOUT_PARAGRAPHS`)를 관리합니다.

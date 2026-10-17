@@ -6,6 +6,7 @@ from urllib.parse import urlsplit, unquote
 import json
 import re
 import xml.etree.ElementTree as ET
+from datetime import datetime
 from site_config import CONTACT_EMAIL, OG_ALT
 from image_dimensions import jpeg_size
 
@@ -52,6 +53,7 @@ class Page(HTMLParser):
         self.metas = {}
         self.anchors = []
         self.images = []
+        self.video_id = ''
         self.feed(source)
 
     def handle_starttag(self, tag, pairs):
@@ -62,7 +64,10 @@ class Page(HTMLParser):
         if tag == 'a':
             self.anchors.append(attrs)
         if tag == 'img':
+            assert attrs.get('src', '').strip(), f'Image has an empty source: {attrs}'
             self.images.append(attrs)
+        if tag == 'body':
+            self.video_id = attrs.get('data-id', '')
         for key in ['href', 'src', 'poster']:
             if attrs.get(key):
                 local_file(attrs[key])
@@ -124,9 +129,11 @@ for path in html_files:
         assert page.metas['og:image'] == [site + f'/assets/og/og-{lang}.jpg?v=20260924-fall707'], path
         prefix = base + ('/en' if lang == 'en' else '')
         assert any(a.get('href') == prefix + '/watch/fall-707-s1-ep1/' and 'hero-start' in a.get('class', '') for a in page.anchors), path
-        for route in ('/', '/#episodes', '/#originals', '/#about'):
+        for route in ('/', '/#episodes', '/#originals', '/#collaboration', '/#about'):
             assert any(a.get('href') == prefix + route and 'nav-link' in a.get('class', '') for a in page.anchors), (path, route)
         assert source.index('id="more-cuts"') < source.index('id="about"'), path
+        assert source.index('id="collaboration"') < source.index('id="about"'), path
+        assert source.count('id="collaboration"') == 1, path
     ko_relative = relative.removeprefix('en/')
     route = '/' + ko_relative.removesuffix('index.html')
     assert page.switches == {'ko': base + route, 'en': base + '/en' + route}, path
@@ -141,7 +148,16 @@ for path in html_files:
             local_file(thumbnail)
         if route.startswith('/watch/'):
             assert schema['@type'] == 'VideoObject'
-            assert schema['embedUrl'].startswith('https://www.youtube-nocookie.com/embed/')
+            assert page.video_id in expected_ids, path
+            original = next(video for video in source_data['videos'] if video['id'] == page.video_id)
+            assert schema['embedUrl'] == f'https://www.youtube-nocookie.com/embed/{page.video_id}', path
+            assert schema['thumbnailUrl'] == [site + f'/assets/portfolio/{page.video_id}.jpg'], path
+            assert all(isinstance(schema.get(field), str) and schema[field].strip() for field in ('name', 'description', 'uploadDate', 'duration')), path
+            assert schema['uploadDate'] == original['uploadDate'], path
+            assert datetime.fromisoformat(schema['uploadDate'].replace('Z', '+00:00')).utcoffset() is not None, path
+            assert re.fullmatch(r'PT\d+(?:\.\d+)?S', schema['duration']), path
+            assert float(schema['duration'][2:-1]) == float(original['seconds']) > 0, path
+            assert 'contentUrl' not in schema, 'Use the actual embed URL, not a YouTube watch URL as a media file'
     assert 'about-identity' not in source and 'avatar.jpg' not in source, path
 
 # The Season 3 release must be reachable in both languages, with accessible

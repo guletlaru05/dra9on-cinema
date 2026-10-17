@@ -62,10 +62,10 @@ UI = {
     '그녀는 들어갔다.': 'She went in.',
     '시즌 1–3': 'Seasons 1–3',
     '시즌 3': 'Season 3',
-    '드래곤시네마의 〈낙하 707: 리부트〉(낙하707, FALL707, FALL 707). 현대 특수부대와 조선 시대가 만나는 밀리터리 판타지·사극 AI 영화. 시즌 1·2·3과 풀버전을 감상하세요.': 'Watch FALL 707: REBOOT, a Korean military fantasy series set in Joseon, and explore original AI films by DRA9ON CINEMA. Browse Seasons 1–3, full movies and the filmmaker’s portfolio.',
+    '드래곤시네마의 〈낙하 707: 리부트〉(낙하707, FALL 707). 현대 특수부대와 조선 시대가 만나는 밀리터리 판타지·사극 AI 영화. 시즌 1·2·3과 풀버전을 감상하세요.': 'Watch FALL 707: REBOOT, a Korean military fantasy series set in Joseon, and explore original AI films by DRA9ON CINEMA. Browse Seasons 1–3, full movies and the filmmaker’s portfolio.',
     '낙하 707 · OST': 'FALL 707 · Soundtracks',
     'YouTube 구독': 'Subscribe on YouTube',
-    '낙하707': 'FALL707',
+    '낙하707': 'FALL 707',
     '낙하 707': 'FALL 707',
     '밀리터리': 'Military',
     '판타지': 'Fantasy',
@@ -85,7 +85,7 @@ UI = {
     '낙하 707 리부트 · FALL 707 ': 'FALL 707 ',
     '낙하707: 리부트. ': 'FALL 707: REBOOT. ',
     '드래곤시네마 DRA9ON CINEMA | 낙하 707 · FALL 707': 'DRA9ON CINEMA | FALL 707 REBOOT · Korean AI Films',
-    '드래곤시네마의 〈낙하 707: 리부트〉(낙하707, FALL707, FALL 707). 현대 특수부대와 조선 시대가 만나는 밀리터리 판타지·사극 AI 영화. 시즌 1·2와 풀버전을 감상하세요.': 'Watch FALL 707: REBOOT, a Korean military fantasy series set in Joseon, and explore original AI films by DRA9ON CINEMA. Browse episodes, full movies and the filmmaker’s portfolio.',
+    '드래곤시네마의 〈낙하 707: 리부트〉(낙하707, FALL 707). 현대 특수부대와 조선 시대가 만나는 밀리터리 판타지·사극 AI 영화. 시즌 1·2와 풀버전을 감상하세요.': 'Watch FALL 707: REBOOT, a Korean military fantasy series set in Joseon, and explore original AI films by DRA9ON CINEMA. Browse episodes, full movies and the filmmaker’s portfolio.',
     'DRA9ON CINEMA — 낙하 707 · FALL 707 영상 포트폴리오': 'DRA9ON CINEMA — FALL 707 and Original AI Films',
     'AI로 세계관을 실사화하는 크리에이터. 낙하707: 리부트(FALL 707: REBOOT)와 오리지널 AI 영화 제작.': 'Independent AI filmmaker bringing imagined worlds to life. Creator of FALL 707: REBOOT and original AI films.',
     'AI로 세계관을 실사화하는 크리에이터.': 'Bringing imagined worlds to life through AI film.',
@@ -239,6 +239,8 @@ def localize_site(out, works, origin, base_path=''):
         published_records = [{**record, 'path': base_path + record['path'], 'image': base_path + record['image']} for record in records]
         (out/path).write_text('window.PORTFOLIO = ' + json.dumps(published_records, ensure_ascii=False).replace('</', '<\\/') + ';\n', encoding='utf-8')
     base_translations = dict(UI)
+    from collaboration import TRANSLATIONS as COLLABORATION_TRANSLATIONS
+    base_translations.update(COLLABORATION_TRANSLATIONS)
     from episode_extras import TRANSLATIONS as EPISODE_TRANSLATIONS
     base_translations.update(EPISODE_TRANSLATIONS)
     from privacy_page import TRANSLATIONS
@@ -306,7 +308,7 @@ def localize_site(out, works, origin, base_path=''):
     asset_dir = out/'assets'/'build'
     asset_dir.mkdir(parents=True, exist_ok=True)
     assets = {}
-    for name in ['styles.css', 'portfolio.css', 'portfolio.js', 'catalog.js', 'en/catalog.js', 'min-stickers.js']:
+    for name in ['styles.css', 'portfolio.css', 'collaboration.css', 'portfolio.js', 'catalog.js', 'en/catalog.js', 'min-stickers.js']:
         content = (out/name).read_bytes()
         stem, ext = name.replace('/', '-').rsplit('.', 1)
         destination = f'{stem}.{sha256(content).hexdigest()[:12]}.{ext}'
