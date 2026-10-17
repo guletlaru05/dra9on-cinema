@@ -1,4 +1,4 @@
-/* Public catalogue totals are lazy-loaded and cached; identity starts only in a player. */
+/* Public totals are lazy-loaded; identity starts in a player or after analytics consent. */
 (() => {
   const config=window.D9_ENGAGEMENT_CONFIG;
   if(!config)return;
@@ -19,13 +19,16 @@
     });
     return applicationPromise;
   }
-  function services(){
+  function services(allowed=()=>true){
+    if(!allowed())return Promise.reject(new Error('visits/consent-required'));
     if(!servicePromise)servicePromise=Promise.all([
       protectedApplication(),import(sdk+'firebase-auth.js'),import(sdk+'firebase-firestore.js')
     ]).then(async([{application,protection,check},auth,db])=>{
       await check.getToken(protection);
+      if(!allowed())throw new Error('visits/consent-required');
       const identity=auth.getAuth(application);
       await identity.authStateReady();
+      if(!allowed())throw new Error('visits/consent-required');
       if(!identity.currentUser)await auth.signInAnonymously(identity);
       return {db:db.getFirestore(application),api:db,uid:identity.currentUser.uid};
     }).catch(error=>{servicePromise=null;throw error;});
@@ -93,12 +96,97 @@
       .then(value=>saveTotal(id,value)).finally(()=>pending.delete(id)));
     return pending.get(id);
   }
+  const visitDay=()=>Math.floor((Date.now()+32400000)/86400000);
+  const visitCacheKey='d9-site-visits-v1-'+config.projectId;
+  const visitMarkerKey='d9-site-visit-day-v1-'+config.projectId;
+  let visitCache,visitRead,visitRecord;
+  const mayRecordVisit=()=>['dra9oncinema.com','www.dra9oncinema.com'].includes(location.hostname)
+    && !/^\/(?:en\/)?library(?:\/|$)/.test(location.pathname)
+    && window.D9AnalyticsConsent?.get()==='granted';
+  function validVisitTotals(value){
+    return value&&Number.isSafeInteger(value.total)&&value.total>=0
+      &&Number.isSafeInteger(value.today)&&value.today>=0&&value.today<=value.total
+      &&value.day===visitDay()&&typeof value.startedAt==='string'
+      &&Number.isFinite(Date.parse(value.startedAt))&&Number.isFinite(value.at);
+  }
+  function saveVisitTotals(value){
+    if(!validVisitTotals(value))throw new Error('visits/invalid-totals');
+    visitCache=value;
+    try{sessionStorage.setItem(visitCacheKey,JSON.stringify(value));}catch{}
+    return value;
+  }
+  async function visitTotals({force=false}={}){
+    if(!visitCache)try{visitCache=JSON.parse(sessionStorage.getItem(visitCacheKey));}catch{}
+    if(!force&&validVisitTotals(visitCache)&&Date.now()-visitCache.at>=0&&Date.now()-visitCache.at<300000)return visitCache;
+    if(!visitRead)visitRead=(async()=>{
+      const day=visitDay(),{protection,check}=await protectedApplication();
+      const {token}=await check.getToken(protection);
+      const readDocument=async path=>{
+        const response=await fetch('https://firestore.googleapis.com/v1/projects/'+encodeURIComponent(config.projectId)+'/databases/(default)/documents/'+path,{headers:{'X-Firebase-AppCheck':token}});
+        if(response.status===404)return null;
+        if(!response.ok)throw new Error('visits/unavailable');
+        return (await response.json()).fields;
+      };
+      // Read the daily count first: a concurrent visit may then raise the total,
+      // but cannot leave us comparing a newer daily count to an older total.
+      const daily=await readDocument('siteVisitDays/'+day);
+      const summary=await readDocument('siteVisits/summary');
+      // A missing summary is not a fabricated zero; the first consenting visit starts it.
+      if(!summary)throw new Error('visits/not-started');
+      if(visitDay()!==day)throw new Error('visits/day-changed');
+      return saveVisitTotals({total:Number(summary.total?.integerValue),today:daily?Number(daily.visits?.integerValue):0,
+        startedAt:summary.startedAt?.timestampValue,day,at:Date.now()});
+    })().finally(()=>{visitRead=null;});
+    return visitRead;
+  }
+  async function recordSiteVisit(){
+    if(!mayRecordVisit())return null;
+    let marked;try{marked=localStorage.getItem(visitMarkerKey);}catch{}
+    if(marked===String(visitDay()))return visitTotals();
+    if(!visitRecord)visitRecord=(async()=>{
+      const s=await services(mayRecordVisit);
+      if(!mayRecordVisit())return null;
+      // One bounded retry covers crossing KST midnight while Firestore is committing.
+      for(let attempt=0;attempt<2;attempt++){
+        const day=visitDay(),summary=s.api.doc(s.db,'siteVisits','summary'),daily=s.api.doc(s.db,'siteVisitDays',String(day)),browser=s.api.doc(s.db,'siteVisitBrowsers',s.uid);
+        try{
+          const result=await s.api.runTransaction(s.db,async tx=>{
+            if(!mayRecordVisit())return null;
+            const [a,b,c]=await Promise.all([tx.get(summary),tx.get(daily),tx.get(browser)]);
+            if(!mayRecordVisit())return null;
+            if(day!==visitDay())throw new Error('visits/day-changed');
+            const total=a.data(),today=b.data(),previous=c.data();
+            if(previous?.day===day)return {day};
+            if(previous&&(!Number.isSafeInteger(previous.day)||previous.day>day))throw new Error('visits/invalid-browser-day');
+            if(total&&(!Number.isSafeInteger(total.total)||total.total<0||!total.startedAt?.toDate))throw new Error('visits/invalid-total');
+            if(today&&(!Number.isSafeInteger(today.visits)||today.visits<0||today.day!==day))throw new Error('visits/invalid-day');
+            const stamp=s.api.serverTimestamp();
+            tx.set(summary,{total:(total?.total||0)+1,startedAt:total?.startedAt||stamp,updatedAt:stamp});
+            tx.set(daily,{day,visits:(today?.visits||0)+1,updatedAt:stamp});
+            tx.set(browser,{day,visitedAt:stamp});
+            return {day};
+          });
+          if(!result)return null;
+          if(mayRecordVisit())try{localStorage.setItem(visitMarkerKey,String(result.day));}catch{}
+          // Read committed server timestamps, including the genuine initial start date.
+          await visitRead?.catch(()=>{});
+          return visitTotals({force:true});
+        }catch(error){
+          if(attempt===0&&day!==visitDay()&&mayRecordVisit())continue;
+          throw error;
+        }
+      }
+    })().catch(error=>{if(!mayRecordVisit())return null;throw error;}).finally(()=>{visitRecord=null;});
+    return visitRecord;
+  }
   const cards=new IntersectionObserver(entries=>entries.forEach(entry=>{
     if(!entry.isIntersecting)return;
     cards.unobserve(entry.target);
     publicTotal(entry.target.dataset.filmStats).then(value=>showTotal(entry.target,value)).catch(()=>{entry.target.title=t('집계를 잠시 불러올 수 없습니다.','Counts temporarily unavailable.');});
   }),{rootMargin:'120px'});
   window.D9Engagement={
+    visitTotals,
+    recordSiteVisit,
     observeCard(node,id){node.dataset.filmStats=id;cards.observe(node);},
     attach(id,frame,container){
       container.querySelector('.film-engagement')?.remove();

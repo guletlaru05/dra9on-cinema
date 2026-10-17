@@ -1,0 +1,21 @@
+/* A quiet, shared footer ledger; the numbers are daily browser visits. */
+footer:has(>.site-visitors){flex-wrap:wrap}
+footer>.site-visitors{flex:1 0 100%;grid-column:1/-1}
+footer .site-visitors{width:100%;min-width:0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 36px;align-items:center;border-top:1px solid #ffffff18;margin-top:6px;padding-top:24px;color:#dddde4}
+.site-visitors .site-visitors-eyebrow{display:inline-flex;align-items:center;gap:9px;font:600 10px/1.5 var(--font,sans-serif);letter-spacing:2.2px;color:#d1d1d9}
+.site-visitors .site-visitors-eyebrow:before{content:"";width:5px;height:5px;flex:none;background:var(--red,#ed233a);border-radius:50%}
+.site-visitors .site-visitors-note{font:400 11px/1.8 var(--font,sans-serif);color:#aaaab6;margin:6px 0 0;word-break:keep-all}
+.site-visitors .site-visitors-counts{display:flex;align-items:baseline;gap:0;margin:0;min-width:0}
+.site-visitors-counts>div{display:flex;align-items:baseline;gap:12px;min-width:0;padding:0 24px}
+.site-visitors-counts>div:first-child{padding-left:0;border-right:1px solid #ffffff24}
+.site-visitors-counts>div:last-child{padding-right:0}
+.site-visitors-counts dt{font:500 11px/1.6 var(--font,sans-serif);color:#aaaab6;white-space:nowrap}
+.site-visitors-counts dd{margin:0;font:600 28px/1.2 'Barlow Condensed',var(--font,sans-serif);font-variant-numeric:tabular-nums;letter-spacing:.3px;color:#f5f5f3;overflow-wrap:anywhere}
+.site-visitors .site-visitors-meta{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:baseline;gap:5px 14px;font:400 10px/1.8 var(--font,sans-serif);color:#9999a6;min-height:18px}
+.site-visitors-meta [data-visits-status]{margin:0;font:inherit;color:inherit}
+.site-visitors-meta [data-visits-since]:empty{display:none}
+.site-visitors .site-visitors-meta a{color:#bfbfca;text-decoration:underline;text-underline-offset:3px;min-height:24px;align-content:center}
+.site-visitors .site-visitors-meta a:hover{color:#fff}
+.site-visitors .site-visitors-meta a:focus-visible{outline:2px solid #fff;outline-offset:4px;border-radius:2px}
+body.links-page footer.site-visitors-footer{max-width:720px;margin-inline:auto;padding-top:0;padding-bottom:24px}
+@media(max-width:700px){footer .site-visitors{grid-template-columns:minmax(0,1fr);gap:14px;padding-top:22px}.site-visitors .site-visitors-counts{justify-self:start;flex-wrap:wrap;row-gap:12px}.site-visitors-counts>div{padding-inline:20px;gap:12px}.site-visitors-counts dd{font-size:28px}.site-visitors .site-visitors-meta{gap:4px 12px}.site-visitors .site-visitors-meta a{min-height:32px}.site-visitors .site-visitors-note{font-size:10px}}
