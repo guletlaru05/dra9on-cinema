@@ -10,9 +10,9 @@ from international_content import LANGUAGES,ABOUT,SEASONS,WORKS,UI,PRESS,STILL_C
 from localization import english_work
 from site_config import CONTACT_EMAIL,ABOUT_PARAGRAPHS
 
-ROUTES=['/fall-707/']
+ROUTES=['/fall-707/','/fall-707/world/']
 TRANSLATIONS={'FALL 707 회차 안내':'FALL 707 episode guide','시즌별 회차와 몰아보기를 한곳에서. 처음이라면 시즌 1의 첫 회차부터 시작하세요.':'Episodes and full seasons in one place. New to the series? Start with Season 1, Episode 1.','← 홈으로':'← Home'}
-WORLD_ENABLED=False
+WORLD_ENABLED=True
 def local_work(work,lang):
  result=deepcopy(work);en=english_work(work)
  name,summary=WORKS.get(work['id'],{}).get(lang,(en['name'],en['summary']))
@@ -24,7 +24,7 @@ def local_work(work,lang):
 
 def build_series_index(out,origin,works,head,header,footer):
  title='FALL 707 회차 안내';desc='시즌별 회차와 몰아보기를 한곳에서. 처음이라면 시즌 1의 첫 회차부터 시작하세요.'
- cards=''
+ cards='<a class="text-button" href="/fall-707/world/">FALL 707 세계관 살펴보기 →</a>'
  for season in sorted({w['season'] for w in works if w['season']}):
   cards+=f'<section class="editorial-section"><h2>FALL 707 · 시즌 {season}</h2><div class="series-grid">'
   for w in sorted([w for w in works if w['category']==f's{season}'],key=lambda w:w['episode']):cards+=card(w)
@@ -43,6 +43,9 @@ def dictionary(lang,out):
  d={key:values[pos] for key,values in {**UI,**PRESS}.items()}
  from localization import UI as EN_UI
  d['주 메뉴']='メインナビゲーション' if lang=='ja' else 'Navegación principal'
+ from world import COPY
+ for row in COPY:
+  d[row[0]]=d[row[1]]=row[2 if lang=='ja' else 3]
  for ko,en in EN_UI.items():
   if en in d:d[ko]=d[en]
  for ko,en in {'홈':'Home','작품집':'Films','제작 비하인드':'Behind the scenes','튜토리얼':'Tutorials','질문과 답변':'Questions and answers','협업 문의':'Collaborate','사이트 메뉴':'Site menu','메뉴':'Menu','닫기 ×':'Close ×','DRA9ON CINEMA 홈':'DRA9ON CINEMA Home','콘텐츠로 바로 가기':'Skip to content'}.items():d[ko]=d.get(en,en)
@@ -136,14 +139,14 @@ def build_languages(out,origin,works,data,head,header,footer,base_path=''):
   subtitle='現代の特殊部隊と、朝鮮王朝の闇。' if lang=='ja' else 'Fuerzas especiales modernas. La oscuridad de Joseon.'
   home_desc='FALL 707: REBOOTの各シーズン、全話一挙上映、DRA9ON CINEMAの作品をご覧いただけます。' if lang=='ja' else 'Descubre todas las temporadas de FALL 707: REBOOT, películas completas y el cine original de DRA9ON CINEMA.'
   body='<body data-page="home" class="international-home">'+header()+'<main id="main"><section class="hero" id="international-hero"><img class="hero-image" src="'+latest['image']+'" width="1280" height="720" alt="'+escape(latest['name'])+'" fetchpriority="high"><div class="hero-shade"></div><div class="hero-content"><p class="eyebrow"><span class="original-mark">D9</span> DRA9ON CINEMA ORIGINAL</p><p class="hero-kicker">FALL 707 · '+latest['label']+'</p><h1>FALL 707</h1><p class="hero-english">FALL 707 : REBOOT</p><h2 class="hero-tagline">'+escape(latest['name'])+'</h2><p class="hero-description">'+escape(latest['summary'])+'</p><div class="hero-buttons"><a class="button button-white" href="'+first['path']+'">'+text('Start Episode 1',lang)+'</a><a class="button button-glass" href="'+latest['path']+'">'+text('LATEST EPISODE',lang)+'</a></div><p class="hero-meta">'+subtitle+'</p></div></section><div class="catalog international-catalog">'
-  body+='<section class="editorial-section" id="episodes"><h2>'+('FALL 707 エピソード' if lang=='ja' else 'Episodios de FALL 707')+'</h2><a class="text-button" href="/fall-707/">'+('全エピソードを見る →' if lang=='ja' else 'Ver todos los episodios →')+'</a><div class="series-grid">'+''.join(card(w) for w in sorted(records,key=lambda w:(w['season'],w['episode']),reverse=True) if re.fullmatch(r's\d+',w['category']))+'</div></section>'
+  body+='<section class="editorial-section" id="episodes"><h2>'+('FALL 707 エピソード' if lang=='ja' else 'Episodios de FALL 707')+'</h2><a class="text-button" href="/fall-707/">'+('全エピソードを見る →' if lang=='ja' else 'Ver todos los episodios →')+'</a><p><a class="text-button" href="/fall-707/world/">'+d['Explore the world of FALL 707 →']+'</a></p><div class="series-grid">'+''.join(card(w) for w in sorted(records,key=lambda w:(w['season'],w['episode']),reverse=True) if re.fullmatch(r's\d+',w['category']))+'</div></section>'
   body+='<section class="editorial-section" id="binge-watch"><h2>'+text('Full movies',lang)+'</h2><div class="series-grid">'+''.join(card(w) for w in records if w['category']=='full')+'</div></section><section class="editorial-section" id="originals"><h2>'+text('Original films',lang)+'</h2><p>'+('オリジナル作品は英語の作品ページでご紹介しています。' if lang=='ja' else 'Las películas originales se presentan en sus páginas en inglés.')+'</p><div class="series-grid">'+''.join(card(w) for w in records if w['category']=='original')+'</div></section>'
   body+='<section class="editorial-section" id="collaboration"><h2>'+text('Collaborate',lang)+'</h2><p>'+('ブランドフィルム、短編ドラマ、制作コラボレーションのご相談を承ります。' if lang=='ja' else 'Consultas para películas de marca, dramas cortos y colaboraciones de producción.')+'</p><a href="mailto:'+CONTACT_EMAIL+'">'+CONTACT_EMAIL+'</a></section><section class="editorial-section" id="about"><h2>DRA9ON CINEMA</h2>'+''.join('<p>'+p+'</p>' for p in ABOUT[lang][:3])+'<a class="press-kit-link text-button" href="/press/">Press Kit →</a><p><a href="/en/tutorials/">'+('制作チュートリアル（英語） →' if lang=='ja' else 'Tutoriales de producción (en inglés) →')+'</a></p></section></div></main>'+footer()+'</body></html>'
   pages['/']=head('DRA9ON CINEMA | FALL 707',home_desc,'/',{'@context':'https://schema.org','@type':'ProfilePage','name':'DRA9ON CINEMA','description':home_desc,'url':origin+'/'})+body
   index_desc=d['시즌별 회차와 몰아보기를 한곳에서. 처음이라면 시즌 1의 첫 회차부터 시작하세요.']
   listing='<main id="main" class="editorial-main"><a class="editorial-back" href="/">'+PRESS['← Home'][0 if lang=='ja' else 1]+'</a><header class="editorial-hero"><p class="section-eyebrow">FALL 707 / EPISODES</p><h1>'+d['FALL 707 회차 안내']+'</h1><p>'+index_desc+'</p></header>'
   for season in sorted({w['season'] for w in records if w['season']}):listing+='<section class="editorial-section"><h2>'+('シーズン ' if lang=='ja' else 'Temporada ')+str(season)+'</h2><div class="series-grid">'+''.join(card(w) for w in records if w['category']==f's{season}')+'</div></section>'
-  listing+='<section class="editorial-section"><h2>'+text('Full movies',lang)+'</h2><div class="series-grid">'+''.join(card(w) for w in records if w['category']=='full')+'</div></section></main>'
+  listing+='<section class="editorial-section"><h2>'+text('Full movies',lang)+'</h2><a class="text-button" href="/fall-707/world/">'+d['Explore the world of FALL 707 →']+'</a><div class="series-grid">'+''.join(card(w) for w in records if w['category']=='full')+'</div></section></main>'
   pages['/fall-707/']=head(d['FALL 707 회차 안내']+' | DRA9ON CINEMA',index_desc,'/fall-707/',{'@context':'https://schema.org','@type':'CollectionPage','name':d['FALL 707 회차 안내'],'description':index_desc,'url':origin+'/fall-707/'})+'<body class="watch-page">'+header()+listing+footer()+'</body></html>'
   for original in [w for w in works if w['season']]:
    w=by_id[original['id']];siblings=sorted([v for v in records if v['category']==w['category']],key=lambda x:x['episode']);pos=siblings.index(w)
@@ -158,6 +161,7 @@ def build_languages(out,origin,works,data,head,header,footer,base_path=''):
    schema={'@context':'https://schema.org','@type':'VideoObject','name':w['name'],'description':w['summary'],'url':origin+original['path'],'thumbnailUrl':[origin+original['image']],'embedUrl':'https://www.youtube-nocookie.com/embed/'+w['id'],'uploadDate':w['uploadDate'],'duration':'PT'+str(w['seconds'])+'S'}
    pages[original['path']]=head(w['name']+' | DRA9ON CINEMA',w['summary'],original['path'],schema)+f'<body class="watch-page" data-page="watch" data-id="{w["id"]}">'+header()+view+footer()+'</body></html>'
   pages['/press/']=(out/'en/press/index.html').read_text(encoding='utf-8')
+  pages['/fall-707/world/']=(out/'en/fall-707/world/index.html').read_text(encoding='utf-8')
   for route,source in pages.items():
    source=re.sub(r'<link rel="alternate" hreflang="[^"]+"[^>]*>','',source)
    source=re.sub(r'<nav class="language-switch".*?</nav>','',source,flags=re.S)

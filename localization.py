@@ -255,6 +255,8 @@ def localize_site(out, works, origin, base_path=''):
     base_translations.update(PRESS_TRANSLATIONS)
     from international import TRANSLATIONS as SERIES_TRANSLATIONS, ROUTES as SERIES_ROUTES
     base_translations.update(SERIES_TRANSLATIONS)
+    from world import TRANSLATIONS as WORLD_TRANSLATIONS
+    base_translations.update(WORLD_TRANSLATIONS)
     from episode_extras import TRANSLATIONS as EPISODE_TRANSLATIONS
     base_translations.update(EPISODE_TRANSLATIONS)
     from privacy_page import TRANSLATIONS
