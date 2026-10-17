@@ -277,3 +277,7 @@ for page in out.rglob('*.html'):
  assert marker in document, f'Missing charset: {page}'
  document=document.replace(marker,marker+'<meta http-equiv="Content-Security-Policy" content="'+esc(policy)+'">',1)
  page.write_text(document,encoding='utf-8')
+
+# Only public tutorial HTML feeds the owner workspace reference index.
+from tutorial_references import build_reference_index
+build_reference_index(out, origin)

@@ -1,4 +1,5 @@
 import registry from '../registry.json' with {type:'json'};
+import {privateRequest} from './private-reader.mjs';
 
 const PROD_ORIGINS = new Set(['https://dra9oncinema.com','https://www.dra9oncinema.com']);
 const REFERRERS = ['direct','google','naver','youtube','instagram','x','other'];
@@ -160,6 +161,7 @@ export function createWorker(entries,options={}) {
     const url=new URL(request.url),origin=allowedOrigin(request,env);
     if(url.search)return json({error:'Query strings are not accepted.'},400,origin);
     if(request.headers.has('Origin')&&!origin)return json({error:'Origin not allowed.'},403);
+    if(url.pathname==='/private/collect')return privateRequest(request,env,origin,options.privateOptions||{});
     if(!['/event','/summary','/weekly','/daily'].includes(url.pathname))return json({error:'Not found.'},404,origin);
     if(request.method==='OPTIONS'){
       if(!origin||url.pathname!=='/event')return json({error:'Origin not allowed.'},403);

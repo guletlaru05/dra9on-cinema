@@ -11,6 +11,7 @@ account_id = "f25bbc251a70676f521c097b1d047d95"
 [vars]
 ALLOWED_ORIGINS = "https://dra9oncinema.com,https://www.dra9oncinema.com"
 MAX_DAILY_EVENTS = "20000"
+OWNER_EMAIL_SHA256 = "21c4da72d4094fc9475701ec568ded4fc3d2852b0afe66e0f24fa498fc1b7453"
 
 [[d1_databases]]
 binding = "DB"
