@@ -1,5 +1,5 @@
 import {deadline,loadPrivatePayload,packPrivatePayload,unpackPrivatePayload} from "./library-transport.js?v=20261011-detail12";
-import {createWorkspace} from './workspace.js?v=20261018-workspace1';
+import {createWorkspace} from './workspace.js?v=20261018-workspace2';
 import {applyAction,validateWorkspace} from './workspace-core.js';
 import {createLibraryUI} from "./library-ui.js?v=20261011-detail12";
 import {initializeApp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
