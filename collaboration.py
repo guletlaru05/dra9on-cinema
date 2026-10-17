@@ -29,6 +29,7 @@ SERVICES = (
 )
 
 CPP_PROGRAMS = ('Dreamina', 'Higgsfield', 'OpenArt')
+CPP_SELECTIONS = {'OpenArt': '2026년 8월·9월 선정'}
 
 CASES = (
     {
@@ -54,7 +55,7 @@ CASES = (
     },
     {
         'name': 'OpenArt CPP',
-        'type': '크리에이터 프로그램',
+        'type': '크리에이터 프로그램 · 2026년 8월·9월 선정',
         'title': '먹동이 공놀이',
         'description': '공놀이가 우주까지 이어지는 캐릭터 판타지 숏필름.',
         'url': 'https://www.instagram.com/reel/DcvvFWvJupa/',
@@ -103,7 +104,11 @@ def render_collaboration(icon):
         f'<div><h3>{esc(title)}</h3><p>{esc(description)}</p></div>'
         for title, description in SERVICES
     )
-    programs = ''.join(f'<li>{esc(name)} <span>CPP</span></li>' for name in CPP_PROGRAMS)
+    programs = ''.join(
+        f'<li>{esc(name)} <span>CPP</span>'
+        + (f'<small>{esc(CPP_SELECTIONS[name])}</small>' if name in CPP_SELECTIONS else '')
+        + '</li>' for name in CPP_PROGRAMS
+    )
     cases = ''.join(
         '<li><a class="collaboration-case" '
         f'href="{esc(item["url"])}" target="_blank" rel="noopener noreferrer">'
@@ -159,6 +164,7 @@ TRANSLATIONS = {
     '브랜드·제작 목적·희망 형식·일정·예산 범위를 알려주시면 제안을 검토하는 데 도움이 됩니다.': 'Please include your brand, project goal, format, schedule and budget range so we can review your proposal.',
     '이야기가 만나는 관객': 'THE AUDIENCE BEHIND THE STORIES',
     '참여 크리에이터 프로그램 · CPP': 'CREATOR PROGRAM PARTICIPATION · CPP',
+    '2026년 8월·9월 선정': 'Selected in August and September 2026',
     '1.38만': '13.8K',
     '9.4만': '94K',
     '7.3만': '73K',
