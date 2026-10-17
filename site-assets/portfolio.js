@@ -38,7 +38,7 @@ function loadEngagement(){
 
   if(!engagementLoad){
 
-    const load=name=>new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL(name+'?v=20261001-appcheck',statsAssetRoot);script.onload=resolve;script.onerror=reject;document.head.append(script);});
+    const load=name=>new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL(name+'?v=20261017-visitors1',statsAssetRoot);script.onload=resolve;script.onerror=reject;document.head.append(script);});
 
     engagementLoad=load('engagement-config.js').then(()=>window.D9_ENGAGEMENT_CONFIG?load('engagement.js'):null).catch(()=>{engagementLoad=null;});
 
@@ -47,6 +47,9 @@ function loadEngagement(){
   return engagementLoad;
 
 }
+
+// The footer shares the existing App Check and Firebase application.
+window.D9LoadEngagement=loadEngagement;
 
 // Optional artwork and counters must not compete with the initial hero.
 function afterMainPaint(task){
