@@ -30,6 +30,7 @@ jobs:
         run: |
           python3 -m unittest test_robots_policy test_youtube_sync test_youtube_site
           node test-consent.cjs
+          node test-continue-watching.cjs
           node --test test-tutorial-metrics.cjs workers/tutorial-metrics/test/worker.test.mjs
       - name: Restore YouTube API snapshot
         uses: actions/cache/restore@v4

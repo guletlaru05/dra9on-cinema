@@ -1,0 +1,16 @@
+const assert=require('node:assert/strict');
+const {recommend}=require('./site-assets/continue-watching.js');
+const works=[{id:'a',category:'s1',season:1,episode:1},{id:'b',category:'s1',season:1,episode:2},{id:'c',category:'s2',season:2,episode:1},{id:'future',category:'s3',season:3,episode:1,releaseAt:'2099-01-01T00:00:00Z'}];
+assert.equal(recommend(null,works),null);
+assert.equal(recommend({lastId:'outside',completed:[]},works),null);
+assert.equal(recommend({lastId:'a',completed:[]},works).work.id,'a');
+assert.equal(recommend({lastId:'a',completed:['a']},works).work.id,'b');
+assert.deepEqual(recommend({lastId:'b',completed:['a','b']},works),{work:works[2],nextSeason:true});
+assert.equal(recommend({lastId:'c',completed:['a','b','c']},works),null);
+assert.equal(recommend({lastId:'b',completed:['b']},works).work.id,'a');
+assert.equal(recommend({lastId:'future',completed:[]},works),null);
+const vm=require('node:vm'),fs=require('node:fs');
+let writes=0,created=0;
+vm.runInNewContext(fs.readFileSync('site-assets/continue-watching.js','utf8'),{Date,Set,Map,WeakSet,Promise,URL,localStorage:{getItem(){throw new Error('Storage unavailable');},setItem(){writes++;throw new Error('Storage unavailable');}},document:{documentElement:{lang:'ko'},body:{dataset:{page:'home'}},createElement(){created++;throw new Error('A resume widget must stay hidden');}},window:{PORTFOLIO:works,addEventListener(){}},MutationObserver:class{observe(){}}});
+assert.equal(writes,0);assert.equal(created,0);
+console.log('PASS: resume last episode, advance completed episodes, next-season recommendation, unfinished season, unknown and unreleased records.');
