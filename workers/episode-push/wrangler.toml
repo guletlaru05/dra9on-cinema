@@ -1,6 +1,6 @@
 name = "dra9on-episode-push"
 main = "src/index.mjs"
-compatibility_date = "2026-10-18"
+compatibility_date = "2026-10-17"
 workers_dev = true
 preview_urls = false
 account_id = "f25bbc251a70676f521c097b1d047d95"
