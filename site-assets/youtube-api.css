@@ -1,0 +1,9 @@
+/* Official API counts are separate from site plays and local engagement. */
+.youtube-api-count{display:inline-flex;align-items:baseline;gap:.4em;font-variant-numeric:tabular-nums;white-space:normal;overflow-wrap:anywhere}
+.card-open>.youtube-api-count{display:flex;color:#aaaab4;font-size:11px;line-height:1.6;margin:7px 0 0}
+.youtube-api-count strong{font-weight:600;color:#d6d6dc}
+.youtube-api-watch{margin:20px 0 0;font-size:13px;line-height:1.8;color:#b6b6c0}
+.youtube-api-note{max-width:350px;font-size:10px;line-height:1.7;color:#9999a5;margin:9px 0 0;overflow-wrap:anywhere}
+.youtube-api-note time{font-variant-numeric:tabular-nums}
+.hero-meta>.youtube-api-count{flex-basis:100%;font-size:11px;letter-spacing:0;text-transform:none}
+@media(max-width:640px){.youtube-api-note{font-size:9px}.youtube-api-watch{font-size:12px}}

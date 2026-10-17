@@ -1,0 +1,346 @@
+{
+  "/": {
+    "canonicalPath": "/",
+    "type": "page"
+  },
+  "/en/": {
+    "canonicalPath": "/",
+    "type": "page"
+  },
+  "/en/links/": {
+    "canonicalPath": "/links/",
+    "type": "page"
+  },
+  "/en/notes/": {
+    "canonicalPath": "/notes/",
+    "type": "page"
+  },
+  "/en/notes/fall-707-beginnings/": {
+    "canonicalPath": "/notes/fall-707-beginnings/",
+    "type": "page"
+  },
+  "/en/notes/fall-707-season-2/": {
+    "canonicalPath": "/notes/fall-707-season-2/",
+    "type": "page"
+  },
+  "/en/privacy/": {
+    "canonicalPath": "/privacy/",
+    "type": "page"
+  },
+  "/en/questions/": {
+    "canonicalPath": "/questions/",
+    "type": "page"
+  },
+  "/en/terms/": {
+    "canonicalPath": "/terms/",
+    "type": "page"
+  },
+  "/en/tutorials/": {
+    "canonicalPath": "/tutorials/",
+    "type": "page"
+  },
+  "/en/tutorials/blender-previs/": {
+    "canonicalPath": "/tutorials/blender-previs/",
+    "type": "tutorial"
+  },
+  "/en/tutorials/camera-framing/": {
+    "canonicalPath": "/tutorials/camera-framing/",
+    "type": "tutorial"
+  },
+  "/en/tutorials/character-sheet/": {
+    "canonicalPath": "/tutorials/character-sheet/",
+    "type": "tutorial"
+  },
+  "/en/tutorials/claude-mcp-newtake/": {
+    "canonicalPath": "/tutorials/claude-mcp-newtake/",
+    "type": "tutorial"
+  },
+  "/en/tutorials/platform-start/": {
+    "canonicalPath": "/tutorials/platform-start/",
+    "type": "tutorial"
+  },
+  "/en/tutorials/seedance-2-5/": {
+    "canonicalPath": "/tutorials/seedance-2-5/",
+    "type": "tutorial"
+  },
+  "/en/tutorials/seedance-languages/": {
+    "canonicalPath": "/tutorials/seedance-languages/",
+    "type": "tutorial"
+  },
+  "/en/tutorials/video-repair/": {
+    "canonicalPath": "/tutorials/video-repair/",
+    "type": "tutorial"
+  },
+  "/en/watch/fall-707-ost/": {
+    "canonicalPath": "/watch/fall-707-ost/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s1-ep1/": {
+    "canonicalPath": "/watch/fall-707-s1-ep1/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s1-ep2/": {
+    "canonicalPath": "/watch/fall-707-s1-ep2/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s1-ep3/": {
+    "canonicalPath": "/watch/fall-707-s1-ep3/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s1-ep4/": {
+    "canonicalPath": "/watch/fall-707-s1-ep4/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s1-ep5/": {
+    "canonicalPath": "/watch/fall-707-s1-ep5/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s1-ep6/": {
+    "canonicalPath": "/watch/fall-707-s1-ep6/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s2-ep1/": {
+    "canonicalPath": "/watch/fall-707-s2-ep1/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s2-ep2/": {
+    "canonicalPath": "/watch/fall-707-s2-ep2/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s2-ep3/": {
+    "canonicalPath": "/watch/fall-707-s2-ep3/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s2-ep4/": {
+    "canonicalPath": "/watch/fall-707-s2-ep4/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s2-ep5/": {
+    "canonicalPath": "/watch/fall-707-s2-ep5/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s2-ep6/": {
+    "canonicalPath": "/watch/fall-707-s2-ep6/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s3-ep1/": {
+    "canonicalPath": "/watch/fall-707-s3-ep1/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-season-1-full/": {
+    "canonicalPath": "/watch/fall-707-season-1-full/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-season-2-ep1-2/": {
+    "canonicalPath": "/watch/fall-707-season-2-ep1-2/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-season-2-full/": {
+    "canonicalPath": "/watch/fall-707-season-2-full/",
+    "type": "page"
+  },
+  "/en/watch/film-Byh-aCKSDgo/": {
+    "canonicalPath": "/watch/film-Byh-aCKSDgo/",
+    "type": "page"
+  },
+  "/en/watch/film-hoFQL2ON9m4/": {
+    "canonicalPath": "/watch/film-hoFQL2ON9m4/",
+    "type": "page"
+  },
+  "/en/watch/film-iVwqj1gUPDY/": {
+    "canonicalPath": "/watch/film-iVwqj1gUPDY/",
+    "type": "page"
+  },
+  "/en/watch/film-j95SyBMQiNI/": {
+    "canonicalPath": "/watch/film-j95SyBMQiNI/",
+    "type": "page"
+  },
+  "/en/watch/film-L53hio-gtv0/": {
+    "canonicalPath": "/watch/film-L53hio-gtv0/",
+    "type": "page"
+  },
+  "/en/watch/film-OLSjUGODAeE/": {
+    "canonicalPath": "/watch/film-OLSjUGODAeE/",
+    "type": "page"
+  },
+  "/en/watch/film-pBti3GK2nkc/": {
+    "canonicalPath": "/watch/film-pBti3GK2nkc/",
+    "type": "page"
+  },
+  "/en/watch/film-UxrkaAvtsNI/": {
+    "canonicalPath": "/watch/film-UxrkaAvtsNI/",
+    "type": "page"
+  },
+  "/en/watch/film-VCd4T8sLFjg/": {
+    "canonicalPath": "/watch/film-VCd4T8sLFjg/",
+    "type": "page"
+  },
+  "/links/": {
+    "canonicalPath": "/links/",
+    "type": "page"
+  },
+  "/notes/": {
+    "canonicalPath": "/notes/",
+    "type": "page"
+  },
+  "/notes/fall-707-beginnings/": {
+    "canonicalPath": "/notes/fall-707-beginnings/",
+    "type": "page"
+  },
+  "/notes/fall-707-season-2/": {
+    "canonicalPath": "/notes/fall-707-season-2/",
+    "type": "page"
+  },
+  "/privacy/": {
+    "canonicalPath": "/privacy/",
+    "type": "page"
+  },
+  "/questions/": {
+    "canonicalPath": "/questions/",
+    "type": "page"
+  },
+  "/terms/": {
+    "canonicalPath": "/terms/",
+    "type": "page"
+  },
+  "/tutorials/": {
+    "canonicalPath": "/tutorials/",
+    "type": "page"
+  },
+  "/tutorials/blender-previs/": {
+    "canonicalPath": "/tutorials/blender-previs/",
+    "type": "tutorial"
+  },
+  "/tutorials/camera-framing/": {
+    "canonicalPath": "/tutorials/camera-framing/",
+    "type": "tutorial"
+  },
+  "/tutorials/character-sheet/": {
+    "canonicalPath": "/tutorials/character-sheet/",
+    "type": "tutorial"
+  },
+  "/tutorials/claude-mcp-newtake/": {
+    "canonicalPath": "/tutorials/claude-mcp-newtake/",
+    "type": "tutorial"
+  },
+  "/tutorials/platform-start/": {
+    "canonicalPath": "/tutorials/platform-start/",
+    "type": "tutorial"
+  },
+  "/tutorials/seedance-2-5/": {
+    "canonicalPath": "/tutorials/seedance-2-5/",
+    "type": "tutorial"
+  },
+  "/tutorials/seedance-languages/": {
+    "canonicalPath": "/tutorials/seedance-languages/",
+    "type": "tutorial"
+  },
+  "/tutorials/video-repair/": {
+    "canonicalPath": "/tutorials/video-repair/",
+    "type": "tutorial"
+  },
+  "/watch/fall-707-ost/": {
+    "canonicalPath": "/watch/fall-707-ost/",
+    "type": "page"
+  },
+  "/watch/fall-707-s1-ep1/": {
+    "canonicalPath": "/watch/fall-707-s1-ep1/",
+    "type": "page"
+  },
+  "/watch/fall-707-s1-ep2/": {
+    "canonicalPath": "/watch/fall-707-s1-ep2/",
+    "type": "page"
+  },
+  "/watch/fall-707-s1-ep3/": {
+    "canonicalPath": "/watch/fall-707-s1-ep3/",
+    "type": "page"
+  },
+  "/watch/fall-707-s1-ep4/": {
+    "canonicalPath": "/watch/fall-707-s1-ep4/",
+    "type": "page"
+  },
+  "/watch/fall-707-s1-ep5/": {
+    "canonicalPath": "/watch/fall-707-s1-ep5/",
+    "type": "page"
+  },
+  "/watch/fall-707-s1-ep6/": {
+    "canonicalPath": "/watch/fall-707-s1-ep6/",
+    "type": "page"
+  },
+  "/watch/fall-707-s2-ep1/": {
+    "canonicalPath": "/watch/fall-707-s2-ep1/",
+    "type": "page"
+  },
+  "/watch/fall-707-s2-ep2/": {
+    "canonicalPath": "/watch/fall-707-s2-ep2/",
+    "type": "page"
+  },
+  "/watch/fall-707-s2-ep3/": {
+    "canonicalPath": "/watch/fall-707-s2-ep3/",
+    "type": "page"
+  },
+  "/watch/fall-707-s2-ep4/": {
+    "canonicalPath": "/watch/fall-707-s2-ep4/",
+    "type": "page"
+  },
+  "/watch/fall-707-s2-ep5/": {
+    "canonicalPath": "/watch/fall-707-s2-ep5/",
+    "type": "page"
+  },
+  "/watch/fall-707-s2-ep6/": {
+    "canonicalPath": "/watch/fall-707-s2-ep6/",
+    "type": "page"
+  },
+  "/watch/fall-707-s3-ep1/": {
+    "canonicalPath": "/watch/fall-707-s3-ep1/",
+    "type": "page"
+  },
+  "/watch/fall-707-season-1-full/": {
+    "canonicalPath": "/watch/fall-707-season-1-full/",
+    "type": "page"
+  },
+  "/watch/fall-707-season-2-ep1-2/": {
+    "canonicalPath": "/watch/fall-707-season-2-ep1-2/",
+    "type": "page"
+  },
+  "/watch/fall-707-season-2-full/": {
+    "canonicalPath": "/watch/fall-707-season-2-full/",
+    "type": "page"
+  },
+  "/watch/film-Byh-aCKSDgo/": {
+    "canonicalPath": "/watch/film-Byh-aCKSDgo/",
+    "type": "page"
+  },
+  "/watch/film-hoFQL2ON9m4/": {
+    "canonicalPath": "/watch/film-hoFQL2ON9m4/",
+    "type": "page"
+  },
+  "/watch/film-iVwqj1gUPDY/": {
+    "canonicalPath": "/watch/film-iVwqj1gUPDY/",
+    "type": "page"
+  },
+  "/watch/film-j95SyBMQiNI/": {
+    "canonicalPath": "/watch/film-j95SyBMQiNI/",
+    "type": "page"
+  },
+  "/watch/film-L53hio-gtv0/": {
+    "canonicalPath": "/watch/film-L53hio-gtv0/",
+    "type": "page"
+  },
+  "/watch/film-OLSjUGODAeE/": {
+    "canonicalPath": "/watch/film-OLSjUGODAeE/",
+    "type": "page"
+  },
+  "/watch/film-pBti3GK2nkc/": {
+    "canonicalPath": "/watch/film-pBti3GK2nkc/",
+    "type": "page"
+  },
+  "/watch/film-UxrkaAvtsNI/": {
+    "canonicalPath": "/watch/film-UxrkaAvtsNI/",
+    "type": "page"
+  },
+  "/watch/film-VCd4T8sLFjg/": {
+    "canonicalPath": "/watch/film-VCd4T8sLFjg/",
+    "type": "page"
+  }
+}

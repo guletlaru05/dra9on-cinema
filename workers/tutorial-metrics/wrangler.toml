@@ -1,0 +1,29 @@
+name = "dra9on-tutorial-metrics"
+main = "src/index.mjs"
+compatibility_date = "2026-10-17"
+workers_dev = true
+preview_urls = false
+
+# Set the real account_id and D1 database_id during deployment. Never put API
+# tokens in this file. Keep this Worker on the Workers Free plan.
+# account_id = ""
+
+[vars]
+ALLOWED_ORIGINS = "https://dra9oncinema.com,https://www.dra9oncinema.com"
+MAX_DAILY_EVENTS = "20000"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dra9on-tutorial-metrics"
+database_id = ""
+migrations_dir = "migrations"
+
+[observability]
+enabled = false
+
+[observability.logs]
+enabled = false
+invocation_logs = false
+
+[observability.traces]
+enabled = false

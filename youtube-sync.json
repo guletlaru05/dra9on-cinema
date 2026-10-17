@@ -1,0 +1,10 @@
+{
+  "channelHandle": "@dra9oncinema",
+  "channelId": "",
+  "maxRequestsPerRun": 25,
+  "maxPlaylistPages": 20,
+  "refreshHours": 24,
+  "minimumEpisodeSeconds": 180,
+  "excludeVideoIds": [],
+  "includeVideos": {}
+}

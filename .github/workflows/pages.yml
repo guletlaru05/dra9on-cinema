@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '17 20 * * *'
 
 permissions:
   contents: read
@@ -19,6 +21,30 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check synchronization, privacy and anonymous aggregate behavior
+        run: |
+          python3 -m unittest test_robots_policy test_youtube_sync test_youtube_site
+          node test-consent.cjs
+          node --test test-tutorial-metrics.cjs workers/tutorial-metrics/test/worker.test.mjs
+      - name: Restore YouTube API snapshot
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/youtube-api.json
+          key: youtube-api-v1-${{ github.run_id }}
+          restore-keys: youtube-api-v1-
+      - name: Refresh public YouTube metadata once daily
+        continue-on-error: true
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: python3 youtube_sync.py
+      - name: Save YouTube API snapshot
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/youtube-api.json
+          key: youtube-api-v1-${{ github.run_id }}
       - name: Read Pages address
         id: pages
         uses: actions/configure-pages@v5
@@ -26,6 +52,8 @@ jobs:
         env:
           SITE_ORIGIN: ${{ steps.pages.outputs.origin }}
           SITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          CF_WEB_ANALYTICS_TOKEN: ${{ vars.CF_WEB_ANALYTICS_TOKEN }}
+          D9_METRICS_ENDPOINT: ${{ vars.D9_METRICS_ENDPOINT }}
         run: python3 build-portfolio.py --origin "$SITE_ORIGIN" --base-path "$SITE_BASE_PATH"
       - name: Check links, translations, and metadata
         env:
