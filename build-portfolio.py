@@ -205,6 +205,8 @@ from tutorial_metrics import inject_metrics
 analytics_configuration=inject_metrics(out,base_path)
 from youtube_site import inject_youtube_counts
 inject_youtube_counts(out,works,data,base_path)
+from continue_watching import inject_continue_watching
+inject_continue_watching(out,base_path)
 
 # Scheduled episodes ship as announcement pages; the browser unlocks at releaseAt.
 release_version = sha256((out/'release.js').read_bytes()).hexdigest()[:12]

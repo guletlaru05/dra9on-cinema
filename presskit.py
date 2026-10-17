@@ -1,5 +1,6 @@
 """Press resources from existing production footage, with no generated stills."""
 from html import escape
+from hashlib import sha256
 import json
 from site_config import ABOUT_PARAGRAPHS, CONTACT_EMAIL
 from collaboration import CASES
@@ -37,10 +38,12 @@ def build_press(out,origin,works,data,head,header,footer):
   content+='<article><span class="section-eyebrow">SEASON '+str(season['season'])+'</span><h3>'+t(*season['logline'])+'</h3><p>'+t(*season['synopsis'])+'</p></article>'
  content+='</div>'
  if WORLD_ENABLED:content+='<a class="text-button" href="/fall-707/world/">'+t('FALL 707 세계관 살펴보기 →','Explore the world of FALL 707 →')+'</a>'
- content+='</section><section class="editorial-section" aria-labelledby="press-stills"><p class="section-eyebrow">03 / PRODUCTION STILLS</p><h2 id="press-stills">'+t('작품 스틸 8장','Eight production stills')+'</h2><p>'+t('시즌 1·2 실제 영상에서 추출한 1920×1080 스틸입니다. 웹용 미리보기와 고화질 JPG를 구분했습니다.','1920×1080 frames extracted from the actual Season 1 and 2 films. Web previews and full-resolution JPG downloads are provided separately.')+'</p><div class="press-still-grid">'
+ content+='</section><section class="editorial-section" aria-labelledby="press-stills"><p class="section-eyebrow">03 / PRODUCTION STILLS</p><h2 id="press-stills">'+t('작품 스틸 8장','Eight production stills')+'</h2><p>'+t('시즌 1·2 실제 영상의 검은 띠를 제거한 스틸입니다. 원본 해상도를 유지하고 각 장면의 실제 비율로 제공합니다.','Frames from the actual Season 1 and 2 films, with encoded black bars removed. Each image keeps its native resolution and actual scene aspect ratio.')+'</p><div class="press-still-grid">'
  for s in stills:
   caption=t(s['caption']['ko'],s['caption']['en']);path='/assets/press/'+s['id']
-  content+=f'<figure><img src="{path}.webp" width="{s["width"]}" height="{s["height"]}" alt="FALL 707 · {caption}" loading="lazy"><figcaption><span>{caption}</span><a href="{path}.jpg" download>JPG ↓ <span class="sr-only">{caption}</span></a></figcaption></figure>'
+  pv=sha256((out/(path.lstrip('/')+'.webp')).read_bytes()).hexdigest()[:12]
+  jv=sha256((out/(path.lstrip('/')+'.jpg')).read_bytes()).hexdigest()[:12]
+  content+=f'<figure><img src="{path}.webp?v={pv}" width="{s["width"]}" height="{s["height"]}" alt="FALL 707 · {caption}" loading="lazy"><figcaption><span>{caption}<br>{s["width"]} × {s["height"]}</span><a href="{path}.jpg?v={jv}" download>JPG ↓ <span class="sr-only">{caption}</span></a></figcaption></figure>'
  content+='</div><p class="editorial-note">'+t('작품 소개·보도·협업 검토를 위한 자료입니다. 저작권은 DRA9ON CINEMA에 있으며, 재편집·상업적 이용은 사전 문의해 주세요.','These materials are for editorial coverage and collaboration review. Copyright belongs to DRA9ON CINEMA. Please contact us before re-editing or commercial use.')+'</p></section>'
  content+='<section class="editorial-section" aria-labelledby="press-logos"><p class="section-eyebrow">04 / WORDMARK</p><h2 id="press-logos">'+t('로고 다운로드','Download logos')+'</h2><div class="press-logo-grid">'
  for variant,cls,label in [('dark-background','logo-dark',t('어두운 배경용','For dark backgrounds')),('light-background','logo-light',t('밝은 배경용','For light backgrounds'))]:
@@ -62,4 +65,8 @@ def build_press(out,origin,works,data,head,header,footer):
  (out/'assets/press/channel-figures.json').write_text(json.dumps(meta,ensure_ascii=False,indent=2),encoding='utf-8')
  from press_pdf import build_pdf
  build_pdf(out,data,stills)
+ pdf_version=sha256((out/'assets/press/dra9on-cinema-press-kit.pdf').read_bytes()).hexdigest()[:12]
+ page=folder/'index.html'
+ page.write_text(page.read_text(encoding='utf-8').replace('dra9on-cinema-press-kit.pdf"','dra9on-cinema-press-kit.pdf?v='+pdf_version+'"'),encoding='utf-8')
+
 

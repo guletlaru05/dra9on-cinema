@@ -7,6 +7,34 @@
     "canonicalPath": "/",
     "type": "page"
   },
+  "/links/": {
+    "canonicalPath": "/links/",
+    "type": "page"
+  },
+  "/notes/": {
+    "canonicalPath": "/notes/",
+    "type": "page"
+  },
+  "/press/": {
+    "canonicalPath": "/press/",
+    "type": "page"
+  },
+  "/privacy/": {
+    "canonicalPath": "/privacy/",
+    "type": "page"
+  },
+  "/questions/": {
+    "canonicalPath": "/questions/",
+    "type": "page"
+  },
+  "/terms/": {
+    "canonicalPath": "/terms/",
+    "type": "page"
+  },
+  "/tutorials/": {
+    "canonicalPath": "/tutorials/",
+    "type": "page"
+  },
   "/en/links/": {
     "canonicalPath": "/links/",
     "type": "page"
@@ -15,12 +43,8 @@
     "canonicalPath": "/notes/",
     "type": "page"
   },
-  "/en/notes/fall-707-beginnings/": {
-    "canonicalPath": "/notes/fall-707-beginnings/",
-    "type": "page"
-  },
-  "/en/notes/fall-707-season-2/": {
-    "canonicalPath": "/notes/fall-707-season-2/",
+  "/en/press/": {
+    "canonicalPath": "/press/",
     "type": "page"
   },
   "/en/privacy/": {
@@ -37,6 +61,14 @@
   },
   "/en/tutorials/": {
     "canonicalPath": "/tutorials/",
+    "type": "page"
+  },
+  "/en/notes/fall-707-beginnings/": {
+    "canonicalPath": "/notes/fall-707-beginnings/",
+    "type": "page"
+  },
+  "/en/notes/fall-707-season-2/": {
+    "canonicalPath": "/notes/fall-707-season-2/",
     "type": "page"
   },
   "/en/tutorials/blender-previs/": {
@@ -175,36 +207,12 @@
     "canonicalPath": "/watch/film-VCd4T8sLFjg/",
     "type": "page"
   },
-  "/links/": {
-    "canonicalPath": "/links/",
-    "type": "page"
-  },
-  "/notes/": {
-    "canonicalPath": "/notes/",
-    "type": "page"
-  },
   "/notes/fall-707-beginnings/": {
     "canonicalPath": "/notes/fall-707-beginnings/",
     "type": "page"
   },
   "/notes/fall-707-season-2/": {
     "canonicalPath": "/notes/fall-707-season-2/",
-    "type": "page"
-  },
-  "/privacy/": {
-    "canonicalPath": "/privacy/",
-    "type": "page"
-  },
-  "/questions/": {
-    "canonicalPath": "/questions/",
-    "type": "page"
-  },
-  "/terms/": {
-    "canonicalPath": "/terms/",
-    "type": "page"
-  },
-  "/tutorials/": {
-    "canonicalPath": "/tutorials/",
     "type": "page"
   },
   "/tutorials/blender-previs/": {

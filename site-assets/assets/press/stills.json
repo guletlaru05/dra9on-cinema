@@ -6,9 +6,17 @@
       "en": "A modern operation"
     },
     "width": 1920,
-    "height": 1080,
+    "height": 905,
     "source": "s1e1",
-    "timeSeconds": 34
+    "timeSeconds": 34,
+    "contentCrop": [
+      0,
+      86,
+      1920,
+      991
+    ],
+    "originalFrameWidth": 1920,
+    "originalFrameHeight": 1080
   },
   {
     "id": "fall707-still-02",
@@ -17,9 +25,17 @@
       "en": "Through a 707 soldier’s eyes"
     },
     "width": 1920,
-    "height": 1080,
+    "height": 904,
     "source": "s1e1",
-    "timeSeconds": 110
+    "timeSeconds": 110,
+    "contentCrop": [
+      0,
+      86,
+      1920,
+      990
+    ],
+    "originalFrameWidth": 1920,
+    "originalFrameHeight": 1080
   },
   {
     "id": "fall707-still-03",
@@ -28,9 +44,17 @@
       "en": "The first moments in another era"
     },
     "width": 1920,
-    "height": 1080,
+    "height": 874,
     "source": "s1e2",
-    "timeSeconds": 10
+    "timeSeconds": 10,
+    "contentCrop": [
+      0,
+      103,
+      1920,
+      977
+    ],
+    "originalFrameWidth": 1920,
+    "originalFrameHeight": 1080
   },
   {
     "id": "fall707-still-04",
@@ -39,9 +63,17 @@
       "en": "An encounter at the palace"
     },
     "width": 1920,
-    "height": 1080,
+    "height": 876,
     "source": "s1e2",
-    "timeSeconds": 45
+    "timeSeconds": 45,
+    "contentCrop": [
+      0,
+      102,
+      1920,
+      978
+    ],
+    "originalFrameWidth": 1920,
+    "originalFrameHeight": 1080
   },
   {
     "id": "fall707-still-05",
@@ -50,9 +82,17 @@
       "en": "A conversation within the palace"
     },
     "width": 1920,
-    "height": 1080,
+    "height": 877,
     "source": "s1e2",
-    "timeSeconds": 90
+    "timeSeconds": 90,
+    "contentCrop": [
+      0,
+      102,
+      1920,
+      979
+    ],
+    "originalFrameWidth": 1920,
+    "originalFrameHeight": 1080
   },
   {
     "id": "fall707-still-06",
@@ -61,9 +101,17 @@
       "en": "Winter in Mokpojin"
     },
     "width": 1920,
-    "height": 1080,
+    "height": 896,
     "source": "s2",
-    "timeSeconds": 60
+    "timeSeconds": 60,
+    "contentCrop": [
+      0,
+      81,
+      1920,
+      977
+    ],
+    "originalFrameWidth": 1920,
+    "originalFrameHeight": 1080
   },
   {
     "id": "fall707-still-07",
@@ -72,9 +120,17 @@
       "en": "Yeonhwa on a snowy road"
     },
     "width": 1920,
-    "height": 1080,
+    "height": 896,
     "source": "s2",
-    "timeSeconds": 95
+    "timeSeconds": 95,
+    "contentCrop": [
+      0,
+      81,
+      1920,
+      977
+    ],
+    "originalFrameWidth": 1920,
+    "originalFrameHeight": 1080
   },
   {
     "id": "fall707-still-08",
@@ -83,8 +139,16 @@
       "en": "Mokpojin after dark"
     },
     "width": 1920,
-    "height": 1080,
+    "height": 897,
     "source": "s2",
-    "timeSeconds": 700
+    "timeSeconds": 700,
+    "contentCrop": [
+      0,
+      81,
+      1920,
+      978
+    ],
+    "originalFrameWidth": 1920,
+    "originalFrameHeight": 1080
   }
 ]
