@@ -6,11 +6,12 @@ video facts at build time. It does not call YouTube from visitors' browsers,
 download videos, modify the channel, generate subtitles, or use scraping as an
 API fallback. Playback continues through the existing YouTube embed.
 
-**Current status, 2026-10-17:** the synchronizer, daily workflow and tests are
-implemented, but the YouTube API terms/key setup is incomplete. Live automatic
-updates and official statistics are therefore not active yet. The manual catalog
-continues to work, and unavailable API values remain pending/absent. Cloudflare
-analytics activation is separate and does not activate YouTube credentials.
+**Current status, 2026-10-17:** live synchronization is active. The owner-approved
+YouTube Data API v3 key is restricted to that API and stored only as an encrypted
+Actions secret. The first live request read 26 selected videos in four requests;
+the returned subscriber string was `13800`. Subsequent builds reuse the snapshot
+for 24 hours. There are no credentials in the browser bundle or source catalog.
+Cloudflare analytics is a separate service.
 
 ## Activation
 

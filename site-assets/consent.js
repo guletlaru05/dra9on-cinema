@@ -3,7 +3,7 @@
  'use strict';
  const KEY='d9-external-media-choice-v1',TTL=180*86400000;
  const en=document.documentElement.lang==='en';
- const t=(ko,english)=>en?english:ko;
+ const t=(ko,english)=>window.D9Locale?.translate(ko,english)??(en?english:ko);
  let choice=null,returnFocus=null;
  const frames=new Map();
  const services=new Map();

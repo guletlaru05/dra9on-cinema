@@ -377,7 +377,7 @@ def count_html(count, *, lang='ko', kind='views', updated_at=None):
     count = exact_count(count)
     if count is None:
         return ''
-    label = ('YouTube views' if kind == 'views' else 'YouTube subscribers') if lang == 'en' else ('YouTube 조회수' if kind == 'views' else 'YouTube 구독자')
+    label = {'ko':('YouTube 조회수','YouTube 구독자'),'en':('YouTube views','YouTube subscribers'),'ja':('YouTube再生回数','YouTube登録者'),'es':('Reproducciones de YouTube','Suscriptores de YouTube')}.get(lang,('YouTube views','YouTube subscribers'))[0 if kind=='views' else 1]
     updated = parse_date(updated_at)
     date = timestamp(updated) if updated else ''
     return (f'<span class="youtube-api-count" data-youtube-api-count data-updated-at="{escape(date, quote=True)}">'

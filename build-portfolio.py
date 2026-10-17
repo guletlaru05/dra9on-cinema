@@ -146,7 +146,10 @@ build_tutorials(out, origin, head, header, footer)
 build_questions(out, origin, head, header, footer)
 from presskit import build_press
 build_press(out, origin, works, data, head, header, footer)
+from international import build_series_index, build_languages
+build_series_index(out,origin,works,head,header,footer)
 localize_site(out, works, origin, base_path)
+build_languages(out,origin,works,data,head,header,footer,base_path)
 # Public ownership proof for the owner's Google and Naver webmaster properties.
 verification_tag = (
  '<meta name="google-site-verification" content="PYrvbyrAOQQDNSZzhI9SdsjlhtRdl0l_tHM6tUelxnU">'
@@ -190,10 +193,15 @@ from hashlib import sha256
 consent_version = sha256((out/'consent.js').read_bytes() + (out/'consent.css').read_bytes()).hexdigest()[:12]
 for page in out.rglob('*.html'):
  document=page.read_text(encoding='utf-8')
- en=page.relative_to(out).parts[0]=='en'
+ language=page.relative_to(out).parts[0]
+ en=language in ('en','ja','es')
  privacy_url=base_path+('/en' if en else '')+'/privacy/'
  terms_url=base_path+('/en' if en else '')+'/terms/'
- controls=f'<div class="privacy-controls"><a href="{terms_url}">{"Terms of use" if en else "이용약관"}</a><a href="{privacy_url}">{"Privacy policy" if en else "개인정보처리방침"}</a><button type="button" data-cookie-settings>{"External media settings" if en else "외부 콘텐츠 설정"}</button></div>'
+ labels=['Terms of use','Privacy policy','External media settings'] if en else ['이용약관','개인정보처리방침','외부 콘텐츠 설정']
+ if language in ('ja','es'):
+  from international_content import text
+  labels=[text(label,language) for label in labels]
+ controls=f'<div class="privacy-controls"><a href="{terms_url}">{labels[0]}</a><a href="{privacy_url}">{labels[1]}</a><button type="button" data-cookie-settings>{labels[2]}</button></div>'
  assets=f'<link rel="stylesheet" href="{base_path}/consent.css?v={consent_version}"><script src="{base_path}/consent.js?v={consent_version}" defer></script>'
  document=document.replace('</head>',assets+'</head>',1).replace('</body>',controls+'</body>',1)
  page.write_text(document,encoding='utf-8')
@@ -209,12 +217,13 @@ from continue_watching import inject_continue_watching
 inject_continue_watching(out,base_path)
 
 # Scheduled episodes ship as announcement pages; the browser unlocks at releaseAt.
+from datetime import datetime,timezone
 release_version = sha256((out/'release.js').read_bytes()).hexdigest()[:12]
 for page in out.rglob('*.html'):
  document=page.read_text(encoding='utf-8')
  english=page.relative_to(out).parts[0]=='en'
  for work in works:
-  if not work.get('releaseAt'):continue
+  if not work.get('releaseAt') or datetime.fromisoformat(work['releaseAt'].replace('Z','+00:00'))<=datetime.now(timezone.utc):continue
   if f'data-id="{work["id"]}"' in document:
    document=re.sub(r'<iframe src="([^"]+)"',r'<iframe hidden data-release-src="\1"',document,count=1)
    label='Premieres October 2, 18:10 KST (09:10 UTC)' if english else '10월 2일 오후 6시 10분 공개 (한국 시간)'

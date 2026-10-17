@@ -43,7 +43,7 @@ def build_press(out,origin,works,data,head,header,footer):
   caption=t(s['caption']['ko'],s['caption']['en']);path='/assets/press/'+s['id']
   pv=sha256((out/(path.lstrip('/')+'.webp')).read_bytes()).hexdigest()[:12]
   jv=sha256((out/(path.lstrip('/')+'.jpg')).read_bytes()).hexdigest()[:12]
-  content+=f'<figure><img src="{path}.webp?v={pv}" width="{s["width"]}" height="{s["height"]}" alt="FALL 707 · {caption}" loading="lazy"><figcaption><span>{caption}<br>{s["width"]} × {s["height"]}</span><a href="{path}.jpg?v={jv}" download>JPG ↓ <span class="sr-only">{caption}</span></a></figcaption></figure>'
+  content+=f'<figure><img src="{path}.webp?v={pv}" width="{s["width"]}" height="{s["height"]}" style="aspect-ratio:{s["width"]}/{s["height"]}" alt="FALL 707 · {caption}" loading="lazy"><figcaption><span>{caption}<br>{s["width"]} × {s["height"]}</span><a href="{path}.jpg?v={jv}" download>JPG ↓ <span class="sr-only">{caption}</span></a></figcaption></figure>'
  content+='</div><p class="editorial-note">'+t('작품 소개·보도·협업 검토를 위한 자료입니다. 저작권은 DRA9ON CINEMA에 있으며, 재편집·상업적 이용은 사전 문의해 주세요.','These materials are for editorial coverage and collaboration review. Copyright belongs to DRA9ON CINEMA. Please contact us before re-editing or commercial use.')+'</p></section>'
  content+='<section class="editorial-section" aria-labelledby="press-logos"><p class="section-eyebrow">04 / WORDMARK</p><h2 id="press-logos">'+t('로고 다운로드','Download logos')+'</h2><div class="press-logo-grid">'
  for variant,cls,label in [('dark-background','logo-dark',t('어두운 배경용','For dark backgrounds')),('light-background','logo-light',t('밝은 배경용','For light backgrounds'))]:

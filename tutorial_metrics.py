@@ -68,7 +68,7 @@ def inject_metrics(out, base_path=''):
         info = Info(doc)
         if not info.canonical: continue
         public_path = base_path + path
-        canonical_path = path[3:] if path.startswith('/en/') else path
+        canonical_path = re.sub(r'^/(?:en|ja|es)(?=/)','',path)
         is_tutorial = canonical_path.startswith('/tutorials/') and canonical_path != '/tutorials/'
         registry[public_path] = {'canonicalPath': canonical_path, 'type': 'tutorial' if is_tutorial else 'page'}
         en = path.startswith('/en/')
