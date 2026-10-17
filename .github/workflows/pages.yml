@@ -24,6 +24,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Install pinned PDF build dependencies
+        run: python3 -m pip install --disable-pip-version-check -r requirements-build.txt
       - name: Check synchronization, privacy and anonymous aggregate behavior
         run: |
           python3 -m unittest test_robots_policy test_youtube_sync test_youtube_site

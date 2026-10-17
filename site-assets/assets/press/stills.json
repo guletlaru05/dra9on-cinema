@@ -1,0 +1,90 @@
+[
+  {
+    "id": "fall707-still-01",
+    "caption": {
+      "ko": "현대의 작전 현장",
+      "en": "A modern operation"
+    },
+    "width": 1920,
+    "height": 1080,
+    "source": "s1e1",
+    "timeSeconds": 34
+  },
+  {
+    "id": "fall707-still-02",
+    "caption": {
+      "ko": "707 대원의 시선",
+      "en": "Through a 707 soldier’s eyes"
+    },
+    "width": 1920,
+    "height": 1080,
+    "source": "s1e1",
+    "timeSeconds": 110
+  },
+  {
+    "id": "fall707-still-03",
+    "caption": {
+      "ko": "낯선 시대의 첫 순간",
+      "en": "The first moments in another era"
+    },
+    "width": 1920,
+    "height": 1080,
+    "source": "s1e2",
+    "timeSeconds": 10
+  },
+  {
+    "id": "fall707-still-04",
+    "caption": {
+      "ko": "조선 궁궐에서의 만남",
+      "en": "An encounter at the palace"
+    },
+    "width": 1920,
+    "height": 1080,
+    "source": "s1e2",
+    "timeSeconds": 45
+  },
+  {
+    "id": "fall707-still-05",
+    "caption": {
+      "ko": "궁궐 안의 대화",
+      "en": "A conversation within the palace"
+    },
+    "width": 1920,
+    "height": 1080,
+    "source": "s1e2",
+    "timeSeconds": 90
+  },
+  {
+    "id": "fall707-still-06",
+    "caption": {
+      "ko": "목포진의 겨울",
+      "en": "Winter in Mokpojin"
+    },
+    "width": 1920,
+    "height": 1080,
+    "source": "s2",
+    "timeSeconds": 60
+  },
+  {
+    "id": "fall707-still-07",
+    "caption": {
+      "ko": "눈길 위의 연화",
+      "en": "Yeonhwa on a snowy road"
+    },
+    "width": 1920,
+    "height": 1080,
+    "source": "s2",
+    "timeSeconds": 95
+  },
+  {
+    "id": "fall707-still-08",
+    "caption": {
+      "ko": "밤의 목포진",
+      "en": "Mokpojin after dark"
+    },
+    "width": 1920,
+    "height": 1080,
+    "source": "s2",
+    "timeSeconds": 700
+  }
+]

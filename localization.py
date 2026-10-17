@@ -251,6 +251,8 @@ def localize_site(out, works, origin, base_path=''):
     base_translations.update(NEWTAKE_TRANSLATIONS)
     from collaboration import TRANSLATIONS as COLLABORATION_TRANSLATIONS
     base_translations.update(COLLABORATION_TRANSLATIONS)
+    from presskit import TRANSLATIONS as PRESS_TRANSLATIONS, ROUTES as PRESS_ROUTES
+    base_translations.update(PRESS_TRANSLATIONS)
     from episode_extras import TRANSLATIONS as EPISODE_TRANSLATIONS
     base_translations.update(EPISODE_TRANSLATIONS)
     from privacy_page import TRANSLATIONS
@@ -263,7 +265,7 @@ def localize_site(out, works, origin, base_path=''):
     base_translations.update(TUTORIAL_TRANSLATIONS)
     from questions import TRANSLATIONS as QUESTION_TRANSLATIONS, ROUTES as QUESTION_ROUTES
     base_translations.update(QUESTION_TRANSLATIONS)
-    NOTE_ROUTES = [*NOTE_ROUTES, *TUTORIAL_ROUTES, *QUESTION_ROUTES]
+    NOTE_ROUTES = [*NOTE_ROUTES, *TUTORIAL_ROUTES, *QUESTION_ROUTES, *PRESS_ROUTES]
     base_translations.update(zip(ABOUT_PARAGRAPHS['ko'], ABOUT_PARAGRAPHS['en']))
     base_translations.update({OG_ALT['ko']: OG_ALT['en'],
         '상상을, 장면으로.': 'From imagination to frame.',
