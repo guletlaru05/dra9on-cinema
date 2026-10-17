@@ -2,7 +2,7 @@ import {createRemoteJWKSet,jwtVerify} from 'jose';
 import {parse} from 'parse5';
 const PROJECT='dra9on-cinema-stats';
 const KEYS=createRemoteJWKSet(new URL('https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com'),{timeoutDuration:6000,cooldownDuration:30000});
-const HOSTS=new Set(['dra9oncinema.com','www.dra9oncinema.com','higgsfield.ai','www.higgsfield.ai','klingai.com','www.klingai.com','app.klingai.com','app.klingai.com','seed.bytedance.com','www.seed.bytedance.com','dreamina.capcut.com','zcre.co.kr','www.zcre.co.kr','bbanana.ai','www.bbanana.ai','threads.com','www.threads.com','threads.net','www.threads.net','x.com','www.x.com','twitter.com','www.twitter.com','instagram.com','www.instagram.com','openart.ai','www.openart.ai']);
+const HOSTS=new Set(['dra9oncinema.com','www.dra9oncinema.com','higgsfield.ai','www.higgsfield.ai','klingai.com','www.klingai.com','app.klingai.com','kling.ai','www.kling.ai','docs.byteplus.com','seed.bytedance.com','www.seed.bytedance.com','dreamina.capcut.com','zcre.co.kr','www.zcre.co.kr','bbanana.ai','www.bbanana.ai','threads.com','www.threads.com','threads.net','www.threads.net','x.com','www.x.com','twitter.com','www.twitter.com','instagram.com','www.instagram.com','openart.ai','www.openart.ai']);
 export const PRIVATE_BUDGET_SQL='INSERT INTO private_read_budget(day,reads) VALUES(?,1) ON CONFLICT(day) DO UPDATE SET reads=reads+1 WHERE reads<50 RETURNING reads';
 function answer(body,status,origin){return new Response(JSON.stringify(body),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','Vary':'Origin','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer',...(origin?{'Access-Control-Allow-Origin':origin}:{})}});}
 export async function verifyOwner(token,env,options={}){
@@ -35,7 +35,7 @@ export function extractSource(html,url,mime='text/html'){
  let category=prompts.length?'프롬프트':models.length||/platform|update|release|tutorial|creator program|플랫폼|업데이트|모집|캠페인/i.test(low)?'툴·플랫폼':'기타';
  const professional=/creator|크리에이터|marketer|마케터|brand|브랜드|director|감독|portfolio|포트폴리오|작품|studio|스튜디오|project|프로젝트|소속|official|공식/i;
  if(!prompts.length&&/(?:^|\/)(?:@[^/]+|about|profile)(?:\/|$)/.test(new URL(url).pathname)&&professional.test(low))category='사람';
- if(category==='사람'){body=stripContacts(body.split('\n').filter(line=>professional.test(line)).join('\n'));title=stripContacts(title);author=stripContacts(author);prompts=[];}
+ if(category==='사람'){body=stripContacts(body.split('\n').filter(line=>professional.test(line)&&!/집 주소|자택|거주지|생년|생일|가족|배우자|home address|birthday|birthdate|spouse|family/i.test(line)).join('\n'));title=stripContacts(title);author=stripContacts(author);prompts=[];}
  prompts=[...new Set(prompts)];
  if(body.length>150000||prompts.length>30||prompts.some(p=>p.length>100000)||title.length>400||author.length>200)throw Error('원문이 저장 한도보다 큽니다. 요약 저장하지 않았습니다. PC에서 원문을 확인하세요.');
  const tags=[['카메라',/camera|framing|카메라|구도|앵글/i],['조명',/light|shadow|조명|명암|역광/i],['캐릭터 일관성',/identity|character|캐릭터|일관성|시트/i],['액션',/action|chase|fight|액션|추격|전투/i],['분위기',/mood|cinematic|texture|미감|분위기|질감/i]].filter(([,rx])=>rx.test(low)).map(([name])=>name);
