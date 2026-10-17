@@ -22,7 +22,7 @@ def inject_visitor_counter(out, base_path=''):
         labels = {
             'label': 'Site visit statistics' if english else '사이트 방문 통계',
             'today': 'Today' if english else '오늘 방문자',
-            'total': 'Total visits' if english else '누적 방문',
+            'total': 'Total visits' if english else '누적 방문자',
             'note': ('Consented visits · Once per browser each day · Korea time'
                      if english else '통계 동의 방문 · 브라우저당 하루 1회 · 한국 시간'),
             'detail': ('Total is the sum of daily browser visits since counting began, '
@@ -35,25 +35,28 @@ def inject_visitor_counter(out, base_path=''):
         privacy_url = base_path + ('/en' if english else '') + '/privacy/'
         markup = (
             f'<section class="site-visitors" data-site-visitors aria-label="{labels["label"]}">'
-            '<div class="site-visitors-heading"><span class="site-visitors-eyebrow">VISITORS</span>'
-            f'<p class="site-visitors-note">{labels["note"]}</p></div>'
+            '<span class="site-visitors-eyebrow" aria-hidden="true">VISITORS</span>'
             f'<dl class="site-visitors-counts" title="{escape(labels["detail"], quote=True)}">'
             f'<div><dt>{labels["today"]}</dt><dd data-visits-today>—</dd></div>'
             f'<div><dt>{labels["total"]}</dt><dd data-visits-total>—</dd></div></dl>'
+            '<details class="site-visitors-info">'
+            f'<summary aria-label="{labels["privacy"]}" title="{labels["privacy"]}">'
+            '<span aria-hidden="true">i</span></summary>'
             '<div class="site-visitors-meta">'
+            f'<p class="site-visitors-note">{labels["note"]}</p>'
+            f'<p>{labels["detail"]}</p>'
             f'<p data-visits-status role="status" aria-live="polite">{labels["status"]}</p>'
-            '<span data-visits-since></span>'
-            f'<a href="{privacy_url}">{labels["privacy"]} ↗</a></div></section>'
+            '<p data-visits-since></p>'
+            f'<a href="{privacy_url}">{labels["privacy"]} ↗</a>'
+            '</div></details></section>'
         )
         document = page.read_text(encoding='utf-8')
-        # The social-profile links page intentionally has a minimal sign-off,
-        # so give its ledger a compact footer without replacing that layout.
-        if document.count('</footer>') == 0 and relative.as_posix() in ('links/index.html', 'en/links/index.html'):
-            document = document.replace('</main>', '</main><footer class="site-visitors-footer"></footer>', 1)
-        assert document.count('</footer>') == 1, f'Missing or duplicate footer: {relative}'
         assert 'data-site-visitors' not in document, f'Duplicate visitor widget: {relative}'
+        # Keep totals in the first screen. The shared header is overlaid on the
+        # home hero; other public pages and the compact links page use flow.
+        assert '</header>' in document, f'Missing public header: {relative}'
         resources = (f'<link rel="stylesheet" href="{assets["css"]}">'
                      f'<script src="{assets["js"]}" defer></script>')
-        document = document.replace('</footer>', markup + '</footer>', 1)
+        document = document.replace('</header>', '</header>' + markup, 1)
         document = document.replace('</head>', resources + '</head>', 1)
         page.write_text(document, encoding='utf-8')
