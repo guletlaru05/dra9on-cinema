@@ -2,11 +2,11 @@
 
 ## 공개 방문 합계
 
-페이지 상단의 오늘·누적 방문은 통계에 동의한 브라우저를 한국 시간 기준 하루에 한 번 집계합니다. 누적은 이 기능을 시작한 이후의 일별 브라우저 방문 합계이며 실제 사람 수, GA4 사용자 수 또는 YouTube 조회수가 아닙니다. 과거 방문 수를 임의로 채우지 않습니다. 비공개 자료실은 집계에서 제외합니다.
+페이지 상단의 오늘·누적 유입은 Cloudflare Workers Free와 D1의 숫자 집계를 사용합니다. 외부 링크 또는 직접 방문으로 들어온 횟수를 한국 시간 기준으로 표시하며, 쿠키·로그인·브라우저 식별자 없이 집계합니다. 고유 방문자나 실제 사람 수, GA4 사용자 수, YouTube 조회수를 뜻하지 않습니다. 같은 사람이 다시 들어오면 추가로 집계될 수 있습니다. 비공개 자료실은 제외합니다.
 
-기존 Firebase 프로젝트의 App Check와 익명 인증을 재사용합니다. 공개 합계 외의 브라우저별 집계 기록은 해당 식별자로만 읽을 수 있고, 서버 규칙은 합계·일별·브라우저 기록의 동시 갱신을 검증합니다. 새 결제 서비스는 추가하지 않으며 기존 무료 한도 소진 시 집계가 일시적으로 표시되지 않을 수 있습니다.
+2026-10-17에 실제 Cloudflare Web Analytics와 익명 집계 Worker를 연결하고 D1 스키마를 적용했습니다. Worker `/summary`가 실제 빈 데이터의 0을 반환하는 것을 확인했습니다. 집계 시작은 최초 수신 이벤트 시각이며, 과거 Firebase 합계나 임의의 수를 새 집계에 더하지 않습니다. 기존 Firebase 익명 로그인·브라우저별 방문 추적은 다시 켜지 않습니다. 무료 한도에 도달하면 수집이 중단되거나 집계가 일시적으로 표시되지 않을 수 있습니다.
 
-집계 동작은 `node test-visitors.cjs`, 동의 설정은 `node test-consent.cjs`로 확인합니다. 실제 Firestore 규칙 게시와 브라우저에서의 집계 확인은 별도입니다.
+집계 동작은 `node --test test-tutorial-metrics.cjs workers/tutorial-metrics/test/worker.test.mjs`, 외부 콘텐츠 선택은 `node test-consent.cjs`로 확인합니다. Cloudflare Web Analytics의 일별 방문·페이지·유입 보고서와 사이트의 유입·조회·복사 집계는 정의가 다르므로 서로 합산하지 않습니다.
 
 FALL 707: REBOOT와 오리지널 AI 영화를 소개하는 한국어·영어 포트폴리오입니다. 공식 YouTube 영상 26편을 임베드합니다.
 
@@ -31,7 +31,7 @@ FALL 707: REBOOT와 오리지널 AI 영화를 소개하는 한국어·영어 포
 
 GitHub Free에서 Pages를 사용하려면 공개 저장소가 필요합니다. 공개 저장소에는 사이트 코드, 썸네일, 공개 영상 정보가 함께 공개됩니다. 비공개 보관만 원하는 경우 Pages를 활성화하지 마세요. **비공개 저장소가 곧 비공개 웹사이트를 뜻하지는 않습니다.**
 
-배포 주소는 GitHub Pages 설정에서 자동으로 읽습니다. 프로젝트 주소의 하위 경로와 추후 연결한 사용자 지정 도메인을 모두 지원합니다. 비밀키나 별도의 유료 실행기는 필요하지 않습니다.
+배포 주소는 GitHub Pages 설정에서 자동으로 읽습니다. 프로젝트 주소의 하위 경로와 사용자 지정 도메인을 지원합니다. 기본 정적 사이트 빌드는 비밀키나 유료 실행기 없이 가능하며, 운영 중인 통계 Worker의 재배포에는 암호화된 Actions 비밀 `CLOUDFLARE_API_TOKEN`을 사용합니다. 공개 beacon 값·수집 주소·계정 ID는 실제 저장소 변수로 설정되어 있고, API 토큰 값은 사이트 파일에 넣지 않습니다.
 
 - [GitHub Pages 소개](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages)
 - [GitHub Pages 이용 한도](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)
@@ -61,13 +61,13 @@ python verify-site.py --origin https://guletlaru05.github.io --base-path /dra9on
 
 한국어 원고는 제공받은 문장을 그대로 보존합니다. 원고를 편집할 때만 개발 환경의 `markdown-it-py`로 `python prepare-newtake-tutorial.py`를 실행해 HTML 조각과 해시 manifest를 함께 갱신하세요. 배포 빌드는 추가 패키지 없이 원고·HTML 해시를 검사하며, 원고와 조각이 다르면 실패합니다. 본문은 `newtake_tutorial.py`, 표·코드의 모바일 표시는 `site-assets/newtake-tutorial.css`에서 처리합니다.
 
-결과 릴스는 지정된 Instagram URL을 직접 임베드하며 해당 두 페이지에만 CSP 프레임 허용을 추가합니다. 하단 Newtake 링크는 `target="_blank" rel="sponsored noopener"`를 유지합니다. 목록·공유 이미지는 실제 생성 영상 캡처로 오인하지 않도록 제작 흐름 도식으로 구분합니다.
+결과 릴스는 지정된 Instagram URL을 임베드 대상으로 유지하되, 최초 HTML에서는 `data-external-src`로 보관하고 외부 콘텐츠 허용 후에만 연결합니다. 해당 두 페이지에만 CSP 프레임 허용을 추가합니다. 하단 Newtake 링크는 `target="_blank" rel="sponsored noopener"`를 유지합니다. 목록·공유 이미지는 실제 생성 영상 캡처로 오인하지 않도록 제작 흐름 도식으로 구분합니다.
 
 ### 협업 문의
 
 홈의 `/#collaboration`과 영어 `/en/#collaboration`에 제작 분야, 공개 제작 사례, 이메일 의뢰 항목을 안내합니다. 모든 공개 페이지의 메뉴·푸터와 프로필용 `/links/`에서 연결됩니다. `collaboration.py`의 `STATS`, `CASES`, `UPDATED_AT`와 `site-assets/collaboration.css`를 관리하세요.
 
-수치는 2026-10-17 공개 프로필에서 확인한 YouTube 구독자 1.38만, Instagram 팔로워 9.4만의 스냅샷입니다. 자동 갱신되거나 플랫폼 간 중복이 제거된 사람 수가 아닙니다. Facebook은 올바른 공식 페이지와 수치 확인 전까지 표시하지 않습니다. 뉴테이크 광고, Dreamina CPP, 빠나나 AI 도구 활용 사례를 구분하며 유료 협찬·공식 제휴 관계를 일괄 주장하지 않습니다.
+Instagram 팔로워 9.4만은 2026-10-17 공개 프로필의 수동 스냅샷이며 자동 갱신 수치나 중복이 제거된 사람 수가 아닙니다. 기존 YouTube 1.38만 스냅샷을 API 제공값으로 표시하지 않습니다. YouTube API 연결 전에는 구독자 수를 연결 대기 상태로 표시하며, 연결 후에는 API의 정수 문자열과 실제 갱신 시각을 표시하도록 구현했습니다. Facebook은 올바른 공식 페이지와 수치 확인 전까지 표시하지 않습니다. 뉴테이크 광고, Dreamina CPP, 빠나나 AI 도구 활용 사례를 구분하며 유료 협찬·공식 제휴 관계를 일괄 주장하지 않습니다.
 
 제작자가 확인한 CPP 참여 프로그램은 Dreamina·Higgsfield·OpenArt입니다. 프로그램 목록과 각 공개 제작 사례를 함께 표시합니다. CPP 참여를 모든 게시물의 유료 협찬 관계나 프로그램 운영사의 보증으로 표현하지 않습니다.
 
@@ -94,7 +94,7 @@ OpenArt CPP 선정 이력은 제작자가 알려준 2026년 8월·9월로 표시
 | 검색·재생·찜 동작 | `site-assets/portfolio.js` |
 | 썸네일·메인 이미지 | `site-assets/assets/portfolio/` |
 
-`dist/`는 빌드 결과이며 직접 수정하거나 커밋하지 않습니다. 공식 채널 콘텐츠를 2026-10-15에 시즌 3 1화까지 반영한 스냅샷이며 새 영상은 자동으로 추가되지 않습니다. 새 영상을 추가할 때 데이터·공식 썸네일·영어 번역을 함께 갱신하세요. 영상 자막·더빙을 생성하지 않으며 자막 선택은 YouTube 플레이어의 CC와 설정에서 제공합니다.
+`dist/`는 빌드 결과이며 직접 수정하거나 커밋하지 않습니다. 현재 기본 영상 목록은 2026-10-15 시즌 3 1화까지 수동 반영한 데이터입니다. 새 회차·시즌과 공식 통계를 하루 한 번 동기화할 빌드 코드는 준비되어 있지만, 2026-10-17 현재 YouTube API 약관·키 설정이 완료되지 않아 실제 자동 동기화는 활성화되지 않았습니다. 연결 전에는 수동 데이터를 유지하며 API 수치를 만들지 않습니다. 연결 후에도 수동 제목·소개·썸네일을 우선 보존하고 영상 ID로 중복을 제거합니다. 영상 자막·더빙은 생성하지 않으며 자막 선택은 YouTube 플레이어의 CC와 설정에서 제공합니다.
 
 검색 노출과 순위는 검색엔진이 결정합니다. 실제 공개 후 Search Console에서 소유권을 확인하고 `sitemap.xml`을 제출할 수 있습니다.
 
@@ -109,7 +109,7 @@ OpenArt CPP 선정 이력은 제작자가 알려준 2026년 8월·9월로 표시
 
 GA4 and the old Firebase per-browser visit/player ledger are no longer loaded. Historical site-play/like totals are not relabelled as official YouTube values or new anonymous visits. `analytics-config.json` (or GitHub variables `CF_WEB_ANALYTICS_TOKEN`, `D9_METRICS_ENDPOINT`) must contain real configured provider values before the new services load. Blank configuration deliberately remains inactive; no fabricated counts or demo tokens are supplied.
 
-Cloudflare Web Analytics is the selected free, cookie-free provider. The separate Cloudflare Workers Free + D1 collector stores day/page aggregate numbers only: page views, entry events, prompt copies, and coarse referring-platform buckets. It does not store IP addresses, browser identities, raw URLs, query strings, user agents or prompt contents. Entry counts are not unique people. DNT/GPC and local previews do not send events. See `workers/tutorial-metrics/README.md` for its free-plan daily write cap and deployment requirements.
+Cloudflare Web Analytics is the selected free, cookie-free provider. On 2026-10-17 its real public beacon was configured, and the separate Workers Free + D1 collector was deployed at `https://dra9on-tutorial-metrics.tutorial-metrics.workers.dev`, with migrations applied and a successful live `/summary` response. The collector stores day/page aggregate numbers only: page views, entry events, prompt copies, and coarse referring-platform buckets. It does not store IP addresses, browser identities, raw URLs, query strings, user agents or prompt contents. Entry counts are not unique people. DNT/GPC and local previews do not send collector events. No past Firebase totals are transferred into this new series. See `workers/tutorial-metrics/README.md` for its free-plan daily write cap and deployment requirements.
 
 Tutorial lists default to newest, with an optional actual-view ranking. The homepage shows up to three tutorials that have recorded views; before real collection begins no popularity is invented. Every public tutorial prompt block gains a copy button; only a successful clipboard write records a copy. The same canonical tutorial combines Korean and English totals. `/summary`, `/daily` and `/weekly` expose numeric public aggregates; new public pages are registered from each build. The private library is excluded.
 
@@ -117,7 +117,7 @@ External YouTube/Instagram frames arrive without a `src`. `site-assets/consent.j
 
 ## Daily YouTube metadata
 
-`youtube_sync.py` uses the encrypted `YOUTUBE_API_KEY` GitHub secret only in the build. The daily Pages schedule refreshes the uploads playlist and public statistics, with a bounded call budget and an Actions cache. Videos merge by ID; manual copy and existing thumbnails remain editorially authoritative. Explicit season/episode titles create matching season shelves and latest-episode cards. No expensive `search.list` polling or browser API key is used. Exact API integer strings are displayed, including zero; YouTube itself rounds its subscriber API value, which is disclosed beside that figure. No guessed count appears when unavailable. See `docs/youtube-sync.md`.
+The synchronization code and daily Pages schedule are ready, but **live YouTube API synchronization is not active as of 2026-10-17**: the API terms/key setup remains incomplete. When a real encrypted `YOUTUBE_API_KEY` Actions secret is configured, `youtube_sync.py` will refresh the uploads playlist and public statistics at build time, with a bounded call budget and an Actions cache. Until then, the manual catalog remains authoritative and API counts stay absent/pending. Videos merge by ID; manual copy and existing thumbnails retain priority. Explicit season/episode titles create matching season shelves and latest-episode cards. No `search.list` polling or browser API key is used. The implementation preserves exact API integer strings, including zero; YouTube itself rounds its subscriber API value, which is disclosed beside that figure. No guessed count appears when unavailable. See `docs/youtube-sync.md`.
 
 ## Validation
 

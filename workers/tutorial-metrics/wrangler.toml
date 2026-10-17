@@ -6,7 +6,7 @@ preview_urls = false
 
 # Set the real account_id and D1 database_id during deployment. Never put API
 # tokens in this file. Keep this Worker on the Workers Free plan.
-# account_id = ""
+account_id = "f25bbc251a70676f521c097b1d047d95"
 
 [vars]
 ALLOWED_ORIGINS = "https://dra9oncinema.com,https://www.dra9oncinema.com"
@@ -15,7 +15,7 @@ MAX_DAILY_EVENTS = "20000"
 [[d1_databases]]
 binding = "DB"
 database_name = "dra9on-tutorial-metrics"
-database_id = ""
+database_id = "03871554-f291-48eb-9d35-c27c78cf9f27"
 migrations_dir = "migrations"
 
 [observability]

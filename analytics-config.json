@@ -1,4 +1,4 @@
 {
-  "cloudflareWebAnalyticsToken": "",
-  "metricsEndpoint": ""
+  "cloudflareWebAnalyticsToken": "056bcb3579b74752b6fee0d45a7261e0",
+  "metricsEndpoint": "https://dra9on-tutorial-metrics.tutorial-metrics.workers.dev"
 }

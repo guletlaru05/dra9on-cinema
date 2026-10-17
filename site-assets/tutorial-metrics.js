@@ -54,6 +54,7 @@
    button.addEventListener('click',async()=>{try{await navigator.clipboard.writeText((pre.querySelector('code')||pre).textContent);status.textContent=t('복사했어요.','Copied.');send('copy',button.dataset.promptCard);}catch{status.textContent=t('복사하지 못했어요. 텍스트를 선택해 복사해 주세요.','Copy failed. Select the text and copy it.');}});
   });
  }
- if(enabled){send('pageview');fetch(endpoint+'/summary',{credentials:'omit',referrerPolicy:'no-referrer'}).then(r=>{if(!r.ok)throw Error();return r.json();}).then(value=>{if(!validSummary(value))throw Error();summary=value;paint();}).catch(()=>{document.querySelectorAll('[data-visits-status]').forEach(n=>n.textContent=t('집계를 잠시 불러올 수 없습니다.','Counts are temporarily unavailable.'));});}
+ if(enabled)send('pageview');
+ if(endpoint&&production){fetch(endpoint+'/summary',{credentials:'omit',referrerPolicy:'no-referrer'}).then(r=>{if(!r.ok)throw Error();return r.json();}).then(value=>{if(!validSummary(value))throw Error();summary=value;paint();}).catch(()=>{document.querySelectorAll('[data-visits-status]').forEach(n=>n.textContent=t('집계를 잠시 불러올 수 없습니다.','Counts are temporarily unavailable.'));});}
  else document.querySelectorAll('[data-visits-status]').forEach(n=>n.textContent=t('통계 서비스 연결 대기 중입니다.','Analytics connection is pending.'));
 })();

@@ -6,6 +6,12 @@ video facts at build time. It does not call YouTube from visitors' browsers,
 download videos, modify the channel, generate subtitles, or use scraping as an
 API fallback. Playback continues through the existing YouTube embed.
 
+**Current status, 2026-10-17:** the synchronizer, daily workflow and tests are
+implemented, but the YouTube API terms/key setup is incomplete. Live automatic
+updates and official statistics are therefore not active yet. The manual catalog
+continues to work, and unavailable API values remain pending/absent. Cloudflare
+analytics activation is separate and does not activate YouTube credentials.
+
 ## Activation
 
 1. In a Google Cloud project, enable **YouTube Data API v3** and create a dedicated

@@ -6,11 +6,25 @@ layer, analytics requests, or analytics identifiers. It does not load Firebase,
 App Check or reCAPTCHA while simply displaying a public page.
 
 Cloudflare Web Analytics is the selected cookie-free provider. It must remain
-unloaded until the actual site token is configured. The privacy page explicitly
-describes this configured-only state and must not be interpreted as proof that
-the provider is connected. Tutorial view/copy reporting uses anonymous numeric
+unloaded until the actual site token is configured; this remains the rule for
+new environments and any later reset to blank configuration. On 2026-10-17 the
+production site's real public Web Analytics token was configured, and its
+separate anonymous collector was deployed at
+`https://dra9on-tutorial-metrics.tutorial-metrics.workers.dev`. D1 migrations were
+applied and a live `/summary` GET returned 200 with the genuinely empty database's
+zero totals. This records completed provider setup, not a claim of historical
+traffic or a completed first visitor event. The real `startedAt` remains null
+until the first accepted event. Tutorial view/copy reporting uses anonymous numeric
 event totals; separate server integration must not introduce client identifiers,
 cookies, prompt content, or personal browsing histories.
+
+The production registry currently contains 86 allowlisted public routes. Each
+site build regenerates that registry, and the Pages workflow deploys the Worker
+using the encrypted `CLOUDFLARE_API_TOKEN` secret. API tokens never go into public
+HTML or JavaScript. Existing Firebase visit totals were not imported, and the
+old browser-day collection was not reactivated. Live YouTube Data API sync is a
+separate pending setup; prepared synchronization code is not evidence of a
+working API key or accepted API terms.
 
 ## Build and player integration contract
 
