@@ -10,11 +10,18 @@ this application does not receive and persist identity data for analytics.
 
 ## Deployment requirements
 
-This source alone does not activate analytics. Deployment requires an authorized
-Cloudflare account, a **Workers Free** Worker, a D1 database, its real database ID,
-and the generated public-path registry. An empty `database_id` is deliberately
-not a pretend deployment. Do not upgrade to a paid plan or add payment details
-to complete this setup.
+Production setup was completed on **2026-10-17** using Workers Free and D1:
+`https://dra9on-tutorial-metrics.tutorial-metrics.workers.dev`. The real database
+binding is configured, migrations are applied, and a live `/summary` GET returned
+200 with the empty database's real zero totals. The first-event `startedAt`
+remains null until an event is accepted; no historical Firebase totals are
+imported. The current generated registry contains **86 public routes**.
+
+For another environment, source files alone do not activate analytics. It still
+requires an authorized Cloudflare account, a **Workers Free** Worker, a real D1
+binding and migrations, and the generated public-path registry. Do not upgrade
+to a paid plan or add payment details to complete this setup. The setup commands
+below describe a new environment; do not create a duplicate production database.
 
 From this directory, using a locally installed/current Wrangler CLI:
 
@@ -50,12 +57,17 @@ Include home, public watch pages, tutorial list/details and other public pages;
 exclude private library, sign-in pages, unpublished routes and personal tools.
 Korean and English aliases share the Korean canonical path, so tutorial
 popularity reflects both languages. An unregistered path is rejected. The
-committed starter registry is intentionally empty and fails closed until the
-site builder generates the real route list.
+current registry is generated from the real site and contains 86 public routes;
+each build regenerates it before the Pages workflow deploys the Worker. An empty
+or incomplete registry remains fail-closed and must never be filled with invented
+or private routes just to make an event pass.
 
 Put the actual deployed Worker origin into the site's analytics configuration.
 Never put a Cloudflare API token or database credentials into frontend code.
 The public collector URL and public numerical summaries require no token.
+Production deployment uses the encrypted GitHub Actions secret
+`CLOUDFLARE_API_TOKEN`; only the public collector origin and Web Analytics beacon
+identifier belong in site configuration. No API-token value is committed.
 
 ## HTTP contract
 

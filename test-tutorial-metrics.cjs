@@ -125,9 +125,9 @@ test('clipboard rejection is visible and never becomes a counted copy',async()=>
  assert.equal(a.copyRequests().length,0);assert.equal(a.document.querySelector('.prompt-copy-status').textContent,'Copy failed. Select the text and copy it.');
 });
 
-test('unconfigured, preview and privacy-opted-out pages do not send metrics but can still copy',async t=>{
+test('unconfigured and preview pages make no requests; privacy opt-outs only read public totals',async t=>{
  for(const options of [{endpoint:''},{host:'127.0.0.1'},{dnt:true},{gpc:true}])await t.test(JSON.stringify(options),async()=>{
-  const a=setup({kind:'article',...options});assert.equal(a.requests.length,0);await a.copies()[0].click();assert.equal(a.requests.length,0);assert.deepEqual(a.clipboardWrites,[a.promptTexts[0]]);assert.deepEqual(a.privacyAccess,[]);
+  const a=setup({kind:'article',...options});const reads=options.dnt||options.gpc?1:0;assert.equal(a.requests.length,reads);await a.copies()[0].click();assert.equal(a.requests.length,reads);assert.equal(a.requests.some(request=>request.body),false);if(reads){await a.respond(example());assert.equal(a.today.textContent,'3');assert.equal(a.total.textContent,'50');}assert.deepEqual(a.clipboardWrites,[a.promptTexts[0]]);assert.deepEqual(a.privacyAccess,[]);
  });
 });
 

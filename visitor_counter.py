@@ -21,8 +21,8 @@ def inject_visitor_counter(out, base_path=''):
         english = relative.parts[0] == 'en'
         labels = {
             'label': 'Site visit statistics' if english else '사이트 방문 통계',
-            'today': 'Today’s entries' if english else '오늘 유입',
-            'total': 'Total entries' if english else '누적 유입',
+            'today': 'Today’s visits' if english else '오늘 방문',
+            'total': 'Total visits' if english else '누적 방문',
             'note': ('Cookie-free landing events · Korea time'
                      if english else '쿠키 없는 외부 유입 횟수 · 한국 시간'),
             'detail': ('External or direct landing events since counting began. '
