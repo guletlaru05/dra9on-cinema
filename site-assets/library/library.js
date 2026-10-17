@@ -1,5 +1,5 @@
 import {deadline,loadPrivatePayload,packPrivatePayload,unpackPrivatePayload} from "./library-transport.js?v=20261011-detail12";
-import {createWorkspace} from './workspace.js?v=20261018-workspace2';
+import {createWorkspace} from './workspace.js?v=20261018-owner-visits';
 import {applyAction,validateWorkspace} from './workspace-core.js';
 import {createLibraryUI} from "./library-ui.js?v=20261011-detail12";
 import {initializeApp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
@@ -9,7 +9,7 @@ import {initializeAppCheck,ReCaptchaEnterpriseProvider,getToken} from "https://w
 const $=id=>document.getElementById(id);
 let entries=[],groups=[],generation=0,ready=false,workspace=null;
 const message=t=>$("status").textContent=t;
-function clear(){clearUI();workspace?.clear();}
+function clear(){clearUI();workspace?.clear();$('owner-visitors').hidden=true;$('owner-visits-today').textContent='';$('owner-visits-total').textContent='';$('owner-visits-status').textContent='';}
 function validate(value){
  if(!value||value.version!==1||!Array.isArray(value.categories)||!Array.isArray(value.items)||value.items.length>500)throw Error("지원하지 않는 자료 형식입니다.");
  const categories=value.categories;
@@ -43,6 +43,20 @@ async function boot(){
  await setPersistence(auth,browserSessionPersistence);
  getRedirectResult(auth).catch(error=>message("로그인 결과를 확인하지 못했습니다. "+(error.code||error.message)));
  $("login-redirect").addEventListener("click",async()=>{const provider=new GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account"});try{await signInWithRedirect(auth,provider);}catch(error){message("로그인하지 못했습니다. "+(error.code||error.message));}});
+ async function loadOwnerVisits(user,ticket){
+  const panel=$('owner-visitors');if(!user||ticket!==generation)return;
+  panel.hidden=false;$('owner-visits-status').textContent='소유자 권한으로 실제 집계를 확인 중입니다.';
+  try{
+   const token=await getIdToken(user);
+   const response=await fetch('https://dra9on-tutorial-metrics.tutorial-metrics.workers.dev/private/visits',{credentials:'omit',cache:'no-store',headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(15000)});
+   if(!response.ok)throw Error('서버 응답 '+response.status);
+   const data=await response.json();if(ticket!==generation)return;
+   if(!Number.isSafeInteger(data.today?.entries)||data.today.entries<0||!Number.isSafeInteger(data.total?.entries)||data.total.entries<data.today.entries)throw Error('집계 형식 확인 필요');
+   $('owner-visits-today').textContent=String(data.today.entries);$('owner-visits-total').textContent=String(data.total.entries);
+   $('owner-visits-status').textContent='실제 집계 · '+new Date().toLocaleString('ko-KR')+' 확인';
+  }catch(error){if(ticket!==generation)return;$('owner-visits-today').textContent='확인 불가';$('owner-visits-total').textContent='확인 불가';$('owner-visits-status').textContent='숫자를 임의로 표시하지 않았습니다. '+error.message;}
+ }
+ $('owner-visits-refresh').addEventListener('click',()=>loadOwnerVisits(auth.currentUser,generation));
  const ref=doc(db,"privateLibrary","main");
  async function updatePrivate(action, replacement=null){
   if(!auth.currentUser)throw Error('먼저 로그인하세요.');
@@ -74,7 +88,7 @@ async function boot(){
    const appCheckToken=appCheck?(await deadline(getToken(appCheck,false),"브라우저 보안 확인")).token:null;if(ticket!==generation)return;
    $("load-progress").textContent="3/3 비공개 자료 불러오는 중…";
    const payload=await loadPrivatePayload({projectId:config.projectId,idToken,appCheckToken,signal});if(ticket!==generation)return;
-   const value=validate(JSON.parse(payload));display(value);await workspace.load(value);if(ticket!==generation)return;$("gate").hidden=true;$("load-panel").hidden=true;message("");
+   const value=validate(JSON.parse(payload));display(value);void loadOwnerVisits(user,ticket);await workspace.load(value);if(ticket!==generation)return;$("gate").hidden=true;$("load-panel").hidden=true;message("");
   }catch(error){if(ticket!==generation)return;clear();$("retry-load").hidden=false;
    const text=error.code==="permission-denied"?"서버가 접근을 허용하지 않았습니다. 등록된 소유자 계정인지 확인하세요. 보안 확인 문제일 수도 있습니다.":error.code==="unauthenticated"?"로그인 인증이 만료됐습니다. 로그아웃 후 다시 로그인하세요.":error.code==="library/timeout"?error.message+" 아래 버튼으로 다시 불러올 수 있습니다.":"자료를 불러오지 못했습니다. 네트워크 또는 콘텐츠 차단을 확인하고 다시 시도하세요. ("+(error.code||"연결 오류")+")";
    $("load-progress").textContent=text;message("");

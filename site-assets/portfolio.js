@@ -229,21 +229,18 @@ if ($('hero')) {
 
   const hero=$('hero'), motion=matchMedia('(prefers-reduced-motion: reduce)');
 
-  const preview=createHeroPreview(hero);
+  // The home uses its film still; no third preview CTA or background download.
+  const preview={select(){}};
 
   const start=works.find(v=>v.category==='s1'&&v.episode===1);
 
   if(start)hero.querySelector('.hero-start').dataset.detail=start.id;
 
-  // Two primary actions; secondary navigation stays available as quiet text links.
-
-  const firstLink=hero.querySelector('.hero-start'), social=hero.querySelector('.hero-social');
-
-  firstLink.className='hero-start';firstLink.textContent=t('1화부터 보기','Start Episode 1');
-
-  social.prepend(firstLink);social.classList.add('hero-secondary-links');
-
-  hero.querySelector('.hero-buttons a[href="#episodes"]')?.remove();
+  // Both primary actions keep their destinations while the artwork rotates.
+  const newest=works.filter(v=>/^s[1-9][0-9]*$/.test(v.category)&&isReleased(v)).sort((a,b)=>b.season-a.season||b.episode-a.episode)[0];
+  const latestLink=hero.querySelector('.hero-feature-link');
+  if(newest){latestLink.href=newest.path;latestLink.dataset.detail=newest.id;}
+  latestLink.textContent=t('최신 에피소드','LATEST EPISODE');
 
   const season=Math.max(...works.filter(v=>/^s[1-9][0-9]*$/.test(v.category)&&isReleased(v)).map(v=>v.season));
 
@@ -293,11 +290,9 @@ if ($('hero')) {
 
       const playButton=hero.querySelector('.hero-feature-link');
 
-      playButton.href=v.path;
-
-      playButton.dataset.detail=v.id;
-
-      playButton.innerHTML=icon('play')+(v.category==='full'?t(`시즌 ${v.season} 몰아보기`,`Watch Season ${v.season}`):t('이 에피소드 보기','Watch episode'));
+      // This is always the latest episode, never the carousel's current item.
+      if(newest){playButton.href=newest.path;playButton.dataset.detail=newest.id;}
+      playButton.textContent=t('최신 에피소드','LATEST EPISODE');
       hero.querySelector('.hero-meta').textContent=`2026 · ${v.category==='full'?`SEASON ${v.season} · FULL MOVIE`:`S${v.season} EP.${v.episode}`} · ${v.duration||''}`;
       const badge=hero.querySelector('.new-episode:not(.upcoming-episode)');
       if(badge){badge.hidden=v.category==='full'||v.season!==season;if(!badge.hidden)badge.querySelector('strong').textContent=`S${v.season} EP.${String(v.episode).padStart(2,'0')}`;}
@@ -550,7 +545,7 @@ function decorateCards(root=document){
 
   if(!isReleased(v)){watch.textContent=window.D9Release.label;youtube.hidden=true;const duration=cardEl.querySelector('.duration');if(duration)duration.textContent=t('공개 예정','COMING SOON');}
 
-  actions.append(watch,youtube);cardEl.append(summary,actions);
+  actions.append(watch);if(document.body.dataset.page!=='home')actions.append(youtube);cardEl.append(summary,actions);
 
   const title=cardEl.querySelector('.card-name'),line=document.createElement('div'),stats=cardEl.querySelector('[data-youtube-api-count]')||document.createElement('span');
 

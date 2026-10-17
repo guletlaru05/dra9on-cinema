@@ -1,11 +1,19 @@
 import {test} from 'node:test';
+import {createHash} from 'node:crypto';
+import {generateKeyPair,SignJWT} from 'jose';
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFile} from 'node:fs/promises';
 import {createWorker,kstDay,SQL} from '../src/index.mjs';
 
 const ORIGIN='https://dra9oncinema.com';
-const NOW=new Date('2026-10-17T15:01:02.000Z'); // 2026-10-18 in Korea
+const NOW=new Date('2026-10-17T15:01:02.000Z');
+const pair=await generateKeyPair('RS256');
+const owner='owner@example.test',stamp=NOW.getTime()/1000;
+const privateOptions={keys:pair.publicKey,date:NOW};
+const ownerEnv={OWNER_EMAIL_SHA256:createHash('sha256').update(owner).digest('hex')};
+async function ownerToken(changes={}){return new SignJWT({email:owner,email_verified:true,auth_time:stamp-100,firebase:{sign_in_provider:'google.com'},iss:'https://securetoken.google.com/dra9on-cinema-stats',aud:'dra9on-cinema-stats',sub:'uid',iat:stamp-50,exp:stamp+500,...changes}).setProtectedHeader({alg:'RS256'}).sign(pair.privateKey);}
+ // 2026-10-18 in Korea
 const REGISTRY={
   '/':{canonicalPath:'/',type:'page'},
   '/en/':{canonicalPath:'/',type:'page'},
@@ -38,8 +46,8 @@ class D1 {
 
 function setup(options={}){
   const DB=new D1();
-  const env={DB,MAX_DAILY_EVENTS:'20000'};
-  const worker=createWorker(REGISTRY,{now:()=>NOW,cache:null,...options});
+  const env={DB,MAX_DAILY_EVENTS:'20000',...ownerEnv};
+  const worker=createWorker(REGISTRY,{now:()=>NOW,cache:null,privateOptions,...options});
   return {DB,env,worker};
 }
 function post(body={},extra={}){
@@ -48,8 +56,9 @@ function post(body={},extra={}){
     body:JSON.stringify({kind:'pageview',path:'/tutorials/example/',referrer:'direct',entry:true,...body}),...extra});
 }
 function get(path='/summary',origin=ORIGIN){return new Request('https://metrics.example.workers.dev'+path,{headers:origin?{Origin:origin}:{}});}
-async function payload(worker,env,path='/summary'){
-  const response=await worker.fetch(get(path),env);
+async function payload(worker,env,path='/private/visits'){
+  const request=get(path);if(path==='/private/visits'||path==='/daily')request.headers.set('Authorization','Bearer '+await ownerToken());
+  const response=await worker.fetch(request,env);
   assert.equal(response.status,200);
   return response.json();
 }
@@ -142,7 +151,7 @@ test('atomic UTC daily write budget rejects without increasing any aggregate',as
 
 test('startedAt remains the first actual accepted event',async()=>{
   const {DB,env}=setup();let date=new Date('2026-10-16T22:00:00Z');
-  const worker=createWorker(REGISTRY,{now:()=>date,cache:null});
+  const worker=createWorker(REGISTRY,{now:()=>date,cache:null,privateOptions});
   await worker.fetch(post(),env);
   date=NOW;await worker.fetch(post(),env);
   const result=await payload(worker,env);
@@ -163,7 +172,7 @@ test('failed aggregate batch rolls back the accepted budget and first-event time
 
 test('weekly report uses seven KST days and independent top views/copies',async()=>{
   const {DB,env}=setup();let date=new Date('2026-10-10T16:00:00Z');
-  const worker=createWorker(REGISTRY,{now:()=>date,cache:null});
+  const worker=createWorker(REGISTRY,{now:()=>date,cache:null,privateOptions});
   for(let i=0;i<5;i++)await worker.fetch(post({path:'/tutorials/another/'}),env); // Oct 11 KST, outside
   date=new Date('2026-10-11T15:01:00Z'); // Oct 12 KST, first included
   await worker.fetch(post({path:'/tutorials/another/',kind:'copy',card:'prompt-1',entry:false}),env);
@@ -179,7 +188,7 @@ test('weekly report uses seven KST days and independent top views/copies',async(
 
 test('daily report returns only a bounded last-30-KST-day range and canonical public pages',async()=>{
   const {DB,env}=setup();let date=new Date('2026-09-17T15:00:00Z'); // Sep 18 KST, outside last30
-  const worker=createWorker(REGISTRY,{now:()=>date,cache:null});
+  const worker=createWorker(REGISTRY,{now:()=>date,cache:null,privateOptions});
   await worker.fetch(post({referrer:'other'}),env);
   date=new Date('2026-09-18T15:00:00Z'); // Sep 19 KST, first included day
   await worker.fetch(post({path:'/watch/example/',referrer:'youtube'}),env);
@@ -229,4 +238,23 @@ test('KST midnight conversion is independent of host timezone',()=>{
   assert.equal(kstDay(new Date('2026-10-17T14:59:59Z')),'2026-10-17');
   assert.equal(kstDay(new Date('2026-10-17T15:00:00Z')),'2026-10-18');
   assert.match(SQL.daily,/WHERE changes\(\)=1/);
+});
+
+
+test('visitor totals require verified owner JWT; no cookies or shared cache, including /daily',async()=>{
+ const {DB,worker,env}=setup();await worker.fetch(post(),env);
+ for(const path of ['/private/visits','/daily']){
+  const before=DB.calls.length;
+  assert.equal((await worker.fetch(get(path),env)).status,401);
+  for(const changes of [{email:'other@example.test'},{email_verified:false},{exp:stamp-1},{firebase:{sign_in_provider:'password'}}]){
+   const req=get(path);req.headers.set('Authorization','Bearer '+await ownerToken(changes));assert.equal((await worker.fetch(req,env)).status,403);
+  }
+  assert.equal(DB.calls.length,before,'denied requests must not query private counts');
+  const req=get(path);req.headers.set('Authorization','Bearer '+await ownerToken());const response=await worker.fetch(req,env);
+  assert.equal(response.status,200);assert.equal(response.headers.get('Cache-Control'),'no-store');
+ }
+ const publicResponse=await worker.fetch(get('/summary'),env),data=await publicResponse.json();
+ assert.deepEqual(Object.keys(data),['tutorials']);
+ for(const forbidden of ['today','total','entries','referrers','startedAt','pages'])assert.equal(Object.hasOwn(data,forbidden),false);
+ assert.deepEqual(data.tutorials['/tutorials/example/'],{views:1,copies:0});DB.close();
 });

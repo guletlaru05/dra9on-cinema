@@ -11,10 +11,18 @@ TRANSLATIONS.update([HOME_TITLE,ALL])
 def home_teaser():
  def card(i):
   ko=escape(LABELS[i][0])
-  return f'<button type="button" class="sticker-card" data-sticker="{i}" aria-haspopup="dialog" aria-label="{ko}"><span class="min-sprite min-sprite-{i}" aria-hidden="true"></span><span>{ko}</span></button>'
- preview=''.join(card(i) for i in [0,5,8,11])
- gallery=''.join(card(i) for i in range(12))
- return f'<section class="min-stickers sticker-home" id="min-stickers"><p class="section-eyebrow">CAPTAIN MIN · OFF DUTY</p><h2>{HOME_TITLE[0]}</h2><p>{INTRO[0]}</p><div class="sticker-grid sticker-preview">{preview}</div><button type="button" class="button button-white sticker-show-all" aria-haspopup="dialog">{ALL[0]}</button><dialog class="sticker-gallery" aria-labelledby="sticker-gallery-title"><button type="button" class="sticker-close gallery-close">{CLOSE[0]} ×</button><h2 id="sticker-gallery-title">{HOME_TITLE[0]}</h2><div class="sticker-grid">{gallery}</div></dialog><dialog class="sticker-dialog" aria-labelledby="sticker-caption"><button type="button" class="sticker-close">{CLOSE[0]} ×</button><div class="min-sprite" aria-hidden="true"></div><h3 id="sticker-caption"></h3></dialog></section><script src="/min-stickers.js?v=20261011-perf" defer></script>'
+  return f'<a class="sticker-card" href="/stickers/"><span class="min-sprite min-sprite-{i}" aria-hidden="true"></span><span>{ko}</span></a>'
+ preview=''.join(card(i) for i in [0,5,8])
+ return f'<section class="min-stickers sticker-home sticker-art-ready" id="min-stickers"><p class="section-eyebrow">CAPTAIN MIN · OFF DUTY</p><h2>{HOME_TITLE[0]}</h2><p>{INTRO[0]}</p><div class="sticker-grid sticker-preview">{preview}</div><a class="text-button home-more" href="/stickers/">더 보기 →</a></section>'
+
+def build_sticker_page(out,origin,head,header,footer):
+ title=HOME_TITLE[0]
+ body='<body class="watch-page">'+header()+'<main class="production-note" id="main"><a class="note-back" href="/">← 홈으로</a>'+render()+'</main>'+footer()+'</body></html>'
+ folder=out/'stickers';folder.mkdir(exist_ok=True)
+ schema={'@context':'https://schema.org','@type':'CollectionPage','name':title,'url':origin+'/stickers/'}
+ (folder/'index.html').write_text(head(title+' | DRA9ON CINEMA',INTRO[0],'/stickers/',schema)+body,encoding='utf-8')
+TRANSLATIONS.update({'더 보기':'View all','← 홈으로':'← Home'})
+
 def render():
  out=f'<section class="min-stickers" id="min-stickers"><p class="section-eyebrow">CAPTAIN MIN · OFF DUTY</p><h2>{TITLE[0]}</h2><p>{INTRO[0]}</p><div class="sticker-grid">'
  for i,(ko,en) in enumerate(LABELS):

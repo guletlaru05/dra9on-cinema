@@ -44,12 +44,21 @@ TRANSLATIONS[PROMPT_KO] = PROMPT_EN
 LESSONS=[{'path':ROUTES[1],'date':'2026-10-11','art':ART,'title':TITLE,'alt':ALT}]
 LESSONS.append({'path':SEEDANCE_PATH,'date':'2026-10-11','art':SEEDANCE_ART,'title':t(SEEDANCE_TITLE_KO,SEEDANCE_TITLE_EN),'alt':t('밀리터리 검문소 씬을 영상화하기 위한 세 구간 스토리보드','Three-frame storyboard for animating a military checkpoint scene'),'video':True})
 
-def teaser():
+def teaser(limit=None):
     cards=''.join(f'''<a class="tutorial-preview" href="{lesson['path']}"><img src="{lesson['art']}" width="1536" height="1024" loading="lazy" decoding="async" alt="{lesson['alt']}"><div><p class="section-eyebrow">{'SEEDANCE 2.5 / IMAGE TO VIDEO' if lesson.get('video') else 'CHARACTER / SCENE / LIGHT'}</p><h3>{lesson['title']}</h3><p class="tutorial-card-date"><time datetime="{lesson['date']}">{lesson['date'].replace('-','.')}</time> · {t("밀리터리 · 이미지 · 영상", "Military · Image · Video") if lesson.get('video') else t("캐릭터 · 씬 · 조명", "Character · Scene · Light")}</p><span>{t('시댄스 2.5 영상화 · 강좌 열기','Seedance 2.5 image to video · Open lesson') if lesson.get('video') else t('로판 캐릭터 시트 기초 · 강좌 열기', 'Romantic-fantasy character basics · Open lesson')} →</span></div></a>''' for lesson in sorted(LESSONS,key=lambda item:item['date'],reverse=True))
     cards+=platform_teaser(t)
     cards+=languages_teaser(t)
     cards=aesthetics_teaser(t)+newtake_teaser(t)+video_repair_teaser(t)+previs_teaser(t)+camera_teaser(t)+cards
-    return f'''<section class="tutorial-teaser" id="tutorials"><div><p class="section-eyebrow">FILMMAKING / FIELD NOTES</p><h2>{t('장면을 만드는 첫걸음.', 'Your first step into a scene.')}</h2><p>{t('작품을 보다가 제작 과정이 궁금해졌다면. 직접 따라 해보는 작은 실습부터 시작하세요.', 'Curious about how the films are made? Start with a small hands-on exercise.')}</p></div><div class="tutorial-lesson-list">{cards}</div></section>'''
+    candidates=cards
+    if limit is not None:
+        import re
+        previews=re.findall(r'<a class="tutorial-preview"[\s\S]*?</a>',cards)
+        assert len(previews)>=limit
+        cards=''.join(previews[:limit])
+        candidates='<template data-home-tutorial-candidates>'+candidates+'</template>'
+    else:candidates=''
+    more='<a class="text-button home-more" href="/tutorials/">'+t('더 보기','View all')+' →</a>' if limit is not None else ''
+    return f'''<section class="tutorial-teaser" id="tutorials"><div><p class="section-eyebrow">FILMMAKING / FIELD NOTES</p><h2>{t('장면을 만드는 첫걸음.', 'Your first step into a scene.')}</h2><p>{t('작품을 보다가 제작 과정이 궁금해졌다면. 직접 따라 해보는 작은 실습부터 시작하세요.', 'Curious about how the films are made? Start with a small hands-on exercise.')}</p></div><div class="tutorial-lesson-list">{cards}</div>{candidates}{more}</section>'''
 
 def build_tutorials(out, origin, head, header, footer):
     intro = f'''<p class="tutorial-intro">{t('처음 만드는 사람도 한 단계씩. 로판·현대 드라마·밀리터리·오컬트·SF 장면으로 제작 방법을 직접 실습합니다.', 'One step at a time, even for first-time creators. Practice filmmaking through romantic fantasy, contemporary drama, military, occult and science-fiction examples.')}</p>'''

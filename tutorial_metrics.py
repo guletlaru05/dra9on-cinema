@@ -91,11 +91,6 @@ def inject_metrics(out, base_path=''):
             popular = 'Most viewed' if en else '인기순'
             controls = f'<div class="tutorial-sort" role="group" aria-label="{label}"><button type="button" data-tutorial-sort="latest" aria-pressed="true">{newest}</button><button type="button" data-tutorial-sort="popular" aria-pressed="false">{popular}</button><span data-tutorial-sort-status role="status"></span></div>'
             doc = doc.replace('<div class="tutorial-lesson-list">',controls+'<div class="tutorial-lesson-list" data-tutorial-list>',1)
-        if path in ('/','/en/'):
-            heading = 'Most-viewed tutorials' if en else '많이 본 튜토리얼'
-            empty = 'Rankings appear after the first recorded views.' if en else '집계가 시작되면 많이 본 강좌가 표시됩니다.'
-            section = f'<section class="popular-tutorials" data-popular-tutorials hidden><p class="section-eyebrow">POPULAR TUTORIALS</p><h2>{heading}</h2><p data-popular-status>{empty}</p><div class="popular-tutorial-grid" data-popular-list></div></section>'
-            doc = doc.replace('<section class="tutorial-teaser"',section+'<section class="tutorial-teaser"',1)
         page.write_text(doc,encoding='utf-8')
     # Deployment allowlist: separate from public output, no personal data.
     worker = ROOT/'workers/tutorial-metrics'

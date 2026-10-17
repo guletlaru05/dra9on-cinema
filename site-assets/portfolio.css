@@ -321,3 +321,22 @@ body .privacy-copy{width:calc(100% - 2 * var(--site-gutter));max-width:none;marg
 @media(max-width:600px){.episode-promo-heading{align-items:flex-start}.episode-promo h2{font-size:20px}.episode-promo .episode-card-track{grid-auto-columns:84%;gap:13px}.episode-promo .shelf-controls{gap:5px}.episode-captions{padding:16px}.episode-promo-intro{font-size:14px}}
 
 .world-home-entry{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:12px 0 44px;padding:24px 0;border-block:1px solid #ffffff26}.world-home-entry p{margin:6px 0;color:#c6c6cf;line-height:1.8}.world-home-entry .section-eyebrow{font-size:10px;letter-spacing:.18em;color:#a3a3ad}.world-home-entry>a{flex-shrink:0;min-height:44px;display:inline-flex;align-items:center}.world-home-entry a:focus-visible{outline:2px solid #a6dbe9;outline-offset:4px}@media(max-width:700px){.world-home-entry{display:block;margin-bottom:30px;padding:18px 0}.world-home-entry p{font-size:13px}.world-home-entry>a{font-size:13px;white-space:normal;line-height:1.7}}
+
+/* A compact home: two viewing choices, three previews per editorial section. */
+body[data-page="home"] .hero-subscribe{margin:14px 0 0;font-size:12px;color:#b9bbc3}
+body[data-page="home"] .hero-subscribe a{display:inline-flex;align-items:center;min-height:32px;text-decoration:underline;text-underline-offset:4px}
+.home-more{display:inline-flex;margin-top:22px;min-height:44px;align-items:center;gap:8px}
+body[data-page="home"] .sticker-preview,body[data-page="home"] .note-tiles,body[data-page="home"] .tutorial-lesson-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+body[data-page="home"] .tutorial-preview{display:flex;flex-direction:column;width:auto;min-width:0;margin:0}
+body[data-page="home"] .tutorial-preview img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover}
+body[data-page="home"] .note-tile>img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover}
+body[data-page="home"] .tutorial-preview>div{padding:20px;min-width:0}
+body[data-page="home"] .hero-buttons .button{flex:0 1 auto}
+@media(max-width:700px){body[data-page="home"] .note-tiles,body[data-page="home"] .tutorial-lesson-list{grid-template-columns:minmax(0,1fr);gap:16px}body[data-page="home"] .sticker-preview{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}body[data-page="home"] .sticker-card{font-size:12px;padding-bottom:12px}body[data-page="home"] .hero-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}body[data-page="home"] .hero-buttons .button{padding:12px 8px;font-size:13px;white-space:normal;min-width:0}}
+
+/* Let long translated text wrap within the shared home grid. */
+[data-page="home"] .about-section>*{min-width:0}
+[data-page="home"] .about-copy,[data-page="home"] .collaboration-section{overflow-wrap:anywhere}
+html[lang="ja"] [data-page="home"] .about-copy>p,html[lang="ja"] [data-page="home"] .collaboration-section p{word-break:normal}
+
+@media(max-width:360px){[data-page="home"] .header{gap:8px}[data-page="home"] .header-actions{gap:6px}[data-page="home"] .header{padding-inline:12px}[data-page="home"] .header>.wordmark{font-size:22px}[data-page="home"] .language-switch a{box-sizing:border-box;min-width:22px;width:22px;padding-inline:2px}}

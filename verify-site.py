@@ -116,7 +116,7 @@ from presskit import ROUTES as PRESS_ROUTES
 from international import ROUTES as SERIES_ROUTES, supported_routes
 translated_routes=supported_routes([{**w,'path':w['path'][len(base):]} for w in published_catalog])
 TUTORIAL_ROUTES = [*TUTORIAL_ROUTES, *QUESTION_ROUTES, *PRESS_ROUTES, *SERIES_ROUTES]
-assert len(html_files) == 2 * (video_count + 8 + len(TUTORIAL_ROUTES))+2*len(translated_routes), len(html_files)
+assert len(html_files) == 2 * (video_count + 10 + len(TUTORIAL_ROUTES))+2*len(translated_routes), len(html_files)
 for path in html_files:
     source = path.read_text(encoding='utf-8')
     assert source.count('/consent.js?v=') == 1, path
@@ -288,7 +288,7 @@ for ko, en in zip(*catalogs):
     assert ko['name'] in en['searchText'] and en['name'] in ko['searchText']
 
 sitemap = ET.parse(root / 'sitemap.xml').getroot()
-assert len(sitemap) == 2 * (video_count + 7 + len(TUTORIAL_ROUTES))+2*len(translated_routes)
+assert len(sitemap) == 2 * (video_count + 9 + len(TUTORIAL_ROUTES))+2*len(translated_routes)
 for entry in sitemap:
     local_file(entry.find('{http://www.sitemaps.org/schemas/sitemap/0.9}loc').text)
 assert (root / '.nojekyll').exists()

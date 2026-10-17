@@ -76,7 +76,7 @@ const example=()=>({startedAt:'2026-10-17T00:00:00.000Z',updatedAt:'2026-10-17T0
 
 test('latest is the default; popular uses actual views and latest restores the original order',async()=>{
  const a=setup();assert.deepEqual(order(a.list),slugs);assert.equal(a.sorts.latest.getAttribute('aria-pressed'),'true');
- await a.respond(example());assert.deepEqual(order(a.list),slugs);assert.equal(a.today.textContent,'3');assert.equal(a.total.textContent,'50');
+ await a.respond(example());assert.deepEqual(order(a.list),slugs);assert.equal(a.today.textContent,'—');assert.equal(a.total.textContent,'—');
  assert.equal(a.cards[1].querySelector('.tutorial-metric').textContent,'Views 30 · Prompt copies 0');
  await a.sorts.popular.click();assert.deepEqual(order(a.list),['middle','older','newest','oldest']);assert.equal(a.sorts.popular.getAttribute('aria-pressed'),'true');
  await a.sorts.latest.click();assert.deepEqual(order(a.list),slugs);assert.equal(a.sorts.latest.getAttribute('aria-pressed'),'true');assert.deepEqual(a.privacyAccess,[]);
@@ -95,11 +95,11 @@ test('home shows three genuinely most-viewed tutorials, regardless of copy popul
 
 test('empty real aggregates display zero without inventing popular tutorials or a start date',async()=>{
  const a=setup({kind:'home'}),value=example();value.startedAt=null;value.updatedAt=null;value.today={pageviews:0,entries:0};value.total={pageviews:0,entries:0};for(const count of Object.values(value.tutorials)){count.views=0;count.copies=0;}
- await a.respond(value);assert.equal(a.today.textContent,'0');assert.equal(a.total.textContent,'0');assert.equal(a.since.textContent,'Waiting for the first event.');assert.equal(a.popular.hidden,true);assert.equal(a.popularList.children.length,0);assert.equal(a.cards[0].querySelector('.tutorial-metric').textContent,'Views 0 · Prompt copies 0');
+ await a.respond(value);assert.equal(a.today.textContent,'—');assert.equal(a.total.textContent,'—');assert.equal(a.since.textContent,'—');assert.equal(a.popular.hidden,true);assert.equal(a.popularList.children.length,0);assert.equal(a.cards[0].querySelector('.tutorial-metric').textContent,'Views 0 · Prompt copies 0');
 });
 
 test('malformed summaries and unavailable service never paint fabricated counts',async t=>{
- const cases=[['negative',v=>{v.today.entries=-1;}],['string number',v=>{v.total.pageviews='200';}],['inconsistent today',v=>{v.today.pageviews=201;}],['entries exceed views',v=>{v.today.entries=9;}],['unsafe integer',v=>{v.tutorials[path('newest')].views=Number.MAX_SAFE_INTEGER+1;}],['bad timestamp',v=>{v.startedAt='not a date';}],['private path',v=>{v.tutorials['/library/']={views:1,copies:0};}],['missing tutorials',v=>{delete v.tutorials;}]];
+ const cases=[['negative',v=>{v.tutorials[path('newest')].views=-1;}],['string number',v=>{v.tutorials[path('newest')].views='200';}],['unsafe integer',v=>{v.tutorials[path('newest')].views=Number.MAX_SAFE_INTEGER+1;}],['private path',v=>{v.tutorials['/library/']={views:1,copies:0};}],['missing tutorials',v=>{delete v.tutorials;}]];
  for(const [name,mutate] of cases)await t.test(name,async()=>{const a=setup({kind:'home'}),value=example();mutate(value);await a.respond(value);assert.equal(a.today.textContent,'—');assert.equal(a.total.textContent,'—');assert.equal(a.cards[0].querySelector('.tutorial-metric'),null);assert.equal(a.popular.hidden,true);assert.equal(a.status.textContent,'Counts are temporarily unavailable.');});
  for(const failure of ['http','network'])await t.test(failure,async()=>{const a=setup();if(failure==='http')await a.respond({},false);else await a.fail();assert.equal(a.today.textContent,'—');assert.equal(a.status.textContent,'Counts are temporarily unavailable.');});
 });
@@ -127,7 +127,7 @@ test('clipboard rejection is visible and never becomes a counted copy',async()=>
 
 test('unconfigured and preview pages make no requests; privacy opt-outs only read public totals',async t=>{
  for(const options of [{endpoint:''},{host:'127.0.0.1'},{dnt:true},{gpc:true}])await t.test(JSON.stringify(options),async()=>{
-  const a=setup({kind:'article',...options});const reads=options.dnt||options.gpc?1:0;assert.equal(a.requests.length,reads);await a.copies()[0].click();assert.equal(a.requests.length,reads);assert.equal(a.requests.some(request=>request.body),false);if(reads){await a.respond(example());assert.equal(a.today.textContent,'3');assert.equal(a.total.textContent,'50');}assert.deepEqual(a.clipboardWrites,[a.promptTexts[0]]);assert.deepEqual(a.privacyAccess,[]);
+  const a=setup({kind:'article',...options});const reads=options.dnt||options.gpc?1:0;assert.equal(a.requests.length,reads);await a.copies()[0].click();assert.equal(a.requests.length,reads);assert.equal(a.requests.some(request=>request.body),false);if(reads){await a.respond(example());assert.equal(a.today.textContent,'—');assert.equal(a.total.textContent,'—');}assert.deepEqual(a.clipboardWrites,[a.promptTexts[0]]);assert.deepEqual(a.privacyAccess,[]);
  });
 });
 

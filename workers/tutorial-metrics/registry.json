@@ -39,6 +39,10 @@
     "canonicalPath": "/questions/",
     "type": "page"
   },
+  "/stickers/": {
+    "canonicalPath": "/stickers/",
+    "type": "page"
+  },
   "/terms/": {
     "canonicalPath": "/terms/",
     "type": "page"
@@ -71,6 +75,10 @@
     "canonicalPath": "/questions/",
     "type": "page"
   },
+  "/en/stickers/": {
+    "canonicalPath": "/stickers/",
+    "type": "page"
+  },
   "/en/terms/": {
     "canonicalPath": "/terms/",
     "type": "page"
@@ -89,6 +97,10 @@
   },
   "/en/notes/fall-707-season-2/": {
     "canonicalPath": "/notes/fall-707-season-2/",
+    "type": "page"
+  },
+  "/en/notes/workflow/": {
+    "canonicalPath": "/notes/workflow/",
     "type": "page"
   },
   "/en/tutorials/blender-previs/": {
@@ -401,6 +413,10 @@
   },
   "/notes/fall-707-season-2/": {
     "canonicalPath": "/notes/fall-707-season-2/",
+    "type": "page"
+  },
+  "/notes/workflow/": {
+    "canonicalPath": "/notes/workflow/",
     "type": "page"
   },
   "/tutorials/blender-previs/": {

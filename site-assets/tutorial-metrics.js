@@ -20,25 +20,20 @@
  const canonicalLink=node=>{try{let p=new URL(node.href,location.href).pathname;const match=p.match(/\/(?:en\/)?tutorials\/([^/]+)\/$/);return match?'/tutorials/'+match[1]+'/':null;}catch{return null;}};
  const dataFor=node=>summary?.tutorials?.[canonicalLink(node)]||null;
  const totalLabel=value=>t('조회 ','Views ')+String(value.views)+t(' · 프롬프트 복사 ',' · Prompt copies ')+String(value.copies);
- const cards=[...document.querySelectorAll('.tutorial-lesson-list .tutorial-preview')];
+ const homeTemplate=document.querySelector('[data-home-tutorial-candidates]');
+ const cards=[...(homeTemplate?homeTemplate.content.querySelectorAll('.tutorial-preview'):document.querySelectorAll('.tutorial-lesson-list .tutorial-preview'))];
  const initialOrder=new Map(cards.map((node,i)=>[node,i]));
  const count=n=>Number.isSafeInteger(n)&&n>=0;
- function validTotals(value){return value&&count(value.pageviews)&&count(value.entries)&&value.entries<=value.pageviews;}
  function validSummary(value){
-  if(!value||!validTotals(value.today)||!validTotals(value.total)||value.today.pageviews>value.total.pageviews||value.today.entries>value.total.entries)return false;
-  if(value.startedAt!==null&&(typeof value.startedAt!=='string'||!Number.isFinite(Date.parse(value.startedAt))))return false;
-  if(!value.tutorials||typeof value.tutorials!=='object'||Array.isArray(value.tutorials))return false;
+  if(!value||!value.tutorials||typeof value.tutorials!=='object'||Array.isArray(value.tutorials))return false;
   return Object.entries(value.tutorials).every(([key,total])=>/^\/tutorials\/[A-Za-z0-9_-]+\/$/.test(key)&&total&&count(total.views)&&count(total.copies));
  }
  function sortList(){const list=document.querySelector('[data-tutorial-list]');if(!list)return;[...cards].sort((a,b)=>activeSort==='popular'?((dataFor(b)?.views||0)-(dataFor(a)?.views||0)||initialOrder.get(a)-initialOrder.get(b)):initialOrder.get(a)-initialOrder.get(b)).forEach(n=>list.append(n));}
  function paint(){
   const sortStatus=document.querySelector('[data-tutorial-sort-status]');if(sortStatus)sortStatus.textContent='';
   for(const node of cards){const value=dataFor(node);if(!value)continue;let badge=node.querySelector('.tutorial-metric');if(!badge){badge=document.createElement('span');badge.className='tutorial-metric';(node.querySelector('div')||node).append(badge);}badge.textContent=totalLabel(value);}
-  document.querySelectorAll('[data-visits-today]').forEach(n=>n.textContent=String(summary.today.entries));
-  document.querySelectorAll('[data-visits-total]').forEach(n=>n.textContent=String(summary.total.entries));
-  document.querySelectorAll('[data-visits-status]').forEach(n=>n.textContent=t('쿠키·개인 식별자 없는 외부 유입 횟수입니다.','Landing events without cookies or personal identifiers.'));
-  document.querySelectorAll('[data-visits-since]').forEach(n=>n.textContent=summary.startedAt?t('집계 시작: ','Counting since: ')+summary.startedAt.slice(0,10):t('첫 기록을 기다리고 있습니다.','Waiting for the first event.'));
   sortList();
+  if(homeTemplate){const homeList=document.querySelector('#tutorials .tutorial-lesson-list');const ranked=[...cards].sort((a,b)=>(dataFor(b)?.views||0)-(dataFor(a)?.views||0)||initialOrder.get(a)-initialOrder.get(b));homeList.replaceChildren(...ranked.slice(0,3).map(n=>n.cloneNode(true)));}
   const popular=document.querySelector('[data-popular-tutorials]'),list=popular?.querySelector('[data-popular-list]');
   if(popular&&list){const top=cards.filter(n=>(dataFor(n)?.views||0)>0).sort((a,b)=>(dataFor(b)?.views||0)-(dataFor(a)?.views||0)||initialOrder.get(a)-initialOrder.get(b)).slice(0,3);if(top.length){for(const node of top)list.append(node.cloneNode(true));popular.hidden=false;popular.querySelector('[data-popular-status]').textContent=t('실제 조회 합계 기준 · 집계 후 자동 갱신','Actual view totals · Updated automatically');}}
  }

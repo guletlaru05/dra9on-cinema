@@ -1,5 +1,5 @@
 import registry from '../registry.json' with {type:'json'};
-import {privateRequest} from './private-reader.mjs';
+import {privateRequest,verifyOwner} from './private-reader.mjs';
 
 const PROD_ORIGINS = new Set(['https://dra9oncinema.com','https://www.dra9oncinema.com']);
 const REFERRERS = ['direct','google','naver','youtube','instagram','x','other'];
@@ -162,6 +162,18 @@ export function createWorker(entries,options={}) {
     if(url.search)return json({error:'Query strings are not accepted.'},400,origin);
     if(request.headers.has('Origin')&&!origin)return json({error:'Origin not allowed.'},403);
     if(url.pathname==='/private/collect')return privateRequest(request,env,origin,options.privateOptions||{});
+    if(url.pathname==='/private/visits'||url.pathname==='/daily'){
+      if(request.method==='OPTIONS'){
+        if(!origin)return json({error:'Origin not allowed.'},403);
+        return new Response(null,{status:204,headers:{...headers(origin),'Access-Control-Allow-Methods':'GET, OPTIONS','Access-Control-Allow-Headers':'Authorization','Access-Control-Max-Age':'600'}});
+      }
+      if(request.method!=='GET')return json({error:'Method not allowed.'},405,origin);
+      const auth=request.headers.get('Authorization')||'';
+      if(!auth.startsWith('Bearer ')||auth.length>16000)return json({error:'Owner authentication required.'},401,origin);
+      try{await verifyOwner(auth.slice(7),env,options.privateOptions||{});}catch{return json({error:'Owner authentication required.'},403,origin);}
+      try{return json(url.pathname==='/daily'?await daily(env.DB,entries,now()):await summary(env.DB,entries,now()),200,origin);}
+      catch{return json({error:'Aggregate metrics are temporarily unavailable.'},503,origin);}
+    }
     if(!['/event','/summary','/weekly','/daily'].includes(url.pathname))return json({error:'Not found.'},404,origin);
     if(request.method==='OPTIONS'){
       if(!origin||url.pathname!=='/event')return json({error:'Origin not allowed.'},403);
@@ -185,15 +197,22 @@ export function createWorker(entries,options={}) {
       }
       if(request.method!=='GET')return json({error:'Method not allowed.'},405,origin);
       const cache=options.cache??globalThis.caches?.default;
-      const cacheKey=new Request(url.origin+'/__aggregate_cache/v1'+url.pathname,{method:'GET'});
+      // A new namespace cannot return previously cached public visit totals.
+      const cacheKey=new Request(url.origin+'/__aggregate_cache/v2-tutorials-only'+url.pathname,{method:'GET'});
       const cached=cache?await cache.match(cacheKey):null;
       if(cached){
         const response=new Response(cached.body,cached);
         for(const [key,value] of Object.entries(headers(origin,true)))response.headers.set(key,value);
         return response;
       }
-      const payload=url.pathname==='/summary'?await summary(env.DB,entries,date)
-        :url.pathname==='/daily'?await daily(env.DB,entries,date):await weekly(env.DB,entries,date);
+      let payload;
+      if(url.pathname==='/summary'){
+        const tutorials={};
+        for(const entry of Object.values(entries))if(entry.type==='tutorial')tutorials[entry.canonicalPath]={views:0,copies:0};
+        const result=await env.DB.prepare(SQL.pages).all();
+        for(const row of result.results)if(Object.hasOwn(tutorials,row.path))tutorials[row.path]={views:count(row.views),copies:count(row.copies)};
+        payload={tutorials};
+      }else payload=await weekly(env.DB,entries,date);
       const response=json(payload,200,origin,true);
       if(cache){
         const stored=json(payload,200,null,true);

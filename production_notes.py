@@ -31,7 +31,7 @@ S2_PANELS=[
 S2_ASIDES=[('캐릭터도, 분위기도 시즌에 맞게.','A design and a mood for each season.'),('찾는 사람은 없고, 방해는 많고.','No squad in sight. Plenty of obstacles.'),('같은 사람이어도, 같은 표정일 수는 없으니까.','The same person does not always wear the same expression.'),('제작자의 판타지 버튼: ON.','Creator’s fantasy switch: ON.'),('제작자 메모: 상처를 미리 그리지 말 것.','Creator’s note: do not add the wound too early.'),('짧은 영상으로 시작했는데, 여기까지 왔네요.','A short video brought us all the way here.')]
 S1_CHARACTER=('민 대위는 대한민국 육군 707특수임무단 대위입니다. 시즌 1에서는 검은 군복과 포니테일, 인간적인 면이 드러나는 모습으로 구성했습니다. 이 후기의 얼굴에는 이후 시즌에 생기는 상처를 넣지 않았습니다.','Min is a captain in the Republic of Korea Army’s 707th Special Mission Group. Season 1 presented her in a black uniform and ponytail, with her human side visible. The later facial injury is not included in this afterword’s Season 1 illustrations.')
 NOTES=[{'path':PATH,'season':1,'art':ART,'title':TITLE,'intro':INTRO,'panels':PANELS,'asides':ASIDES,'extra':S1_CHARACTER}, {'path':'/notes/fall-707-season-2/','season':2,'art':'/assets/notes/fall-707-season2-occult-center-soft-wm.webp','title':S2_TITLE,'intro':S2_INTRO,'panels':S2_PANELS,'asides':S2_ASIDES}]
-ROUTES=['/notes/']+[n['path'] for n in NOTES]
+ROUTES=['/notes/','/notes/workflow/','/stickers/']+[n['path'] for n in NOTES]
 INDEX_TITLE=('만드는 사람의 이야기','Stories from the creator')
 INDEX_INTRO=('AI 영상 뒤에 있는 고민과 선택들. 검은 후드 제작자와 함께 읽는 낙하 707의 시즌별 제작 후기입니다.','The choices and doubts behind the AI films. Read the FALL 707 season afterwords with the black-hooded creator.')
 LABELS=[('시즌 1 제작 후기','Season 1 afterword'),('시즌 2 제작 후기','Season 2 afterword'),('후기 목록','Afterword list'),('이전 후기','Previous afterword'),('다음 후기','Next afterword'),('이 시즌 감상하기','Watch this season'),('그림으로 읽는 제작 후기','An illustrated production diary')]
@@ -41,9 +41,14 @@ for title in [S2_TITLE,INDEX_TITLE]:TRANSLATIONS[title[0]+' | DRA9ON CINEMA']=ti
 def artwork(note,i,alt):
  return f'<div class="note-art note-art-{i}" role="img" aria-label="{e(alt)}"><img src="{note["art"]}" alt="" width="1374" height="1145" loading="lazy" decoding="async"></div>'
 def tiles():
- return '<div class="note-tiles">'+''.join(f'<a class="note-tile" href="{n["path"]}">{artwork(n,1,n["panels"][1][3][0])}<div><p class="section-eyebrow">{LABELS[n["season"]-1][0]}</p><h3>{e(n["title"][0])}</h3><span>{EXTRA[1][0]} →</span></div></a>' for n in NOTES)+'</div>'
+ return '<div class="note-tiles">'+''.join(f'<a class="note-tile" href="{n["path"]}">{artwork(n,1,n["panels"][1][3][0])}<div><p class="section-eyebrow">{LABELS[n["season"]-1][0]}</p><h3>{e(n["title"][0])}</h3><span>{EXTRA[1][0]} →</span></div></a>' for n in NOTES)+workflow_tile()+'</div>'
+def workflow_tile():
+ return '<a class="note-tile" href="/notes/workflow/"><img src="/assets/notes/creator-workflow.png" width="1536" height="1024" loading="lazy" alt="기획부터 편집까지 이어지는 제작 흐름"><div><p class="section-eyebrow">MY WORKFLOW</p><h3>기획에서 편집까지, 나의 제작 순서</h3><span>제작 과정 읽기 →</span></div></a>'
+
+TRANSLATIONS.update({'기획부터 편집까지 이어지는 제작 흐름':'The production workflow from planning to editing','기획에서 편집까지, 나의 제작 순서':'My workflow, from planning to editing','제작 과정 읽기':'Read the workflow','더 보기':'View all'})
+
 def teaser():
- return f'<section class="notes-library" id="production-notes"><p class="section-eyebrow">PRODUCTION NOTES</p><h2>{INDEX_TITLE[0]}</h2><p>{INDEX_INTRO[0]}</p>{tiles()}</section>'
+ return f'<section class="notes-library" id="production-notes"><p class="section-eyebrow">PRODUCTION NOTES</p><h2>{INDEX_TITLE[0]}</h2><p>{INDEX_INTRO[0]}</p>{tiles()}<a class="text-button home-more" href="/notes/">더 보기 →</a></section>'
 def build_notes(out,origin,head,header,footer):
  for note in NOTES:
   season=note['season'];title=note['title'];intro=note['intro']
@@ -58,6 +63,14 @@ def build_notes(out,origin,head,header,footer):
   schema={'@context':'https://schema.org','@type':'Article','headline':title[0],'url':origin+note['path'],'author':{'@type':'Organization','name':'DRA9ON CINEMA'},'image':origin+note['art'],'datePublished':'2026-09-27'}
   folder=out/note['path'].strip('/');folder.mkdir(parents=True,exist_ok=True)
   (folder/'index.html').write_text(head(title[0]+' | DRA9ON CINEMA',intro[0],note['path'],schema)+body,encoding='utf-8')
+ import re
+ process=render_process(1)
+ workflow=re.search(r'<section class="note-process"><p class="section-eyebrow">MY WORKFLOW</p>[\s\S]*?</section>',process).group(0)
+ title='기획에서 편집까지, 나의 제작 순서'
+ body='<body class="watch-page">'+header()+'<main class="production-note" id="main"><a class="note-back" href="/notes/">← '+LABELS[2][0]+'</a>'+workflow+'</main>'+footer()+'</body></html>'
+ folder=out/'notes/workflow';folder.mkdir(parents=True,exist_ok=True)
+ schema={'@context':'https://schema.org','@type':'Article','headline':title,'url':origin+'/notes/workflow/','author':{'@type':'Organization','name':'DRA9ON CINEMA'}}
+ (folder/'index.html').write_text(head(title+' | DRA9ON CINEMA',title,'/notes/workflow/',schema)+body,encoding='utf-8')
  schema={'@context':'https://schema.org','@type':'CollectionPage','name':INDEX_TITLE[0],'url':origin+'/notes/'}
  body=f'<body class="watch-page">{header()}<main class="notes-index" id="main">{teaser()}</main>{footer()}</body></html>'
  (out/'notes/index.html').write_text(head(INDEX_TITLE[0]+' | DRA9ON CINEMA',INDEX_INTRO[0],'/notes/',schema)+body,encoding='utf-8')
