@@ -161,8 +161,8 @@ UI = {
 
 def english_work(work):
     result = deepcopy(work)
-    result['name'] = EN_NAMES[work['id']]
-    result['summary'] = EN_SUMMARIES.get(work['id'], SERIES_SUMMARY)
+    result['name'] = EN_NAMES.get(work['id'], work.get('nameEn') or (f'FALL 707 · Season {work["season"]} Episode {work["episode"]}' if work.get('season') else 'DRA9ON CINEMA original film'))
+    result['summary'] = EN_SUMMARIES.get(work['id'], work.get('summaryEn') or SERIES_SUMMARY)
     result['title'] = (f"FALL 707: REBOOT · {work['label']} | " if work['season'] else '') + result['name']
     result['path'] = '/en' + work['path']
     result['searchText'] = ' '.join([work['name'], work['title'], result['name'], result['title']])
@@ -241,6 +241,12 @@ def localize_site(out, works, origin, base_path=''):
         published_records = [{**record, 'path': base_path + record['path'], 'image': base_path + record['image']} for record in records]
         (out/path).write_text('window.PORTFOLIO = ' + json.dumps(published_records, ensure_ascii=False).replace('</', '<\\/') + ';\n', encoding='utf-8')
     base_translations = dict(UI)
+    base_translations['최신 회차'] = 'Latest episodes'
+    season_numbers=sorted({work['season'] for work in works if re.fullmatch(r's[1-9][0-9]*',work['category'])})
+    for season in season_numbers:
+        base_translations[f'시즌 {season}'] = f'Season {season}'
+    if season_numbers:
+        base_translations[f'시즌 {min(season_numbers)}–{max(season_numbers)}'] = f'Seasons {min(season_numbers)}–{max(season_numbers)}'
     from newtake_tutorial import PATH as NEWTAKE_PATH, START as NEWTAKE_START, END as NEWTAKE_END, article_html as newtake_article, TRANSLATIONS as NEWTAKE_TRANSLATIONS
     base_translations.update(NEWTAKE_TRANSLATIONS)
     from collaboration import TRANSLATIONS as COLLABORATION_TRANSLATIONS

@@ -1,11 +1,11 @@
 """Build the social-profile landing page from the same film catalog."""
 from html import escape
 from site_config import CONTACT_EMAIL
+from youtube_sync import latest_episode
 
 
 def build_links(out, origin, works, head, icon):
-    latest = max((v for v in works if v['category'] in ('s1', 's2', 's3')),
-                 key=lambda v: (v['season'], v['episode']))
+    latest = latest_episode(works)
     full = next(v for v in works if v['id'] == '4f6Zguf7c2M')
     schema = {'@context': 'https://schema.org', '@type': 'WebPage',
               'name': 'DRA9ON CINEMA | Official Links', 'url': origin + '/links/'}

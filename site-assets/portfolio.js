@@ -40,7 +40,7 @@ function loadEngagement(){
 
     const load=name=>new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL(name+'?v=20261017-visitors1',statsAssetRoot);script.onload=resolve;script.onerror=reject;document.head.append(script);});
 
-    engagementLoad=load('engagement-config.js').then(()=>window.D9_ENGAGEMENT_CONFIG?load('engagement.js'):null).catch(()=>{engagementLoad=null;});
+    engagementLoad=load('api-engagement.js').catch(()=>{engagementLoad=null;});
 
   }
 
@@ -48,7 +48,7 @@ function loadEngagement(){
 
 }
 
-// The footer shares the existing App Check and Firebase application.
+// Exact read-only YouTube counts do not initialize any browser identity.
 window.D9LoadEngagement=loadEngagement;
 
 // Optional artwork and counters must not compete with the initial hero.
@@ -105,15 +105,15 @@ function card(v){return `<article class="card"><a class="card-open" href="${v.pa
 
 function filtered(){return works.filter(v=>(view==='all'||(view==='fall'?!!v.season:v.category==='original'))&&(category==='all'||(category==='saved'?saved.has(v.id):v.category===category))&&(!query||`${v.name} ${v.title} ${v.label} ${v.searchText||''} ${v.season?'FALL 707 낙하707 낙하 707':''}`.toLowerCase().includes(query.toLowerCase())))}
 
-function render(){if(!$('browse-results'))return;const home=category==='all'&&view==='all'&&!query;document.body.classList.toggle('browse-mode',!home);$('hero').hidden=!home;$('home-rows').hidden=!home;$('browse-results').hidden=home;document.querySelectorAll('[data-category]').forEach(b=>{const yes=b.dataset.category===category;b.classList.toggle('active',yes);b.setAttribute('aria-pressed',String(yes))});document.querySelectorAll('[data-view]').forEach(b=>{const yes=b.dataset.view===view;b.classList.toggle('active',yes);yes?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});if(!home){const result=filtered();if(['s1','s2','s3'].includes(category))result.sort((a,b)=>a.episode-b.episode);const labels={ost:'FALL 707 · OST',all:t('모든 작품','All films'),s1:t('FALL 707 · 시즌 1','FALL 707 · Season 1'),s2:t('FALL 707 · 시즌 2','FALL 707 · Season 2'),s3:t('FALL 707 · 시즌 3','FALL 707 · Season 3'),full:t('몰아보기','Full movies'),original:t('오리지널 작품','Original films'),saved:t('찜한 작품','My list')};$('browse-title').textContent=query?(en?`Results for “${query}”`:`“${query}” 검색 결과`):category!=='all'?labels[category]:view==='fall'?'FALL 707: REBOOT':view==='original'?t('오리지널 작품','Original films'):t('모든 작품','All films');$('result-count').textContent=`${result.length}${t('편',result.length===1?' film':' films')}${category==='saved'?t(' · 이 브라우저에 저장된 목록',' · Saved in this browser'):''}`;$('results-grid').innerHTML=result.map(card).join('');decorateCards($('results-grid')); $('empty-state').hidden=result.length>0}syncSaved();document.querySelectorAll('.shelf-track').forEach(updateArrows)}
+function render(){if(!$('browse-results'))return;const home=category==='all'&&view==='all'&&!query;document.body.classList.toggle('browse-mode',!home);$('hero').hidden=!home;$('home-rows').hidden=!home;$('browse-results').hidden=home;document.querySelectorAll('[data-category]').forEach(b=>{const yes=b.dataset.category===category;b.classList.toggle('active',yes);b.setAttribute('aria-pressed',String(yes))});document.querySelectorAll('[data-view]').forEach(b=>{const yes=b.dataset.view===view;b.classList.toggle('active',yes);yes?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});if(!home){const result=filtered();if(/^s[1-9][0-9]*$/.test(category))result.sort((a,b)=>a.episode-b.episode);const labels={ost:'FALL 707 · OST',all:t('모든 작품','All films'),s1:t('FALL 707 · 시즌 1','FALL 707 · Season 1'),s2:t('FALL 707 · 시즌 2','FALL 707 · Season 2'),s3:t('FALL 707 · 시즌 3','FALL 707 · Season 3'),full:t('몰아보기','Full movies'),original:t('오리지널 작품','Original films'),saved:t('찜한 작품','My list')};$('browse-title').textContent=query?(en?`Results for “${query}”`:`“${query}” 검색 결과`):category!=='all'?(labels[category]||t('FALL 707 · 시즌 '+category.slice(1),'FALL 707 · Season '+category.slice(1))):view==='fall'?'FALL 707: REBOOT':view==='original'?t('오리지널 작품','Original films'):t('모든 작품','All films');$('result-count').textContent=`${result.length}${t('편',result.length===1?' film':' films')}${category==='saved'?t(' · 이 브라우저에 저장된 목록',' · Saved in this browser'):''}`;$('results-grid').innerHTML=result.map(card).join('');decorateCards($('results-grid')); $('empty-state').hidden=result.length>0}syncSaved();document.querySelectorAll('.shelf-track').forEach(updateArrows)}
 
 function updateArrows(track){const prev=document.querySelector(`[data-scroll="${track.id}"][data-direction="-1"]`),next=document.querySelector(`[data-scroll="${track.id}"][data-direction="1"]`);if(prev)prev.disabled=track.scrollLeft<=2;if(next)next.disabled=track.scrollLeft+track.clientWidth>=track.scrollWidth-3}
 
 function showDetail(id){const v=byId(id);if(!v||!$('detail-dialog'))return;restoreFocus=document.activeElement;selected=v;$('detail-title').textContent=v.name;$('detail-label').textContent=v.label;$('detail-image').src=v.image;$('detail-image').alt=v.name+t(' 공식 썸네일',' official thumbnail');$('detail-description').textContent=v.summary;$('detail-meta').textContent=`DRA9ON CINEMA · ${v.duration||''}`;$('detail-page').href=v.path;syncSaved();$('detail-dialog').showModal()}
 
-function createPlayer(id){const v=byId(id);if(!v)throw new Error(t('알 수 없는 영상입니다.','Unknown film.'));const frame=document.createElement('iframe');frame.src=`https://www.youtube-nocookie.com/embed/${v.id}?rel=0&playsinline=1&autoplay=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}&hl=${en?'en':'ko'}${en?'&cc_lang_pref=en':''}`;frame.title=v.title;frame.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';frame.referrerPolicy='strict-origin-when-cross-origin';frame.allowFullscreen=true;return frame}
+function createPlayer(id){const v=byId(id);if(!v)throw new Error(t('알 수 없는 영상입니다.','Unknown film.'));const frame=document.createElement('iframe');frame.dataset.externalSrc=`https://www.youtube-nocookie.com/embed/${v.id}?rel=0&playsinline=1&autoplay=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}&hl=${en?'en':'ko'}${en?'&cc_lang_pref=en':''}`;frame.title=v.title;frame.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';frame.referrerPolicy='strict-origin-when-cross-origin';frame.allowFullscreen=true;return frame}
 
-function nextVideo(v){if(v.id==='sFw17ZPE42A')return works.find(w=>w.category==='s3'&&w.episode===1&&isReleased(w))||null;let seq=works.filter(w=>w.category===v.category&&isReleased(w));if(/^s[1-3]$/.test(v.category))seq.sort((a,b)=>a.episode-b.episode);return seq[seq.findIndex(w=>w.id===v.id)+1]||(/^s[1-3]$/.test(v.category)?works.find(w=>w.category===`s${v.season+1}`&&w.episode===1&&isReleased(w)):null)}
+function nextVideo(v){if(v.id==='sFw17ZPE42A')return works.find(w=>w.category==='s3'&&w.episode===1&&isReleased(w))||null;let seq=works.filter(w=>w.category===v.category&&isReleased(w));if(/^s[1-9][0-9]*$/.test(v.category))seq.sort((a,b)=>a.episode-b.episode);return seq[seq.findIndex(w=>w.id===v.id)+1]||(/^s[1-9][0-9]*$/.test(v.category)?works.find(w=>w.category===`s${v.season+1}`&&w.episode===1&&isReleased(w)):null)}
 
 function play(id){const v=byId(id);if(v)location.href=v.path;}
 
@@ -245,7 +245,7 @@ if ($('hero')) {
 
   hero.querySelector('.hero-buttons a[href="#episodes"]')?.remove();
 
-  const season=Math.max(...works.filter(v=>/^s[1-3]$/.test(v.category)&&isReleased(v)).map(v=>v.season));
+  const season=Math.max(...works.filter(v=>/^s[1-9][0-9]*$/.test(v.category)&&isReleased(v)).map(v=>v.season));
 
   const seasonTwoFull=works.find(v=>v.id==='sFw17ZPE42A');
   const featuredSlides=()=>[
@@ -536,7 +536,7 @@ function decorateCards(root=document){
 
   const link=cardEl.querySelector('[data-detail]'),v=link&&byId(link.dataset.detail);if(!v||cardEl.querySelector('.card-direct'))return;
 
-  if(['s1','s2','s3'].includes(v.category)){const number=document.createElement('span');number.className='episode-number';number.setAttribute('aria-hidden','true');number.textContent=String(v.episode).padStart(2,'0');link.append(number);cardEl.classList.add('numbered-card')}
+  if(/^s[1-9][0-9]*$/.test(v.category)){const number=document.createElement('span');number.className='episode-number';number.setAttribute('aria-hidden','true');number.textContent=String(v.episode).padStart(2,'0');link.append(number);cardEl.classList.add('numbered-card')}
 
   link.setAttribute('aria-label',v.label+' '+v.name+' '+t('재생 페이지 열기','Open watch page'));
 
@@ -552,15 +552,16 @@ function decorateCards(root=document){
 
   actions.append(watch,youtube);cardEl.append(summary,actions);
 
-  const title=cardEl.querySelector('.card-name'),line=document.createElement('div'),stats=document.createElement('span');
+  const title=cardEl.querySelector('.card-name'),line=document.createElement('div'),stats=cardEl.querySelector('[data-youtube-api-count]')||document.createElement('span');
 
-  line.className='card-title-line';stats.className='card-counts';stats.dataset.filmStats=v.id;
+  line.className='card-title-line';stats.classList.add('card-counts');stats.dataset.filmStats=v.id;
 
-  stats.textContent=t('재생 — · ♡ —','Plays — · ♡ —');
+  const raw=v.apiViewCount,valid=typeof raw==='string'&&/^(?:0|[1-9][0-9]*)$/.test(raw);stats.hidden=!valid;
+  stats.textContent=valid?t('YouTube 조회수 ','YouTube views ')+raw:'';
 
   title.before(line);line.append(title,stats);
 
-  if(isReleased(v))observeCardStats(stats,v.id);else stats.textContent=t('공개 예정','Coming soon');
+  if(!isReleased(v))stats.hidden=true;
 
  });
 

@@ -9,6 +9,7 @@ import xml.etree.ElementTree as ET
 from datetime import datetime
 from site_config import CONTACT_EMAIL, OG_ALT
 from image_dimensions import jpeg_size
+from youtube_sync import load_snapshot, merge_portfolio_data, latest_episode, exact_count
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--origin', required=True)
@@ -20,8 +21,12 @@ base = '/' + args.base_path.strip('/') if args.base_path.strip('/') else ''
 origin = args.origin.rstrip('/')
 site = origin + base
 source_data = json.loads((Path(__file__).resolve().parent / 'portfolio-data.json').read_text(encoding='utf-8'))
+source_data = merge_portfolio_data(source_data, load_snapshot())
 expected_ids = {video['id'] for video in source_data['videos']}
 video_count = len(expected_ids)
+published_catalog=json.loads((root/'catalog.js').read_text(encoding='utf-8').split(' = ',1)[1].rstrip(';\n'))
+published_by_id={work['id']:work for work in published_catalog}
+latest_work=latest_episode(published_catalog)
 
 
 def local_file(url):
@@ -54,6 +59,7 @@ class Page(HTMLParser):
         self.anchors = []
         self.images = []
         self.iframes = []
+        self.scripts = []
         self.video_id = ''
         self.feed(source)
 
@@ -83,6 +89,7 @@ class Page(HTMLParser):
         if 'data-language' in attrs:
             self.switches[attrs['data-language']] = attrs['href']
         if tag == 'script':
+            self.scripts.append(attrs)
             self.in_json = attrs.get('type') == 'application/ld+json'
 
     def handle_data(self, data):
@@ -100,6 +107,8 @@ library_source = library.read_text(encoding='utf-8')
 assert 'noindex,nofollow,noarchive' in library_source
 assert 'id="login"' in library_source and 'id="cards"' in library_source
 assert not (root/'library/private-library.json').exists()
+library_page=Page(library_source)
+assert any('library.js' in script.get('data-service-src','') and 'src' not in script for script in library_page.scripts), 'Private library initializes tracking/service before permission'
 html_files = [page for page in root.rglob('*.html') if page != library]
 from tutorials import ROUTES as TUTORIAL_ROUTES
 from questions import ROUTES as QUESTION_ROUTES
@@ -111,6 +120,12 @@ for path in html_files:
     assert 'data-cookie-settings' in source, path
     assert 'googletagmanager.com/gtag/js' not in source, path
     page = Page(source)
+    assert all(not frame.get('src') for frame in page.iframes), f'External iframe loads before permission: {path}'
+    for script in page.scripts:
+        active=script.get('src','')
+        assert not re.search(r'/(?:community|library)\.js(?:\?|$)',active), f'Service module loads before permission: {path}'
+    if '/questions/' in path.as_posix():
+        assert any('community.js' in script.get('data-service-src','') for script in page.scripts), path
     relative = path.relative_to(root).as_posix()
     lang = 'en' if relative.startswith('en/') else 'ko'
     assert page.lang == lang, path
@@ -137,6 +152,18 @@ for path in html_files:
         assert source.index('id="more-cuts"') < source.index('id="about"'), path
         assert source.index('id="collaboration"') < source.index('id="about"'), path
         assert source.count('id="collaboration"') == 1, path
+        hero=next(img for img in page.images if 'hero-image' in img.get('class','').split())
+        assert hero['src']==latest_work['image'], 'Homepage hero does not use the newest episode'
+        assert any(a.get('href')==base+('/en' if lang=='en' else '')+latest_work['path'][len(base):] and 'hero-feature-link' in a.get('class','') for a in page.anchors), 'Latest episode link is stale'
+        assert 'id="latest-episodes"' in source
+        for season in {video['season'] for video in published_catalog if re.fullmatch(r's[1-9][0-9]*',video['category'])}:
+            assert f'data-category="s{season}"' in source, 'A published season has no filter'
+        channel_count=exact_count(source_data.get('channel',{}).get('apiSubscriberCount'))
+        if channel_count is not None:
+            label='YouTube subscribers' if lang=='en' else 'YouTube 구독자'
+            assert f'{label} <strong>{channel_count}</strong>' in source, 'Raw channel subscriber count was changed'
+            stamp=source_data['channel']['apiStatisticsUpdatedAt']
+            assert f'<time datetime="{stamp}">{stamp}</time>' in source, 'YouTube retrieval timestamp is absent'
     ko_relative = relative.removeprefix('en/')
     route = '/' + ko_relative.removesuffix('index.html')
     assert page.switches == {'ko': base + route, 'en': base + '/en' + route}, path
@@ -154,13 +181,17 @@ for path in html_files:
             assert page.video_id in expected_ids, path
             original = next(video for video in source_data['videos'] if video['id'] == page.video_id)
             assert schema['embedUrl'] == f'https://www.youtube-nocookie.com/embed/{page.video_id}', path
-            assert schema['thumbnailUrl'] == [site + f'/assets/portfolio/{page.video_id}.jpg'], path
+            assert schema['thumbnailUrl'] == [site + published_by_id[page.video_id]['image'][len(base):]], path
             assert all(isinstance(schema.get(field), str) and schema[field].strip() for field in ('name', 'description', 'uploadDate', 'duration')), path
             assert schema['uploadDate'] == original['uploadDate'], path
             assert datetime.fromisoformat(schema['uploadDate'].replace('Z', '+00:00')).utcoffset() is not None, path
             assert re.fullmatch(r'PT\d+(?:\.\d+)?S', schema['duration']), path
             assert float(schema['duration'][2:-1]) == float(original['seconds']) > 0, path
             assert 'contentUrl' not in schema, 'Use the actual embed URL, not a YouTube watch URL as a media file'
+            api_views=exact_count(original.get('apiViewCount'))
+            if api_views is not None:
+                label='YouTube views' if lang=='en' else 'YouTube 조회수'
+                assert f'{label} <strong>{api_views}</strong>' in source, 'Raw episode view count was changed or missing'
     assert 'about-identity' not in source and 'avatar.jpg' not in source, path
 
 # The Season 3 release must be reachable in both languages, with accessible
@@ -173,13 +204,13 @@ if '0I75_YXhMSM' in expected_ids:
         homepage = (root/(prefix.lstrip('/') + '/index.html').lstrip('/')).read_text(encoding='utf-8')
         home = Page(homepage)
         hero = next(img for img in home.images if 'hero-image' in img.get('class', '').split())
-        assert hero['src'] == base + '/assets/portfolio/0I75_YXhMSM.jpg'
-        assert any(a.get('href') == route_prefix + episode_route and 'hero-feature-link' in a.get('class', '') for a in home.anchors)
+        assert hero['src'] == latest_work['image']
+        assert any(a.get('href') == route_prefix + latest_work['path'][len(base):] and 'hero-feature-link' in a.get('class', '') for a in home.anchors)
         assert 'data-category="s3"' in homepage
         assert homepage.index('id="episodes"') < homepage.index('id="season-two"')
         assert 'upcoming-episode' not in homepage
         links = Page((root/(prefix.lstrip('/') + '/links/index.html').lstrip('/')).read_text(encoding='utf-8'))
-        assert any(a.get('href') == route_prefix + episode_route and 'bio-feature' in a.get('class', '') for a in links.anchors)
+        assert any(a.get('href') == route_prefix + latest_work['path'][len(base):] and 'bio-feature' in a.get('class', '') for a in links.anchors)
         watch_path = root/(prefix.lstrip('/') + episode_route + 'index.html').lstrip('/')
         watch_source = watch_path.read_text(encoding='utf-8')
         watch = Page(watch_source)
@@ -212,7 +243,7 @@ for lang, prefix in [('ko',''),('en','/en')]:
     document = (root/(prefix+NEWTAKE_PATH+'index.html').lstrip('/')).read_text(encoding='utf-8')
     page = Page(document)
     article = document.split(NEWTAKE_START,1)[1].split(NEWTAKE_END,1)[0]
-    assert article == newtake_article(lang), 'Newtake body was changed by the shared page pipeline'
+    assert article.replace(' data-external-src=', ' src=') == newtake_article(lang), 'Newtake body was changed by the shared page pipeline'
     assert page.metas['description'] == [metadata['description']]
     assert page.metas['og:title'] == [metadata['title']+' | DRA9ON CINEMA']
     assert page.metas['og:description'] == [metadata['description']]
@@ -223,7 +254,7 @@ for lang, prefix in [('ko',''),('en','/en')]:
     assert page.json_chunks[0]['datePublished'] == metadata['date']
     assert page.json_chunks[0]['keywords'] == metadata['tags']
     assert page.json_chunks[0]['inLanguage'] == lang
-    assert len(page.iframes) == 1 and page.iframes[0]['src'] == NEWTAKE_EMBED
+    assert len(page.iframes) == 1 and not page.iframes[0].get('src') and page.iframes[0].get('data-external-src') == NEWTAKE_EMBED
     sponsor = [anchor for anchor in page.anchors if anchor.get('href') == NEWTAKE_SPONSOR]
     assert len(sponsor) == 1 and sponsor[0]['target'] == '_blank'
     assert set(sponsor[0]['rel'].split()) == {'sponsored','noopener'}
@@ -242,6 +273,8 @@ for filename in ['catalog.js', 'en/catalog.js']:
     for work in data:
         local_file(work['path'])
         local_file(work['image'])
+        original=next(video for video in source_data['videos'] if video['id']==work['id'])
+        assert work.get('apiViewCount') == original.get('apiViewCount'), 'API view counts changed in the public catalog'
     catalogs.append(data)
 for ko, en in zip(*catalogs):
     assert ko['id'] == en['id']

@@ -105,12 +105,20 @@ OpenArt CPP 선정 이력은 제작자가 알려준 2026년 8월·9월로 표시
 영상 정보, 썸네일, 소개 및 협업 이메일은 공식 채널의 공개 정보를 사용했습니다. 영문 제목이 없는 항목과 소개는 포트폴리오용으로 번역했습니다. 작품과 브랜드의 권리는 DRA9ON CINEMA에 귀속됩니다. YouTube 및 Google과 제휴한 사이트가 아닙니다. 저장소 공개 자체가 작품의 재사용 허가를 뜻하지 않습니다.
 
 
-## Optional GA4 analytics
+## Cookie-free analytics and optional external media
 
-`site-assets/consent.js` uses existing property `G-TF7X8WSNGW`. Basic Consent Mode v2 blocks loading the Google tag until analytics opt-in; all three advertising signals stay denied. It runs only on the production domain. Local previews never send analytics. Preferences expire after 180 days. Footer cookie settings allow withdrawal; the opt-out flag is set immediately, consent is updated, GA cookies are cleared, and the page reloads. Other tabs reload when consent changes.
+GA4 and the old Firebase per-browser visit/player ledger are no longer loaded. Historical site-play/like totals are not relabelled as official YouTube values or new anonymous visits. `analytics-config.json` (or GitHub variables `CF_WEB_ANALYTICS_TOKEN`, `D9_METRICS_ENDPOINT`) must contain real configured provider values before the new services load. Blank configuration deliberately remains inactive; no fabricated counts or demo tokens are supplied.
 
-The custom `youtube_subscribe_click` event measures button clicks, not completed YouTube subscriptions. Parameters: `button_location` (hero/player/watch), `page_language`, and `link_url`. Review these in GA4 Reports > Engagement > Events or Realtime; custom parameter breakdowns require GA4 custom dimensions. Event and user retention: 2 months, activity reset disabled. Enhanced measurement is off, so query strings and form data are not automatically measured.
+Cloudflare Web Analytics is the selected free, cookie-free provider. The separate Cloudflare Workers Free + D1 collector stores day/page aggregate numbers only: page views, entry events, prompt copies, and coarse referring-platform buckets. It does not store IP addresses, browser identities, raw URLs, query strings, user agents or prompt contents. Entry counts are not unique people. DNT/GPC and local previews do not send events. See `workers/tutorial-metrics/README.md` for its free-plan daily write cap and deployment requirements.
 
-Privacy pages: `/privacy/` and `/en/privacy/`. Update `privacy_page.py` when collection changes. Existing YouTube embeds and Google Fonts operate separately from this site's GA4 consent.
+Tutorial lists default to newest, with an optional actual-view ranking. The homepage shows up to three tutorials that have recorded views; before real collection begins no popularity is invented. Every public tutorial prompt block gains a copy button; only a successful clipboard write records a copy. The same canonical tutorial combines Korean and English totals. `/summary`, `/daily` and `/weekly` expose numeric public aggregates; new public pages are registered from each build. The private library is excluded.
 
-Validation: `node test-consent.cjs`, then the existing build and `verify-site.py` commands.
+External YouTube/Instagram frames arrive without a `src`. `site-assets/consent.js` displays a slim bottom bar and per-video load controls, loading frames only after external-media permission. All YouTube frames use `youtube-nocookie.com`; this does not promise third parties use no cookies after interaction. Media choices expire after 180 days and can be withdrawn using the footer. Firebase authentication and reCAPTCHA remain protected behind explicit board/library activation, independent of analytics or media permission. See `docs/privacy-migration.md`. Privacy pages: `/privacy/` and `/en/privacy/`.
+
+## Daily YouTube metadata
+
+`youtube_sync.py` uses the encrypted `YOUTUBE_API_KEY` GitHub secret only in the build. The daily Pages schedule refreshes the uploads playlist and public statistics, with a bounded call budget and an Actions cache. Videos merge by ID; manual copy and existing thumbnails remain editorially authoritative. Explicit season/episode titles create matching season shelves and latest-episode cards. No expensive `search.list` polling or browser API key is used. Exact API integer strings are displayed, including zero; YouTube itself rounds its subscriber API value, which is disclosed beside that figure. No guessed count appears when unavailable. See `docs/youtube-sync.md`.
+
+## Validation
+
+Run `python -m unittest test_robots_policy test_youtube_sync test_youtube_site`, `node test-consent.cjs`, and `node --test test-tutorial-metrics.cjs workers/tutorial-metrics/test/worker.test.mjs`, then the existing build and `verify-site.py` commands. The YouTube fixture verifies a new episode, a new season and its full movie in both languages without storing its artificial snapshot in the real cache.

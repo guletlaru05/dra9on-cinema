@@ -13,7 +13,7 @@
         const frame=document.querySelector('[data-release-src]');
         const notice=document.querySelector('.release-notice');
         if(notice)notice.hidden=open;
-        if(frame&&open){frame.src=frame.dataset.releaseSrc;frame.hidden=false;delete frame.dataset.releaseSrc;}
+        if(frame&&open){frame.dataset.externalSrc=frame.dataset.releaseSrc;frame.hidden=false;delete frame.dataset.releaseSrc;window.D9ExternalConsent?.prepare(frame.parentElement);}
         document.querySelectorAll('.watch-actions a[href*="watch?v="],.playback-hint').forEach(a=>a.hidden=!open);
       }
       const badge=document.querySelector('.upcoming-episode');
