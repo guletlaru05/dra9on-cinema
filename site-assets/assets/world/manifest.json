@@ -1,0 +1,275 @@
+{
+  "s1-ep01": {
+    "width": 1440,
+    "height": 678,
+    "sourceEpisode": "S1 EP.01",
+    "timeSeconds": 70,
+    "crop": [
+      0,
+      86,
+      1920,
+      990
+    ],
+    "kind": "episode still"
+  },
+  "s1-ep02": {
+    "width": 1440,
+    "height": 656,
+    "sourceEpisode": "S1 EP.02",
+    "timeSeconds": 70,
+    "crop": [
+      0,
+      103,
+      1920,
+      977
+    ],
+    "kind": "episode still"
+  },
+  "s1-ep03": {
+    "width": 1440,
+    "height": 669,
+    "sourceEpisode": "S1 EP.03",
+    "timeSeconds": 70,
+    "crop": [
+      0,
+      94,
+      1920,
+      986
+    ],
+    "kind": "episode still"
+  },
+  "s1-ep04": {
+    "width": 1440,
+    "height": 669,
+    "sourceEpisode": "S1 EP.04",
+    "timeSeconds": 70,
+    "crop": [
+      0,
+      94,
+      1920,
+      986
+    ],
+    "kind": "episode still"
+  },
+  "s1-ep05": {
+    "width": 1440,
+    "height": 669,
+    "sourceEpisode": "S1 EP.05",
+    "timeSeconds": 35,
+    "crop": [
+      0,
+      94,
+      1920,
+      986
+    ],
+    "kind": "episode still"
+  },
+  "s1-ep06": {
+    "width": 1440,
+    "height": 669,
+    "sourceEpisode": "S1 EP.06",
+    "timeSeconds": 35,
+    "crop": [
+      0,
+      94,
+      1920,
+      986
+    ],
+    "kind": "episode still"
+  },
+  "s2-ep01": {
+    "width": 1440,
+    "height": 513,
+    "sourceEpisode": "S2 EP.01",
+    "timeSeconds": 125,
+    "crop": [
+      0,
+      68,
+      2048,
+      797
+    ],
+    "kind": "episode still"
+  },
+  "s2-ep02": {
+    "width": 1440,
+    "height": 513,
+    "sourceEpisode": "S2 EP.02",
+    "timeSeconds": 350,
+    "crop": [
+      0,
+      67,
+      2048,
+      797
+    ],
+    "kind": "episode still"
+  },
+  "s2-ep03": {
+    "width": 1440,
+    "height": 513,
+    "sourceEpisode": "S2 EP.03",
+    "timeSeconds": 300,
+    "crop": [
+      0,
+      67,
+      2048,
+      797
+    ],
+    "kind": "episode still"
+  },
+  "s2-ep04": {
+    "width": 1440,
+    "height": 513,
+    "sourceEpisode": "S2 EP.04",
+    "timeSeconds": 70,
+    "crop": [
+      0,
+      67,
+      2048,
+      797
+    ],
+    "kind": "episode still"
+  },
+  "s2-ep05": {
+    "width": 1440,
+    "height": 513,
+    "sourceEpisode": "S2 EP.05",
+    "timeSeconds": 450,
+    "crop": [
+      0,
+      67,
+      2048,
+      797
+    ],
+    "kind": "episode still"
+  },
+  "s2-ep06": {
+    "width": 1440,
+    "height": 513,
+    "sourceEpisode": "S2 EP.06",
+    "timeSeconds": 25,
+    "crop": [
+      0,
+      67,
+      2048,
+      797
+    ],
+    "kind": "episode still"
+  },
+  "sergeant-han": {
+    "width": 515,
+    "height": 687,
+    "sourceEpisode": "S2 EP.06",
+    "timeSeconds": 180,
+    "crop": [
+      512,
+      35,
+      1311,
+      722
+    ],
+    "kind": "production portrait"
+  },
+  "sergeant-kim": {
+    "width": 449,
+    "height": 599,
+    "sourceEpisode": "S2 EP.06",
+    "timeSeconds": 190,
+    "crop": [
+      1188,
+      158,
+      1638,
+      757
+    ],
+    "kind": "production portrait"
+  },
+  "yuna": {
+    "width": 600,
+    "height": 800,
+    "sourceEpisode": "S2 EP.06",
+    "timeSeconds": 920,
+    "crop": [
+      700,
+      60,
+      1300,
+      860
+    ],
+    "kind": "owner-selected production portrait"
+  },
+  "elder-shaman": {
+    "width": 646,
+    "height": 862,
+    "sourceEpisode": "S2 EP.05",
+    "timeSeconds": 25,
+    "crop": [
+      922,
+      0,
+      1720,
+      862
+    ],
+    "kind": "production portrait"
+  },
+  "bell-shaman": {
+    "width": 580,
+    "height": 774,
+    "sourceEpisode": "S2 EP.02",
+    "timeSeconds": 25,
+    "crop": [
+      1126,
+      0,
+      1864,
+      774
+    ],
+    "kind": "production portrait"
+  },
+  "king": {
+    "width": 592,
+    "height": 789,
+    "sourceEpisode": "S1 EP.06",
+    "timeSeconds": 110,
+    "crop": [
+      1018,
+      151,
+      1690,
+      940
+    ],
+    "kind": "production portrait"
+  },
+  "commander": {
+    "width": 568,
+    "height": 757,
+    "sourceEpisode": "S2 EP.01",
+    "timeSeconds": 490,
+    "crop": [
+      1413,
+      88,
+      2007,
+      845
+    ],
+    "kind": "production portrait"
+  },
+  "commanders-wife": {
+    "width": 548,
+    "height": 731,
+    "sourceEpisode": "S2 EP.01",
+    "timeSeconds": 420,
+    "crop": [
+      881,
+      35,
+      1597,
+      766
+    ],
+    "kind": "production portrait"
+  },
+  "yuna-action": {
+    "width": 1440,
+    "height": 548,
+    "sourceEpisode": "S2 EP.06",
+    "timeSeconds": 545,
+    "crop": [
+      0,
+      80,
+      2048,
+      860
+    ],
+    "kind": "action still"
+  }
+}

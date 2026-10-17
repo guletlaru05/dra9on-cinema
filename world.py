@@ -1,6 +1,7 @@
 """Spoiler-light series introduction based on published Seasons 1 and 2."""
 from html import escape
 from hashlib import sha256
+from world_details import COPY as DETAIL_COPY, cast_html, episodes_html, connections_html
 
 ROUTE='/fall-707/world/'
 # Korean / English / Japanese / Spanish. No unpublished story or Season 3 copy.
@@ -35,6 +36,7 @@ COPY=[
  ('FALL 707 세계관 살펴보기 →','Explore the world of FALL 707 →','FALL 707の世界を見る →','Explora el mundo de FALL 707 →'),
  ('시즌 1부터 보기','Watch from Season 1','シーズン1から見る','Ver desde la temporada 1'),('회차 목록으로 돌아가기','Back to the episode guide','エピソード一覧へ戻る','Volver a la guía de episodios'),
 ]
+COPY.extend(DETAIL_COPY)
 TRANSLATIONS={row[0]:row[1] for row in COPY}
 
 def build_world(out,origin,head,header,footer):
@@ -44,14 +46,15 @@ def build_world(out,origin,head,header,footer):
   return f'<img src="{path}?v={version}" width="{width}" height="{height}" alt="{escape(alt,quote=True)}" loading="{loading}">'
  title,description=COPY[0][0],COPY[1][0]
  body='<main id="main" class="editorial-main world-main"><a class="editorial-back" href="/fall-707/">회차 목록으로 돌아가기</a><header class="world-hero"><div><p class="section-eyebrow">FALL 707: REBOOT / THE WORLD</p><h1>전술은 현대. 밤은 조선.</h1><p class="world-logline">'+COPY[3][0]+'</p><p>'+COPY[4][0]+'</p><a class="button button-white" href="/watch/fall-707-s1-ep1/">시즌 1부터 보기</a></div>'+img('fall707-still-04.webp','FALL 707 · 조선 궁궐에서의 만남',1440,657,'eager')+'</header>'
- body+='<section class="editorial-section" aria-labelledby="world-eras"><p class="section-eyebrow">01 / TWO ERAS</p><h2 id="world-eras">두 시대가 만나는 곳.</h2><div class="world-eras">'
+ body+='<nav class="world-jump" aria-label="세계관"><a href="#world-people">등장인물</a><a href="#world-relations">관계도</a><a href="#world-season-1">SEASON 1</a><a href="#world-season-2">SEASON 2</a></nav><p class="editorial-note">'+COPY[28][0]+'</p><section class="editorial-section" aria-labelledby="world-eras"><p class="section-eyebrow">01 / TWO ERAS</p><h2 id="world-eras">두 시대가 만나는 곳.</h2><div class="world-eras">'
  for image,heading,paragraph in [('fall707-still-02.webp',6,7),('fall707-still-06.webp',8,9)]:body+='<article>'+img(image,COPY[heading][0],1440,678 if heading==6 else 672)+'<h3>'+COPY[heading][0]+'</h3><p>'+COPY[paragraph][0]+'</p></article>'
- body+='</div></section><section class="editorial-section" aria-labelledby="world-people"><p class="section-eyebrow">02 / THE PEOPLE</p><h2 id="world-people">이야기의 중심에 있는 사람들.</h2><div class="world-people">'
- for name,heading,paragraph in [('captain-min',11,12),('prince-iseo',13,14),('yeonhwa',15,16)]:body+='<article>'+img(name+'.webp',COPY[heading][0],540,720)+'<h3>'+COPY[heading][0]+'</h3><p>'+COPY[paragraph][0]+'</p></article>'
- body+='</div></section><section class="editorial-section" aria-labelledby="world-relations"><p class="section-eyebrow">03 / CONNECTIONS</p><h2 id="world-relations">서로 다른 시대, 이어지는 인연.</h2><div class="world-connections"><div class="connection-person">이서</div><div class="connection-line"><span>함께 위협에 맞서는 동행</span></div><div class="connection-person connection-center">민서아</div><div class="connection-line"><span>신뢰와 보호의 인연</span></div><div class="connection-person">연화</div></div></section>'
+ body+='</div></section><section class="editorial-section" aria-labelledby="world-people"><p class="section-eyebrow">02 / THE PEOPLE</p><h2 id="world-people">주연</h2><div class="world-people world-lead">'
+ body+='<article id="person-captain-min">'+img('captain-min.webp',COPY[11][0],540,720)+'<h3>'+COPY[11][0]+'</h3><p>'+COPY[12][0]+'</p></article></div><h2 class="world-support-heading">조연</h2><div class="world-people world-supporting">'
+ for name,heading,paragraph in [('prince-iseo',13,14),('yeonhwa',15,16)]:body+='<article id="person-'+name+'">'+img(name+'.webp',COPY[heading][0],540,720)+'<h3>'+COPY[heading][0]+'</h3><p>'+COPY[paragraph][0]+'</p></article>'
+ body+=cast_html(out)+'</div></section><section class="editorial-section" aria-labelledby="world-relations"><p class="section-eyebrow">03 / CONNECTIONS</p><h2 id="world-relations">서로 다른 시대, 이어지는 인연.</h2>'+connections_html(out)+'</section>'
  body+='<section class="editorial-section" aria-labelledby="world-seasons"><p class="section-eyebrow">04 / THE JOURNEY</p><h2 id="world-seasons">이야기 따라가기.</h2><div class="season-synopses">'
  for heading,paragraph,path in [(23,24,'/watch/fall-707-season-1-full/'),(25,26,'/watch/fall-707-season-2-full/')]:body+='<article><h3>'+COPY[heading][0]+'</h3><p>'+COPY[paragraph][0]+'</p><a class="text-button" href="'+path+'">FALL 707 →</a></article>'
- body+='</div><p class="editorial-note">'+COPY[28][0]+'</p></section></main>'
+ body+='</div></section>'+episodes_html(out)+'</main>'
  schema={'@context':'https://schema.org','@type':'AboutPage','name':title,'description':description,'url':origin+ROUTE,'about':{'@type':'CreativeWorkSeries','name':'FALL 707: REBOOT'}}
  page=head(title,description,ROUTE,schema).replace('property="og:type" content="video.episode"','property="og:type" content="website"').replace('</head>','<link rel="stylesheet" href="/editorial.css"></head>')+'<body class="watch-page">'+header()+body+footer()+'</body></html>'
  target=out/ROUTE.strip('/');target.mkdir(parents=True,exist_ok=True);(target/'index.html').write_text(page,encoding='utf-8')

@@ -33,11 +33,35 @@ class InternationalPages(unittest.TestCase):
    source=file.read_text(encoding='utf-8')
    self.assertNotIn('S3',source)
    self.assertNotIn('시즌 3',source)
-   self.assertIn('world-connections',source)
+   self.assertIn('world-relationship-map',source)
    self.assertIn('fall-707-season-1-full/',source)
    self.assertIn('fall-707-season-2-full/',source)
    for name in ('captain-min','prince-iseo','yeonhwa'):
     self.assertIn(name+'.webp',source)
     with Image.open(Path('dist/assets/press')/(name+'.webp')) as image:self.assertEqual(image.size,(540,720))
+ def test_world_episode_and_character_coverage(self):
+  from world_details import CAST,EDGES
+  from PIL import Image
+  metadata=json.loads(Path('dist/assets/world/manifest.json').read_text(encoding='utf-8'))
+  for lang in ('','en/','ja/','es/'):
+   source=(Path('dist')/lang/'fall-707/world/index.html').read_text(encoding='utf-8')
+   self.assertEqual(set(re.findall(r'data-world-episode="(s\de\d)"',source)),{f's{s}e{e}' for s in (1,2) for e in range(1,7)})
+   self.assertEqual(len(re.findall(r'<article id="person-',source)),11)
+   lead=re.search(r'class="world-people world-lead">(.*?)</div>',source).group(1)
+   self.assertEqual(re.findall(r'id="person-([^"]+)"',lead),['captain-min'])
+   supporting=re.search(r'class="world-people world-supporting">(.*?)</section>',source).group(1)
+   self.assertEqual(len(re.findall(r'<article id="person-',supporting)),10)
+   for person,_,_ in CAST:self.assertIn('id="person-'+person+'"',source)
+   for first,second,_ in EDGES:
+    for person in (first,second):self.assertIn('id="person-'+person+'"',source)
+   home=(Path('dist')/lang/'index.html').read_text(encoding='utf-8')
+   self.assertIn('world-home-entry',home)
+   self.assertRegex(home,r'class="nav-link" href="/'+lang+'fall-707/world/"')
+  ko=Path('dist/fall-707/world/index.html').read_text(encoding='utf-8')
+  self.assertIn('한 중사 · 707 돌격대원',ko)
+  self.assertIn('김 중사 · 707 의무·통신 대원',ko)
+  self.assertNotIn(('elder-shaman','bell-shaman'),[(a,b) for a,b,_ in EDGES])
+  for name,record in metadata.items():
+   with Image.open(Path('dist/assets/world')/(name+'.webp')) as image:self.assertEqual(image.size,(record['width'],record['height']))
 
 if __name__=='__main__':unittest.main()

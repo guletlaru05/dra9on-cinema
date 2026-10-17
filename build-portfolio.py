@@ -64,7 +64,7 @@ from episode_extras import episode_extras
 from collaboration import render_collaboration
 
 def header(home=False):
- nav='<a class="nav-link" href="/">홈</a><a class="nav-link" href="/#episodes">FALL 707</a><a class="nav-link" href="/#originals">작품집</a><a class="nav-link" href="/notes/">제작 비하인드</a><a class="nav-link" href="/tutorials/">튜토리얼</a><a class="nav-link" href="/questions/">질문과 답변</a><a class="nav-link" href="/#collaboration">협업 문의</a><a class="nav-link" href="/#about">ABOUT</a>'
+ nav='<a class="nav-link" href="/">홈</a><a class="nav-link" href="/#episodes">FALL 707</a><a class="nav-link" href="/fall-707/world/">세계관</a><a class="nav-link" href="/#originals">작품집</a><a class="nav-link" href="/notes/">제작 비하인드</a><a class="nav-link" href="/tutorials/">튜토리얼</a><a class="nav-link" href="/questions/">질문과 답변</a><a class="nav-link" href="/#collaboration">협업 문의</a><a class="nav-link" href="/#about">ABOUT</a>'
  search=f'<div class="search-wrap" id="search-wrap"><button class="icon-button" id="search-toggle" aria-label="작품 검색" aria-expanded="false">{icon("search")}</button><input type="search" id="search" placeholder="작품, 에피소드 검색" aria-label="작품 또는 에피소드 검색" autocomplete="off" hidden></div>' if home else ''
  return f'<a class="skip-link" href="#main">콘텐츠로 바로 가기</a><header class="header">{brand}<nav class="nav" aria-label="주 메뉴">{nav}</nav><div class="header-actions">{search}{social_links("channel-button")}</div></header>'
 def footer():return f'<footer>{brand}<p>AI로 세계관을 실사화하는 크리에이터.<br><span>© 2026 DRA9ON CINEMA. All rights reserved.</span><br><span>작품·이미지·텍스트의 무단 복제, 재업로드 및 상업적 이용을 금합니다. 이용 문의는 이메일로 연락해 주세요.</span></p><div class="footer-links">{social_links()}<a href="/library/">PRIVATE LIBRARY</a><a class="press-kit-link" href="/press/">Press Kit</a><a href="/#collaboration">Collaboration / Business {icon("arrow")}</a><a href="mailto:{CONTACT_EMAIL}">채널 문의 {icon("arrow")}</a></div></footer>'
@@ -95,13 +95,13 @@ main=main.replace('FALL 707 · S3 EP.01','FALL 707 · '+latest_label,1).replace(
 main=main.replace('열지 말라던 문…<br>그녀는 들어갔다.',esc(latest['name']),1).replace('<span>시즌 1–3</span>','<span>'+season_range+'</span>',1)
 main=re.sub(r'<button class="filter" data-category="s3".*?<button class="filter" data-category="full"',season_filters+'<button class="filter" data-category="full"',main,count=1)
 newest=sorted([v for v in works if re.fullmatch(r's[1-9][0-9]*',v['category'])],key=lambda v:v.get('uploadDate') or '',reverse=True)[:3]
+main+='<aside class="world-home-entry"><div><p class="section-eyebrow">FALL 707 / THE WORLD</p><p>처음 보는 분께. FALL 707 세계관과 인물 관계부터 살펴보세요.</p></div><a class="text-button" href="/fall-707/world/">FALL 707 세계관 살펴보기 →</a></aside>'
 main+=shelf('latest-episodes','최신 회차','LATEST EPISODES',newest)
 for season in reversed(season_numbers):
  shelf_id='episodes' if season==latest['season'] else {1:'season-one',2:'season-two'}.get(season,f'season-{season}')
  title='모든 이야기의 시작, 시즌 1' if season==1 else f'FALL 707 · 시즌 {season}'
  subtitle={2:'THE STORY CONTINUES',3:'THE FORBIDDEN DOOR'}.get(season,'FALL 707 : REBOOT')
  main+=shelf(shelf_id,title,subtitle,season_works[season])
-main+='<div class="series-world-link"><a class="text-button" href="/fall-707/world/">FALL 707 세계관 살펴보기 →</a></div>'
 main+=shelf('binge-watch','FALL 707 몰아보기','FULL MOVIES',[v for v in works if v['category']=='full'])
 main+=shelf('soundtracks','낙하 707 · OST','THE MUSIC OF FALL 707',[v for v in works if v['category']=='ost'])
 main+=shelf('originals','세계관은 계속 넓어진다','MORE FROM DRA9ON CINEMA',[v for v in works if v['category']=='original'])+shelf('more-cuts','예고편','TRAILERS',[v for v in works if v['category']=='trailer'])
