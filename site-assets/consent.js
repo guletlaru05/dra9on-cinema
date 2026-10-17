@@ -62,13 +62,14 @@
     const placeholder=document.createElement('div');placeholder.className='external-media-placeholder';
     const title=document.createElement('strong');title.textContent=frame.title||t('외부 영상','External video');
     const description=document.createElement('p');
-    description.textContent=info?t(info.service+'에 연결하면 해당 서비스가 쿠키와 기기 정보를 처리할 수 있습니다. 허용한 뒤 영상을 불러옵니다.','Loading connects to '+info.service+', which may process cookies and device information. Allow external media to load this video.'):t('이 외부 영상 주소는 허용되지 않았습니다. 원본 링크를 이용해 주세요.','This external embed address is not allowed. Use the original link instead.');
+    description.textContent=info?t('허용하면 이 사이트의 YouTube·Instagram 영상이 연결되며, 각 서비스가 쿠키와 기기 정보를 처리할 수 있습니다. 선택은 이 브라우저에 저장됩니다.','Allowing connects YouTube and Instagram videos across this site. These services may process cookies and device information. Your choice is saved in this browser.'):t('이 외부 영상 주소는 허용되지 않았습니다. 원본 링크를 이용해 주세요.','This external embed address is not allowed. Use the original link instead.');
     placeholder.append(title,description);
     if(info){
      const load=document.createElement('button');load.type='button';load.textContent=t('외부 영상 허용하고 불러오기','Allow and load external media');
      load.addEventListener('click',()=>save('granted'));
      const watch=document.createElement('a');watch.href=info.watch;watch.target='_blank';watch.rel='noopener noreferrer';watch.textContent=t(info.service+'에서 보기 ↗','Watch on '+info.service+' ↗');
-     placeholder.append(load,watch);
+     const privacy=document.createElement('a');privacy.href=policy.href;privacy.textContent=t('개인정보처리방침','Privacy policy');
+     placeholder.append(load,watch,privacy);
     }
     frame.before(placeholder);state={media:info,placeholder};frames.set(frame,state);
    }
@@ -103,16 +104,17 @@
  }
  const banner=document.createElement('section');banner.id='consent-banner';banner.className='external-consent-bar';banner.setAttribute('role','region');banner.setAttribute('aria-labelledby','consent-title');banner.hidden=true;
  const copy=document.createElement('div');copy.className='consent-copy';
- const title=document.createElement('h2');title.id='consent-title';title.textContent=t('외부 영상 설정','External media choices');
- const description=document.createElement('p');description.textContent=t('YouTube·Instagram 영상은 허용한 뒤 연결합니다. 거부해도 원본 링크로 볼 수 있습니다.','YouTube and Instagram connect only after you allow external media. You can decline and use the original links.');
+ const title=document.createElement('h2');title.id='consent-title';title.textContent=t('외부 영상','External media');
+ const description=document.createElement('p');description.textContent=t('허용하면 YouTube·Instagram에 연결됩니다.','Allow to connect to YouTube and Instagram.');
  copy.append(title,description);
  const actions=document.createElement('div');actions.className='consent-actions';
  const policy=document.createElement('a');
  const policyLink=Array.from(document.querySelectorAll('.privacy-controls a')).find(link=>/\/(?:en\/)?privacy\/$/.test(link.getAttribute('href')||''));
- policy.href=policyLink?.getAttribute('href')||(en?'/en':'')+'/privacy/';policy.textContent=t('개인정보처리방침','Privacy policy');
- const reject=document.createElement('button');reject.type='button';reject.textContent=t('외부 영상 차단','Block external media');
- const accept=document.createElement('button');accept.type='button';accept.textContent=t('외부 영상 허용','Allow external media');
- actions.append(policy,reject,accept);banner.append(copy,actions);document.body.append(banner);
+ policy.href=policyLink?.getAttribute('href')||(en?'/en':'')+'/privacy/';policy.textContent=t('자세히','Details');policy.setAttribute('aria-label',t('개인정보처리방침 보기','Read the privacy policy'));
+ const reject=document.createElement('button');reject.type='button';reject.textContent=t('차단','Block');reject.setAttribute('aria-label',t('외부 영상 차단','Block external media'));
+ const accept=document.createElement('button');accept.type='button';accept.className='consent-allow';accept.textContent=t('허용','Allow');accept.setAttribute('aria-label',t('외부 영상 허용','Allow external media'));
+ const dismiss=document.createElement('button');dismiss.type='button';dismiss.className='consent-dismiss';dismiss.textContent=t('닫기','Close');dismiss.setAttribute('aria-label',t('선택을 바꾸지 않고 외부 영상 설정 닫기','Close external media settings without changing your choice'));
+ actions.append(policy,reject,accept,dismiss);banner.append(copy,actions);document.body.append(banner);
  function notify(){
   window.dispatchEvent(new CustomEvent('d9:external-consent',{detail:{value:choice,canLoadMedia:choice==='granted'}}));
   window.dispatchEvent(new CustomEvent('d9:analytics-consent',{detail:{value:'denied'}}));
@@ -125,6 +127,9 @@
   returnFocus?.focus();
  }
  function showSettings(opener){returnFocus=opener||null;banner.hidden=false;reject.focus();}
+ function closeSettings(){banner.hidden=true;returnFocus?.focus();}
+ dismiss.addEventListener('click',closeSettings);
+ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!banner.hidden){event.preventDefault();closeSettings();}});
  reject.addEventListener('click',()=>save('denied'));accept.addEventListener('click',()=>save('granted'));
  document.addEventListener('click',event=>{
   const settings=event.target.closest?.('[data-cookie-settings]');
@@ -135,10 +140,12 @@
  window.D9AnalyticsConsent=Object.freeze({get:()=> 'denied'});
  window.addEventListener('storage',event=>{
   if(event.key!==KEY)return;const wasGranted=choice==='granted';choice=read();
-  banner.hidden=choice!==null;frames.forEach((state,frame)=>syncFrame(frame,state));notify();
+  banner.hidden=true;frames.forEach((state,frame)=>syncFrame(frame,state));notify();
   if(wasGranted&&choice!=='granted')location.reload();
  });
- clearLegacy();choice=read();banner.hidden=choice!==null;prepare();notify();
+ // Request permission inside the video slot. Open the page-wide settings bar
+ // only when the visitor explicitly uses the footer settings control.
+ clearLegacy();choice=read();prepare();notify();
  if(typeof MutationObserver==='function')new MutationObserver(records=>{
   records.forEach(record=>record.addedNodes.forEach(node=>{if(node.nodeType===1)prepare(node);}));
  }).observe(document.body,{childList:true,subtree:true});
