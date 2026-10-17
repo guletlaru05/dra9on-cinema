@@ -10,7 +10,7 @@
  }[lang];
  if(!('serviceWorker'in navigator)||!window.isSecureContext)return;
  const register=()=>navigator.serviceWorker.register(base+'/sw.js',{scope:base+'/',updateViaCache:'none'});
- const registration=register().catch(()=>null);
+ const registration=register().then(()=>navigator.serviceWorker.ready).catch(()=>null);
  // Private pages get the generic offline fallback but no subscription controls.
  if(location.pathname.startsWith(base+'/library/'))return;
  const standalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
