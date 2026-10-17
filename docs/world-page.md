@@ -26,12 +26,11 @@ The owner confirmed Min Seo-a is the sole lead. Iseo, Yeonhwa, Yuna and the
 other seven supporting roles appear in a separate supporting section.
 Han is a male 707 assault operator. Kim handles medical support and communications.
 
-Twelve episode cards cover S1 EP.1–6 and S2 EP.1–6. The 21 additional assets
+Twelve episode cards cover S1 EP.1–6 and S2 EP.1–6. The 20 additional assets
 are recorded in `site-assets/assets/world/manifest.json`, with actual output
 dimensions and footage timestamp/crop. Yuna's portrait uses the exact scene
 selected by the owner (S2 EP.6 at 920 seconds), recropped from the original video
-instead of enlarging the small supplied screenshot. Her larger action still
-uses S2 EP.6 at 545 seconds, without showing an outcome. No new images were
+instead of enlarging the small supplied screenshot. The owner requested that the extra action still be removed; only the selected portrait remains. No new images were
 generated for this update.
 
 The portrait relationship explorer uses native disclosure controls, grouped by
