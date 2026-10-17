@@ -28,6 +28,8 @@ SERVICES = (
     ('영상 제작 협업', '기획·캐릭터·프리비즈부터 연출·편집까지 함께합니다.'),
 )
 
+CPP_PROGRAMS = ('Dreamina', 'Higgsfield', 'OpenArt')
+
 CASES = (
     {
         'name': 'Newtake',
@@ -42,6 +44,20 @@ CASES = (
         'title': '스승을 잘못 만난 염력소녀',
         'description': '캐릭터와 초능력 액션을 결합한 짧은 장르 드라마.',
         'url': 'https://www.instagram.com/reel/Dcsxt2LRC1d/',
+    },
+    {
+        'name': 'Higgsfield CPP',
+        'type': '크리에이터 프로그램',
+        'title': '지하철 참교육',
+        'description': '지하철 공간을 배경으로 연출한 액션 숏필름.',
+        'url': 'https://www.instagram.com/reel/DeAJ-h_SdDw/',
+    },
+    {
+        'name': 'OpenArt CPP',
+        'type': '크리에이터 프로그램',
+        'title': '먹동이 공놀이',
+        'description': '공놀이가 우주까지 이어지는 캐릭터 판타지 숏필름.',
+        'url': 'https://www.instagram.com/reel/DcvvFWvJupa/',
     },
     {
         'name': 'bbanana AI',
@@ -87,6 +103,7 @@ def render_collaboration(icon):
         f'<div><h3>{esc(title)}</h3><p>{esc(description)}</p></div>'
         for title, description in SERVICES
     )
+    programs = ''.join(f'<li>{esc(name)} <span>CPP</span></li>' for name in CPP_PROGRAMS)
     cases = ''.join(
         '<li><a class="collaboration-case" '
         f'href="{esc(item["url"])}" target="_blank" rel="noopener noreferrer">'
@@ -115,6 +132,10 @@ def render_collaboration(icon):
     <p class="collaboration-brief">브랜드·제작 목적·희망 형식·일정·예산 범위를 알려주시면 제안을 검토하는 데 도움이 됩니다.</p>
   </div>
 </div>
+<div class="collaboration-programs" aria-labelledby="collaboration-programs-title">
+  <h3 id="collaboration-programs-title">참여 크리에이터 프로그램 · CPP</h3>
+  <ul>{programs}</ul>
+</div>
 <div class="collaboration-audience">
   <p class="collaboration-small-label">이야기가 만나는 관객</p>
   <dl class="collaboration-stats">{stats}</dl>
@@ -137,6 +158,7 @@ TRANSLATIONS = {
     '협업 제안 보내기': 'Discuss a project',
     '브랜드·제작 목적·희망 형식·일정·예산 범위를 알려주시면 제안을 검토하는 데 도움이 됩니다.': 'Please include your brand, project goal, format, schedule and budget range so we can review your proposal.',
     '이야기가 만나는 관객': 'THE AUDIENCE BEHIND THE STORIES',
+    '참여 크리에이터 프로그램 · CPP': 'CREATOR PROGRAM PARTICIPATION · CPP',
     '1.38만': '13.8K',
     '9.4만': '94K',
     '7.3만': '73K',
@@ -155,6 +177,10 @@ TRANSLATIONS = {
     '크리에이터 프로그램': 'Creator program',
     '스승을 잘못 만난 염력소녀': 'The Telekinetic Girl with the Wrong Master',
     '캐릭터와 초능력 액션을 결합한 짧은 장르 드라마.': 'A short genre drama combining character storytelling and supernatural action.',
+    '지하철 참교육': 'Subway Showdown',
+    '지하철 공간을 배경으로 연출한 액션 숏필름.': 'An action short film staged in a subway setting.',
+    '먹동이 공놀이': 'Mukdong’s Ball Game',
+    '공놀이가 우주까지 이어지는 캐릭터 판타지 숏필름.': 'A character-led fantasy short that takes a ball game into outer space.',
     '도구 활용 사례': 'Tool workflow showcase',
     'AI 에이전트로 만든 막장 드라마': 'A Wild Drama Made with an AI Agent',
     'MCP를 연결해 이미지부터 영상까지 제작한 워크플로 실험.': 'An MCP workflow experiment, from generated images to the finished video.',
