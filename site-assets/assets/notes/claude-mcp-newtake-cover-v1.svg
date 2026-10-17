@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Claude, MCP, Newtake: one brief, four shots</title>
+  <desc id="desc">A workflow diagram, not generated video footage. Claude sends a brief through MCP to Newtake, producing a wide shot, a tracking shot, a close-up and an over-the-shoulder view of one protagonist looking out over the city.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#18191b"/><stop offset="1" stop-color="#101011"/></linearGradient>
+    <linearGradient id="panel" x2="0" y2="1"><stop stop-color="#22252a"/><stop offset="1" stop-color="#141619"/></linearGradient>
+    <linearGradient id="night" x2="1" y2="0"><stop stop-color="#1b242d"/><stop offset="1" stop-color="#171b20"/></linearGradient>
+    <linearGradient id="edge" x2="1" y2="0"><stop stop-color="#ed233a"/><stop offset="1" stop-color="#9e2130" stop-opacity="0"/></linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#fff" stroke-opacity=".025"/></pattern>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="6" refY="3.5" orient="auto"><path d="M0 0 7 3.5 0 7" fill="none" stroke="#ed233a" stroke-width="1.4"/></marker>
+    <marker id="softArrow" markerWidth="9" markerHeight="9" refX="6" refY="3.5" orient="auto"><path d="M0 0 7 3.5 0 7" fill="none" stroke="#c7cbd1" stroke-width="1.3"/></marker>
+    <clipPath id="a"><rect x="80" y="493" width="342" height="226" rx="3"/></clipPath>
+    <clipPath id="b"><rect x="446" y="493" width="342" height="226" rx="3"/></clipPath>
+    <clipPath id="c"><rect x="812" y="493" width="342" height="226" rx="3"/></clipPath>
+    <clipPath id="d"><rect x="1178" y="493" width="342" height="226" rx="3"/></clipPath>
+    <g id="person" fill="#2e3740" stroke="#8c98a3" stroke-width="1.4"><circle cx="0" cy="-43" r="10"/><path d="M-12-25Q0-32 12-25L17 11H-17Z"/><path d="M-12-22-23 9M12-22 23 9M-9 11-11 44M9 11 11 44" fill="none" stroke-width="4" stroke-linecap="round"/></g>
+    <g id="camera" fill="none" stroke="#d0d3d7" stroke-width="1.5"><rect x="0" y="0" width="22" height="15" rx="2"/><path d="m22 4 9-4v15l-9-4M6 15l-5 10m10-10 6 10"/></g>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <rect x="80" y="64" width="40" height="4" fill="#ed233a"/>
+  <text x="135" y="72" fill="#d7d7dc" font-family="Bahnschrift,Arial,sans-serif" font-size="17" letter-spacing="4">DRA9ON CINEMA / FIELD NOTES</text>
+  <text x="1520" y="72" text-anchor="end" fill="#868991" font-family="Consolas,monospace" font-size="15" letter-spacing="2">TUTORIAL  /  WORKFLOW</text>
+  <text x="75" y="178" fill="#f3f1ec" font-family="Bahnschrift,Arial,sans-serif" font-weight="600" font-size="72" letter-spacing="-1">ONE BRIEF.</text>
+  <text x="487" y="178" fill="#ed233a" font-family="Bahnschrift,Arial,sans-serif" font-weight="600" font-size="72" letter-spacing="-1">FOUR SHOTS.</text>
+  <text x="82" y="222" fill="#a0a4ac" font-family="Bahnschrift,Arial,sans-serif" font-size="24">Plan the scene. Connect the tools. Keep the direction.</text>
+  <path d="M80 261H1520" stroke="#ffffff" stroke-opacity=".13"/>
+
+  <g font-family="Bahnschrift,Arial,sans-serif">
+    <text x="80" y="302" fill="#7b8089" font-size="13" letter-spacing="3">01 / DIRECTION</text>
+    <text x="80" y="352" fill="#f3f1ec" font-size="40" font-weight="600">CLAUDE</text>
+    <text x="82" y="382" fill="#959aa4" font-size="18">Brief + shot plan</text>
+    <path d="M285 340H389" stroke="#ed233a" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="447" y="302" fill="#7b8089" font-size="13" letter-spacing="3">02 / CONNECTION</text>
+    <text x="446" y="352" fill="#f3f1ec" font-size="40" font-weight="600">MCP</text>
+    <text x="448" y="382" fill="#959aa4" font-size="18">Tools + instructions</text>
+    <path d="M600 340H755" stroke="#ed233a" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="813" y="302" fill="#7b8089" font-size="13" letter-spacing="3">03 / PRODUCTION</text>
+    <text x="812" y="352" fill="#f3f1ec" font-size="40" font-weight="600">NEWTAKE</text>
+    <text x="814" y="382" fill="#959aa4" font-size="18">Reference + generation</text>
+    <path d="M1055 340H1121" stroke="#ed233a" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="1179" y="302" fill="#7b8089" font-size="13" letter-spacing="3">04 / SEQUENCE</text>
+    <text x="1178" y="352" fill="#f3f1ec" font-size="40" font-weight="600">4 SHOTS</text>
+    <text x="1180" y="382" fill="#959aa4" font-size="18">One continuous scene</text>
+  </g>
+  <path d="M80 427H1520" stroke="#fff" stroke-opacity=".13"/>
+  <text x="80" y="464" fill="#a9aeb7" font-family="Consolas,monospace" font-size="14" letter-spacing="2">SHOT GRAMMAR</text>
+  <text x="1520" y="464" text-anchor="end" fill="#737983" font-family="Consolas,monospace" font-size="13" letter-spacing="1">SCHEMATIC / NOT GENERATED FOOTAGE</text>
+
+  <g clip-path="url(#a)">
+    <rect x="80" y="493" width="342" height="226" fill="url(#night)"/>
+    <g fill="none" stroke="#697784" stroke-opacity=".54" stroke-width="1">
+      <path d="M80 675h342M251 608 95 719m156-111 155 111m-155-111-68 111m68-111 67 111M80 693h342M80 710h342"/>
+      <path d="M80 642v-70h39v70m0 0v-102h54v102m0 0v-56h31v56m86 0v-77h37v77m0 0V528h54v114m0 0v-62h41v62"/>
+      <path d="M129 552h34m-34 12h34m-34 12h34m-34 12h34m176-48h28m-28 14h28m-28 14h28m-28 14h28m-28 14h28" stroke-opacity=".45"/>
+    </g>
+    <use href="#person" transform="translate(254 652) scale(.65)"/>
+    <path d="M102 515h20m-20 0v20m298-20h-20m20 0v20m-298 162h20m-20 0v-20m298 20h-20m20 0v-20" fill="none" stroke="#e0d9cd" stroke-opacity=".6"/>
+    <path d="M248 587h12m-6-6v12" stroke="#ed233a" stroke-opacity=".8"/>
+  </g>
+  <rect x="80" y="493" width="342" height="226" rx="3" fill="none" stroke="#fff" stroke-opacity=".15"/>
+
+  <g clip-path="url(#b)">
+    <rect x="446" y="493" width="342" height="226" fill="url(#night)"/>
+    <g fill="none" stroke="#697784" stroke-width="1" stroke-opacity=".5">
+      <path d="M446 675h342m-342 21h342m-342 19h342M446 642v-70h34v70m0 0V529h54v113m0 0v-48h30v48m130 0v-86h31v86m0 0V518h63v124"/>
+      <path d="M491 542h32m-32 12h32m-32 12h32m-32 12h32m212-46h40m-40 14h40m-40 14h40m-40 14h40m-40 14h40"/>
+    </g>
+    <g transform="translate(622 637) scale(.95)"><use href="#person"/><path d="M-9 11-25 42M9 11l24 23" fill="none" stroke="#abb5bf" stroke-width="4" stroke-linecap="round"/></g>
+    <path d="M468 558h65m-59 15h42m216 68h34m-42 15h27" stroke="#b9bec6" stroke-opacity=".4"/>
+    <use href="#camera" transform="translate(471 689) scale(.7)"/>
+    <path d="M511 699H749" stroke="#c7cbd1" stroke-opacity=".8" stroke-width="1.3" marker-end="url(#softArrow)"/>
+    <path d="M605 588h35v81h-35z" fill="none" stroke="#ed233a" stroke-opacity=".55" stroke-dasharray="4 5"/>
+  </g>
+  <rect x="446" y="493" width="342" height="226" rx="3" fill="none" stroke="#fff" stroke-opacity=".15"/>
+
+  <g clip-path="url(#c)">
+    <rect x="812" y="493" width="342" height="226" fill="url(#panel)"/>
+    <g fill="none" stroke="#607282" stroke-opacity=".2"><path d="M812 641v-89h56v89m0 0v-118h42v118m160 0V529h47v112m0 0v-79h37v79"/><path d="M827 567h28m-28 15h28m-28 15h28m221-52h24m-24 14h24m-24 14h24"/></g>
+    <path d="M880 719Q882 673 931 656L947 630h73l15 26q49 17 51 63" fill="#2a343e" stroke="#8895a2" stroke-width="1.5"/>
+    <path d="M933 566q0-51 49-51t49 51l-5 38q-6 35-44 46-38-11-44-46Z" fill="#303a43" stroke="#9ca7b0" stroke-width="1.5"/>
+    <path d="M932 565q-1-51 48-51 47-4 52 48-30-2-39-30-20 29-61 33Z" fill="#171d23" stroke="#6d7e8d" stroke-width="1.2"/>
+    <path d="M947 582h20m30 0h20m-35 1-5 27h12m-25 15q18 7 36-1" fill="none" stroke="#abb6be" stroke-width="1.5"/>
+    <path d="M836 518h25m-25 0v25m294-25h-25m25 0v25m-294 152h25m-25 0v-25m294 25h-25m25 0v-25" fill="none" stroke="#e0d9cd" stroke-opacity=".6"/>
+    <path d="M938 582h88" stroke="#ed233a" stroke-opacity=".45" stroke-dasharray="3 5"/>
+  </g>
+  <rect x="812" y="493" width="342" height="226" rx="3" fill="none" stroke="#fff" stroke-opacity=".15"/>
+
+  <g clip-path="url(#d)">
+    <rect x="1178" y="493" width="342" height="226" fill="url(#night)"/>
+    <g fill="none" stroke="#697784" stroke-opacity=".45"><path d="M1178 665h342m-342 27h342m-342 24h342m-342-70v-92h57v92m0 0v-123h40v123m132 0v-97h52v97m0 0v-113h61v113"/><path d="M1189 568h33m-33 14h33m-33 14h33m197-33h29m-29 14h29m-29 14h29"/></g>
+    <g fill="#202a33" stroke="#8b99a7" stroke-width="1.2" stroke-opacity=".8"><path d="M1345 665v-100h42v100m0 0V537h48v128m0 0v-79h30v79"/><path d="M1355 577h22m-22 14h22m-22 14h22m-22 14h22m32-68h28m-28 14h28m-28 14h28m-28 14h28m-28 14h28" fill="none" stroke-opacity=".5"/></g>
+    <path d="M1165 719q-4-64 64-83l13-31h50l12 31q64 19 74 83" fill="#151b21" stroke="#798794" stroke-width="1.5"/>
+    <path d="M1224 565q-2-46 42-46t43 46l-5 38q-8 30-38 37-30-7-37-37Z" fill="#26313b" stroke="#7a8896" stroke-width="1.4"/>
+    <path d="M1225 562q-3-43 40-45 46-2 45 49-23-3-31-23-20 21-54 19Z" fill="#161c22"/>
+    <path d="m1313 613 68-28" stroke="#ed233a" stroke-opacity=".7" stroke-width="1.3" marker-end="url(#arrow)"/>
+  </g>
+  <rect x="1178" y="493" width="342" height="226" rx="3" fill="none" stroke="#fff" stroke-opacity=".15"/>
+
+  <g font-family="Bahnschrift,Arial,sans-serif">
+    <text x="80" y="759" fill="#ed233a" font-size="15">01</text><text x="116" y="760" fill="#eeede9" font-size="26">WIDE</text>
+    <text x="80" y="790" fill="#89909a" font-size="17">Establish the space</text>
+    <text x="446" y="759" fill="#ed233a" font-size="15">02</text><text x="482" y="760" fill="#eeede9" font-size="26">TRACK</text>
+    <text x="446" y="790" fill="#89909a" font-size="17">Follow the movement</text>
+    <text x="812" y="759" fill="#ed233a" font-size="15">03</text><text x="848" y="760" fill="#eeede9" font-size="26">CLOSE</text>
+    <text x="812" y="790" fill="#89909a" font-size="17">Find the reaction</text>
+    <text x="1178" y="759" fill="#ed233a" font-size="15">04</text><text x="1214" y="760" fill="#eeede9" font-size="26">OVER-SHOULDER</text>
+    <text x="1178" y="790" fill="#89909a" font-size="17">Look out over the city</text>
+  </g>
+  <text x="800" y="626" text-anchor="middle" fill="#fff" opacity=".065" font-family="Bahnschrift,Arial,sans-serif" font-size="26" letter-spacing="12">DRA9ON CINEMA</text>
+  <path d="M80 832H1520" stroke="#fff" stroke-opacity=".12"/>
+  <text x="80" y="865" fill="#8b9098" font-family="Consolas,monospace" font-size="14" letter-spacing="2">CLAUDE × MCP × NEWTAKE</text>
+  <text x="1520" y="865" text-anchor="end" fill="#707680" font-family="Consolas,monospace" font-size="14">dra9oncinema.com / tutorials</text>
+</svg>

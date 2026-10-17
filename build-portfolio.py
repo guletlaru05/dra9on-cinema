@@ -209,6 +209,10 @@ for page in out.rglob('*.html'):
  private_library = page.relative_to(out).as_posix() in ['library/index.html','questions/index.html','en/questions/index.html']
  auth_scripts = " https://apis.google.com" if private_library else ""
  auth_connections = " https://dra9on-cinema-stats.firebaseapp.com" if private_library else ""
+ # This article alone embeds the owner's supplied Instagram Reel. Keep the
+ # permitted frame URL exact; no Instagram script or connection origins.
+ newtake_article = page.relative_to(out).as_posix() in ['tutorials/claude-mcp-newtake/index.html','en/tutorials/claude-mcp-newtake/index.html']
+ instagram_frame = " https://www.instagram.com/reel/DelRHYDunY-/embed/" if newtake_article else ""
  policy="; ".join([
   "default-src 'self'",
   "script-src 'self' https://www.gstatic.com/firebasejs/ https://www.gstatic.com/recaptcha/ https://www.google.com/recaptcha/ https://www.youtube.com https://www.googletagmanager.com "+' '.join(inline_hashes)+auth_scripts,
@@ -218,7 +222,7 @@ for page in out.rglob('*.html'):
   "img-src 'self' data: https:",
   "media-src 'self'",
   "connect-src 'self' https://content-firebaseappcheck.googleapis.com https://firebaseappcheck.googleapis.com https://www.google.com/recaptcha/ https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebaseinstallations.googleapis.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com"+auth_connections,
-  "frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/ https://www.youtube-nocookie.com https://www.youtube.com https://dra9on-cinema-stats.firebaseapp.com",
+  "frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/ https://www.youtube-nocookie.com https://www.youtube.com https://dra9on-cinema-stats.firebaseapp.com"+instagram_frame,
   "object-src 'none'", "base-uri 'none'", "form-action 'none'",
   "upgrade-insecure-requests"
  ])

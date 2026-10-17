@@ -55,6 +55,14 @@ python verify-site.py --origin https://guletlaru05.github.io --base-path /dra9on
 
 ## 수정할 파일
 
+### Claude · MCP · Newtake 튜토리얼
+
+`/tutorials/claude-mcp-newtake/`와 `/en/tutorials/claude-mcp-newtake/`는 `tutorial-content/`의 한·영 Markdown 원고를 사용합니다. 제목·설명·날짜·태그는 각 원고의 frontmatter에서 읽습니다. 홈페이지와 튜토리얼 목록의 첫 카드, 언어 전환 링크와 사이트맵은 기존 빌드에 연결되어 있습니다.
+
+한국어 원고는 제공받은 문장을 그대로 보존합니다. 원고를 편집할 때만 개발 환경의 `markdown-it-py`로 `python prepare-newtake-tutorial.py`를 실행해 HTML 조각과 해시 manifest를 함께 갱신하세요. 배포 빌드는 추가 패키지 없이 원고·HTML 해시를 검사하며, 원고와 조각이 다르면 실패합니다. 본문은 `newtake_tutorial.py`, 표·코드의 모바일 표시는 `site-assets/newtake-tutorial.css`에서 처리합니다.
+
+결과 릴스는 지정된 Instagram URL을 직접 임베드하며 해당 두 페이지에만 CSP 프레임 허용을 추가합니다. 하단 Newtake 링크는 `target="_blank" rel="sponsored noopener"`를 유지합니다. 목록·공유 이미지는 실제 생성 영상 캡처로 오인하지 않도록 제작 흐름 도식으로 구분합니다.
+
 ### 협업 문의
 
 홈의 `/#collaboration`과 영어 `/en/#collaboration`에 제작 분야, 공개 제작 사례, 이메일 의뢰 항목을 안내합니다. 모든 공개 페이지의 메뉴·푸터와 프로필용 `/links/`에서 연결됩니다. `collaboration.py`의 `STATS`, `CASES`, `UPDATED_AT`와 `site-assets/collaboration.css`를 관리하세요.

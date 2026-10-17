@@ -1,0 +1,14 @@
+{
+  "ko": {
+    "body_sha256": "6cfc4f128709624ca1807cdda45f07105c6c424e734ff95690b7a9e261691095",
+    "html_sha256": "b3705957790cf9e272999176c3dfb869d4c22247e98fda98e593f6c34378ff42",
+    "tables": 2,
+    "code_blocks": 2
+  },
+  "en": {
+    "body_sha256": "3f347655b19f42efd307ecd013d2d029ea55071b2a17c90bb8697a29c58c201f",
+    "html_sha256": "9a2b0c90d16e8cdb744616919c713185ec651ca472e6ec4aef0a8f0a5563fe63",
+    "tables": 2,
+    "code_blocks": 2
+  }
+}
