@@ -31,13 +31,14 @@ export function validateWorkspace(value){
 export function archiveReferences(payload){
  return (payload.items||[]).map((r,index)=>({id:'archive:'+index,title:r.title,body:[r.body,...(r.sections||[]).map(s=>s.text)].join('\n'),prompts:r.prompt?[r.prompt]:[],url:r.links?.[0]?.url||'',source_type:'개인 자료실',tags:r.categories||[],models:r.tools||[]}));
 }
-const THEMES=[['카메라',/구도|앵글|카메라|원경|중경|근경|lens|camera|framing/i],['조명',/조명|빛|명암|역광|light|shadow/i],['캐릭터 일관성',/인물|얼굴|캐릭터|일관|시트|character|face|identity/i],['액션',/액션|추격|전투|싸움|뛰|달리|fight|chase|action/i],['분위기',/분위기|미감|색|질감|시네마틱|영화|cinematic|mood|texture/i]];
+const THEMES=[['카메라',/구도|앵글|카메라|원경|중경|근경|lens|camera|framing/i],['조명',/조명|빛|명암|역광|light|shadow/i],['캐릭터 일관성',/캐릭터|일관|시트|character|identity/i],['액션',/액션|추격|전투|싸움|뛰|달리|fight|chase|action/i],['분위기',/분위기|미감|색|질감|시네마틱|영화|cinematic|mood|texture/i]];
 export function searchReferences(scene,documents,{tags=[],model='',limit=5}={}){
  const query=words(scene).filter(x=>x.length>1),themes=THEMES.filter(([,rx])=>rx.test(scene)).map(([tag])=>tag);
  return documents.filter(d=>d.language!=='en').map(d=>{
   const title=String(d.title||'').toLowerCase(),body=[d.body,...d.prompts||[],...d.tags||[]].join(' ').toLowerCase();
   let score=query.reduce((sum,w)=>sum+(title.includes(w)?8:0)+(body.includes(w)?1:0),0);
   score+=themes.filter(t=>(d.tags||[]).includes(t)).length*2;
+  score+=THEMES.filter(([tag,rx])=>themes.includes(tag)&&rx.test(title)).length*12;
   if(tags.length&&!tags.every(t=>(d.tags||[]).includes(t)))score=0;
   if(score>0&&model&&body.includes(model.toLowerCase()))score+=2;
   return {...d,score};

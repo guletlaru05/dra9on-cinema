@@ -1,4 +1,4 @@
-import {TAGS,validateWorkspace,archiveReferences,searchReferences,compileDraft,exportWorkspace} from './workspace-core.js';
+import {TAGS,validateWorkspace,archiveReferences,searchReferences,compileDraft,exportWorkspace} from './workspace-core.js?v=20261018-workspace2';
 const $=id=>document.getElementById(id);
 const element=(tag,text,className)=>{const node=document.createElement(tag);if(text!=null)node.textContent=text;if(className)node.className=className;return node;};
 const now=()=>new Date().toISOString();
