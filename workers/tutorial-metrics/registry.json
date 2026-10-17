@@ -79,6 +79,10 @@
     "canonicalPath": "/tutorials/",
     "type": "page"
   },
+  "/en/fall-707/world/": {
+    "canonicalPath": "/fall-707/world/",
+    "type": "page"
+  },
   "/en/notes/fall-707-beginnings/": {
     "canonicalPath": "/notes/fall-707-beginnings/",
     "type": "page"
@@ -231,6 +235,10 @@
     "canonicalPath": "/press/",
     "type": "page"
   },
+  "/es/fall-707/world/": {
+    "canonicalPath": "/fall-707/world/",
+    "type": "page"
+  },
   "/es/watch/fall-707-s1-ep1/": {
     "canonicalPath": "/watch/fall-707-s1-ep1/",
     "type": "page"
@@ -299,12 +307,20 @@
     "canonicalPath": "/watch/film-hoFQL2ON9m4/",
     "type": "page"
   },
+  "/fall-707/world/": {
+    "canonicalPath": "/fall-707/world/",
+    "type": "page"
+  },
   "/ja/fall-707/": {
     "canonicalPath": "/fall-707/",
     "type": "page"
   },
   "/ja/press/": {
     "canonicalPath": "/press/",
+    "type": "page"
+  },
+  "/ja/fall-707/world/": {
+    "canonicalPath": "/fall-707/world/",
     "type": "page"
   },
   "/ja/watch/fall-707-s1-ep1/": {

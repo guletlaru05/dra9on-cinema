@@ -101,6 +101,7 @@ for season in reversed(season_numbers):
  title='모든 이야기의 시작, 시즌 1' if season==1 else f'FALL 707 · 시즌 {season}'
  subtitle={2:'THE STORY CONTINUES',3:'THE FORBIDDEN DOOR'}.get(season,'FALL 707 : REBOOT')
  main+=shelf(shelf_id,title,subtitle,season_works[season])
+main+='<div class="series-world-link"><a class="text-button" href="/fall-707/world/">FALL 707 세계관 살펴보기 →</a></div>'
 main+=shelf('binge-watch','FALL 707 몰아보기','FULL MOVIES',[v for v in works if v['category']=='full'])
 main+=shelf('soundtracks','낙하 707 · OST','THE MUSIC OF FALL 707',[v for v in works if v['category']=='ost'])
 main+=shelf('originals','세계관은 계속 넓어진다','MORE FROM DRA9ON CINEMA',[v for v in works if v['category']=='original'])+shelf('more-cuts','예고편','TRAILERS',[v for v in works if v['category']=='trailer'])
@@ -148,6 +149,8 @@ from presskit import build_press
 build_press(out, origin, works, data, head, header, footer)
 from international import build_series_index, build_languages
 build_series_index(out,origin,works,head,header,footer)
+from world import build_world
+build_world(out,origin,head,header,footer)
 localize_site(out, works, origin, base_path)
 build_languages(out,origin,works,data,head,header,footer,base_path)
 # Public ownership proof for the owner's Google and Naver webmaster properties.
@@ -159,7 +162,7 @@ for homepage in ('index.html', 'en/index.html'):
  page = out / homepage
  document = page.read_text(encoding='utf-8')
  page.write_text(document.replace('</head>', verification_tag + '</head>', 1), encoding='utf-8')
-print('Built Korean and English routes with versioned assets.')
+print('Built public routes in Korean, English, Japanese and Spanish with versioned assets.')
 
 (out / '.nojekyll').touch()
 

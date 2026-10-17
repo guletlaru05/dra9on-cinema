@@ -94,7 +94,7 @@ OpenArt CPP 선정 이력은 제작자가 알려준 2026년 8월·9월로 표시
 | 검색·재생·찜 동작 | `site-assets/portfolio.js` |
 | 썸네일·메인 이미지 | `site-assets/assets/portfolio/` |
 
-`dist/`는 빌드 결과이며 직접 수정하거나 커밋하지 않습니다. 현재 기본 영상 목록은 2026-10-15 시즌 3 1화까지 수동 반영한 데이터입니다. 새 회차·시즌과 공식 통계를 하루 한 번 동기화할 빌드 코드는 준비되어 있지만, 2026-10-17 현재 YouTube API 약관·키 설정이 완료되지 않아 실제 자동 동기화는 활성화되지 않았습니다. 연결 전에는 수동 데이터를 유지하며 API 수치를 만들지 않습니다. 연결 후에도 수동 제목·소개·썸네일을 우선 보존하고 영상 ID로 중복을 제거합니다. 영상 자막·더빙은 생성하지 않으며 자막 선택은 YouTube 플레이어의 CC와 설정에서 제공합니다.
+`dist/`는 빌드 결과이며 직접 수정하거나 커밋하지 않습니다. 2026-10-17 YouTube Data API v3를 활성화하고 API 전용 제한 키를 GitHub Actions의 암호화된 비밀값에 연결했습니다. 키는 소스와 공개 사이트에 포함하지 않습니다. 하루 1회 공개 영상·통계를 갱신하며, 수동 제목·소개·썸네일을 우선 보존하고 영상 ID로 중복을 제거합니다. 조회수·구독자 수는 API 문자열 그대로 표시합니다. 영상 자막·더빙은 생성하지 않으며 자막 선택은 YouTube 플레이어의 CC와 설정에서 제공합니다.
 
 검색 노출과 순위는 검색엔진이 결정합니다. 실제 공개 후 Search Console에서 소유권을 확인하고 `sitemap.xml`을 제출할 수 있습니다.
 
@@ -113,11 +113,21 @@ Cloudflare Web Analytics is the selected free, cookie-free provider. On 2026-10-
 
 Tutorial lists default to newest, with an optional actual-view ranking. The homepage shows up to three tutorials that have recorded views; before real collection begins no popularity is invented. Every public tutorial prompt block gains a copy button; only a successful clipboard write records a copy. The same canonical tutorial combines Korean and English totals. `/summary`, `/daily` and `/weekly` expose numeric public aggregates; new public pages are registered from each build. The private library is excluded.
 
-External YouTube/Instagram frames arrive without a `src`. `site-assets/consent.js` displays a slim bottom bar and per-video load controls, loading frames only after external-media permission. All YouTube frames use `youtube-nocookie.com`; this does not promise third parties use no cookies after interaction. Media choices expire after 180 days and can be withdrawn using the footer. Firebase authentication and reCAPTCHA remain protected behind explicit board/library activation, independent of analytics or media permission. See `docs/privacy-migration.md`. Privacy pages: `/privacy/` and `/en/privacy/`.
+External YouTube/Instagram frames arrive without a `src`. `site-assets/consent.js` shows per-video load controls. The slim settings bar opens only when the visitor chooses the footer settings button; it does not open automatically. All YouTube frames use `youtube-nocookie.com`; this does not promise third parties use no cookies after interaction. Media choices expire after 180 days and can be withdrawn using the footer. Firebase authentication and reCAPTCHA remain protected behind explicit board/library activation, independent of analytics or media permission. See `docs/privacy-migration.md`. Privacy pages: `/privacy/` and `/en/privacy/`.
 
 ## Daily YouTube metadata
 
-The synchronization code and daily Pages schedule are ready, but **live YouTube API synchronization is not active as of 2026-10-17**: the API terms/key setup remains incomplete. When a real encrypted `YOUTUBE_API_KEY` Actions secret is configured, `youtube_sync.py` will refresh the uploads playlist and public statistics at build time, with a bounded call budget and an Actions cache. Until then, the manual catalog remains authoritative and API counts stay absent/pending. Videos merge by ID; manual copy and existing thumbnails retain priority. Explicit season/episode titles create matching season shelves and latest-episode cards. No `search.list` polling or browser API key is used. The implementation preserves exact API integer strings, including zero; YouTube itself rounds its subscriber API value, which is disclosed beside that figure. No guessed count appears when unavailable. See `docs/youtube-sync.md`.
+Live YouTube API synchronization is active as of 2026-10-17. The API-restricted key is stored only in the encrypted `YOUTUBE_API_KEY` Actions secret. `youtube_sync.py` refreshes public uploads and statistics at build time, reusing a 24-hour snapshot and a bounded call budget. Videos merge by ID; manual copy and existing thumbnails retain priority. Explicit season/episode titles create matching season shelves and latest-episode cards. No `search.list` polling or browser API key is used. Exact API integer strings, including zero, are preserved; YouTube itself rounds its subscriber API value, which is disclosed beside that figure. No guessed count appears when unavailable. See `docs/youtube-sync.md`.
+
+## Public film pages and press resources
+
+The home, FALL 707 episode guide, season video pages and press kit have Korean, English, Japanese and Spanish routes. Tutorials remain Korean/English; untranslated destinations link to actual English pages. Language switches preserve the matching route when available, with canonical URLs, hreflang and sitemap alternates. New API episodes use a local-language introductory fallback until their editorial translations are added.
+
+`/press/` includes eight actual production stills without encoded black bars, two background variants of the wordmark, exact YouTube API figures, owner-provided Instagram/Facebook figures, collaboration links and one self-contained four-language PDF. Stills retain their native image dimensions. The press kit is linked in ABOUT and the footer rather than the main menu.
+
+`/fall-707/world/` introduces the published settings, three central characters and their relationships through Seasons 1 and 2 only. Portraits are crops of actual released footage, with no AI generation or invented reveals. The source identity and frame provenance are recorded in `docs/world-page.md`.
+
+Continue watching stores only the last video ID and completed episode IDs in this browser. It hides itself when storage is blocked. Ended playback or the explicit completed button advances the recommendation; all completed episodes in a season lead to the next available season. No viewing history is sent to the server.
 
 ## Validation
 

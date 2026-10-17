@@ -8,7 +8,7 @@ from youtube_sync import exact_count
 
 ROUTES=['/press/']
 TRANSLATIONS={}
-WORLD_ENABLED=False
+WORLD_ENABLED=True
 def t(ko,en):
  TRANSLATIONS[ko]=en
  return escape(ko)

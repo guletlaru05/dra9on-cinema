@@ -26,5 +26,18 @@ class InternationalPages(unittest.TestCase):
    with Image.open(root/(record['id']+'.jpg')) as image:self.assertEqual(image.size,(record['width'],record['height']))
    self.assertLess(record['height'],record['originalFrameHeight'])
    self.assertEqual(record['width'],record['originalFrameWidth'])
+ def test_world_has_only_two_seasons_and_real_portraits(self):
+  from PIL import Image
+  for lang in ('','en/','ja/','es/'):
+   file=Path('dist')/lang/'fall-707/world/index.html'
+   source=file.read_text(encoding='utf-8')
+   self.assertNotIn('S3',source)
+   self.assertNotIn('시즌 3',source)
+   self.assertIn('world-connections',source)
+   self.assertIn('fall-707-season-1-full/',source)
+   self.assertIn('fall-707-season-2-full/',source)
+   for name in ('captain-min','prince-iseo','yeonhwa'):
+    self.assertIn(name+'.webp',source)
+    with Image.open(Path('dist/assets/press')/(name+'.webp')) as image:self.assertEqual(image.size,(540,720))
 
 if __name__=='__main__':unittest.main()
