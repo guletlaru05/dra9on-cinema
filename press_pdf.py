@@ -15,6 +15,7 @@ def build_pdf(out,data,stills):
  from site_config import ABOUT_PARAGRAPHS,CONTACT_EMAIL
  root=Path(__file__).resolve().parent
  pdfmetrics.registerFont(TTFont('D9Noto',str(root/'build-assets/fonts/NotoSansKR-Regular.ttf')))
+ pdfmetrics.registerFont(TTFont('D9NotoJP',str(root/'build-assets/fonts/NotoSansJP-Regular.ttf')))
  target=out/'assets/press/dra9on-cinema-press-kit.pdf'
  doc=SimpleDocTemplate(str(target),pagesize=A4,rightMargin=42,leftMargin=42,topMargin=65,bottomMargin=48,title='DRA9ON CINEMA | Press Kit',author='DRA9ON CINEMA')
  styles={
@@ -31,21 +32,26 @@ def build_pdf(out,data,stills):
   w,h=A4;c.saveState();c.setFillColor(colors.HexColor('#101011'));c.rect(0,0,w,h,fill=1,stroke=0)
   c.setFillColor(colors.HexColor('#ed233a'));c.setFont('D9Noto',9);c.drawString(42,h-32,'DRA9ON CINEMA')
   c.setFillColor(colors.HexColor('#9999a6'));c.setFont('D9Noto',7);c.drawString(42,25,'PRESS KIT / FALL 707: REBOOT');c.drawRightString(w-42,25,str(document.page));c.restoreState()
- for lang in ('ko','en'):
-  flow.extend([p('PRESS KIT / '+('한국어' if lang=='ko' else 'ENGLISH'),'eyebrow'),p('DRA9ON CINEMA','title')])
-  for paragraph in ABOUT_PARAGRAPHS[lang]:flow.append(p(paragraph))
-  flow.extend([p('채널 지표' if lang=='ko' else 'Channel figures','heading'),p('YouTube: '+str(m['youtube'] if m['youtube'] is not None else 'Pending')+' / Instagram: '+m['instagram']+' / Facebook: '+m['facebook'])])
-  flow.append(p(('YouTube API 제공값, 갱신: ' if lang=='ko' else 'YouTube API value, retrieved: ')+(m['updatedAt'] or 'Pending'),'caption'))
-  flow.append(p('Instagram·Facebook은 제작자 제공 수치이며 자동 갱신하지 않습니다. 플랫폼 간 중복 이용자를 포함합니다.' if lang=='ko' else 'Instagram and Facebook figures are creator-supplied, not automatic. Audiences can overlap.','caption'))
+ from international_content import ABOUT as LOCAL_ABOUT,SEASONS as LOCAL_SEASONS,PRESS
+ def tr(ko,en,lang):return ko if lang=='ko' else en if lang=='en' else PRESS.get(en,(en,en))[0 if lang=='ja' else 1]
+ for lang in ('ko','en','ja','es'):
+  for style in styles.values():style.fontName='D9NotoJP' if lang=='ja' else 'D9Noto'
+  flow.extend([p('PRESS KIT / '+{'ko':'한국어','en':'ENGLISH','ja':'日本語','es':'ESPAÑOL'}[lang],'eyebrow'),p('DRA9ON CINEMA','title')])
+  for paragraph in (ABOUT_PARAGRAPHS.get(lang) or LOCAL_ABOUT[lang]):flow.append(p(paragraph))
+  flow.extend([p(tr('채널 지표','Channel figures',lang),'heading'),p('YouTube: '+str(m['youtube'] if m['youtube'] is not None else 'Pending')+' / Instagram: '+m['instagram']+' / Facebook: '+m['facebook'])])
+  flow.append(p(tr('YouTube API 제공값, 갱신: ','YouTube API retrieved: ',lang)+(m['updatedAt'] or 'Pending'),'caption'))
+  flow.append(p(tr('YouTube는 API 제공값 그대로 표시하며 하루 1회 갱신합니다. Instagram·Facebook은 제작자 제공 수치이며 자동 갱신하지 않습니다. 플랫폼 간 중복 이용자를 포함합니다.','YouTube figures are shown exactly as returned by the API and refreshed daily. Instagram and Facebook figures were supplied by the creator and are not updated automatically. Audiences may overlap across platforms.',lang),'caption'))
   flow.append(PageBreak())
-  flow.extend([p('FALL 707: REBOOT / SEASONS 1-2','eyebrow'),p('시즌별 이야기' if lang=='ko' else 'The story, season by season','title')])
-  for season in SEASONS:
-   flow.extend([p('SEASON '+str(season['season']),'heading'),p(season['logline'][0 if lang=='ko' else 1]),p(season['synopsis'][0 if lang=='ko' else 1])])
+  flow.extend([p('FALL 707: REBOOT / SEASONS 1-2','eyebrow'),p({'ko':'시즌별 이야기','en':'The story, season by season','ja':'シーズンごとの物語','es':'La historia, temporada a temporada'}[lang],'title')])
+  for index,season in enumerate(SEASONS):
+   logline,synopsis=LOCAL_SEASONS[lang][index] if lang in LOCAL_SEASONS else (season['logline'][0 if lang=='ko' else 1],season['synopsis'][0 if lang=='ko' else 1])
+   flow.extend([p('SEASON '+str(season['season']),'heading'),p(logline),p(synopsis)])
   flow.append(PageBreak())
-  flow.extend([p('SELECTED WORK / CONTACT','eyebrow'),p('협업·프로그램 참여' if lang=='ko' else 'Collaborations and programs','title')])
+  flow.extend([p('SELECTED WORK / CONTACT','eyebrow'),p(tr('협업·프로그램 참여','Collaborations and creator programs',lang),'title')])
   for case in CASES:flow.extend([p(case['name'],'heading'),p(case['url'],'caption')])
-  flow.append(p('Dreamina·Higgsfield·OpenArt CPP 참여. OpenArt는 2026년 8월·9월 선정. 모든 사례가 유료 광고나 공식 제휴를 뜻하지는 않습니다.' if lang=='ko' else 'Dreamina, Higgsfield and OpenArt creator program participation. OpenArt selections: August and September 2026. Not every case is a paid advertisement or endorsement.'))
-  flow.append(p(CONTACT_EMAIL,'heading'));flow.append(p('https://dra9oncinema.com/press/','caption'));flow.append(PageBreak())
+  flow.append(p(tr('Dreamina·Higgsfield·OpenArt CPP 참여. OpenArt는 2026년 8월·9월 선정. 모든 사례가 유료 광고나 공식 제휴를 뜻하지는 않습니다.','Creator program participation: Dreamina, Higgsfield and OpenArt. OpenArt selections: August and September 2026. Participation does not imply that every example is a paid advertisement or an official endorsement.',lang)))
+  flow.append(p(CONTACT_EMAIL,'heading'));flow.append(p('https://dra9oncinema.com/'+('' if lang=='ko' else lang+'/')+'press/','caption'));flow.append(PageBreak())
+ for style in styles.values():style.fontName='D9Noto'
  for offset in range(0,len(stills),2):
   flow.append(p('PRODUCTION STILLS / '+str(offset+1)+'-'+str(min(offset+2,len(stills))),'eyebrow'))
   for s in stills[offset:offset+2]:

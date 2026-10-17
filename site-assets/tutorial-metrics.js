@@ -3,7 +3,7 @@
  'use strict';
  const meta=name=>document.querySelector('meta[name="'+name+'"]')?.content||'';
  const endpoint=meta('d9-metrics-endpoint'),path=meta('d9-metrics-path'),canonical=meta('d9-metrics-canonical');
- const en=document.documentElement.lang==='en',t=(ko,english)=>en?english:ko;
+ const en=document.documentElement.lang==='en',t=(ko,english)=>window.D9Locale?.translate(ko,english)??(en?english:ko);
  const isTutorial=meta('d9-tutorial')==='true';
  const production=['dra9oncinema.com','www.dra9oncinema.com'].includes(location.hostname);
  const noTracking=navigator.globalPrivacyControl===true||navigator.doNotTrack==='1';

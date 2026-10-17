@@ -36,14 +36,14 @@ EN_NAMES = {
     'UxrkaAvtsNI': 'Iron Revenant',
     'iVwqj1gUPDY': 'The Immortal Crazy X and the n-th Grim Reaper',
 }
-SERIES_SUMMARY = 'An AI-created Korean military fantasy drama. A modern special forces soldier finds himself in Joseon-era Korea.'
+SERIES_SUMMARY = 'An AI-created Korean military fantasy drama. A modern special forces captain finds herself in Joseon-era Korea.'
 EN_SUMMARIES = {
     '0I75_YXhMSM': 'Six months after that night, a fragile peace is interrupted when Sergeant Kim begins to show disturbing symptoms. Sergeant Han is still missing. Someone at court is watching. To find her comrade, Captain Min Seo-a faces a hidden path and a forbidden door.',
     'sFw17ZPE42A': 'She came to save her soldiers. Now they are attacking her. Follow Captain Min through Joseon-era darkness and the mystery of the black bell. Watch FALL 707: REBOOT Season 2, Episodes 1–6, in one continuous film.',
     'BwOk1ZoKJnE': 'Thirteen vocal OST tracks with subtitle-free highlights from Seasons 1 and 2, including previously unreleased AI-generated shots left out of the final episodes.',
     'F-MEc4hmxJU': 'She thought saving her comrades would end it. But the hand holding them has not let go. In the Season 2 finale, Captain Min faces a choice no commander should have to make.',
     '6Wdj9n3Pq9Q': 'An endless horde. A wounded captain, left to fight alone. A new force is about to enter the battle. Season 2, Episode 5.',
-    'bDqEJXYr2dY': SERIES_SUMMARY + ' A masked prince arrives to rescue Yeonhwa, but Min’s comrades are taken again. Captain Min turns his gun on the person who saved him. Season 2, Episode 4.',
+    'bDqEJXYr2dY': SERIES_SUMMARY + ' A masked prince arrives to rescue Yeonhwa, but Min’s comrades are taken again. Captain Min turns her gun on the person who saved her. Season 2, Episode 4.',
     'vrVGZ_HMxQs': SERIES_SUMMARY + ' Yeonhwa has been abducted, and former comrades have become enemies. Season 2, Episode 3.',
     'dGnjxL64HHY': SERIES_SUMMARY + ' Watch Season 2, Episodes 1–2 in one continuous cut.',
     '4f6Zguf7c2M': SERIES_SUMMARY + ' The complete first season in one film.',
@@ -253,6 +253,8 @@ def localize_site(out, works, origin, base_path=''):
     base_translations.update(COLLABORATION_TRANSLATIONS)
     from presskit import TRANSLATIONS as PRESS_TRANSLATIONS, ROUTES as PRESS_ROUTES
     base_translations.update(PRESS_TRANSLATIONS)
+    from international import TRANSLATIONS as SERIES_TRANSLATIONS, ROUTES as SERIES_ROUTES
+    base_translations.update(SERIES_TRANSLATIONS)
     from episode_extras import TRANSLATIONS as EPISODE_TRANSLATIONS
     base_translations.update(EPISODE_TRANSLATIONS)
     from privacy_page import TRANSLATIONS
@@ -265,7 +267,7 @@ def localize_site(out, works, origin, base_path=''):
     base_translations.update(TUTORIAL_TRANSLATIONS)
     from questions import TRANSLATIONS as QUESTION_TRANSLATIONS, ROUTES as QUESTION_ROUTES
     base_translations.update(QUESTION_TRANSLATIONS)
-    NOTE_ROUTES = [*NOTE_ROUTES, *TUTORIAL_ROUTES, *QUESTION_ROUTES, *PRESS_ROUTES]
+    NOTE_ROUTES = [*NOTE_ROUTES, *TUTORIAL_ROUTES, *QUESTION_ROUTES, *PRESS_ROUTES, *SERIES_ROUTES]
     base_translations.update(zip(ABOUT_PARAGRAPHS['ko'], ABOUT_PARAGRAPHS['en']))
     base_translations.update({OG_ALT['ko']: OG_ALT['en'],
         '상상을, 장면으로.': 'From imagination to frame.',
@@ -330,7 +332,7 @@ def localize_site(out, works, origin, base_path=''):
     asset_dir = out/'assets'/'build'
     asset_dir.mkdir(parents=True, exist_ok=True)
     assets = {}
-    for name in ['styles.css', 'portfolio.css', 'collaboration.css', 'newtake-tutorial.css', 'portfolio.js', 'catalog.js', 'en/catalog.js', 'min-stickers.js']:
+    for name in ['styles.css', 'portfolio.css', 'collaboration.css', 'editorial.css', 'newtake-tutorial.css', 'portfolio.js', 'catalog.js', 'en/catalog.js', 'min-stickers.js']:
         content = (out/name).read_bytes()
         stem, ext = name.replace('/', '-').rsplit('.', 1)
         destination = f'{stem}.{sha256(content).hexdigest()[:12]}.{ext}'

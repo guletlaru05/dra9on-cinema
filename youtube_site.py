@@ -46,7 +46,7 @@ def inject_youtube_counts(out,works,data,base_path=''):
         rel=page.relative_to(out).as_posix()
         if rel.startswith('library/'): continue
         en=rel.startswith('en/')
-        lang='en' if en else 'ko'
+        lang=rel.split('/',1)[0] if rel.startswith(('en/','ja/','es/')) else 'ko'
         source=page.read_text(encoding='utf-8')
         count=channel.get('apiSubscriberCount')
         if rel in ('index.html','en/index.html'):

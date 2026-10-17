@@ -18,7 +18,8 @@ def inject_visitor_counter(out, base_path=''):
         relative = page.relative_to(out)
         if 'library' in relative.parts:
             continue
-        english = relative.parts[0] == 'en'
+        language=relative.parts[0] if relative.parts[0] in ('en','ja','es') else 'ko'
+        english = language!='ko'
         labels = {
             'label': 'Site visit statistics' if english else '사이트 방문 통계',
             'today': 'Today’s visits' if english else '오늘 방문',
@@ -33,6 +34,9 @@ def inject_visitor_counter(out, base_path=''):
             'privacy': 'How visits are counted' if english else '집계 기준',
         }
         privacy_url = base_path + ('/en' if english else '') + '/privacy/'
+        if language in ('ja','es'):
+            from international_content import text
+            labels={key:text(value,language) for key,value in labels.items()}
         markup = (
             f'<section class="site-visitors" data-site-visitors aria-label="{labels["label"]}">'
             '<span class="site-visitors-eyebrow" aria-hidden="true">VISITORS</span>'

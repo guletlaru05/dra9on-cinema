@@ -113,8 +113,10 @@ html_files = [page for page in root.rglob('*.html') if page != library]
 from tutorials import ROUTES as TUTORIAL_ROUTES
 from questions import ROUTES as QUESTION_ROUTES
 from presskit import ROUTES as PRESS_ROUTES
-TUTORIAL_ROUTES = [*TUTORIAL_ROUTES, *QUESTION_ROUTES, *PRESS_ROUTES]
-assert len(html_files) == 2 * (video_count + 8 + len(TUTORIAL_ROUTES)), len(html_files)
+from international import ROUTES as SERIES_ROUTES, supported_routes
+translated_routes=supported_routes([{**w,'path':w['path'][len(base):]} for w in published_catalog])
+TUTORIAL_ROUTES = [*TUTORIAL_ROUTES, *QUESTION_ROUTES, *PRESS_ROUTES, *SERIES_ROUTES]
+assert len(html_files) == 2 * (video_count + 8 + len(TUTORIAL_ROUTES))+2*len(translated_routes), len(html_files)
 for path in html_files:
     source = path.read_text(encoding='utf-8')
     assert source.count('/consent.js?v=') == 1, path
@@ -128,7 +130,7 @@ for path in html_files:
     if '/questions/' in path.as_posix():
         assert any('community.js' in script.get('data-service-src','') for script in page.scripts), path
     relative = path.relative_to(root).as_posix()
-    lang = 'en' if relative.startswith('en/') else 'ko'
+    lang = relative.split('/',1)[0] if relative.startswith(('en/','ja/','es/')) else 'ko'
     assert page.lang == lang, path
     assert page.metas.get('twitter:card') == ['summary_large_image'], path
     assert len(page.metas.get('og:image', [])) == 1, path
@@ -138,7 +140,7 @@ for path in html_files:
     width, height = jpeg_size(og_file)
     assert page.metas['og:image:width'] == [str(width)], path
     assert page.metas['og:image:height'] == [str(height)], path
-    assert page.metas['og:locale'] == ['en_US' if lang == 'en' else 'ko_KR'], path
+    assert page.metas['og:locale'] == [{'ko':'ko_KR','en':'en_US','ja':'ja_JP','es':'es_ES'}[lang]], path
     contacts = [a['href'] for a in page.anchors if a.get('href', '').startswith('mailto:')]
     assert contacts and {url.split('?', 1)[0] for url in contacts} == {'mailto:' + CONTACT_EMAIL}, path
     assert not any('TODO' in a.get('href', '') for a in page.anchors), path
@@ -165,12 +167,13 @@ for path in html_files:
             assert f'{label} <strong>{channel_count}</strong>' in source, 'Raw channel subscriber count was changed'
             stamp=source_data['channel']['apiStatisticsUpdatedAt']
             assert f'<time datetime="{stamp}">{stamp}</time>' in source, 'YouTube retrieval timestamp is absent'
-    ko_relative = relative.removeprefix('en/')
+    ko_relative = re.sub(r'^(?:en|ja|es)/','',relative)
     route = '/' + ko_relative.removesuffix('index.html')
-    assert page.switches == {'ko': base + route, 'en': base + '/en' + route}, path
-    assert page.alternates == {'ko': site + route, 'en': site + '/en' + route, 'x-default': site + '/en' + route}, path
+    available=['ko','en','ja','es'] if route in translated_routes else ['ko','en']
+    assert page.switches == {code:base+('' if code=='ko' else '/'+code)+(route if code in available else '/') for code in ('ko','en','ja','es')}, path
+    assert page.alternates == {**{code:site+('' if code=='ko' else '/'+code)+route for code in available},'x-default':site+'/en'+route}, path
     if not relative.endswith('404.html'):
-        expected = site + ('/en' if lang == 'en' else '') + route
+        expected = site + ('/'+lang if lang!='ko' else '') + route
         assert page.canonical == expected, (path, page.canonical)
         assert len(page.json_chunks) == 1, path
         schema = page.json_chunks[0]
@@ -191,7 +194,7 @@ for path in html_files:
             assert 'contentUrl' not in schema, 'Use the actual embed URL, not a YouTube watch URL as a media file'
             api_views=exact_count(original.get('apiViewCount'))
             if api_views is not None:
-                label='YouTube views' if lang=='en' else 'YouTube 조회수'
+                label={'ko':'YouTube 조회수','en':'YouTube views','ja':'YouTube再生回数','es':'Reproducciones de YouTube'}[lang]
                 assert f'{label} <strong>{api_views}</strong>' in source, 'Raw episode view count was changed or missing'
     assert 'about-identity' not in source and 'avatar.jpg' not in source, path
 
@@ -283,7 +286,7 @@ for ko, en in zip(*catalogs):
     assert ko['name'] in en['searchText'] and en['name'] in ko['searchText']
 
 sitemap = ET.parse(root / 'sitemap.xml').getroot()
-assert len(sitemap) == 2 * (video_count + 7 + len(TUTORIAL_ROUTES))
+assert len(sitemap) == 2 * (video_count + 7 + len(TUTORIAL_ROUTES))+2*len(translated_routes)
 for entry in sitemap:
     local_file(entry.find('{http://www.sitemaps.org/schemas/sitemap/0.9}loc').text)
 assert (root / '.nojekyll').exists()
@@ -304,4 +307,4 @@ for page in html_files:
     assert "'unsafe-inline'" not in script_policy and "'unsafe-eval'" not in script_policy
     assert document.index('Content-Security-Policy') < document.index('<script'), page
     assert not re.search(r'\son\w+\s*=', document), f'Inline event handler blocked by CSP: {page}'
-print(f'PASS: {len(html_files)} pages, {video_count} videos per language, local assets, language switches, canonical URLs, sitemap and CSP.')
+print(f'PASS: {len(html_files)} pages, {video_count} source videos, selected routes in four languages, local assets, language switches, canonical URLs, sitemap and CSP.')
