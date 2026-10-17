@@ -4,6 +4,7 @@ from site_config import ABOUT_PARAGRAPHS, OG_ALT
 from hashlib import sha256
 from html import escape
 from html.parser import HTMLParser
+from urllib.parse import urlsplit
 import json
 import re
 
@@ -205,7 +206,8 @@ class EnglishPage(HTMLParser):
             attrs['content'] = attrs['content'].replace('/assets/og/og-ko.jpg', '/assets/og/og-en.jpg')
         if tag == 'meta' and attrs.get('property') == 'og:locale': attrs['content'] = 'en_US'
         if tag == 'script' and attrs.get('src') == '/catalog.js': attrs['src'] = '/en/catalog.js'
-        if tag == 'iframe': attrs['src'] += '&hl=en&cc_lang_pref=en'
+        if tag == 'iframe' and urlsplit(attrs.get('src', '')).hostname in ('www.youtube.com','www.youtube-nocookie.com'):
+            attrs['src'] += '&hl=en&cc_lang_pref=en'
         self.parts.append('<' + tag + ''.join(' ' + k + ('="' + escape(v, quote=True) + '"' if v is not None else '') for k, v in attrs.items()) + '>')
 
     def handle_endtag(self, tag):
@@ -239,6 +241,8 @@ def localize_site(out, works, origin, base_path=''):
         published_records = [{**record, 'path': base_path + record['path'], 'image': base_path + record['image']} for record in records]
         (out/path).write_text('window.PORTFOLIO = ' + json.dumps(published_records, ensure_ascii=False).replace('</', '<\\/') + ';\n', encoding='utf-8')
     base_translations = dict(UI)
+    from newtake_tutorial import PATH as NEWTAKE_PATH, START as NEWTAKE_START, END as NEWTAKE_END, article_html as newtake_article, TRANSLATIONS as NEWTAKE_TRANSLATIONS
+    base_translations.update(NEWTAKE_TRANSLATIONS)
     from collaboration import TRANSLATIONS as COLLABORATION_TRANSLATIONS
     base_translations.update(COLLABORATION_TRANSLATIONS)
     from episode_extras import TRANSLATIONS as EPISODE_TRANSLATIONS
@@ -279,6 +283,16 @@ def localize_site(out, works, origin, base_path=''):
         # Shield only explicit Korean sample blocks, never the surrounding UI.
         protected = {}
         parser_input = korean
+        if path == NEWTAKE_PATH:
+            # The translated manuscript is authored as a complete English text.
+            # Protect the full article from global substring translations.
+            marker = 'NEWT_AKE_COMPLETE_ARTICLE_PRESERVE'
+            pattern = re.escape(NEWTAKE_START) + r'.*?' + re.escape(NEWTAKE_END)
+            assert len(re.findall(pattern,korean,flags=re.S)) == 1
+            parser_input = re.sub(pattern,marker,korean,count=1,flags=re.S)
+            translated_article = newtake_article('en')
+            assert not re.search('[가-힣]', translated_article)
+            protected[marker] = NEWTAKE_START + translated_article + NEWTAKE_END
         if path == '/tutorials/seedance-languages/':
             def protect_sample(match):
                 key = 'LANGUAGE_SAMPLE_' + str(len(protected)) + '_PRESERVE'
@@ -308,7 +322,7 @@ def localize_site(out, works, origin, base_path=''):
     asset_dir = out/'assets'/'build'
     asset_dir.mkdir(parents=True, exist_ok=True)
     assets = {}
-    for name in ['styles.css', 'portfolio.css', 'collaboration.css', 'portfolio.js', 'catalog.js', 'en/catalog.js', 'min-stickers.js']:
+    for name in ['styles.css', 'portfolio.css', 'collaboration.css', 'newtake-tutorial.css', 'portfolio.js', 'catalog.js', 'en/catalog.js', 'min-stickers.js']:
         content = (out/name).read_bytes()
         stem, ext = name.replace('/', '-').rsplit('.', 1)
         destination = f'{stem}.{sha256(content).hexdigest()[:12]}.{ext}'

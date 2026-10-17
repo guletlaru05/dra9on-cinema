@@ -53,6 +53,7 @@ class Page(HTMLParser):
         self.metas = {}
         self.anchors = []
         self.images = []
+        self.iframes = []
         self.video_id = ''
         self.feed(source)
 
@@ -66,6 +67,8 @@ class Page(HTMLParser):
         if tag == 'img':
             assert attrs.get('src', '').strip(), f'Image has an empty source: {attrs}'
             self.images.append(attrs)
+        if tag == 'iframe':
+            self.iframes.append(attrs)
         if tag == 'body':
             self.video_id = attrs.get('data-id', '')
         for key in ['href', 'src', 'poster']:
@@ -201,6 +204,36 @@ if '0I75_YXhMSM' in expected_ids:
         previous = Page((root/(prefix.lstrip('/') + '/watch/fall-707-season-2-full/index.html').lstrip('/')).read_text(encoding='utf-8'))
         assert any(a.get('href') == route_prefix + episode_route and a.get('class') == 'next-episode' for a in previous.anchors)
 
+# The supplied Newtake manuscript must survive the shared localization pipeline
+# intact; only the designated placeholder is replaced by the requested Reel.
+from newtake_tutorial import PATH as NEWTAKE_PATH, EMBED as NEWTAKE_EMBED, SPONSOR as NEWTAKE_SPONSOR, START as NEWTAKE_START, END as NEWTAKE_END, article_html as newtake_article, read_source as newtake_source
+for lang, prefix in [('ko',''),('en','/en')]:
+    metadata, _ = newtake_source(lang)
+    document = (root/(prefix+NEWTAKE_PATH+'index.html').lstrip('/')).read_text(encoding='utf-8')
+    page = Page(document)
+    article = document.split(NEWTAKE_START,1)[1].split(NEWTAKE_END,1)[0]
+    assert article == newtake_article(lang), 'Newtake body was changed by the shared page pipeline'
+    assert page.metas['description'] == [metadata['description']]
+    assert page.metas['og:title'] == [metadata['title']+' | DRA9ON CINEMA']
+    assert page.metas['og:description'] == [metadata['description']]
+    assert page.metas['og:type'] == ['article']
+    assert page.metas['article:published_time'] == [metadata['date']]
+    assert page.metas['article:tag'] == metadata['tags']
+    assert page.json_chunks[0]['headline'] == metadata['title']
+    assert page.json_chunks[0]['datePublished'] == metadata['date']
+    assert page.json_chunks[0]['keywords'] == metadata['tags']
+    assert page.json_chunks[0]['inLanguage'] == lang
+    assert len(page.iframes) == 1 and page.iframes[0]['src'] == NEWTAKE_EMBED
+    sponsor = [anchor for anchor in page.anchors if anchor.get('href') == NEWTAKE_SPONSOR]
+    assert len(sponsor) == 1 and sponsor[0]['target'] == '_blank'
+    assert set(sponsor[0]['rel'].split()) == {'sponsored','noopener'}
+    assert article.count('<table>') == 2 and article.count('<pre ') == 2
+    assert 'embed.js' not in document
+    for route in ['/', '/tutorials/']:
+        listing = Page((root/(prefix+route+'index.html').lstrip('/')).read_text(encoding='utf-8'))
+        latest = next(anchor for anchor in listing.anchors if 'tutorial-preview' in anchor.get('class','').split())
+        assert latest['href'] == base+prefix+NEWTAKE_PATH, 'New article is not the latest tutorial'
+
 catalogs = []
 for filename in ['catalog.js', 'en/catalog.js']:
     data = json.loads((root / filename).read_text(encoding='utf-8').split(' = ', 1)[1].rstrip(';\n'))
@@ -227,6 +260,10 @@ for page in html_files:
     policies = re.findall(r'<meta http-equiv="Content-Security-Policy" content="([^"]+)"', document)
     assert len(policies) == 1, f'Missing/duplicate CSP: {page}'
     policy = unescape(policies[0])
+    if NEWTAKE_PATH.strip('/') in page.relative_to(root).as_posix():
+        assert NEWTAKE_EMBED in policy
+    else:
+        assert 'https://www.instagram.com' not in policy, 'Instagram frame permission escaped the new article'
     for directive in ["object-src 'none'", "base-uri 'none'", "form-action 'none'", "script-src-attr 'none'"]:
         assert directive in policy, (page, directive)
     script_policy = next(part.strip() for part in policy.split(';') if part.strip().startswith('script-src '))

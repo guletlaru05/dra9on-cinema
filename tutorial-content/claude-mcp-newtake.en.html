@@ -1,0 +1,129 @@
+<h1>From One Sentence to a Sci-Fi Video with Claude + MCP</h1>
+<blockquote>
+<p>This article is based on my firsthand experience working on a paid collaboration with Newtake.</p>
+</blockquote>
+<p>The most time-consuming part of making an AI video happens <strong>before</strong> you press the Generate button: breaking the scene into shots, writing a prompt for each one, and choosing the model, aspect ratio, and duration.</p>
+<p>With MCP, you can hand that process over to Claude. In this article, I will show you exactly how I turned a single-sentence request into a four-shot sci-fi scene.</p>
+<hr />
+<h2>What Is MCP?</h2>
+<p><strong>MCP (Model Context Protocol)</strong> is a standard that connects AI tools such as Claude to external services so they can use those services' features directly.</p>
+<ul>
+<li>Without MCP: Claude writes a prompt → I copy it → paste it into a video tool → configure the settings → generate the video.</li>
+<li>With MCP: Claude <strong>calls the video tool's functions directly</strong>. It creates a project, plans the shots, and runs the generation process.</li>
+</ul>
+<p>My role is simply to be the director: set the direction and judge the results.</p>
+<hr />
+<h2>What You Need</h2>
+<ul>
+<li><strong>Claude</strong> (in an environment that supports connectors/MCP connections)</li>
+<li><strong>A Newtake account</strong></li>
+<li><strong>The Newtake connector connected to Claude</strong></li>
+</ul>
+<p>Once the connection is set up, you can use Newtake's features directly from your Claude conversation.</p>
+<hr />
+<h2>STEP 1. Make a Single-Sentence Request</h2>
+<p>You do not need a complicated prompt. Just describe the scene you want in natural language.</p>
+<pre class="newtake-code" tabindex="0" aria-label="Prompt 1"><code>Seoul in ruins at sunset. A female survivor in combat fatigues walks alone through the collapsed city.
+Turn this into a four-shot cinematic sci-fi scene.
+</code></pre>
+<p><strong>Tips</strong></p>
+<ul>
+<li>The genre, time of day, main character, and mood are enough to get started.</li>
+<li>Specifying the number of shots helps produce more consistent results.</li>
+</ul>
+<hr />
+<h2>STEP 2. Claude Plans the Shots</h2>
+<p>After receiving the request, Claude first breaks the scene down into shots. Here is the sequence it came up with this time.</p>
+<div class="newtake-table-wrap" role="region" tabindex="0" aria-label="Table 1"><table>
+<thead>
+<tr>
+<th>Shot</th>
+<th>Framing</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SHOT 01</td>
+<td>Extreme wide shot (drone)</td>
+<td>An establishing shot showing the entire ruined city</td>
+</tr>
+<tr>
+<td>SHOT 02</td>
+<td>Low-angle tracking shot</td>
+<td>A tension-building shot following only the walking combat boots</td>
+</tr>
+<tr>
+<td>SHOT 03</td>
+<td>Dolly-in close-up</td>
+<td>An emotional shot moving from the protagonist's face toward her eyes</td>
+</tr>
+<tr>
+<td>SHOT 04</td>
+<td>Over-the-shoulder shot</td>
+<td>A closing shot looking out at the city from the protagonist's perspective</td>
+</tr>
+</tbody>
+</table></div>
+<p>The sequence moves from wide → detail → emotion → back out to wide. It follows the same visual language a person would use when creating a storyboard.</p>
+<hr />
+<h2>STEP 3. Generation Runs on the Newtake Canvas</h2>
+<p>Claude uses MCP to create a project in Newtake and arrange nodes on the canvas.</p>
+<ol>
+<li>First, it creates a <strong>reference image (anchor)</strong>. This establishes the look of the protagonist and the setting.</li>
+<li>A <strong>shot node</strong> is created for each shot, and video is generated using the reference image.</li>
+<li>Finally, the shots are <strong>combined into a single video.</strong></li>
+</ol>
+<p>A progress card appears in Claude, while the Newtake canvas lets you watch the nodes fill up one by one in real time.</p>
+<p><strong>Model used:</strong> Seedance 2.5
+<strong>Available settings:</strong> 4–30 seconds / 480p, 720p, or 1080p / selectable aspect ratio</p>
+<hr />
+<h2>STEP 4. Review the Result</h2>
+<p>The result was a four-shot sci-fi scene about 30 seconds long. All I did was enter a single-sentence request and review the result.</p>
+<blockquote>
+<p>(Embed the finished video or Reel here)</p>
+</blockquote>
+<hr />
+<h2>Problems and How to Solve Them</h2>
+<h3>1. When Generation Is Rejected</h3>
+<p>An automated filter may block a request during generation. In my case, a request for a <strong>drama scene with face close-ups and extensive dialogue</strong> was rejected twice.</p>
+<p><strong>How to solve it</strong></p>
+<ul>
+<li>Simplify the scene. Remove the dialogue and describe the space and atmosphere rather than focusing on the characters.</li>
+<li>Do not include the names of real people, well-known works, or characters.</li>
+<li>If a request is rejected, do not keep repeating it unchanged. Rephrase it and try again.</li>
+</ul>
+<h3>2. When Generation Takes a Long Time</h3>
+<p>Video generation takes several minutes. Sending the same request again while you wait can cause <strong>duplicate generations</strong>. Check the status on the progress card and wait.</p>
+<h3>3. When the Result Is Not What You Wanted</h3>
+<p>Ask Claude to revise individual shots.</p>
+<pre class="newtake-code" tabindex="0" aria-label="Prompt 2"><code>For SHOT 03, move in more slowly and hold on the close-up of her eyes for 2 seconds.
+</code></pre>
+<hr />
+<h2>Recap</h2>
+<div class="newtake-table-wrap" role="region" tabindex="0" aria-label="Table 2"><table>
+<thead>
+<tr>
+<th>Traditional workflow</th>
+<th>MCP workflow</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I handle all the shot breakdowns, prompts, and settings</td>
+<td>Claude plans and executes the process</td>
+</tr>
+<tr>
+<td>Copy and paste between different tools</td>
+<td>Everything happens in one conversation</td>
+</tr>
+<tr>
+<td>Time spent on repetitive tasks</td>
+<td>Focus on setting the direction</td>
+</tr>
+</tbody>
+</table></div>
+<p>MCP is a way to <strong>let Claude be your &quot;hands&quot; while keeping your own &quot;eyes&quot; on the work</strong> in AI video production. It is especially well suited to concept tests and quick drafts, rather than a final production where you need to watch the quality closely all the way through.</p>
+<hr />
+<p><strong>Try Newtake:</strong> <a href="https://www.newtake.com/?sourceId=NT920205" target="_blank" rel="sponsored noopener">newtake.com</a></p>
+<p><strong>Related video:</strong> <a href="https://www.instagram.com/reel/DelRHYDunY-/" target="_blank" rel="noopener noreferrer">Instagram Reel — Claude × Newtake</a></p>
