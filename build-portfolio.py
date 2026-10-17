@@ -247,6 +247,9 @@ for page in out.rglob('*.html'):
  document=re.sub(r'(<script\b[^>]*?)\ssrc="([^"]*(?:/community\.js|/library\.js)[^"]*)"',r'\1 data-service-src="\2"',document,flags=re.I)
  page.write_text(document,encoding='utf-8')
 
+from pwa import build_pwa
+build_pwa(out,origin,works,base_path)
+
 # GitHub Pages does not support custom response headers. Apply the supported
 # CSP directives in HTML, before any resources; frame-ancestors needs a header.
 import base64
@@ -268,13 +271,14 @@ for page in out.rglob('*.html'):
  instagram_frame = " https://www.instagram.com/reel/DelRHYDunY-/embed/" if newtake_article else ""
  policy="; ".join([
   "default-src 'self'",
+  "worker-src 'self'", "manifest-src 'self'",
   "script-src 'self' https://www.gstatic.com/firebasejs/ https://www.gstatic.com/recaptcha/ https://www.google.com/recaptcha/ https://www.youtube.com"+(" https://static.cloudflareinsights.com" if analytics_configuration['cloudflareEnabled'] else "")+" "+' '.join(inline_hashes)+auth_scripts,
   "script-src-attr 'none'",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: https:",
   "media-src 'self'",
-  "connect-src 'self' https://content-firebaseappcheck.googleapis.com https://firebaseappcheck.googleapis.com https://www.google.com/recaptcha/ https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebaseinstallations.googleapis.com"+auth_connections+(" https://cloudflareinsights.com" if analytics_configuration['cloudflareEnabled'] else "")+(" "+analytics_configuration['metricsEndpoint'] if analytics_configuration['metricsEndpoint'] else ""),
+  "connect-src 'self' https://dra9on-episode-push.tutorial-metrics.workers.dev https://content-firebaseappcheck.googleapis.com https://firebaseappcheck.googleapis.com https://www.google.com/recaptcha/ https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebaseinstallations.googleapis.com"+auth_connections+(" https://cloudflareinsights.com" if analytics_configuration['cloudflareEnabled'] else "")+(" "+analytics_configuration['metricsEndpoint'] if analytics_configuration['metricsEndpoint'] else ""),
   "frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/ https://www.youtube-nocookie.com https://www.youtube.com https://dra9on-cinema-stats.firebaseapp.com"+instagram_frame,
   "object-src 'none'", "base-uri 'none'", "form-action 'none'",
   "upgrade-insecure-requests"

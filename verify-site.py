@@ -109,7 +109,7 @@ assert 'id="login"' in library_source and 'id="cards"' in library_source
 assert not (root/'library/private-library.json').exists()
 library_page=Page(library_source)
 assert any('library.js' in script.get('data-service-src','') and 'src' not in script for script in library_page.scripts), 'Private library initializes tracking/service before permission'
-html_files = [page for page in root.rglob('*.html') if page != library]
+html_files = [page for page in root.rglob('*.html') if page != library and page.parent != root/'pwa']
 from tutorials import ROUTES as TUTORIAL_ROUTES
 from questions import ROUTES as QUESTION_ROUTES
 from presskit import ROUTES as PRESS_ROUTES

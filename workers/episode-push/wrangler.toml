@@ -1,0 +1,23 @@
+name = "dra9on-episode-push"
+main = "src/index.mjs"
+compatibility_date = "2026-10-18"
+workers_dev = true
+preview_urls = false
+account_id = "f25bbc251a70676f521c097b1d047d95"
+
+[vars]
+VAPID_PUBLIC_KEY = "BD4IbZYcSmkQyXkXLlIrKFvXclE2SqBkTXEEvn8P_7lY5FxjIVf4Luvrq-u95balWCrxMLDuexCpwJ4rvF708gc"
+DISPATCH_TOKEN_SHA256 = "8c4937f69e09d36f6cc7064efccb311d1eb739fa47b19e78450db55c9f77cd15"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dra9on-tutorial-metrics"
+database_id = "03871554-f291-48eb-9d35-c27c78cf9f27"
+
+[observability]
+enabled = false
+[observability.logs]
+enabled = false
+invocation_logs = false
+[observability.traces]
+enabled = false
