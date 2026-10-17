@@ -93,13 +93,18 @@
    panel.append(description,button,status);
    const main=document.getElementById('main')||document.querySelector('main')||document.body;main.prepend(panel);
    const state={loading:false};services.set(source,state);
-   button.addEventListener('click',()=>{
+   const connect=()=>{
     if(state.loading)return;state.loading=true;button.disabled=true;status.textContent=t('보안 연결을 준비하고 있습니다…','Preparing the secure connection…');
     const active=document.createElement('script');active.type='module';active.src=url.href;
     active.addEventListener('load',()=>{button.hidden=true;status.textContent=t('연결 기능이 준비되었습니다. 아래에서 계속 진행하세요.','The connection is ready. Continue below.');});
     active.addEventListener('error',()=>{state.loading=false;button.disabled=false;active.remove();status.textContent=t('연결하지 못했습니다. 네트워크를 확인하고 다시 시도하세요.','Could not connect. Check your network and retry.');});
     source.after(active);
-   });
+   };
+   button.addEventListener('click',connect);
+   // Restore only the owner's previously successful library connection.
+   // This flag starts authentication; it never grants access or enables media.
+   if(kind==='library'){try{if(localStorage.getItem('d9-library-reconnect-v1')==='1')connect();}catch{}}
+
   });
  }
  const banner=document.createElement('section');banner.id='consent-banner';banner.className='external-consent-bar';banner.setAttribute('role','region');banner.setAttribute('aria-labelledby','consent-title');banner.hidden=true;

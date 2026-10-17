@@ -3,7 +3,7 @@ import {createWorkspace} from './workspace.js?v=20261018-owner-visits';
 import {applyAction,validateWorkspace} from './workspace-core.js';
 import {createLibraryUI} from "./library-ui.js?v=20261011-detail12";
 import {initializeApp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,getRedirectResult,signOut,onAuthStateChanged,setPersistence,browserSessionPersistence,getIdToken} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,getRedirectResult,signOut,onAuthStateChanged,setPersistence,browserLocalPersistence,browserSessionPersistence,inMemoryPersistence,getIdToken} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 import {initializeFirestore,memoryLocalCache,doc,runTransaction,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 import {initializeAppCheck,ReCaptchaEnterpriseProvider,getToken} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app-check.js";
 const $=id=>document.getElementById(id);
@@ -40,7 +40,10 @@ async function boot(){
  const config=window.D9_ENGAGEMENT_CONFIG,app=initializeApp(config,"d9-private-library"),auth=getAuth(app),db=initializeFirestore(app,{localCache:memoryLocalCache(),experimentalForceLongPolling:true});
  const appCheck=config.appCheckSiteKey?initializeAppCheck(app,{provider:new ReCaptchaEnterpriseProvider(config.appCheckSiteKey),isTokenAutoRefreshEnabled:true}):null;
  let loadController=null;
- await setPersistence(auth,browserSessionPersistence);
+ let persistentLogin=false;
+ try{await setPersistence(auth,browserLocalPersistence);persistentLogin=true;}
+ catch{try{await setPersistence(auth,browserSessionPersistence);}catch{await setPersistence(auth,inMemoryPersistence);}}
+ const rememberConnection=enabled=>{try{if(enabled&&persistentLogin)localStorage.setItem('d9-library-reconnect-v1','1');else localStorage.removeItem('d9-library-reconnect-v1');}catch{}};
  getRedirectResult(auth).catch(error=>message("로그인 결과를 확인하지 못했습니다. "+(error.code||error.message)));
  $("login-redirect").addEventListener("click",async()=>{const provider=new GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account"});try{await signInWithRedirect(auth,provider);}catch(error){message("로그인하지 못했습니다. "+(error.code||error.message));}});
  async function loadOwnerVisits(user,ticket){
@@ -76,7 +79,7 @@ async function boot(){
   if(!response.ok)throw Error('원문 확인 서버 응답 '+response.status);return await response.json();
  }});
  $("login").addEventListener("click",async()=>{if(!ready)return;$("login").disabled=true;message("Google 로그인 창에서 계정을 선택하세요.");try{const provider=new GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account"});await deadline(signInWithPopup(auth,provider),"Google 로그인",45000);}catch(error){message(error.code==="library/timeout"?"로그인 창의 응답을 확인하지 못했습니다. 아래 ‘현재 창에서 Google 로그인’을 이용하거나 Safari·Chrome에서 이 주소를 열어주세요.":error.code==="auth/popup-blocked"?"팝업을 허용하고 다시 로그인하세요. 인앱 브라우저에서는 Safari 또는 Chrome으로 열어주세요.":"로그인하지 못했습니다. "+(error.code||"네트워크 연결을 확인하세요."));}finally{$("login").disabled=false;}});
- $("logout").addEventListener("click",async()=>{generation++;loadController?.abort();clear();await signOut(auth);});
+ $("logout").addEventListener("click",async()=>{generation++;loadController?.abort();clear();rememberConnection(false);await signOut(auth);});
  async function load(user){
   const ticket=++generation;loadController?.abort();loadController=new AbortController();const signal=loadController.signal;clear();$("gate").hidden=false;$("retry-load").hidden=true;$("load-panel").hidden=!user;$("login").hidden=!!user;
   if(!user)return;
@@ -88,14 +91,14 @@ async function boot(){
    const appCheckToken=appCheck?(await deadline(getToken(appCheck,false),"브라우저 보안 확인")).token:null;if(ticket!==generation)return;
    $("load-progress").textContent="3/3 비공개 자료 불러오는 중…";
    const payload=await loadPrivatePayload({projectId:config.projectId,idToken,appCheckToken,signal});if(ticket!==generation)return;
-   const value=validate(JSON.parse(payload));display(value);void loadOwnerVisits(user,ticket);await workspace.load(value);if(ticket!==generation)return;$("gate").hidden=true;$("load-panel").hidden=true;message("");
+   const value=validate(JSON.parse(payload));rememberConnection(true);display(value);void loadOwnerVisits(user,ticket);await workspace.load(value);if(ticket!==generation)return;$("gate").hidden=true;$("load-panel").hidden=true;message("");
   }catch(error){if(ticket!==generation)return;clear();$("retry-load").hidden=false;
    const text=error.code==="permission-denied"?"서버가 접근을 허용하지 않았습니다. 등록된 소유자 계정인지 확인하세요. 보안 확인 문제일 수도 있습니다.":error.code==="unauthenticated"?"로그인 인증이 만료됐습니다. 로그아웃 후 다시 로그인하세요.":error.code==="library/timeout"?error.message+" 아래 버튼으로 다시 불러올 수 있습니다.":"자료를 불러오지 못했습니다. 네트워크 또는 콘텐츠 차단을 확인하고 다시 시도하세요. ("+(error.code||"연결 오류")+")";
    $("load-progress").textContent=text;message("");
   }
  }
  $("retry-load").addEventListener("click",()=>load(auth.currentUser));
- onAuthStateChanged(auth,user=>{$("logout").hidden=!user;if(!user){generation++;loadController?.abort();clear();$("gate").hidden=false;$("load-panel").hidden=true;$("login").hidden=false;message("");return;}load(user);});
+ onAuthStateChanged(auth,user=>{$("logout").hidden=!user;if(!user){rememberConnection(false);generation++;loadController?.abort();clear();$("gate").hidden=false;$("load-panel").hidden=true;$("login").hidden=false;message("");return;}load(user);});
  $("import").addEventListener("change",async event=>{
   const file=event.target.files[0];event.target.value="";if(!file)return;if(!auth.currentUser){message("먼저 로그인하세요.");return;}
   const ticket=generation;

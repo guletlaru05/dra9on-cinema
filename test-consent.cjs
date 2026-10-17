@@ -50,4 +50,15 @@ a=setup({lang:'ko',modules:['/community.js?v=x','/library/library.js?v=x','https
 a.button('게시판 불러오기').events.click();assert.equal(a.requests.length,1);assert.equal(a.requests[0],'https://dra9oncinema.com/community.js?v=x');assert.equal(a.win.D9ExternalConsent.canLoadMedia(),false);assert.equal(a.win.D9AnalyticsConsent.get(),'denied');
 const active=a.nodes.find(node=>node.tag==='script'&&node.src==='https://dra9oncinema.com/community.js?v=x');assert.equal(active.type,'module');active.events.error();assert.equal(a.button('게시판 불러오기').disabled,false);a.button('게시판 불러오기').events.click();a.nodes.filter(node=>node.tag==='script'&&node.src).at(-1).events.load();assert.equal(a.button('게시판 불러오기').hidden,true);
 a=setup({base:'/project',modules:['/project/community.js?v=x','/community.js?v=x']});assert.equal(a.nodes.filter(node=>node.className==='functional-service-gate').length,1);a.button('Load board').events.click();assert.equal(a.requests[0],'https://dra9oncinema.com/project/community.js?v=x');
+// A remembered private-library connection restores only its auth module.
+// It must not silently enable the board, external videos, or analytics.
+a=setup({legacy:{'d9-library-reconnect-v1':'1'},modules:['/library/library.js?v=remember','/community.js?v=x'],sources:[YT,IG]});
+assert.deepEqual(a.requests,['https://dra9oncinema.com/library/library.js?v=remember']);
+assert.equal(a.win.D9ExternalConsent.canLoadMedia(),false);assert.equal(a.win.D9AnalyticsConsent.get(),'denied');
+assert(a.frames.every(frame=>frame.getAttribute('src')===null));
+a.win.D9ExternalConsent.prepare();assert.equal(a.requests.length,1);
+a.nodes.find(node=>node.tag==='script'&&node.src.includes('library/library.js')).events.error();
+assert.equal(a.button('Enable library sign-in').disabled,false);
+a.button('Enable library sign-in').events.click();assert.equal(a.requests.length,2);
+a=setup({legacy:{'d9-library-reconnect-v1':'invalid'},modules:['/library/library.js?v=x']});assert.equal(a.requests.length,0);
 console.log('PASS: no analytics or pre-consent media requests; exact embed allowlist; original links; consent persistence/expiry/revocation; legacy-only cleanup; denied analytics compatibility; explicit protected-service loading; module retry and project base paths.');
