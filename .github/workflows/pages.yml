@@ -26,12 +26,16 @@ jobs:
           node-version: '24'
       - name: Install pinned PDF build dependencies
         run: python3 -m pip install --disable-pip-version-check -r requirements-build.txt
+      - name: Install pinned private reader dependencies
+        run: npm ci --ignore-scripts --no-fund --no-audit --prefix workers/tutorial-metrics
       - name: Check synchronization, privacy and anonymous aggregate behavior
         run: |
           python3 -m unittest test_robots_policy test_youtube_sync test_youtube_site
           node test-consent.cjs
           node test-continue-watching.cjs
           node --test test-tutorial-metrics.cjs workers/tutorial-metrics/test/worker.test.mjs
+          node --test test-workspace.mjs workers/tutorial-metrics/test/private-reader.test.mjs
+          python3 -m unittest test_tutorial_references
       - name: Restore YouTube API snapshot
         uses: actions/cache/restore@v4
         with:
@@ -75,6 +79,7 @@ jobs:
             echo "Anonymous metrics deployment is not configured."
             exit 0
           fi
+          npx --yes wrangler@4.151.1 d1 migrations apply dra9on-tutorial-metrics --remote --config workers/tutorial-metrics/wrangler.toml
           npx --yes wrangler@4.151.1 deploy --config workers/tutorial-metrics/wrangler.toml
       - uses: actions/upload-pages-artifact@v4
         with:

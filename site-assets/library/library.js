@@ -1,13 +1,15 @@
-import {deadline,loadPrivatePayload,packPrivatePayload} from "./library-transport.js?v=20261011-detail12";
+import {deadline,loadPrivatePayload,packPrivatePayload,unpackPrivatePayload} from "./library-transport.js?v=20261011-detail12";
+import {createWorkspace} from './workspace.js?v=20261018-workspace1';
+import {applyAction,validateWorkspace} from './workspace-core.js';
 import {createLibraryUI} from "./library-ui.js?v=20261011-detail12";
 import {initializeApp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,getRedirectResult,signOut,onAuthStateChanged,setPersistence,browserSessionPersistence,getIdToken} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-import {initializeFirestore,memoryLocalCache,doc,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+import {initializeFirestore,memoryLocalCache,doc,runTransaction,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 import {initializeAppCheck,ReCaptchaEnterpriseProvider,getToken} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app-check.js";
 const $=id=>document.getElementById(id);
-let entries=[],groups=[],generation=0,ready=false;
+let entries=[],groups=[],generation=0,ready=false,workspace=null;
 const message=t=>$("status").textContent=t;
-function clear(){clearUI();}
+function clear(){clearUI();workspace?.clear();}
 function validate(value){
  if(!value||value.version!==1||!Array.isArray(value.categories)||!Array.isArray(value.items)||value.items.length>500)throw Error("지원하지 않는 자료 형식입니다.");
  const categories=value.categories;
@@ -30,7 +32,7 @@ function validate(value){
   }}
  }
  if(value.learningPath!=null&&(!Array.isArray(value.learningPath)||value.learningPath.some(x=>typeof x.title!=="string"||typeof x.text!=="string"||!categories.includes(x.category))))throw Error("학습 순서를 확인하세요.");
- return value;
+ value.workspace=validateWorkspace(value.workspace);return value;
 }
 const {display,clear:clearUI}=createLibraryUI();
 async function boot(){
@@ -42,6 +44,23 @@ async function boot(){
  getRedirectResult(auth).catch(error=>message("로그인 결과를 확인하지 못했습니다. "+(error.code||error.message)));
  $("login-redirect").addEventListener("click",async()=>{const provider=new GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account"});try{await signInWithRedirect(auth,provider);}catch(error){message("로그인하지 못했습니다. "+(error.code||error.message));}});
  const ref=doc(db,"privateLibrary","main");
+ async function updatePrivate(action, replacement=null){
+  if(!auth.currentUser)throw Error('먼저 로그인하세요.');
+  return await runTransaction(db,async transaction=>{
+   const snapshot=await transaction.get(ref);
+   if(!snapshot.exists())throw Error('기존 자료실이 없습니다. 자료를 먼저 불러오세요.');
+   const latest=validate(JSON.parse(await unpackPrivatePayload(snapshot.data().payload)));
+   const value=replacement?{...replacement,workspace:latest.workspace}:{...latest,workspace:applyAction(latest.workspace,action)};
+   const payload=await packPrivatePayload(JSON.stringify(value));
+   if(new TextEncoder().encode(payload).length>750000)throw Error('비공개 저장 한도에 도달했습니다. 오래된 자료를 내보내고 삭제하세요.');
+   transaction.set(ref,{payload,updatedAt:serverTimestamp()});return value;
+  });
+ }
+ workspace=createWorkspace({save:action=>deadline(updatePrivate(action),'비공개 저장',30000),collect:async url=>{
+  const token=await getIdToken(auth.currentUser);
+  const response=await fetch('https://dra9on-tutorial-metrics.tutorial-metrics.workers.dev/private/collect',{method:'POST',credentials:'omit',cache:'no-store',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({url}),signal:AbortSignal.timeout(25000)});
+  if(!response.ok)throw Error('원문 확인 서버 응답 '+response.status);return await response.json();
+ }});
  $("login").addEventListener("click",async()=>{if(!ready)return;$("login").disabled=true;message("Google 로그인 창에서 계정을 선택하세요.");try{const provider=new GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account"});await signInWithPopup(auth,provider);}catch(error){message(error.code==="auth/popup-blocked"?"팝업을 허용하고 다시 로그인하세요. 인앱 브라우저에서는 Safari 또는 Chrome으로 열어주세요.":"로그인하지 못했습니다. "+(error.code||"네트워크 연결을 확인하세요."));}finally{$("login").disabled=false;}});
  $("logout").addEventListener("click",async()=>{generation++;loadController?.abort();clear();await signOut(auth);});
  async function load(user){
@@ -55,7 +74,7 @@ async function boot(){
    const appCheckToken=appCheck?(await deadline(getToken(appCheck,false),"브라우저 보안 확인")).token:null;if(ticket!==generation)return;
    $("load-progress").textContent="3/3 비공개 자료 불러오는 중…";
    const payload=await loadPrivatePayload({projectId:config.projectId,idToken,appCheckToken,signal});if(ticket!==generation)return;
-   const value=validate(JSON.parse(payload));display(value);$("gate").hidden=true;$("load-panel").hidden=true;message("");
+   const value=validate(JSON.parse(payload));display(value);await workspace.load(value);if(ticket!==generation)return;$("gate").hidden=true;$("load-panel").hidden=true;message("");
   }catch(error){if(ticket!==generation)return;clear();$("retry-load").hidden=false;
    const text=error.code==="permission-denied"?"서버가 접근을 허용하지 않았습니다. 등록된 소유자 계정인지 확인하세요. 보안 확인 문제일 수도 있습니다.":error.code==="unauthenticated"?"로그인 인증이 만료됐습니다. 로그아웃 후 다시 로그인하세요.":error.code==="library/timeout"?error.message+" 아래 버튼으로 다시 불러올 수 있습니다.":"자료를 불러오지 못했습니다. 네트워크 또는 콘텐츠 차단을 확인하고 다시 시도하세요. ("+(error.code||"연결 오류")+")";
    $("load-progress").textContent=text;message("");
@@ -66,7 +85,7 @@ async function boot(){
  $("import").addEventListener("change",async event=>{
   const file=event.target.files[0];event.target.value="";if(!file)return;if(!auth.currentUser){message("먼저 로그인하세요.");return;}
   const ticket=generation;
-  try{if(file.size>2500000)throw Error("자료 파일은 2.5MB 이하로 준비하세요.");const value=validate(JSON.parse(await file.text())),payload=await packPrivatePayload(JSON.stringify(value));if(new TextEncoder().encode(payload).length>750000)throw Error("압축된 자료는 750KB 이하로 준비하세요.");message("비공개 자료를 저장하고 있습니다.");await setDoc(ref,{payload,updatedAt:serverTimestamp()});if(ticket!==generation)return;display(value);message("비공개 자료 업데이트 완료.");}
+  try{if(file.size>2500000)throw Error("자료 파일은 2.5MB 이하로 준비하세요.");const imported=validate(JSON.parse(await file.text()));message("비공개 자료를 저장하고 있습니다.");const value=await updatePrivate(null,imported);if(ticket!==generation)return;display(value);await workspace.load(value);message("비공개 자료 업데이트 완료. 작업실 기록도 유지했습니다.");}
   catch(error){message("저장하지 못했습니다. "+(error.code||error.message));}
  });
 
