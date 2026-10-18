@@ -1,5 +1,5 @@
 import {deadline,loadPrivatePayload,packPrivatePayload,unpackPrivatePayload} from "./library-transport.js?v=20261011-detail12";
-import {createWorkspace} from './workspace.js?v=20261018-owner-visits';
+import {createWorkspace} from './workspace.js?v=20261018-auto-desk';
 import {applyAction,validateWorkspace} from './workspace-core.js';
 import {createLibraryUI} from "./library-ui.js?v=20261011-detail12";
 import {initializeApp} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
@@ -75,7 +75,7 @@ async function boot(){
  }
  workspace=createWorkspace({save:action=>deadline(updatePrivate(action),'비공개 저장',30000),collect:async url=>{
   const token=await getIdToken(auth.currentUser);
-  const response=await fetch('https://dra9on-tutorial-metrics.tutorial-metrics.workers.dev/private/collect',{method:'POST',credentials:'omit',cache:'no-store',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({url}),signal:AbortSignal.timeout(25000)});
+  const response=await fetch('https://dra9on-tutorial-metrics.tutorial-metrics.workers.dev/private/collect',{method:'POST',credentials:'omit',cache:'no-store',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({url}),signal:AbortSignal.timeout(65000)});
   if(!response.ok)throw Error('원문 확인 서버 응답 '+response.status);return await response.json();
  }});
  $("login").addEventListener("click",async()=>{if(!ready)return;$("login").disabled=true;message("Google 로그인 창에서 계정을 선택하세요.");try{const provider=new GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account"});await deadline(signInWithPopup(auth,provider),"Google 로그인",45000);}catch(error){message(error.code==="library/timeout"?"로그인 창의 응답을 확인하지 못했습니다. 아래 ‘현재 창에서 Google 로그인’을 이용하거나 Safari·Chrome에서 이 주소를 열어주세요.":error.code==="auth/popup-blocked"?"팝업을 허용하고 다시 로그인하세요. 인앱 브라우저에서는 Safari 또는 Chrome으로 열어주세요.":"로그인하지 못했습니다. "+(error.code||"네트워크 연결을 확인하세요."));}finally{$("login").disabled=false;}});

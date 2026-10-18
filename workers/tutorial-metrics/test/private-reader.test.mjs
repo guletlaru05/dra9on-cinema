@@ -10,6 +10,20 @@ const pair=await generateKeyPair('RS256');
 const owner='owner@example.test',env={OWNER_EMAIL_SHA256:createHash('sha256').update(owner).digest('hex')};
 async function token(changes={},key=pair.privateKey){return new SignJWT({email:owner,email_verified:true,auth_time:stamp-100,firebase:{sign_in_provider:'google.com'},iss:'https://securetoken.google.com/dra9on-cinema-stats',aud:'dra9on-cinema-stats',sub:'uid',iat:stamp-50,exp:stamp+500,...changes}).setProtectedHeader({alg:'RS256',kid:'test'}).sign(key);}
 const options={keys:pair.publicKey,date};
+const threads=(post,extra='')=>'<script type="application/json">'+JSON.stringify({posts:[{code:'Other',user:{username:'someone'},caption:{text:'UNRELATED PRIVATE CONTACT'}},post]})+'</script>'+extra;
+const samplePost={code:'Example',user:{username:'sample'},caption:{text:'Character prompt'}};
+test('Threads share resolves only exact post, preserves visible text attachment and author',()=>{
+ const prompt='  @Image1\n원문 &amp; 조명\n\n끝  ';
+ const html='<meta property="og:url" content="https://www.threads.com/@sample/post/Example">'+threads(samplePost,'<a href="/@sample/post/Example/media">'+prompt+'</a><a href="/@someone/post/Other/media">DO NOT IMPORT</a><img alt="invented OCR prompt">');
+ const result=extractSource(html,'https://www.threads.com/share/Chosen');
+ assert.equal(result.author,'@sample');assert.equal(result.url,'https://www.threads.com/@sample/post/Example');
+ assert.equal(result.prompts[0],'  @Image1\n원문 & 조명\n\n끝  ');assert.equal(result.category,'프롬프트');assert.ok(!/UNRELATED|DO NOT IMPORT|invented OCR/.test(result.body));
+ assert.equal(extractSource(threads(samplePost),'https://www.threads.com/@sample/post/Example').body,'Character prompt');
+});
+test('Threads login shell, wrong author, private and unavailable posts fail without saving guesses',()=>{
+ const url='https://www.threads.com/@sample/post/Example';
+ for(const html of ['<main>Public preview only</main>',threads({...samplePost,user:{username:'other'}}),threads({...samplePost,user:{username:'sample',text_post_app_is_private:true}}),threads({...samplePost,text_post_app_info:{is_post_unavailable:true}})])assert.throws(()=>extractSource(html,url),/本文|본문/);
+});
 test('signed Firebase token, verified owner, audience, expiry and provider required',async()=>{
  assert.equal(await verifyOwner(await token(),env,options),'uid');
  for(const change of [{email:'stranger@example.test'},{email_verified:false},{firebase:{sign_in_provider:'password'}},{auth_time:stamp+100},{aud:'other-project'},{exp:stamp-100}])await assert.rejects(()=>token(change).then(jwt=>verifyOwner(jwt,env,options)));

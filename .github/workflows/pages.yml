@@ -36,7 +36,7 @@ jobs:
           node test-consent.cjs
           node test-continue-watching.cjs
           node --test test-tutorial-metrics.cjs workers/tutorial-metrics/test/worker.test.mjs
-          node --test test-workspace.mjs workers/tutorial-metrics/test/private-reader.test.mjs
+          node --test test-workspace.mjs test-workspace-auto.mjs workers/tutorial-metrics/test/private-reader.test.mjs
           python3 -m unittest test_tutorial_references
           node --test test-pwa.cjs test-pwa-ui.cjs workers/episode-push/test/push.test.mjs
           node --test test-request-limits.mjs

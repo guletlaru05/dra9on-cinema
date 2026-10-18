@@ -20,22 +20,70 @@ const attr=(node,name)=>node.attrs?.find(a=>a.name===name)?.value||'';
 const children=node=>node.childNodes||[];
 const text=node=>node.nodeName==='#text'?node.value:children(node).map(text).join('');
 function walk(node,fn){fn(node);children(node).forEach(child=>walk(child,fn));}
+const THREADS_HOST=/^(?:www\.)?threads\.(?:com|net)$/;
+const THREADS_POST=/^\/@([A-Za-z0-9_.]{1,64})\/post\/([A-Za-z0-9_-]{1,100})\/?$/;
+function threadsSource(tree,input){
+ let target=new URL(input);
+ // A share URL may return a page directly instead of an HTTP redirect.
+ if(!THREADS_POST.test(target.pathname))walk(tree,node=>{
+  if(node.tagName!=='meta'||attr(node,'property')!=='og:url')return;
+  try{const canonical=trustedUrl(attr(node,'content'));if(THREADS_HOST.test(canonical.hostname)&&THREADS_POST.test(canonical.pathname))target=canonical;}catch{}
+ });
+ const match=THREADS_POST.exec(target.pathname);
+ if(!match)throw Error('Threads 공유 주소에서 실제 게시글 주소를 확인하지 못했습니다. 게시글 링크를 복사해 다시 넣어 주세요.');
+ let post=null;
+ walk(tree,node=>{
+  if(post||node.tagName!=='script'||attr(node,'type')!=='application/json')return;
+  let parsed;try{parsed=JSON.parse(text(node));}catch{return;}
+  const queue=[parsed];let visited=0;
+  while(queue.length&&visited++<100000){
+   const value=queue.pop();if(!value||typeof value!=='object')continue;
+   if(!Array.isArray(value)&&value.code===match[2]&&String(value.user?.username||'').toLowerCase()===match[1].toLowerCase()){
+    if(value.user?.text_post_app_is_private===true||value.is_internal_only===true||value.text_post_app_info?.is_post_unavailable===true)continue;
+    if(typeof value.caption?.text==='string'){post=value;break;}
+   }
+   for(const nested of Object.values(value))queue.push(nested);
+  }
+ });
+ if(!post)throw Error('Threads 게시글 본문을 공개 응답에서 확인하지 못했습니다. 로그인·접근 제한일 수 있습니다. 미리보기만으로 원문을 저장하지 않았습니다.');
+ const attachments=[];
+ function visible(node){if(['script','style','button','svg','noscript'].includes(node.tagName))return '';return node.nodeName==='#text'?node.value:children(node).map(visible).join('');}
+ walk(tree,node=>{
+  if(node.tagName!=='a')return;
+  try{
+   const link=new URL(attr(node,'href'),target);
+   if(!THREADS_HOST.test(link.hostname)||link.pathname.replace(/\/$/,'')!==target.pathname.replace(/\/$/,'')+'/media')return;
+   // Read only text actually rendered inside this post's attachment link.
+   // Image alt/OCR guesses, other posts, replies and profile data are not a substitute.
+   const body=visible(node);if(body.trim()&&!attachments.includes(body))attachments.push(body);
+  }catch{}
+ });
+ const caption=post.caption.text;
+ const parts=[caption,...attachments.filter(value=>value.trim()!==caption.trim())].filter(value=>value.trim());
+ if(!parts.length)throw Error('텍스트 없는 Threads 글입니다. 이미지·영상 속 문장은 자동으로 복원하지 않았습니다.');
+ const prompts=attachments.filter(value=>/(?:@(?:image|이미지|audio|오디오)\s*\d|(?:^|\n)\s*(?:prompt|프롬프트)\s*[:：])/i.test(value));
+ return {title:caption.trim().split('\n')[0].slice(0,240)||'Threads 첨부 텍스트',author:'@'+post.user.username,body:parts.join('\n\n'),prompts,url:'https://www.threads.com/@'+post.user.username+'/post/'+match[2]};
+}
 const stripContacts=value=>value.replace(/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/g,'[연락처 제외]').replace(/(?:\+\d{1,3}[ .-]?)?\(?\d{2,4}\)?[ .-]\d{3,4}[ .-]\d{4}/g,'[연락처 제외]');
 export function extractSource(html,url,mime='text/html'){
- let title='',author='',body='',prompts=[];
+ let title='',author='',body='',prompts=[],verifiedPost=false;
  if(mime==='text/plain'){body=html;title=new URL(url).pathname;}
  else{
   const tree=parse(html);let main=null,article=null,bodyNode=null;
+  if(THREADS_HOST.test(new URL(url).hostname)){
+   ({title,author,body,prompts,url}=threadsSource(tree,url));verifiedPost=true;
+  }else{
   walk(tree,node=>{if(node.tagName==='main'&&!main)main=node;if(node.tagName==='article'&&!article)article=node;if(node.tagName==='body')bodyNode=node;if(node.tagName==='title')title=text(node);if(node.tagName==='meta'){const name=attr(node,'name')||attr(node,'property');if(name==='og:title')title=attr(node,'content');if(name==='author'||name==='article:author')author=attr(node,'content');}});
   const chunks=[];function read(node){if(['script','style','noscript','nav','footer','header','form','button','svg'].includes(node.tagName))return;if(node.nodeName==='#text'){chunks.push(node.value);return;}if(node.tagName==='pre'){const original=text(node);if(original.trim())prompts.push(original);chunks.push(original,'\n');return;}children(node).forEach(read);if(['p','div','li','section','h1','h2','h3','h4','br','tr'].includes(node.tagName))chunks.push('\n');}read(main||article||bodyNode||tree);body=chunks.join('').replace(/\n[ \t]*\n[ \t]*\n/g,'\n\n').trim();
+  }
  }
- if(body.length<180||/verify you are human|just a moment\.\.\.|enable javascript and cookies|log in to continue|captcha/i.test(body.slice(0,2500)))throw Error('로그인·봇 차단·본문 부족으로 원문을 확인하지 못했습니다.');
+ if(!body.trim()||!verifiedPost&&body.length<180||/verify you are human|just a moment\.\.\.|enable javascript and cookies|log in to continue|captcha/i.test(body.slice(0,2500)))throw Error('로그인·봇 차단·본문 부족으로 원문을 확인하지 못했습니다.');
  if(!prompts.length){prompts=[...body.matchAll(/```[^\n]*\n([\s\S]*?)```/g)].map(m=>m[1]);if(!prompts.length){const match=body.match(/(?:^|\n)(?:prompt|프롬프트)\s*[:：]\s*([^\n]+(?:\n(?!\n).+)*)/i);if(match)prompts=[match[1]];}}
- if(/(?:threads\.(?:com|net)|instagram\.com|x\.com|twitter\.com)$/.test(new URL(url).hostname)&&!prompts.length&&body.length<1500)throw Error('SNS 미리보기만으로 프롬프트 원문을 확인할 수 없습니다.');
+ if(!verifiedPost&&/(?:threads\.(?:com|net)|instagram\.com|x\.com|twitter\.com)$/.test(new URL(url).hostname)&&!prompts.length&&body.length<1500)throw Error('SNS 미리보기만으로 프롬프트 원문을 확인할 수 없습니다.');
  const low=(title+'\n'+body).toLowerCase(),models=['Seedance 2.5','Seedance 2.0','Higgsfield','Kling','Midjourney','GPT Image','Seedream','Nano Banana','Suno'].filter(m=>low.includes(m.toLowerCase()));
  let category=prompts.length?'프롬프트':models.length||/platform|update|release|tutorial|creator program|플랫폼|업데이트|모집|캠페인/i.test(low)?'툴·플랫폼':'기타';
  const professional=/creator|크리에이터|marketer|마케터|brand|브랜드|director|감독|portfolio|포트폴리오|작품|studio|스튜디오|project|프로젝트|소속|official|공식/i;
- if(!prompts.length&&/(?:^|\/)(?:@[^/]+|about|profile)(?:\/|$)/.test(new URL(url).pathname)&&professional.test(low))category='사람';
+ if(!prompts.length&&/^\/(?:@[^/]+|about|profile)\/?$/.test(new URL(url).pathname)&&professional.test(low))category='사람';
  if(category==='사람'){body=stripContacts(body.split('\n').filter(line=>professional.test(line)&&!/집 주소|자택|거주지|생년|생일|가족|배우자|home address|birthday|birthdate|spouse|family/i.test(line)).join('\n'));title=stripContacts(title);author=stripContacts(author);prompts=[];}
  prompts=[...new Set(prompts)];
  if(body.length>150000||prompts.length>30||prompts.some(p=>p.length>100000)||title.length>400||author.length>200)throw Error('원문이 저장 한도보다 큽니다. 요약 저장하지 않았습니다. PC에서 원문을 확인하세요.');
@@ -46,7 +94,7 @@ async function readLimited(response){const reader=response.body?.getReader();if(
 export async function readPublic(url,fetcher=fetch){
  let target=trustedUrl(url);
  for(let redirect=0;redirect<5;redirect++){
-  const response=await fetcher(target.href,{redirect:'manual',credentials:'omit',headers:{Accept:'text/html, text/plain;q=0.9'},signal:AbortSignal.timeout(12000)});
+  const response=await fetcher(target.href,{redirect:'manual',credentials:'omit',headers:{Accept:'text/html, text/plain;q=0.9','User-Agent':'DRA9ON-Owner-Link-Reader/1.0'},signal:AbortSignal.timeout(12000)});
   if([301,302,303,307,308].includes(response.status)){const location=response.headers.get('location');await response.body?.cancel();if(!location)throw Error('이동 주소가 없습니다.');target=trustedUrl(new URL(location,target).href);continue;}
   if(!response.ok)throw Error('원문 서버 응답 '+response.status);
   const mime=(response.headers.get('content-type')||'').split(';')[0].trim();if(!['text/html','application/xhtml+xml','text/plain'].includes(mime)){await response.body?.cancel();throw Error('HTML 또는 텍스트 원문만 읽을 수 있습니다.');}
