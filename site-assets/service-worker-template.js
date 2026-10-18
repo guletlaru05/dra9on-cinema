@@ -21,13 +21,13 @@ self.addEventListener('fetch',event=>{
  })());
 });
 function safePage(value){
- try{const url=new URL(value,self.location.origin);return url.origin===self.location.origin&&new RegExp('^'+BASE+'/(?:en/|ja/|es/)?watch/fall-707-s[1-9][0-9]*-ep[1-9][0-9]*/$').test(url.pathname)&&!url.search&&!url.hash?url.href:null;}catch{return null;}
+ try{const url=new URL(value,self.location.origin),episode=new RegExp('^'+BASE+'/(?:en/|ja/|es/)?watch/fall-707-s[1-9][0-9]*-ep[1-9][0-9]*/$').test(url.pathname)&&!url.hash,board=new RegExp('^'+BASE+'/(?:en/|ja/|es/)?lounge/$').test(url.pathname)&&/^#(?:board|post-[A-Za-z0-9_-]{1,128})$/.test(url.hash);return url.origin===self.location.origin&&!url.search&&(episode||board)?url.href:null;}catch{return null;}
 }
 self.addEventListener('push',event=>{event.waitUntil((async()=>{
  let data;try{data=event.data.json();}catch{return;}
  const url=safePage(data.url);if(!url||typeof data.title!=='string'||data.title.length>240)return;
  const image=typeof data.image==='string'?new URL(data.image,self.location.origin):null;
- await self.registration.showNotification(data.title,{body:String(data.body||'').slice(0,240),icon:BASE+'/pwa/icon-192.png',badge:BASE+'/pwa/icon-192.png',...(image?.origin===self.location.origin&&image.pathname.startsWith(BASE+'/assets/portfolio/')?{image:image.href}:{}),tag:'dra9on-episode-'+String(data.id||'').slice(0,20),data:{url},lang:langs.has(data.lang)?data.lang:'en'});
+ await self.registration.showNotification(data.title,{body:String(data.body||'').slice(0,data.kind==='owner-board'?2000:240),icon:BASE+'/pwa/icon-192.png',badge:BASE+'/pwa/icon-192.png',...(image?.origin===self.location.origin&&image.pathname.startsWith(BASE+'/assets/portfolio/')?{image:image.href}:{}),tag:'dra9on-'+(data.kind==='owner-board'?'board-':'episode-')+String(data.id||'').slice(0,80),data:{url},lang:langs.has(data.lang)?data.lang:'en'});
 })());});
 self.addEventListener('notificationclick',event=>{
  event.notification.close();const url=safePage(event.notification.data?.url);if(!url)return;

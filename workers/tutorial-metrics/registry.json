@@ -23,6 +23,10 @@
     "canonicalPath": "/links/",
     "type": "page"
   },
+  "/lounge/": {
+    "canonicalPath": "/lounge/",
+    "type": "page"
+  },
   "/notes/": {
     "canonicalPath": "/notes/",
     "type": "page"
@@ -59,6 +63,10 @@
     "canonicalPath": "/links/",
     "type": "page"
   },
+  "/en/lounge/": {
+    "canonicalPath": "/lounge/",
+    "type": "page"
+  },
   "/en/notes/": {
     "canonicalPath": "/notes/",
     "type": "page"
@@ -87,8 +95,48 @@
     "canonicalPath": "/tutorials/",
     "type": "page"
   },
+  "/en/fall-707/characters/": {
+    "canonicalPath": "/fall-707/characters/",
+    "type": "page"
+  },
   "/en/fall-707/world/": {
     "canonicalPath": "/fall-707/world/",
+    "type": "page"
+  },
+  "/en/fall-707/characters/elder-shaman/": {
+    "canonicalPath": "/fall-707/characters/elder-shaman/",
+    "type": "page"
+  },
+  "/en/fall-707/characters/hyeolmaek/": {
+    "canonicalPath": "/fall-707/characters/hyeolmaek/",
+    "type": "page"
+  },
+  "/en/fall-707/characters/min-seoa/": {
+    "canonicalPath": "/fall-707/characters/min-seoa/",
+    "type": "page"
+  },
+  "/en/fall-707/characters/prince-iseo/": {
+    "canonicalPath": "/fall-707/characters/prince-iseo/",
+    "type": "page"
+  },
+  "/en/fall-707/characters/sergeant-han/": {
+    "canonicalPath": "/fall-707/characters/sergeant-han/",
+    "type": "page"
+  },
+  "/en/fall-707/characters/sergeant-kim/": {
+    "canonicalPath": "/fall-707/characters/sergeant-kim/",
+    "type": "page"
+  },
+  "/en/fall-707/characters/villain-shaman/": {
+    "canonicalPath": "/fall-707/characters/villain-shaman/",
+    "type": "page"
+  },
+  "/en/fall-707/characters/yeonhwa/": {
+    "canonicalPath": "/fall-707/characters/yeonhwa/",
+    "type": "page"
+  },
+  "/en/fall-707/characters/yuna/": {
+    "canonicalPath": "/fall-707/characters/yuna/",
     "type": "page"
   },
   "/en/notes/fall-707-beginnings/": {
@@ -251,16 +299,64 @@
     "canonicalPath": "/fall-707/",
     "type": "page"
   },
+  "/es/lounge/": {
+    "canonicalPath": "/lounge/",
+    "type": "page"
+  },
   "/es/press/": {
     "canonicalPath": "/press/",
+    "type": "page"
+  },
+  "/es/questions/": {
+    "canonicalPath": "/questions/",
     "type": "page"
   },
   "/es/tutorials/": {
     "canonicalPath": "/tutorials/",
     "type": "page"
   },
+  "/es/fall-707/characters/": {
+    "canonicalPath": "/fall-707/characters/",
+    "type": "page"
+  },
   "/es/fall-707/world/": {
     "canonicalPath": "/fall-707/world/",
+    "type": "page"
+  },
+  "/es/fall-707/characters/elder-shaman/": {
+    "canonicalPath": "/fall-707/characters/elder-shaman/",
+    "type": "page"
+  },
+  "/es/fall-707/characters/hyeolmaek/": {
+    "canonicalPath": "/fall-707/characters/hyeolmaek/",
+    "type": "page"
+  },
+  "/es/fall-707/characters/min-seoa/": {
+    "canonicalPath": "/fall-707/characters/min-seoa/",
+    "type": "page"
+  },
+  "/es/fall-707/characters/prince-iseo/": {
+    "canonicalPath": "/fall-707/characters/prince-iseo/",
+    "type": "page"
+  },
+  "/es/fall-707/characters/sergeant-han/": {
+    "canonicalPath": "/fall-707/characters/sergeant-han/",
+    "type": "page"
+  },
+  "/es/fall-707/characters/sergeant-kim/": {
+    "canonicalPath": "/fall-707/characters/sergeant-kim/",
+    "type": "page"
+  },
+  "/es/fall-707/characters/villain-shaman/": {
+    "canonicalPath": "/fall-707/characters/villain-shaman/",
+    "type": "page"
+  },
+  "/es/fall-707/characters/yeonhwa/": {
+    "canonicalPath": "/fall-707/characters/yeonhwa/",
+    "type": "page"
+  },
+  "/es/fall-707/characters/yuna/": {
+    "canonicalPath": "/fall-707/characters/yuna/",
     "type": "page"
   },
   "/es/tutorials/lighting-contrast/": {
@@ -335,24 +431,112 @@
     "canonicalPath": "/watch/film-hoFQL2ON9m4/",
     "type": "page"
   },
+  "/fall-707/characters/": {
+    "canonicalPath": "/fall-707/characters/",
+    "type": "page"
+  },
   "/fall-707/world/": {
     "canonicalPath": "/fall-707/world/",
+    "type": "page"
+  },
+  "/fall-707/characters/elder-shaman/": {
+    "canonicalPath": "/fall-707/characters/elder-shaman/",
+    "type": "page"
+  },
+  "/fall-707/characters/hyeolmaek/": {
+    "canonicalPath": "/fall-707/characters/hyeolmaek/",
+    "type": "page"
+  },
+  "/fall-707/characters/min-seoa/": {
+    "canonicalPath": "/fall-707/characters/min-seoa/",
+    "type": "page"
+  },
+  "/fall-707/characters/prince-iseo/": {
+    "canonicalPath": "/fall-707/characters/prince-iseo/",
+    "type": "page"
+  },
+  "/fall-707/characters/sergeant-han/": {
+    "canonicalPath": "/fall-707/characters/sergeant-han/",
+    "type": "page"
+  },
+  "/fall-707/characters/sergeant-kim/": {
+    "canonicalPath": "/fall-707/characters/sergeant-kim/",
+    "type": "page"
+  },
+  "/fall-707/characters/villain-shaman/": {
+    "canonicalPath": "/fall-707/characters/villain-shaman/",
+    "type": "page"
+  },
+  "/fall-707/characters/yeonhwa/": {
+    "canonicalPath": "/fall-707/characters/yeonhwa/",
+    "type": "page"
+  },
+  "/fall-707/characters/yuna/": {
+    "canonicalPath": "/fall-707/characters/yuna/",
     "type": "page"
   },
   "/ja/fall-707/": {
     "canonicalPath": "/fall-707/",
     "type": "page"
   },
+  "/ja/lounge/": {
+    "canonicalPath": "/lounge/",
+    "type": "page"
+  },
   "/ja/press/": {
     "canonicalPath": "/press/",
+    "type": "page"
+  },
+  "/ja/questions/": {
+    "canonicalPath": "/questions/",
     "type": "page"
   },
   "/ja/tutorials/": {
     "canonicalPath": "/tutorials/",
     "type": "page"
   },
+  "/ja/fall-707/characters/": {
+    "canonicalPath": "/fall-707/characters/",
+    "type": "page"
+  },
   "/ja/fall-707/world/": {
     "canonicalPath": "/fall-707/world/",
+    "type": "page"
+  },
+  "/ja/fall-707/characters/elder-shaman/": {
+    "canonicalPath": "/fall-707/characters/elder-shaman/",
+    "type": "page"
+  },
+  "/ja/fall-707/characters/hyeolmaek/": {
+    "canonicalPath": "/fall-707/characters/hyeolmaek/",
+    "type": "page"
+  },
+  "/ja/fall-707/characters/min-seoa/": {
+    "canonicalPath": "/fall-707/characters/min-seoa/",
+    "type": "page"
+  },
+  "/ja/fall-707/characters/prince-iseo/": {
+    "canonicalPath": "/fall-707/characters/prince-iseo/",
+    "type": "page"
+  },
+  "/ja/fall-707/characters/sergeant-han/": {
+    "canonicalPath": "/fall-707/characters/sergeant-han/",
+    "type": "page"
+  },
+  "/ja/fall-707/characters/sergeant-kim/": {
+    "canonicalPath": "/fall-707/characters/sergeant-kim/",
+    "type": "page"
+  },
+  "/ja/fall-707/characters/villain-shaman/": {
+    "canonicalPath": "/fall-707/characters/villain-shaman/",
+    "type": "page"
+  },
+  "/ja/fall-707/characters/yeonhwa/": {
+    "canonicalPath": "/fall-707/characters/yeonhwa/",
+    "type": "page"
+  },
+  "/ja/fall-707/characters/yuna/": {
+    "canonicalPath": "/fall-707/characters/yuna/",
     "type": "page"
   },
   "/ja/tutorials/lighting-contrast/": {

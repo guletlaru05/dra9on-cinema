@@ -1,6 +1,7 @@
 /* No provider credentials or request bodies are logged. VAPID private key stays in GitHub Secrets. */
 import {requestGate} from '../../security/rate-limit.mjs';
 import {SECURITY_HEADERS} from '../../security/headers.mjs';
+import {boardFetch,boardScheduled} from './board.mjs';
 const ORIGINS=new Set(['https://dra9oncinema.com','https://www.dra9oncinema.com']);
 export const LANGS=['ko','en','ja','es'];
 export const sha=async text=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)))).map(x=>x.toString(16).padStart(2,'0')).join('');
@@ -33,6 +34,7 @@ export function createWorker(options={}){
   const url=new URL(request.url),givenOrigin=request.headers.get('Origin'),origin=ORIGINS.has(givenOrigin)?givenOrigin:null;
   if(givenOrigin&&!origin)return answer({error:'Origin not allowed.'},403);
   if(url.search)return answer({error:'No query strings.'},400,origin);
+  if(url.pathname.startsWith('/owner-board/')){const gate=await requestGate(request,env,'owner-board',request.method==='POST',now());if(gate!==200)return answer({error:'Request protection denied.'},gate,origin);return boardFetch(request,env,{validSubscription});}
   const admin=['/sync','/batch','/ack'].includes(url.pathname);
   if(request.method==='OPTIONS')return origin&&!admin?new Response(null,{status:204,headers:{...headers(origin),'Access-Control-Allow-Methods':'GET, POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type'}}):answer({error:'Not allowed.'},403);
   if(admin){const auth=request.headers.get('Authorization')||'';if(!auth.startsWith('Bearer ')||auth.length>300||!env.DISPATCH_TOKEN_SHA256||await sha(auth.slice(7))!==env.DISPATCH_TOKEN_SHA256)return answer({error:'Dispatcher authentication required.'},401);}
@@ -91,6 +93,6 @@ export function createWorker(options={}){
     if(operations.length)await db.batch(operations);return answer({acknowledged:input.results.length});
    }
   }catch{return answer({error:'Notification service unavailable.'},503,origin);}
- }};
+ },async scheduled(event,env,ctx){ctx.waitUntil(boardScheduled(env));}};
 }
 export default createWorker();

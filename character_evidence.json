@@ -1,0 +1,1142 @@
+{
+  "min-seoa": {
+    "frames": [
+      {
+        "season": 2,
+        "episode": 1,
+        "seconds": 107,
+        "source_url": "https://www.youtube.com/watch?v=l2G5ITnriFQ",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "min-seoa-1.webp",
+        "width": 412,
+        "height": 549,
+        "crop": [
+          261,
+          0,
+          673,
+          549
+        ],
+        "bytes": 25598,
+        "character": "Captain Min Seo-a",
+        "alt": {
+          "ko": "민서아 대위 · FALL 707 · S2 EP.1",
+          "en": "Captain Min Seo-a · FALL 707 · S2 EP.1",
+          "ja": "ミン・ソア大尉 · FALL 707 · S2 EP.1",
+          "es": "Capitana Min Seo-a · FALL 707 · S2 EP.1"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 4,
+        "seconds": 590,
+        "source_url": "https://www.youtube.com/watch?v=bDqEJXYr2dY",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "min-seoa-2.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 20658,
+        "character": "Captain Min Seo-a",
+        "alt": {
+          "ko": "민서아 대위 · FALL 707 · S2 EP.4",
+          "en": "Captain Min Seo-a · FALL 707 · S2 EP.4",
+          "ja": "ミン・ソア大尉 · FALL 707 · S2 EP.4",
+          "es": "Capitana Min Seo-a · FALL 707 · S2 EP.4"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 1,
+        "seconds": 95,
+        "source_url": "https://www.youtube.com/watch?v=l2G5ITnriFQ",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "min-seoa-3.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 50944,
+        "character": "Captain Min Seo-a",
+        "alt": {
+          "ko": "민서아 대위 · FALL 707 · S2 EP.1",
+          "en": "Captain Min Seo-a · FALL 707 · S2 EP.1",
+          "ja": "ミン・ソア大尉 · FALL 707 · S2 EP.1",
+          "es": "Capitana Min Seo-a · FALL 707 · S2 EP.1"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 430,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "min-seoa-4.webp",
+        "width": 1280,
+        "height": 542,
+        "crop": [
+          0,
+          4,
+          1280,
+          546
+        ],
+        "bytes": 64064,
+        "character": "Captain Min Seo-a",
+        "alt": {
+          "ko": "민서아 대위 · FALL 707 · S2 EP.6",
+          "en": "Captain Min Seo-a · FALL 707 · S2 EP.6",
+          "ja": "ミン・ソア大尉 · FALL 707 · S2 EP.6",
+          "es": "Capitana Min Seo-a · FALL 707 · S2 EP.6"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "person": "sergeant-han",
+        "label": {
+          "ko": "팀장 ↔ 돌격대원 · 한 중사 → “팀장님”",
+          "en": "Leader ↔ assault operator · Han calls her “Team Leader”",
+          "ja": "隊長 ↔ 突撃隊員・「チーム長」",
+          "es": "Jefa ↔ asalto · Han la llama «jefa de equipo»"
+        }
+      },
+      {
+        "person": "sergeant-kim",
+        "label": {
+          "ko": "팀장 ↔ 의무·통신 대원 · 김 중사 → “팀장님”",
+          "en": "Leader ↔ medical/communications operator · “Team Leader”",
+          "ja": "隊長 ↔ 衛生通信担当・「チーム長」",
+          "es": "Jefa ↔ sanidad y comunicaciones · «jefa de equipo»"
+        }
+      },
+      {
+        "person": "yeonhwa",
+        "label": {
+          "ko": "신뢰와 보호 · 연화 → “언니”",
+          "en": "Trust and protection · Yeonhwa calls her “eonni”",
+          "ja": "信頼と守り合い・ヨンファから「オンニ」",
+          "es": "Confianza y protección · Yeonhwa la llama «eonni»"
+        }
+      },
+      {
+        "person": "prince-iseo",
+        "label": {
+          "ko": "함께 위협에 맞서는 동행 · 이서 → “낭자”",
+          "en": "Allies against the threat · Iseo calls her “nangja”",
+          "ja": "脅威に立ち向かう仲間・イソから「ナンジャ」",
+          "es": "Aliados ante la amenaza · Iseo la llama «nangja»"
+        }
+      }
+    ],
+    "quotes": [
+      {
+        "season": 2,
+        "episode": 1,
+        "seconds": 0,
+        "text": {
+          "ko": "나는 대한민국 707 특수임무단 민서아 대위다.",
+          "en": "I am Captain Min Seo-a of the Republic of Korea’s 707 Special Mission Group.",
+          "ja": "私は大韓民国707特殊任務団、ミン・ソア大尉だ。",
+          "es": "Soy la capitana Min Seo-a del Grupo de Misiones Especiales 707 de la República de Corea."
+        },
+        "source_url": "https://www.youtube.com/watch?v=l2G5ITnriFQ"
+      }
+    ],
+    "first": {
+      "ko": "시즌 1 · 1화",
+      "en": "Season 1 · Episode 1",
+      "ja": "シーズン1・第1話",
+      "es": "Temporada 1 · Episodio 1"
+    },
+    "first_episode": [
+      1,
+      1
+    ]
+  },
+  "sergeant-han": {
+    "frames": [
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 182,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "sergeant-han-1.webp",
+        "width": 412,
+        "height": 550,
+        "crop": [
+          274,
+          0,
+          686,
+          550
+        ],
+        "bytes": 14644,
+        "character": "Sergeant Han",
+        "alt": {
+          "ko": "한 중사 · FALL 707 · S2 EP.6",
+          "en": "Sergeant Han · FALL 707 · S2 EP.6",
+          "ja": "ハン軍曹 · FALL 707 · S2 EP.6",
+          "es": "Sargento Han · FALL 707 · S2 EP.6"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 167,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "sergeant-han-2.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 63742,
+        "character": "Sergeant Han",
+        "alt": {
+          "ko": "한 중사 · FALL 707 · S2 EP.6",
+          "en": "Sergeant Han · FALL 707 · S2 EP.6",
+          "ja": "ハン軍曹 · FALL 707 · S2 EP.6",
+          "es": "Sargento Han · FALL 707 · S2 EP.6"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 191,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "sergeant-han-3.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 25372,
+        "character": "Sergeant Han",
+        "alt": {
+          "ko": "한 중사 · FALL 707 · S2 EP.6",
+          "en": "Sergeant Han · FALL 707 · S2 EP.6",
+          "ja": "ハン軍曹 · FALL 707 · S2 EP.6",
+          "es": "Sargento Han · FALL 707 · S2 EP.6"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 206,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "sergeant-han-4.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 22326,
+        "character": "Sergeant Han",
+        "alt": {
+          "ko": "한 중사 · FALL 707 · S2 EP.6",
+          "en": "Sergeant Han · FALL 707 · S2 EP.6",
+          "ja": "ハン軍曹 · FALL 707 · S2 EP.6",
+          "es": "Sargento Han · FALL 707 · S2 EP.6"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "person": "min-seoa",
+        "label": {
+          "ko": "팀장 · 호칭 “팀장님”",
+          "en": "Team leader · addressed as “Team Leader”",
+          "ja": "隊長・呼び方「チーム長」",
+          "es": "Jefa de equipo · «jefa de equipo»"
+        }
+      },
+      {
+        "person": "sergeant-kim",
+        "label": {
+          "ko": "같은 팀의 동료",
+          "en": "Teammates",
+          "ja": "同じチームの仲間",
+          "es": "Compañeros de equipo"
+        }
+      }
+    ],
+    "quotes": [
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 181.96,
+        "text": {
+          "ko": "누구십니까?",
+          "en": "Who are you?",
+          "ja": "何者ですか。",
+          "es": "¿Quién es usted?"
+        },
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU"
+      }
+    ]
+  },
+  "sergeant-kim": {
+    "frames": [
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 172,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "sergeant-kim-1.webp",
+        "width": 412,
+        "height": 550,
+        "crop": [
+          306,
+          0,
+          718,
+          550
+        ],
+        "bytes": 17544,
+        "character": "Sergeant Kim",
+        "alt": {
+          "ko": "김 중사 · FALL 707 · S2 EP.6",
+          "en": "Sergeant Kim · FALL 707 · S2 EP.6",
+          "ja": "キム軍曹 · FALL 707 · S2 EP.6",
+          "es": "Sargento Kim · FALL 707 · S2 EP.6"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 168,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "sergeant-kim-2.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 59966,
+        "character": "Sergeant Kim",
+        "alt": {
+          "ko": "김 중사 · FALL 707 · S2 EP.6",
+          "en": "Sergeant Kim · FALL 707 · S2 EP.6",
+          "ja": "キム軍曹 · FALL 707 · S2 EP.6",
+          "es": "Sargento Kim · FALL 707 · S2 EP.6"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 4,
+        "seconds": 291,
+        "source_url": "https://www.youtube.com/watch?v=bDqEJXYr2dY",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "sergeant-kim-3.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 23948,
+        "character": "Sergeant Kim",
+        "alt": {
+          "ko": "김 중사 · FALL 707 · S2 EP.4",
+          "en": "Sergeant Kim · FALL 707 · S2 EP.4",
+          "ja": "キム軍曹 · FALL 707 · S2 EP.4",
+          "es": "Sargento Kim · FALL 707 · S2 EP.4"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 206,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "sergeant-kim-4.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 22326,
+        "character": "Sergeant Kim",
+        "alt": {
+          "ko": "김 중사 · FALL 707 · S2 EP.6",
+          "en": "Sergeant Kim · FALL 707 · S2 EP.6",
+          "ja": "キム軍曹 · FALL 707 · S2 EP.6",
+          "es": "Sargento Kim · FALL 707 · S2 EP.6"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "person": "min-seoa",
+        "label": {
+          "ko": "팀장 · 호칭 “팀장님”",
+          "en": "Team leader · addressed as “Team Leader”",
+          "ja": "隊長・呼び方「チーム長」",
+          "es": "Jefa de equipo · «jefa de equipo»"
+        }
+      },
+      {
+        "person": "sergeant-han",
+        "label": {
+          "ko": "같은 팀의 동료",
+          "en": "Teammates",
+          "ja": "同じチームの仲間",
+          "es": "Compañeros de equipo"
+        }
+      }
+    ],
+    "quotes": [
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 171.22,
+        "text": {
+          "ko": "팀장님은요?",
+          "en": "Where is the team leader?",
+          "ja": "チーム長は？",
+          "es": "¿Y la jefa de equipo?"
+        },
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU"
+      }
+    ]
+  },
+  "prince-iseo": {
+    "frames": [
+      {
+        "season": 2,
+        "episode": 4,
+        "seconds": 12,
+        "source_url": "https://www.youtube.com/watch?v=bDqEJXYr2dY",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "prince-iseo-1.webp",
+        "width": 412,
+        "height": 550,
+        "crop": [
+          421,
+          0,
+          833,
+          550
+        ],
+        "bytes": 11408,
+        "character": "Prince Iseo",
+        "alt": {
+          "ko": "이서 왕자 · FALL 707 · S2 EP.4",
+          "en": "Prince Iseo · FALL 707 · S2 EP.4",
+          "ja": "イソ王子 · FALL 707 · S2 EP.4",
+          "es": "Príncipe Iseo · FALL 707 · S2 EP.4"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 5,
+        "seconds": 586,
+        "source_url": "https://www.youtube.com/watch?v=6Wdj9n3Pq9Q",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "prince-iseo-2.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 41088,
+        "character": "Prince Iseo",
+        "alt": {
+          "ko": "이서 왕자 · FALL 707 · S2 EP.5",
+          "en": "Prince Iseo · FALL 707 · S2 EP.5",
+          "ja": "イソ王子 · FALL 707 · S2 EP.5",
+          "es": "Príncipe Iseo · FALL 707 · S2 EP.5"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 4,
+        "seconds": 340,
+        "source_url": "https://www.youtube.com/watch?v=bDqEJXYr2dY",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "prince-iseo-3.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 30738,
+        "character": "Prince Iseo",
+        "alt": {
+          "ko": "이서 왕자 · FALL 707 · S2 EP.4",
+          "en": "Prince Iseo · FALL 707 · S2 EP.4",
+          "ja": "イソ王子 · FALL 707 · S2 EP.4",
+          "es": "Príncipe Iseo · FALL 707 · S2 EP.4"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 407,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "prince-iseo-4.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 31482,
+        "character": "Prince Iseo",
+        "alt": {
+          "ko": "이서 왕자 · FALL 707 · S2 EP.6",
+          "en": "Prince Iseo · FALL 707 · S2 EP.6",
+          "ja": "イソ王子 · FALL 707 · S2 EP.6",
+          "es": "Príncipe Iseo · FALL 707 · S2 EP.6"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "person": "min-seoa",
+        "label": {
+          "ko": "함께 맞서는 동행 · 호칭 “낭자”",
+          "en": "Companions against the threat · “nangja”",
+          "ja": "脅威に立ち向かう仲間・「ナンジャ」",
+          "es": "Compañeros ante la amenaza · «nangja»"
+        }
+      }
+    ],
+    "quotes": [
+      {
+        "season": 2,
+        "episode": 4,
+        "seconds": 11.9,
+        "text": {
+          "ko": "늦었소, 낭자.",
+          "en": "I am late, my lady.",
+          "ja": "遅くなった、ナンジャ。",
+          "es": "Llego tarde, mi dama."
+        },
+        "source_url": "https://www.youtube.com/watch?v=bDqEJXYr2dY"
+      }
+    ],
+    "first": {
+      "ko": "시즌 1 · 2화",
+      "en": "Season 1 · Episode 2",
+      "ja": "シーズン1・第2話",
+      "es": "Temporada 1 · Episodio 2"
+    },
+    "first_episode": [
+      1,
+      2
+    ]
+  },
+  "yeonhwa": {
+    "frames": [
+      {
+        "season": 2,
+        "episode": 2,
+        "seconds": 192,
+        "source_url": "https://www.youtube.com/watch?v=WZ0ozLABZwE",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "yeonhwa-1.webp",
+        "width": 412,
+        "height": 550,
+        "crop": [
+          588,
+          0,
+          1000,
+          550
+        ],
+        "bytes": 14474,
+        "character": "Yeonhwa",
+        "alt": {
+          "ko": "연화 · FALL 707 · S2 EP.2",
+          "en": "Yeonhwa · FALL 707 · S2 EP.2",
+          "ja": "ヨンファ · FALL 707 · S2 EP.2",
+          "es": "Yeonhwa · FALL 707 · S2 EP.2"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 1,
+        "seconds": 246,
+        "source_url": "https://www.youtube.com/watch?v=l2G5ITnriFQ",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "yeonhwa-2.webp",
+        "width": 1280,
+        "height": 549,
+        "crop": [
+          0,
+          0,
+          1280,
+          549
+        ],
+        "bytes": 35238,
+        "character": "Yeonhwa",
+        "alt": {
+          "ko": "연화 · FALL 707 · S2 EP.1",
+          "en": "Yeonhwa · FALL 707 · S2 EP.1",
+          "ja": "ヨンファ · FALL 707 · S2 EP.1",
+          "es": "Yeonhwa · FALL 707 · S2 EP.1"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 1,
+        "seconds": 100,
+        "source_url": "https://www.youtube.com/watch?v=l2G5ITnriFQ",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "yeonhwa-3.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 24868,
+        "character": "Yeonhwa",
+        "alt": {
+          "ko": "연화 · FALL 707 · S2 EP.1",
+          "en": "Yeonhwa · FALL 707 · S2 EP.1",
+          "ja": "ヨンファ · FALL 707 · S2 EP.1",
+          "es": "Yeonhwa · FALL 707 · S2 EP.1"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 1,
+        "seconds": 450,
+        "source_url": "https://www.youtube.com/watch?v=l2G5ITnriFQ",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "yeonhwa-4.webp",
+        "width": 1280,
+        "height": 549,
+        "crop": [
+          0,
+          0,
+          1280,
+          549
+        ],
+        "bytes": 37092,
+        "character": "Yeonhwa",
+        "alt": {
+          "ko": "연화 · FALL 707 · S2 EP.1",
+          "en": "Yeonhwa · FALL 707 · S2 EP.1",
+          "ja": "ヨンファ · FALL 707 · S2 EP.1",
+          "es": "Yeonhwa · FALL 707 · S2 EP.1"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "person": "min-seoa",
+        "label": {
+          "ko": "믿고 따르는 사람 · 호칭 “언니”",
+          "en": "Someone she trusts and follows · “eonni”",
+          "ja": "慕い、信じる人・「オンニ」",
+          "es": "Alguien en quien confía · «eonni»"
+        }
+      },
+      {
+        "person": "yuna",
+        "label": {
+          "ko": "어린 시절부터 이어진 인연",
+          "en": "A connection since childhood",
+          "ja": "幼い頃からの縁",
+          "es": "Un vínculo desde la infancia"
+        }
+      }
+    ],
+    "quotes": [
+      {
+        "season": 2,
+        "episode": 2,
+        "seconds": 191.14,
+        "text": {
+          "ko": "언니한테 바다를 보여드리고 싶어서요.",
+          "en": "I wanted to show you the sea, eonni.",
+          "ja": "オンニに海を見せたかったんです。",
+          "es": "Quería enseñarte el mar, eonni."
+        },
+        "source_url": "https://www.youtube.com/watch?v=WZ0ozLABZwE"
+      }
+    ],
+    "first": {
+      "ko": "시즌 2 · 1화",
+      "en": "Season 2 · Episode 1",
+      "ja": "シーズン2・第1話",
+      "es": "Temporada 2 · Episodio 1"
+    },
+    "first_episode": [
+      2,
+      1
+    ]
+  },
+  "yuna": {
+    "frames": [
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 905,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "yuna-1.webp",
+        "width": 412,
+        "height": 550,
+        "crop": [
+          511,
+          0,
+          923,
+          550
+        ],
+        "bytes": 6896,
+        "character": "Yuna",
+        "alt": {
+          "ko": "유나 · FALL 707 · S2 EP.6",
+          "en": "Yuna · FALL 707 · S2 EP.6",
+          "ja": "ユナ · FALL 707 · S2 EP.6",
+          "es": "Yuna · FALL 707 · S2 EP.6"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 29,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "yuna-2.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 25236,
+        "character": "Yuna",
+        "alt": {
+          "ko": "유나 · FALL 707 · S2 EP.6",
+          "en": "Yuna · FALL 707 · S2 EP.6",
+          "ja": "ユナ · FALL 707 · S2 EP.6",
+          "es": "Yuna · FALL 707 · S2 EP.6"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 455,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "yuna-3.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 34872,
+        "character": "Yuna",
+        "alt": {
+          "ko": "유나 · FALL 707 · S2 EP.6",
+          "en": "Yuna · FALL 707 · S2 EP.6",
+          "ja": "ユナ · FALL 707 · S2 EP.6",
+          "es": "Yuna · FALL 707 · S2 EP.6"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 907,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "yuna-4.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 16320,
+        "character": "Yuna",
+        "alt": {
+          "ko": "유나 · FALL 707 · S2 EP.6",
+          "en": "Yuna · FALL 707 · S2 EP.6",
+          "ja": "ユナ · FALL 707 · S2 EP.6",
+          "es": "Yuna · FALL 707 · S2 EP.6"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "person": "yeonhwa",
+        "label": {
+          "ko": "어린 시절부터 이어진 인연",
+          "en": "A connection since childhood",
+          "ja": "幼い頃からの縁",
+          "es": "Un vínculo desde la infancia"
+        }
+      },
+      {
+        "person": "hyeolmaek",
+        "label": {
+          "ko": "가르침을 받은 인연 · 호칭 “스승님”",
+          "en": "Her master · “seuseungnim”",
+          "ja": "教えを受けた縁・「師匠」",
+          "es": "Su maestro · «seuseungnim»"
+        }
+      }
+    ],
+    "quotes": [
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 30.88,
+        "text": {
+          "ko": "지금은 사람들부터 구해야 해요.",
+          "en": "We need to save the people first.",
+          "ja": "今は、まず人々を助けなければ。",
+          "es": "Ahora hay que salvar primero a la gente."
+        },
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU"
+      }
+    ]
+  },
+  "hyeolmaek": {
+    "frames": [],
+    "relations": [
+      {
+        "person": "yuna",
+        "label": {
+          "ko": "“스승님”이라 부르는 제자",
+          "en": "The pupil who calls him “Master”",
+          "ja": "「師匠」と呼ぶ弟子",
+          "es": "La alumna que lo llama «maestro»"
+        }
+      }
+    ],
+    "quotes": [
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 911.42,
+        "text": {
+          "ko": "우선 숨부터 고르거라.",
+          "en": "Catch your breath first.",
+          "ja": "まずは息を整えなさい。",
+          "es": "Primero recupera el aliento."
+        },
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU"
+      }
+    ],
+    "first": {
+      "ko": "시즌 2 · 6화 · 후반 대사",
+      "en": "Season 2 · Episode 6 · closing dialogue",
+      "ja": "シーズン2・第6話・後半の台詞",
+      "es": "Temporada 2 · Episodio 6 · diálogo final"
+    },
+    "first_episode": [
+      2,
+      6
+    ]
+  },
+  "villain-shaman": {
+    "frames": [
+      {
+        "season": 2,
+        "episode": 2,
+        "seconds": 18,
+        "source_url": "https://www.youtube.com/watch?v=WZ0ozLABZwE",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "villain-shaman-1.webp",
+        "width": 412,
+        "height": 550,
+        "crop": [
+          613,
+          0,
+          1025,
+          550
+        ],
+        "bytes": 12618,
+        "character": "The villain shaman",
+        "alt": {
+          "ko": "빌런 무당 · FALL 707 · S2 EP.2",
+          "en": "The villain shaman · FALL 707 · S2 EP.2",
+          "ja": "敵の巫女 · FALL 707 · S2 EP.2",
+          "es": "La chamana antagonista · FALL 707 · S2 EP.2"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 2,
+        "seconds": 23,
+        "source_url": "https://www.youtube.com/watch?v=WZ0ozLABZwE",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "villain-shaman-2.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 26208,
+        "character": "The villain shaman",
+        "alt": {
+          "ko": "빌런 무당 · FALL 707 · S2 EP.2",
+          "en": "The villain shaman · FALL 707 · S2 EP.2",
+          "ja": "敵の巫女 · FALL 707 · S2 EP.2",
+          "es": "La chamana antagonista · FALL 707 · S2 EP.2"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 4,
+        "seconds": 640,
+        "source_url": "https://www.youtube.com/watch?v=bDqEJXYr2dY",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "villain-shaman-3.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 20648,
+        "character": "The villain shaman",
+        "alt": {
+          "ko": "빌런 무당 · FALL 707 · S2 EP.4",
+          "en": "The villain shaman · FALL 707 · S2 EP.4",
+          "ja": "敵の巫女 · FALL 707 · S2 EP.4",
+          "es": "La chamana antagonista · FALL 707 · S2 EP.4"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 4,
+        "seconds": 650,
+        "source_url": "https://www.youtube.com/watch?v=bDqEJXYr2dY",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "villain-shaman-4.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 11646,
+        "character": "The villain shaman",
+        "alt": {
+          "ko": "빌런 무당 · FALL 707 · S2 EP.4",
+          "en": "The villain shaman · FALL 707 · S2 EP.4",
+          "ja": "敵の巫女 · FALL 707 · S2 EP.4",
+          "es": "La chamana antagonista · FALL 707 · S2 EP.4"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "person": "min-seoa",
+        "label": {
+          "ko": "검은 종을 둘러싼 대립",
+          "en": "Opposing sides of the black bell",
+          "ja": "黒い鈴をめぐる対立",
+          "es": "Enfrentadas por la campana negra"
+        }
+      },
+      {
+        "person": "prince-iseo",
+        "label": {
+          "ko": "검은 종을 둘러싼 대립",
+          "en": "Opposing sides of the black bell",
+          "ja": "黒い鈴をめぐる対立",
+          "es": "Enfrentados por la campana negra"
+        }
+      }
+    ],
+    "quotes": [
+      {
+        "season": 2,
+        "episode": 2,
+        "seconds": 17.04,
+        "text": {
+          "ko": "대감께서는 이유를 아실 필요가 없습니다.",
+          "en": "You have no need to know the reason, my lord.",
+          "ja": "大監は理由をお知りになる必要はありません。",
+          "es": "No necesita saber el motivo, mi señor."
+        },
+        "source_url": "https://www.youtube.com/watch?v=WZ0ozLABZwE"
+      }
+    ]
+  },
+  "elder-shaman": {
+    "frames": [
+      {
+        "season": 2,
+        "episode": 5,
+        "seconds": 24,
+        "source_url": "https://www.youtube.com/watch?v=6Wdj9n3Pq9Q",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "elder-shaman-1.webp",
+        "width": 412,
+        "height": 550,
+        "crop": [
+          575,
+          0,
+          987,
+          550
+        ],
+        "bytes": 15760,
+        "character": "The elder shaman",
+        "alt": {
+          "ko": "할머니 무당 · FALL 707 · S2 EP.5",
+          "en": "The elder shaman · FALL 707 · S2 EP.5",
+          "ja": "老巫女 · FALL 707 · S2 EP.5",
+          "es": "La anciana chamana · FALL 707 · S2 EP.5"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 77,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "elder-shaman-2.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 57924,
+        "character": "The elder shaman",
+        "alt": {
+          "ko": "할머니 무당 · FALL 707 · S2 EP.6",
+          "en": "The elder shaman · FALL 707 · S2 EP.6",
+          "ja": "老巫女 · FALL 707 · S2 EP.6",
+          "es": "La anciana chamana · FALL 707 · S2 EP.6"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 85,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "elder-shaman-3.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 52540,
+        "character": "The elder shaman",
+        "alt": {
+          "ko": "할머니 무당 · FALL 707 · S2 EP.6",
+          "en": "The elder shaman · FALL 707 · S2 EP.6",
+          "ja": "老巫女 · FALL 707 · S2 EP.6",
+          "es": "La anciana chamana · FALL 707 · S2 EP.6"
+        }
+      },
+      {
+        "season": 2,
+        "episode": 6,
+        "seconds": 92,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg",
+        "file": "elder-shaman-4.webp",
+        "width": 1280,
+        "height": 550,
+        "crop": [
+          0,
+          0,
+          1280,
+          550
+        ],
+        "bytes": 50774,
+        "character": "The elder shaman",
+        "alt": {
+          "ko": "할머니 무당 · FALL 707 · S2 EP.6",
+          "en": "The elder shaman · FALL 707 · S2 EP.6",
+          "ja": "老巫女 · FALL 707 · S2 EP.6",
+          "es": "La anciana chamana · FALL 707 · S2 EP.6"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "person": "min-seoa",
+        "label": {
+          "ko": "조선에서 치료로 이어진 인연",
+          "en": "A connection through healing in Joseon",
+          "ja": "朝鮮で治療を通じて結ばれた縁",
+          "es": "Un vínculo a través de sus cuidados en Joseon"
+        }
+      }
+    ],
+    "quotes": [
+      {
+        "season": 2,
+        "episode": 5,
+        "seconds": 23.417,
+        "text": {
+          "ko": "잘못 건드리면 영혼까지 상한다.",
+          "en": "One wrong move could harm their souls.",
+          "ja": "下手に触れれば、魂まで傷つく。",
+          "es": "Un paso en falso podría dañar sus almas."
+        },
+        "source_url": "https://www.youtube.com/watch?v=6Wdj9n3Pq9Q"
+      }
+    ]
+  }
+}

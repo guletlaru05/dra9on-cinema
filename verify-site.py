@@ -116,7 +116,12 @@ from presskit import ROUTES as PRESS_ROUTES
 from international import ROUTES as SERIES_ROUTES, supported_routes
 translated_routes=supported_routes([{**w,'path':w['path'][len(base):]} for w in published_catalog])
 TUTORIAL_ROUTES = [*TUTORIAL_ROUTES, *QUESTION_ROUTES, *PRESS_ROUTES, *SERIES_ROUTES]
-assert len(html_files) == 2 * (video_count + 10 + len(TUTORIAL_ROUTES))+2*len(translated_routes), len(html_files)
+from importlib.util import find_spec
+new_bilingual_routes=lambda:[]
+if find_spec('notes_update') is not None:
+ from notes_update import new_bilingual_routes
+from lounge import extra_bilingual
+assert len(html_files) == 2 * (video_count + 10 + len(TUTORIAL_ROUTES)+len(new_bilingual_routes())+extra_bilingual())+2*len(translated_routes), len(html_files)
 for path in html_files:
     source = path.read_text(encoding='utf-8')
     assert source.count('/consent.js?v=') == 1, path
@@ -127,8 +132,13 @@ for path in html_files:
     for script in page.scripts:
         active=script.get('src','')
         assert not re.search(r'/(?:community|library)\.js(?:\?|$)',active), f'Service module loads before permission: {path}'
-    if '/questions/' in path.as_posix():
+    from lounge import enabled as lounge_enabled
+    is_board_redirect=lounge_enabled() and '/questions/' in path.as_posix()
+    if '/lounge/' in path.as_posix() or ('/questions/' in path.as_posix() and not is_board_redirect):
         assert any('community.js' in script.get('data-service-src','') for script in page.scripts), path
+    if is_board_redirect:
+        assert 'http-equiv="refresh"' in source and '/lounge/#board' in source
+        assert not any('community.js' in script.get('data-service-src','') for script in page.scripts)
     relative = path.relative_to(root).as_posix()
     lang = relative.split('/',1)[0] if relative.startswith(('en/','ja/','es/')) else 'ko'
     assert page.lang == lang, path
@@ -173,7 +183,7 @@ for path in html_files:
     assert page.switches == {code:base+('' if code=='ko' else '/'+code)+(route if code in available else '/') for code in ('ko','en','ja','es')}, path
     assert page.alternates == {**{code:site+('' if code=='ko' else '/'+code)+route for code in available},'x-default':site+'/en'+route}, path
     if not relative.endswith('404.html'):
-        expected = site + ('/'+lang if lang!='ko' else '') + route
+        expected = site + ('/'+lang if lang!='ko' else '') + ('/lounge/' if is_board_redirect else route)
         assert page.canonical == expected, (path, page.canonical)
         assert len(page.json_chunks) == 1, path
         schema = page.json_chunks[0]
@@ -288,7 +298,8 @@ for ko, en in zip(*catalogs):
     assert ko['name'] in en['searchText'] and en['name'] in ko['searchText']
 
 sitemap = ET.parse(root / 'sitemap.xml').getroot()
-assert len(sitemap) == 2 * (video_count + 9 + len(TUTORIAL_ROUTES))+2*len(translated_routes)
+from lounge import extra_bilingual
+assert len(sitemap) == 2 * (video_count + 9 + len(TUTORIAL_ROUTES)+len(new_bilingual_routes())+extra_bilingual())+2*len(translated_routes)
 for entry in sitemap:
     local_file(entry.find('{http://www.sitemaps.org/schemas/sitemap/0.9}loc').text)
 assert (root / '.nojekyll').exists()

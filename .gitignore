@@ -1,4 +1,8 @@
 dist/
+dist-notes-preview/
+dist-notes-production-check/
+dist-lounge-preview/
+dist-lounge-production-check/
 __pycache__/
 *.pyc
 .env

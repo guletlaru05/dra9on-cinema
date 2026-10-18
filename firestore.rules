@@ -55,7 +55,7 @@ service cloud.firestore {
         && d.nickname is string && d.nickname.size() >= 2 && d.nickname.size() <= 24
         && d.title is string && d.title.size() >= 2 && d.title.size() <= 120
         && d.body is string && d.body.size() >= 10 && d.body.size() <= 3000
-        && d.topic in ['story','making','other']
+        && d.topic in ['story','making','character','other']
         && d.authorUid is string && d.authorUid.size() > 0 && d.authorUid.size() <= 128
         && d.official is bool && d.answer is string && d.answer.size() <= 5000
         && d.createdAt is timestamp && d.createdAt <= request.time && d.updatedAt == request.time

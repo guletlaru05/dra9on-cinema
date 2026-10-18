@@ -91,7 +91,7 @@
    const button=document.createElement('button');button.type='button';button.textContent=kind==='board'?t('게시판 불러오기','Load board'):t('자료실 로그인 기능 준비','Enable library sign-in');
    const status=document.createElement('p');status.setAttribute('role','status');
    panel.append(description,button,status);
-   const main=document.getElementById('main')||document.querySelector('main')||document.body;main.prepend(panel);
+   const main=document.getElementById('main')||document.querySelector('main')||document.body;(kind==='board'&&document.getElementById('board')||main).prepend(panel);
    const state={loading:false};services.set(source,state);
    const connect=()=>{
     if(state.loading)return;state.loading=true;button.disabled=true;status.textContent=t('보안 연결을 준비하고 있습니다…','Preparing the secure connection…');

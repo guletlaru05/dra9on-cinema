@@ -156,6 +156,12 @@ localize_site(out, works, origin, base_path)
 build_languages(out,origin,works,data,head,header,footer,base_path)
 from lighting_tutorial import build_all as build_lighting_all
 build_lighting_all(out,origin,head,header,footer,base_path)
+from importlib.util import find_spec
+if find_spec('notes_update') is not None:
+ from notes_update import build as build_notes_update
+ build_notes_update(out,origin,head,base_path)
+from lounge import build as build_lounge
+build_lounge(out,origin,works,head,base_path)
 from international import update_language_links
 update_language_links(out,origin,works,base_path)
 # Public ownership proof for the owner's Google and Naver webmaster properties.
@@ -270,7 +276,7 @@ for page in out.rglob('*.html'):
    inline_hashes.append("'sha256-"+base64.b64encode(sha256(code.encode('utf-8')).digest()).decode('ascii')+"'")
  # Firebase popup sign-in loads Google's iframe transport dynamically.
  # Keep these additional origins limited to the private library shell.
- private_library = page.relative_to(out).as_posix() in ['library/index.html','questions/index.html','en/questions/index.html']
+ private_library = page.relative_to(out).as_posix() in ['library/index.html','questions/index.html','en/questions/index.html','lounge/index.html','en/lounge/index.html','ja/lounge/index.html','es/lounge/index.html']
  auth_scripts = " https://apis.google.com" if private_library else ""
  auth_connections = " https://dra9on-cinema-stats.firebaseapp.com" if private_library else ""
  # This article alone embeds the owner's supplied Instagram Reel. Keep the

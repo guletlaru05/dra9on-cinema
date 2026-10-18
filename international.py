@@ -122,7 +122,13 @@ class PageLanguage(HTMLParser):
  def handle_entityref(self,value):self.parts.append('&'+value+';')
  def handle_charref(self,value):self.parts.append('&#'+value+';')
 
-def supported_routes(works):return {'/tutorials/','/tutorials/lighting-contrast/','/','/fall-707/','/press/',*[w['path'] for w in works if w['season']],*(['/fall-707/world/'] if WORLD_ENABLED else [])}
+def supported_routes(works):
+ from importlib.util import find_spec
+ note_routes=lambda:set()
+ if find_spec('notes_update') is not None:
+  from notes_update import routes as note_routes
+ from lounge import routes as lounge_routes
+ return {'/tutorials/','/tutorials/lighting-contrast/','/','/fall-707/','/press/',*[w['path'] for w in works if w['season']],*(['/fall-707/world/'] if WORLD_ENABLED else []),*note_routes(),*lounge_routes()}
 
 def build_languages(out,origin,works,data,head,header,footer,base_path=''):
  routes=supported_routes(works)
