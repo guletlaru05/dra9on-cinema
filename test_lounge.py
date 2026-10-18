@@ -22,7 +22,9 @@ class LoungeTests(unittest.TestCase):
    pre='' if lang=='ko' else lang+'/'
    doc=(root/pre/'lounge/index.html').read_text(encoding='utf-8')
    self.assertEqual(doc.count('id="board-form"'),1)
-   for id in ('characters','events','board','ask','board-owner-panel','board-notify-on','board-filter','board-topic'):self.assertIn('id="'+id+'"',doc)
+   for id in ('characters','events','board','ask','board-list-view','board-detail','board-detail-content','board-owner-panel','board-notify-on','board-filter','board-topic'):self.assertIn('id="'+id+'"',doc)
+   self.assertIn('<table class="board-table">',doc)
+   self.assertIn('<tbody id="board-posts">',doc)
    self.assertEqual(doc.count('value="character"'),2)
    for attr in ('maxlength="24"','maxlength="120"','maxlength="3000"'):self.assertIn(attr,doc)
    self.assertNotIn('type="password"',doc)

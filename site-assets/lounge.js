@@ -4,6 +4,7 @@
   const rows=[
    ['이야기','Story','物語','Historia'],['제작','Filmmaking','制作','Creación'],['캐릭터','Character','登場人物','Personaje'],['기타','Other','その他','Otros'],
    ['제작자','Creator','制作者','Creador'],['방문자','Visitor','訪問者','Visitante'],['답변 완료','Answered','回答済み','Respondido'],['새 이야기','Post','投稿','Publicación'],['운영자 답변','Creator replied','運営者からの回答','Respuesta del creador'],['제작자 답변','Creator reply','制作者の回答','Respuesta del creador'],
+   ['답변 대기','Awaiting reply','回答待ち','Sin responder'],['글을 찾을 수 없습니다. 숨겨졌거나 삭제된 글일 수 있습니다.','Post unavailable. It may have been hidden or removed.','投稿が見つかりません。非表示または削除された可能性があります。','La publicación no está disponible. Puede haberse ocultado o eliminado.'],
    ['공개 답변 작성','Write a public reply','公開回答を書く','Escribir una respuesta pública'],['답변 게시','Publish reply','回答を公開','Publicar respuesta'],['글 숨기기','Hide post','投稿を非表示','Ocultar publicación'],['복원하기','Restore','復元する','Restaurar'],
    ['게시판을 불러오는 중…','Loading the board…','掲示板を読み込み中…','Cargando el tablón…'],['아직 글이 없습니다. 첫 이야기를 남겨주세요.','No posts yet. Start the first conversation.','まだ投稿がありません。最初の話題をどうぞ。','Aún no hay publicaciones. Inicia la conversación.'],
    ['불러온 글 중 이 분야의 글이 없습니다. 이전 글 더 보기를 눌러보세요.','No loaded posts match this topic. Try loading previous posts.','読み込んだ投稿に該当するテーマがありません。以前の投稿もご覧ください。','No hay publicaciones de este tema entre las cargadas. Prueba a cargar anteriores.'],
@@ -32,6 +33,15 @@
  }
  const form=document.getElementById('board-form');
  if(form){const q=new URLSearchParams(location.search);if(q.get('topic')==='character'){document.getElementById('board-topic').value='character';const name=q.get('character');const names={'min-seoa':'민서아','sergeant-han':'한 중사','sergeant-kim':'김 중사','prince-iseo':'이서','yeonhwa':'연화','yuna':'유나','hyeolmaek':'혈맥선생','villain-shaman':'빌런 무당','elder-shaman':'할머니 무당'};if(Object.hasOwn(names,name))form.dataset.character=name;}}
+ if(form){
+  const composer=document.getElementById('ask'),list=document.getElementById('board-list-view'),detail=document.getElementById('board-detail');
+  function route(focus=false){
+   const writing=location.hash==='#ask',reading=/^#post-[A-Za-z0-9_-]{1,128}$/.test(location.hash);
+   composer.hidden=!writing;list.hidden=writing||reading;detail.hidden=!reading;
+   if(focus&&writing)composer.querySelector('h2').focus();
+  }
+  window.addEventListener('hashchange',()=>route(true));route();
+ }
  // Delegate to the existing same-page image viewer, keeping original ratios.
  document.querySelectorAll('a.lounge-image').forEach(a=>a.dataset.loungeImage='true');
 })();
