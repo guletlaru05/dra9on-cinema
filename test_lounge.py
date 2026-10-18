@@ -7,8 +7,9 @@ class LoungeTests(unittest.TestCase):
   with patch.dict(os.environ,{},clear=True),patch.object(lounge.json,'loads',return_value={'approved_for_publication':False}):
    self.assertFalse(lounge.enabled());self.assertEqual(lounge.new_routes(),[])
  def test_all_languages_preserve_board_forms_and_redirect(self):
-  root=Path('dist-lounge-preview')
-  if not root.exists():self.skipTest('Build the private lounge preview first')
+  root=Path('dist') if Path('dist/lounge/index.html').exists() else Path('dist-lounge-preview')
+  if not root.exists():self.skipTest('Build lounge pages first')
+  evidence=json.loads(Path('character_evidence.json').read_text(encoding='utf-8'))
   for lang in ('ko','en','ja','es'):
    pre='' if lang=='ko' else lang+'/'
    doc=(root/pre/'lounge/index.html').read_text(encoding='utf-8')
@@ -22,7 +23,10 @@ class LoungeTests(unittest.TestCase):
     char=(root/pre/('fall-707/characters/'+p['slug']+'/index.html')).read_text(encoding='utf-8')
     self.assertIn('topic=character&amp;character='+p['slug']+'#ask',char)
     self.assertIn('hreflang="es"',char)
-    self.assertIn('noindex,nofollow,noarchive',char)
+    if 'data-lounge-preview="true"' in char:self.assertIn('noindex,nofollow,noarchive',char)
+    else:self.assertNotIn('noindex,nofollow,noarchive',char)
+    for frame in evidence[p['slug']]['frames']:
+     self.assertIn('/watch/fall-707-s'+str(frame['season'])+'-ep'+str(frame['episode'])+'/',char)
  def test_approved_images_use_owner_season_two_sources(self):
   manifest=json.loads(Path('character_evidence.json').read_text(encoding='utf-8'))
   for person in manifest.values():
