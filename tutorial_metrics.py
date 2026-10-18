@@ -73,7 +73,8 @@ def inject_metrics(out, base_path=''):
         registry[public_path] = {'canonicalPath': canonical_path, 'type': 'tutorial' if is_tutorial else 'page'}
         en = path.startswith('/en/')
         if is_tutorial:
-            tutorials.setdefault(canonical_path, {})['en' if en else 'ko'] = info.title
+            language = path.split('/')[1] if path.startswith(('/en/','/ja/','/es/')) else 'ko'
+            tutorials.setdefault(canonical_path, {})[language] = info.title
         meta = '<meta name="d9-metrics-path" content="'+escape(public_path,quote=True)+'">'
         meta += '<meta name="d9-metrics-canonical" content="'+escape(canonical_path,quote=True)+'">'
         if endpoint:

@@ -11,8 +11,9 @@ from previs_tutorial import build as build_previs, teaser as previs_teaser, PATH
 from video_repair_tutorial import build as build_video_repair, teaser as video_repair_teaser, PATH as VIDEO_REPAIR_PATH
 from newtake_tutorial import build as build_newtake, teaser as newtake_teaser, PATH as NEWTAKE_PATH
 from aesthetics_tutorial import build as build_aesthetics, teaser as aesthetics_teaser, PATH as AESTHETICS_PATH
+from lighting_tutorial import build as build_lighting, teaser as lighting_teaser, PATH as LIGHTING_PATH
 
-ROUTES = ['/tutorials/', '/tutorials/character-sheet/', SEEDANCE_PATH, PLATFORM_PATH, LANGUAGES_PATH, CAMERA_PATH, PREVIS_PATH, VIDEO_REPAIR_PATH, NEWTAKE_PATH, AESTHETICS_PATH]
+ROUTES = ['/tutorials/', '/tutorials/character-sheet/', SEEDANCE_PATH, PLATFORM_PATH, LANGUAGES_PATH, CAMERA_PATH, PREVIS_PATH, VIDEO_REPAIR_PATH, NEWTAKE_PATH, AESTHETICS_PATH, LIGHTING_PATH]
 TRANSLATIONS = {}
 ART = '/assets/notes/character-sheet-duchess20-v3-center-soft-wm.webp'
 
@@ -48,7 +49,7 @@ def teaser(limit=None):
     cards=''.join(f'''<a class="tutorial-preview" href="{lesson['path']}"><img src="{lesson['art']}" width="1536" height="1024" loading="lazy" decoding="async" alt="{lesson['alt']}"><div><p class="section-eyebrow">{'SEEDANCE 2.5 / IMAGE TO VIDEO' if lesson.get('video') else 'CHARACTER / SCENE / LIGHT'}</p><h3>{lesson['title']}</h3><p class="tutorial-card-date"><time datetime="{lesson['date']}">{lesson['date'].replace('-','.')}</time> · {t("밀리터리 · 이미지 · 영상", "Military · Image · Video") if lesson.get('video') else t("캐릭터 · 씬 · 조명", "Character · Scene · Light")}</p><span>{t('시댄스 2.5 영상화 · 강좌 열기','Seedance 2.5 image to video · Open lesson') if lesson.get('video') else t('로판 캐릭터 시트 기초 · 강좌 열기', 'Romantic-fantasy character basics · Open lesson')} →</span></div></a>''' for lesson in sorted(LESSONS,key=lambda item:item['date'],reverse=True))
     cards+=platform_teaser(t)
     cards+=languages_teaser(t)
-    cards=aesthetics_teaser(t)+newtake_teaser(t)+video_repair_teaser(t)+previs_teaser(t)+camera_teaser(t)+cards
+    cards=lighting_teaser(t)+aesthetics_teaser(t)+newtake_teaser(t)+video_repair_teaser(t)+previs_teaser(t)+camera_teaser(t)+cards
     candidates=cards
     if limit is not None:
         import re
@@ -132,6 +133,7 @@ def build_tutorials(out, origin, head, header, footer):
     build_video_repair(out,origin,head,header,footer,t)
     build_newtake(out,origin,head,header,footer,t)
     build_aesthetics(out,origin,head,header,footer,t)
+    build_lighting(out,origin,head,header,footer,t)
 
 def page_head(head,title,description,path,schema):
     return head(title+' | DRA9ON CINEMA',description,path,schema).replace('property="og:type" content="video.episode"','property="og:type" content="article"' if path==ROUTES[1] else 'property="og:type" content="website"')

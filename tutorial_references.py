@@ -24,7 +24,7 @@ class PublicArticle(HTMLParser):
 
 def build_reference_index(out,origin):
  documents=[]
- for language,prefix in [('ko',''),('en','/en')]:
+ for language,prefix in [('ko',''),('en','/en'),('ja','/ja'),('es','/es')]:
   for path in sorted((out/(prefix.strip('/')+'/tutorials').lstrip('/')).glob('*/index.html')):
    parser=PublicArticle(path.read_text(encoding='utf-8'))
    if not parser.title:continue

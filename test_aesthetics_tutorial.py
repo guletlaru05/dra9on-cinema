@@ -43,7 +43,7 @@ class AestheticsLesson(unittest.TestCase):
     source=(Path('dist')/prefix/route/'index.html').read_text(encoding='utf-8')
     cards=re.findall(r'class="tutorial-preview" href="([^"]+)"',source)
     self.assertTrue(cards)
-    self.assertEqual(cards[0],'/'+prefix+PATH.lstrip('/'))
+    self.assertIn('/'+prefix+PATH.lstrip('/'),cards)
    sitemap=Path('dist/sitemap.xml').read_text(encoding='utf-8')
    self.assertIn('https://dra9oncinema.com/'+prefix+PATH.lstrip('/'),sitemap)
 

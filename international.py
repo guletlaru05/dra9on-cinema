@@ -62,6 +62,13 @@ def dictionary(lang,out):
  for source,ja,es in [('회차 안내','エピソードガイド','Guía de episodios'),('FALL 707 회차 안내','FALL 707 エピソードガイド','FALL 707 · Guía de episodios'),('시즌별 회차와 몰아보기를 한곳에서. 처음이라면 시즌 1의 첫 회차부터 시작하세요.','各シーズンのエピソードと一挙上映をまとめて。初めての方は、シーズン1の第1話から。','Todos los episodios y temporadas completas en un mismo lugar. Si es tu primera visita, empieza por el primer episodio de la temporada 1.'),('사이트 방문 통계','サイト訪問統計','Estadísticas de visitas'),('오늘 방문','本日の訪問','Visitas de hoy'),('누적 방문','累計訪問','Visitas totales'),('집계 기준','集計について','Cómo se cuentan las visitas'),('이용약관','利用規約','Términos de uso'),('개인정보처리방침','プライバシーポリシー','Política de privacidad'),('외부 콘텐츠 설정','外部動画の設定','Ajustes de videos externos'),('채널 문의','お問い合わせ','Contacto'),('AI로 세계관을 실사화하는 크리에이터.','AIで、想像を映像へ。','Dando vida a mundos imaginados con cine creado con IA.'),('작품·이미지·텍스트의 무단 복제, 재업로드 및 상업적 이용을 금합니다. 이용 문의는 이메일로 연락해 주세요.','作品・画像・文章の無断複製、再投稿、商用利用は禁止です。利用の際はメールでお問い合わせください。','No se permite copiar, volver a publicar ni usar comercialmente películas, imágenes o textos sin autorización. Para consultas de uso, escríbenos por correo.')]:d[source]=ja if lang=='ja' else es
  # Short dynamic UI labels still go through the same catalog-independent map.
  d.update({'YouTube views ': 'YouTube再生回数 ' if lang=='ja' else 'Reproducciones de YouTube ', 'YouTube subscribers':'YouTube登録者' if lang=='ja' else 'Suscriptores de YouTube'})
+ from lighting_content import COPY as LIGHTING_COPY
+ for key in ('title','subtitle','read'):
+  d[LIGHTING_COPY['ko'][key]]=LIGHTING_COPY[lang][key]
+  d[LIGHTING_COPY['en'][key]]=LIGHTING_COPY[lang][key]
+ d['GPT Image 2.5 · 창가 인물의 렘브란트 조명과 명암 비교']='GPT Image 2.5 · 窓辺のレンブラント照明と明暗差' if lang=='ja' else 'GPT Image 2.5 · Luz Rembrandt y contraste junto a la ventana'
+ d['GPT Image 2.5 · Rembrandt window light and contrast on a fictional adult']=d['GPT Image 2.5 · 창가 인물의 렘브란트 조명과 명암 비교']
+ for ko,ja,es in [('작품 뒤의 방법, 직접 해보세요.','作品づくりの裏側を、あなたも。','Descubre cómo se crean las escenas.'),('처음 만드는 사람도 한 단계씩. 로판·현대 드라마·밀리터리·오컬트·SF 장면으로 제작 방법을 직접 실습합니다.','初めてでも、一歩ずつ。さまざまなジャンルの場面で制作方法を試せます。','Paso a paso, incluso si empiezas de cero. Practica con escenas de distintos géneros.'),('강좌 열기','記事を読む','Abrir tutorial'),('조명 4종 · 모델 비교 · 전체 프롬프트','照明4種・モデル比較・プロンプト全文','Cuatro luces · Modelos · Prompts completos'),('프롬프트 복사','プロンプトをコピー','Copiar prompt'),('복사했어요.','コピーしました。','Copiado.'),('복사하지 못했어요. 텍스트를 선택해 복사해 주세요.','コピーできませんでした。テキストを選択してコピーしてください。','No se pudo copiar. Selecciona el texto y cópialo.'),('AI 이미지의 미감 만들기 — 여백·색·질감','AI画像の美しさをつくる — 余白・色・質感','Imágenes cinematográficas con IA — espacio, color y textura')]:d[ko]=ja if lang=='ja' else es
  return d
 
 class PageLanguage(HTMLParser):
@@ -115,7 +122,7 @@ class PageLanguage(HTMLParser):
  def handle_entityref(self,value):self.parts.append('&'+value+';')
  def handle_charref(self,value):self.parts.append('&#'+value+';')
 
-def supported_routes(works):return {'/','/fall-707/','/press/',*[w['path'] for w in works if w['season']],*(['/fall-707/world/'] if WORLD_ENABLED else [])}
+def supported_routes(works):return {'/tutorials/','/tutorials/lighting-contrast/','/','/fall-707/','/press/',*[w['path'] for w in works if w['season']],*(['/fall-707/world/'] if WORLD_ENABLED else [])}
 
 def build_languages(out,origin,works,data,head,header,footer,base_path=''):
  routes=supported_routes(works)

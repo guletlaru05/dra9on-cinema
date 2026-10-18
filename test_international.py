@@ -7,7 +7,8 @@ class InternationalPages(unittest.TestCase):
   for lang in ('ja','es'):
    files=list((Path('dist')/lang).rglob('*.html'))
    self.assertTrue(files)
-   self.assertFalse((Path('dist')/lang/'tutorials').exists())
+   self.assertTrue((Path('dist')/lang/'tutorials/lighting-contrast/index.html').exists())
+   self.assertTrue((Path('dist')/lang/'tutorials/index.html').exists())
    for file in files:
     source=file.read_text(encoding='utf-8').replace('aria-label="한국어"','')
     residual=re.findall(r'[^<>]*[가-힣][^<>]*',source)

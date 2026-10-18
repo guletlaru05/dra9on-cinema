@@ -1,0 +1,212 @@
+[
+  {
+    "id": "gpt-high-key",
+    "file": "gpt-high-key.webp",
+    "tool": "Higgsfield",
+    "model": "GPT Image 2.5",
+    "requested_model": "GPT Image 2.5",
+    "ratio": "16:9",
+    "width": 1344,
+    "height": 752,
+    "bytes": 53652,
+    "prompt": "Cinematic film still, 16:9. A beautiful Korean woman in her late 20s with long black hair loosely tied back, a few soft strands falling along her face, elegant features and clear skin, wearing a cream silk blouse. She sits alone by a tall window in a quiet old apartment at night, hands resting on a worn wooden table. The window is on camera left. Medium close-up, eye-level, 85mm lens, shallow depth of field. Refined, graceful mood, muted color palette, subtle film grain, photorealistic. Soft high-key lighting. A large diffused light wraps evenly around her face, the shadow side is gently filled and only slightly darker. Low contrast, calm and serene mood.",
+    "parameters": {
+      "model": "gpt_image_2_5",
+      "variant": "flare",
+      "quality": "medium",
+      "resolution": "1k",
+      "aspect_ratio": "16:9",
+      "count": 1,
+      "prompt": "Cinematic film still, 16:9. A beautiful Korean woman in her late 20s with long black hair loosely tied back, a few soft strands falling along her face, elegant features and clear skin, wearing a cream silk blouse. She sits alone by a tall window in a quiet old apartment at night, hands resting on a worn wooden table. The window is on camera left. Medium close-up, eye-level, 85mm lens, shallow depth of field. Refined, graceful mood, muted color palette, subtle film grain, photorealistic. Soft high-key lighting. A large diffused light wraps evenly around her face, the shadow side is gently filled and only slightly darker. Low contrast, calm and serene mood."
+    }
+  },
+  {
+    "id": "gpt-rembrandt",
+    "file": "gpt-rembrandt.webp",
+    "tool": "Higgsfield",
+    "model": "GPT Image 2.5",
+    "requested_model": "GPT Image 2.5",
+    "ratio": "16:9",
+    "width": 1344,
+    "height": 752,
+    "bytes": 45870,
+    "prompt": "Cinematic film still, 16:9. A beautiful Korean woman in her late 20s with long black hair loosely tied back, a few soft strands falling along her face, elegant features and clear skin, wearing a cream silk blouse. She sits alone by a tall window in a quiet old apartment at night, hands resting on a worn wooden table. The window is on camera left. Medium close-up, eye-level, 85mm lens, shallow depth of field. Refined, graceful mood, muted color palette, subtle film grain, photorealistic. Rembrandt lighting. Cool moonlight from the window on camera left, high and slightly in front of her. A small triangle of light falls on her shadowed right cheek. Medium contrast, the shadow side stays dark but readable. Quiet, dramatic and beautiful mood.",
+    "parameters": {
+      "model": "gpt_image_2_5",
+      "variant": "flare",
+      "quality": "medium",
+      "resolution": "1k",
+      "aspect_ratio": "16:9",
+      "count": 1,
+      "prompt": "Cinematic film still, 16:9. A beautiful Korean woman in her late 20s with long black hair loosely tied back, a few soft strands falling along her face, elegant features and clear skin, wearing a cream silk blouse. She sits alone by a tall window in a quiet old apartment at night, hands resting on a worn wooden table. The window is on camera left. Medium close-up, eye-level, 85mm lens, shallow depth of field. Refined, graceful mood, muted color palette, subtle film grain, photorealistic. Rembrandt lighting. Cool moonlight from the window on camera left, high and slightly in front of her. A small triangle of light falls on her shadowed right cheek. Medium contrast, the shadow side stays dark but readable. Quiet, dramatic and beautiful mood."
+    }
+  },
+  {
+    "id": "gpt-split",
+    "file": "gpt-split.webp",
+    "tool": "Higgsfield",
+    "model": "GPT Image 2.5",
+    "requested_model": "GPT Image 2.5",
+    "ratio": "16:9",
+    "width": 1344,
+    "height": 752,
+    "bytes": 49562,
+    "prompt": "Cinematic film still, 16:9. A beautiful Korean woman in her late 20s with long black hair loosely tied back, a few soft strands falling along her face, elegant features and clear skin, wearing a cream silk blouse. She sits alone by a tall window in a quiet old apartment at night, hands resting on a worn wooden table. The window is on camera left. Medium close-up, eye-level, 85mm lens, shallow depth of field. Refined, graceful mood, muted color palette, subtle film grain, photorealistic. Split lighting. Hard light from the window directly at her left side lights exactly half of her face. The right half falls into near black with no fill. High contrast, tense and conflicted mood.",
+    "parameters": {
+      "model": "gpt_image_2_5",
+      "variant": "flare",
+      "quality": "medium",
+      "resolution": "1k",
+      "aspect_ratio": "16:9",
+      "count": 1,
+      "prompt": "Cinematic film still, 16:9. A beautiful Korean woman in her late 20s with long black hair loosely tied back, a few soft strands falling along her face, elegant features and clear skin, wearing a cream silk blouse. She sits alone by a tall window in a quiet old apartment at night, hands resting on a worn wooden table. The window is on camera left. Medium close-up, eye-level, 85mm lens, shallow depth of field. Refined, graceful mood, muted color palette, subtle film grain, photorealistic. Split lighting. Hard light from the window directly at her left side lights exactly half of her face. The right half falls into near black with no fill. High contrast, tense and conflicted mood."
+    }
+  },
+  {
+    "id": "gpt-silhouette",
+    "file": "gpt-silhouette.webp",
+    "tool": "Higgsfield",
+    "model": "GPT Image 2.5",
+    "requested_model": "GPT Image 2.5",
+    "ratio": "16:9",
+    "width": 1344,
+    "height": 752,
+    "bytes": 40828,
+    "prompt": "Cinematic film still, 16:9. A beautiful Korean woman in her late 20s with long black hair loosely tied back, a few soft strands falling along her face, elegant features and clear skin, wearing a cream silk blouse. She sits alone by a tall window in a quiet old apartment at night, hands resting on a worn wooden table. The window is on camera left. Medium close-up, eye-level, 85mm lens, shallow depth of field. Refined, graceful mood, muted color palette, subtle film grain, photorealistic. Silhouette backlighting. She sits with her back toward the bright window, the light comes from behind her. Her face and figure become a dark silhouette with only a thin rim of light along her hair, cheek line and shoulders. Very high contrast, mysterious and elegant mood.",
+    "parameters": {
+      "model": "gpt_image_2_5",
+      "variant": "flare",
+      "quality": "medium",
+      "resolution": "1k",
+      "aspect_ratio": "16:9",
+      "count": 1,
+      "prompt": "Cinematic film still, 16:9. A beautiful Korean woman in her late 20s with long black hair loosely tied back, a few soft strands falling along her face, elegant features and clear skin, wearing a cream silk blouse. She sits alone by a tall window in a quiet old apartment at night, hands resting on a worn wooden table. The window is on camera left. Medium close-up, eye-level, 85mm lens, shallow depth of field. Refined, graceful mood, muted color palette, subtle film grain, photorealistic. Silhouette backlighting. She sits with her back toward the bright window, the light comes from behind her. Her face and figure become a dark silhouette with only a thin rim of light along her hair, cheek line and shoulders. Very high contrast, mysterious and elegant mood."
+    }
+  },
+  {
+    "id": "seedream-rembrandt",
+    "file": "seedream-rembrandt.webp",
+    "tool": "Higgsfield",
+    "model": "Seedream 5.0 Pro",
+    "requested_model": "Seedream 5.0 Pro",
+    "ratio": "16:9",
+    "width": 1360,
+    "height": 768,
+    "bytes": 66302,
+    "prompt": "Cinematic film still, 16:9. A beautiful Korean woman in her late 20s with long black hair loosely tied back, a few soft strands falling along her face, elegant features and clear skin, wearing a cream silk blouse. She sits alone by a tall window in a quiet old apartment at night, hands resting on a worn wooden table. The window is on camera left. Medium close-up, eye-level, 85mm lens, shallow depth of field. Refined, graceful mood, muted color palette, subtle film grain, photorealistic. Rembrandt lighting. Cool moonlight from the window on camera left, high and slightly in front of her. A small triangle of light falls on her shadowed right cheek. Medium contrast, the shadow side stays dark but readable. Quiet, dramatic and beautiful mood.",
+    "parameters": {
+      "model": "seedream_v5_pro",
+      "resolution": "1k",
+      "aspect_ratio": "16:9",
+      "count": 1,
+      "prompt": "Cinematic film still, 16:9. A beautiful Korean woman in her late 20s with long black hair loosely tied back, a few soft strands falling along her face, elegant features and clear skin, wearing a cream silk blouse. She sits alone by a tall window in a quiet old apartment at night, hands resting on a worn wooden table. The window is on camera left. Medium close-up, eye-level, 85mm lens, shallow depth of field. Refined, graceful mood, muted color palette, subtle film grain, photorealistic. Rembrandt lighting. Cool moonlight from the window on camera left, high and slightly in front of her. A small triangle of light falls on her shadowed right cheek. Medium contrast, the shadow side stays dark but readable. Quiet, dramatic and beautiful mood."
+    }
+  },
+  {
+    "id": "nano-rembrandt",
+    "file": "nano-rembrandt.webp",
+    "tool": "Higgsfield",
+    "model": "Nano Banana 2",
+    "requested_model": "Nano Banana Pro",
+    "ratio": "16:9",
+    "width": 1376,
+    "height": 768,
+    "bytes": 67852,
+    "prompt": "Cinematic film still, 16:9. A beautiful Korean woman in her late 20s with long black hair loosely tied back, a few soft strands falling along her face, elegant features and clear skin, wearing a cream silk blouse. She sits alone by a tall window in a quiet old apartment at night, hands resting on a worn wooden table. The window is on camera left. Medium close-up, eye-level, 85mm lens, shallow depth of field. Refined, graceful mood, muted color palette, subtle film grain, photorealistic. Rembrandt lighting. Cool moonlight from the window on camera left, high and slightly in front of her. A small triangle of light falls on her shadowed right cheek. Medium contrast, the shadow side stays dark but readable. Quiet, dramatic and beautiful mood.",
+    "parameters": {
+      "model": "nano_banana_pro",
+      "resolution": "1k",
+      "aspect_ratio": "16:9",
+      "count": 1,
+      "prompt": "Cinematic film still, 16:9. A beautiful Korean woman in her late 20s with long black hair loosely tied back, a few soft strands falling along her face, elegant features and clear skin, wearing a cream silk blouse. She sits alone by a tall window in a quiet old apartment at night, hands resting on a worn wooden table. The window is on camera left. Medium close-up, eye-level, 85mm lens, shallow depth of field. Refined, graceful mood, muted color palette, subtle film grain, photorealistic. Rembrandt lighting. Cool moonlight from the window on camera left, high and slightly in front of her. A small triangle of light falls on her shadowed right cheek. Medium contrast, the shadow side stays dark but readable. Quiet, dramatic and beautiful mood."
+    }
+  },
+  {
+    "id": "mj-high-key",
+    "file": "mj-high-key.webp",
+    "tool": "ZCRE MCP",
+    "model": "Midjourney v8.2",
+    "ratio": "16:9",
+    "width": 1456,
+    "height": 816,
+    "bytes": 94672,
+    "prompt": "cinematic film still, beautiful Korean woman late 20s, long black hair loosely tied back, soft strands framing face, elegant features, cream silk blouse, sitting alone by tall window, quiet old apartment at night, hands on worn wooden table, window camera left, medium close-up, 85mm, shallow depth of field, refined graceful mood, muted palette, film grain, soft high-key lighting, even diffused light, low contrast, serene mood",
+    "parameters": {
+      "prompt": "cinematic film still, beautiful Korean woman late 20s, long black hair loosely tied back, soft strands framing face, elegant features, cream silk blouse, sitting alone by tall window, quiet old apartment at night, hands on worn wooden table, window camera left, medium close-up, 85mm, shallow depth of field, refined graceful mood, muted palette, film grain, soft high-key lighting, even diffused light, low contrast, serene mood",
+      "aspect_ratio": "16:9",
+      "resolution": "1k",
+      "num_images": 4,
+      "quality": 1,
+      "raw": true,
+      "seed": 20261018
+    },
+    "seed": 20261018,
+    "selected_candidate": 2
+  },
+  {
+    "id": "mj-rembrandt",
+    "file": "mj-rembrandt.webp",
+    "tool": "ZCRE MCP",
+    "model": "Midjourney v8.2",
+    "ratio": "16:9",
+    "width": 1456,
+    "height": 816,
+    "bytes": 124274,
+    "prompt": "cinematic film still, beautiful Korean woman late 20s, long black hair loosely tied back, soft strands framing face, elegant features, cream silk blouse, sitting alone by tall window, quiet old apartment at night, hands on worn wooden table, window camera left, medium close-up, 85mm, shallow depth of field, refined graceful mood, muted palette, film grain, Rembrandt lighting, cool moonlight from window, light triangle on shadowed cheek, medium contrast",
+    "parameters": {
+      "prompt": "cinematic film still, beautiful Korean woman late 20s, long black hair loosely tied back, soft strands framing face, elegant features, cream silk blouse, sitting alone by tall window, quiet old apartment at night, hands on worn wooden table, window camera left, medium close-up, 85mm, shallow depth of field, refined graceful mood, muted palette, film grain, Rembrandt lighting, cool moonlight from window, light triangle on shadowed cheek, medium contrast",
+      "aspect_ratio": "16:9",
+      "resolution": "1k",
+      "num_images": 4,
+      "quality": 1,
+      "raw": true,
+      "seed": 20261018
+    },
+    "seed": 20261018,
+    "selected_candidate": 0
+  },
+  {
+    "id": "mj-split",
+    "file": "mj-split.webp",
+    "tool": "ZCRE MCP",
+    "model": "Midjourney v8.2",
+    "ratio": "16:9",
+    "width": 1456,
+    "height": 816,
+    "bytes": 84894,
+    "prompt": "cinematic film still, beautiful Korean woman late 20s, long black hair loosely tied back, soft strands framing face, elegant features, cream silk blouse, sitting alone by tall window, quiet old apartment at night, hands on worn wooden table, window camera left, medium close-up, 85mm, shallow depth of field, refined graceful mood, muted palette, film grain, split lighting, hard side light, half face in near black shadow, high contrast",
+    "parameters": {
+      "prompt": "cinematic film still, beautiful Korean woman late 20s, long black hair loosely tied back, soft strands framing face, elegant features, cream silk blouse, sitting alone by tall window, quiet old apartment at night, hands on worn wooden table, window camera left, medium close-up, 85mm, shallow depth of field, refined graceful mood, muted palette, film grain, split lighting, hard side light, half face in near black shadow, high contrast",
+      "aspect_ratio": "16:9",
+      "resolution": "1k",
+      "num_images": 4,
+      "quality": 1,
+      "raw": true,
+      "seed": 20261018
+    },
+    "seed": 20261018,
+    "selected_candidate": 0
+  },
+  {
+    "id": "mj-silhouette",
+    "file": "mj-silhouette.webp",
+    "tool": "ZCRE MCP",
+    "model": "Midjourney v8.2",
+    "ratio": "16:9",
+    "width": 1456,
+    "height": 816,
+    "bytes": 107234,
+    "prompt": "cinematic film still, beautiful Korean woman late 20s, long black hair loosely tied back, soft strands framing face, elegant features, cream silk blouse, sitting alone by tall window, quiet old apartment at night, hands on worn wooden table, window camera left, medium close-up, 85mm, shallow depth of field, refined graceful mood, muted palette, film grain, silhouette, strong backlight from window, rim light on hair cheek and shoulders, very high contrast",
+    "parameters": {
+      "prompt": "cinematic film still, beautiful Korean woman late 20s, long black hair loosely tied back, soft strands framing face, elegant features, cream silk blouse, sitting alone by tall window, quiet old apartment at night, hands on worn wooden table, window camera left, medium close-up, 85mm, shallow depth of field, refined graceful mood, muted palette, film grain, silhouette, strong backlight from window, rim light on hair cheek and shoulders, very high contrast",
+      "aspect_ratio": "16:9",
+      "resolution": "1k",
+      "num_images": 4,
+      "quality": 1,
+      "raw": true,
+      "seed": 20261018
+    },
+    "seed": 20261018,
+    "selected_candidate": 0
+  }
+]

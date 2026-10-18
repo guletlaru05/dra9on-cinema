@@ -123,6 +123,10 @@
     "canonicalPath": "/tutorials/claude-mcp-newtake/",
     "type": "tutorial"
   },
+  "/en/tutorials/lighting-contrast/": {
+    "canonicalPath": "/tutorials/lighting-contrast/",
+    "type": "tutorial"
+  },
   "/en/tutorials/platform-start/": {
     "canonicalPath": "/tutorials/platform-start/",
     "type": "tutorial"
@@ -251,9 +255,17 @@
     "canonicalPath": "/press/",
     "type": "page"
   },
+  "/es/tutorials/": {
+    "canonicalPath": "/tutorials/",
+    "type": "page"
+  },
   "/es/fall-707/world/": {
     "canonicalPath": "/fall-707/world/",
     "type": "page"
+  },
+  "/es/tutorials/lighting-contrast/": {
+    "canonicalPath": "/tutorials/lighting-contrast/",
+    "type": "tutorial"
   },
   "/es/watch/fall-707-s1-ep1/": {
     "canonicalPath": "/watch/fall-707-s1-ep1/",
@@ -335,9 +347,17 @@
     "canonicalPath": "/press/",
     "type": "page"
   },
+  "/ja/tutorials/": {
+    "canonicalPath": "/tutorials/",
+    "type": "page"
+  },
   "/ja/fall-707/world/": {
     "canonicalPath": "/fall-707/world/",
     "type": "page"
+  },
+  "/ja/tutorials/lighting-contrast/": {
+    "canonicalPath": "/tutorials/lighting-contrast/",
+    "type": "tutorial"
   },
   "/ja/watch/fall-707-s1-ep1/": {
     "canonicalPath": "/watch/fall-707-s1-ep1/",
@@ -437,6 +457,10 @@
   },
   "/tutorials/claude-mcp-newtake/": {
     "canonicalPath": "/tutorials/claude-mcp-newtake/",
+    "type": "tutorial"
+  },
+  "/tutorials/lighting-contrast/": {
+    "canonicalPath": "/tutorials/lighting-contrast/",
     "type": "tutorial"
   },
   "/tutorials/platform-start/": {

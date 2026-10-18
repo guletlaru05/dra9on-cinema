@@ -283,6 +283,10 @@ def localize_site(out, works, origin, base_path=''):
     for source in pages:
         relative = source.relative_to(out)
         path = '/' + relative.as_posix().removesuffix('index.html')
+        if path == '/tutorials/lighting-contrast/':
+            # Complete authored translations are rendered in four languages
+            # after the shared navigation has been localized.
+            continue
         translations = dict(base_translations)
         if path in by_path:
             ko, en = by_path[path]

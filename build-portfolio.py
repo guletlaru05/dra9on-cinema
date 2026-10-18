@@ -154,6 +154,10 @@ from world import build_world
 build_world(out,origin,head,header,footer)
 localize_site(out, works, origin, base_path)
 build_languages(out,origin,works,data,head,header,footer,base_path)
+from lighting_tutorial import build_all as build_lighting_all
+build_lighting_all(out,origin,head,header,footer,base_path)
+from international import update_language_links
+update_language_links(out,origin,works,base_path)
 # Public ownership proof for the owner's Google and Naver webmaster properties.
 verification_tag = (
  '<meta name="google-site-verification" content="PYrvbyrAOQQDNSZzhI9SdsjlhtRdl0l_tHM6tUelxnU">'
