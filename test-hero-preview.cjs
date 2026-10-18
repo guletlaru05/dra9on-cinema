@@ -1,0 +1,17 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const source=fs.readFileSync('site-assets/portfolio.js','utf8');
+function fixture({reduced=false,saveData=false,rejectPlay=false}={}){
+ const created=[],idle=[],observers=[];
+ function node(){const events={},attrs={},classes=new Set();return {events,paused:true,currentTime:0,hidden:false,classList:{add:v=>classes.add(v),remove:v=>classes.delete(v),contains:v=>classes.has(v)},setAttribute(k,v){attrs[k]=v;},getAttribute(k){return k==='src'?this.src:attrs[k];},removeAttribute(k){if(k==='src')delete this.src;else delete attrs[k];},load(){},pause(){this.paused=true;},play(){if(rejectPlay)return Promise.reject({name:'NotAllowedError'});this.paused=false;events.playing?.();return Promise.resolve();},addEventListener(k,cb){events[k]=cb;}};}
+ const image={src:'https://dra9oncinema.com/assets/portfolio/example.jpg',after(){}};
+ const hero={hidden:false,querySelector:()=>image,append(){}};
+ const context={URL,navigator:{connection:{saveData}},matchMedia:()=>({matches:reduced,addEventListener(){}}),afterMainPaint:cb=>idle.push(cb),t:(ko)=>ko,document:{hidden:false,querySelector:()=>null,querySelectorAll:()=>[],addEventListener(){},createElement(){const n=node();created.push(n);return n;}},MutationObserver:class{observe(){}},IntersectionObserver:class{constructor(cb){observers.push(cb);}observe(){}}};
+ vm.createContext(context);vm.runInContext(source.slice(source.indexOf('function createHeroPreview('),source.indexOf("if ($('hero'))")),context);
+ const preview=context.createHeroPreview(hero);return {preview,video:created[0],button:created[1],ready(){observers[0]([{isIntersecting:true}]);idle[0]();}};
+}
+test('home initializes the real preview rather than a placeholder',()=>{assert.match(source,/const preview=createHeroPreview\(hero\)/);});
+test('visible hero plays a muted inline local preview after initial paint',()=>{const f=fixture();f.preview.select({category:'s3',season:3,episode:1});assert.equal(f.video.src,undefined);f.ready();assert.equal(f.video.src,'https://dra9oncinema.com/assets/previews/s3-1.mp4');assert.equal(f.video.muted,true);assert.equal(f.video.playsInline,true);assert.equal(f.video.classList.contains('is-playing'),true);});
+test('motion and data preferences prevent autoplay but allow explicit playback',()=>{for(const options of [{reduced:true},{saveData:true}]){const f=fixture(options);f.preview.select({category:'s3',season:3,episode:1});f.ready();assert.equal(f.video.src,undefined);f.button.events.click();assert.equal(f.video.paused,false);}});
+test('unsupported compilation keeps its poster and a later episode can play',async()=>{const f=fixture();f.preview.select({category:'s3',season:3,episode:1});f.ready();await Promise.resolve();await Promise.resolve();f.preview.select({category:'full',season:2,preview:false});assert.equal(f.button.hidden,true);assert.equal(f.video.src,undefined);f.preview.select({category:'s2',season:2,episode:6});assert.equal(f.button.hidden,false);assert.equal(f.video.src,'https://dra9oncinema.com/assets/previews/s2-6.mp4');});
+test('autoplay rejection preserves poster and exposes a manual retry',async()=>{const f=fixture({rejectPlay:true});f.preview.select({category:'s3',season:3,episode:1});f.ready();await Promise.resolve();await Promise.resolve();assert.equal(f.video.classList.contains('is-playing'),false);assert.match(f.button.textContent,/미리보기/);});

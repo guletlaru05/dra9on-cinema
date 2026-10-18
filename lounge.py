@@ -13,6 +13,23 @@ def enabled():return os.getenv('D9_LOUNGE_PREVIEW')=='1' or json.loads((HERE/'lo
 def new_routes():return ['/lounge/',BASE,*[BASE+p['slug']+'/' for p in PEOPLE]] if enabled() else []
 def routes():return [*new_routes(),'/questions/'] if enabled() else []
 def extra_bilingual():return len(new_routes())
+
+def released_appearances(works,now=None):
+ now=now or datetime.now(timezone.utc);episodes=set()
+ for work in works:
+  if not re.fullmatch(r's[1-9][0-9]*',work.get('category','')):continue
+  season,episode=work.get('season'),work.get('episode')
+  if not isinstance(season,int) or not isinstance(episode,int) or season<1 or episode<1:continue
+  released=True
+  for key in ('releaseAt','uploadDate'):
+   if not work.get(key):continue
+   try:
+    date=datetime.fromisoformat(str(work[key]).replace('Z','+00:00'))
+    if date.tzinfo is None:date=date.replace(tzinfo=timezone.utc)
+    if date>now:released=False
+   except ValueError:released=False
+  if released:episodes.add((season,episode))
+ return sorted(episodes)
 WORDS={
  'topic':row('주제','Topic','テーマ','Tema'),'character':row('캐릭터','Character','登場人物','Personaje'),
  'story':row('이야기','Story','物語','Historia'),'making':row('제작','Filmmaking','制作','Creación'),'other':row('기타','Other','その他','Otros'),
@@ -108,8 +125,11 @@ def build(out,origin,works,head,base_path=''):
    first=e(record.get('first',{}).get(lang,t('first_pending',lang)))
    if record.get('first_episode'):
     fs,fe=record['first_episode'];first='<a href="'+prefix+'/watch/fall-707-s'+str(fs)+'-ep'+str(fe)+'/">'+first+' →</a>'
-   body+='</ul></section><section class="lounge-section"><h2>'+tr('episodes')+'</h2><p>'+tr('first')+' · '+first+'</p><div class="character-episodes">'
-   appearances=sorted(set(p['appearances'])|{(f['season'],f['episode']) for f in frames})
+   all_episodes=p.get('appearance_scope')=='all_released'
+   body+='</ul></section><section class="lounge-section"><h2>'+tr('all_episodes' if all_episodes else 'episodes')+'</h2>'
+   if all_episodes:body+='<p>'+tr('every_episode')+'</p>'
+   body+='<p>'+tr('first')+' · '+first+'</p><div class="character-episodes">'
+   appearances=released_appearances(works) if all_episodes else sorted(set(p['appearances'])|{(f['season'],f['episode']) for f in frames})
    for season,episode in appearances:body+='<a class="button button-glass" href="'+prefix+'/watch/fall-707-s'+str(season)+'-ep'+str(episode)+'/">S'+str(season)+' EP.'+str(episode).zfill(2)+'</a>'
    body+='</div></section><section class="lounge-section"><h2>'+tr('quotes')+'</h2>'
    quotes=record.get('quotes',[])

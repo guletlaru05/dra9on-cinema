@@ -159,7 +159,7 @@ function createHeroPreview(hero){
 
   let previewReady=false;
   const constrained=()=>!!navigator.connection?.saveData||['slow-2g','2g'].includes(navigator.connection?.effectiveType);
-  afterMainPaint(()=>{previewReady=true;sync();});
+  afterMainPaint(()=>{previewReady=true;label();sync();});
 
   function allowed(){return (manual||previewReady)&&seen&&!hero.hidden&&!document.hidden&&!document.querySelector('dialog[open]')&&!stopped&&(manual||(!motion.matches&&!constrained()));}
 
@@ -229,8 +229,8 @@ if ($('hero')) {
 
   const hero=$('hero'), motion=matchMedia('(prefers-reduced-motion: reduce)');
 
-  // The home uses its film still; no third preview CTA or background download.
-  const preview={select(){}};
+  // Keep the two viewing links; the separate control pauses the silent backdrop.
+  const preview=createHeroPreview(hero);
 
   const start=works.find(v=>v.category==='s1'&&v.episode===1);
 

@@ -3,6 +3,14 @@ from pathlib import Path
 from unittest.mock import patch
 import lounge
 class LoungeTests(unittest.TestCase):
+ def test_complete_appearances_include_new_releases_but_not_compilations_or_future_episodes(self):
+  from datetime import datetime,timezone
+  now=datetime(2026,10,19,tzinfo=timezone.utc)
+  works=[{'category':'s1','season':1,'episode':e,'uploadDate':'2026-07-16'} for e in range(1,7)]
+  works += [{'category':'s2','season':2,'episode':e} for e in range(1,7)]
+  works += [{'category':'s3','season':3,'episode':1}, {'category':'full','season':2,'episode':1}, {'category':'s3','season':3,'episode':2,'releaseAt':'2026-10-20T00:00:00Z'}, {'category':'s4','season':4,'episode':1,'uploadDate':'2026-11-01T00:00:00Z'}]
+  self.assertEqual(lounge.released_appearances(works,now),[(s,e) for s in (1,2) for e in range(1,7)]+[(3,1)])
+  self.assertEqual(next(p for p in lounge.PEOPLE if p['slug']=='min-seoa')['appearance_scope'],'all_released')
  def test_pending_review_cannot_publish(self):
   with patch.dict(os.environ,{},clear=True),patch.object(lounge.json,'loads',return_value={'approved_for_publication':False}):
    self.assertFalse(lounge.enabled());self.assertEqual(lounge.new_routes(),[])
