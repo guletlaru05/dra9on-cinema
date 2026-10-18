@@ -46,7 +46,7 @@ class D1 {
 
 function setup(options={}){
   const DB=new D1();
-  const env={DB,MAX_DAILY_EVENTS:'20000',...ownerEnv};
+  const env={DB,MAX_DAILY_EVENTS:'20000',REQUEST_LIMITER:{limit:async()=>({success:true})},WRITE_LIMITER:{limit:async()=>({success:true})},...ownerEnv};
   const worker=createWorker(REGISTRY,{now:()=>NOW,cache:null,privateOptions,...options});
   return {DB,env,worker};
 }

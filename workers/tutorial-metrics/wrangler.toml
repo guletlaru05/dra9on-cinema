@@ -3,10 +3,20 @@ main = "src/index.mjs"
 compatibility_date = "2026-10-17"
 workers_dev = true
 preview_urls = false
+account_id = "f25bbc251a70676f521c097b1d047d95"
+
+[[ratelimits]]
+name = "REQUEST_LIMITER"
+namespace_id = "9707101"
+simple = { limit = 240, period = 60 }
+
+[[ratelimits]]
+name = "WRITE_LIMITER"
+namespace_id = "9707102"
+simple = { limit = 120, period = 60 }
 
 # Set the real account_id and D1 database_id during deployment. Never put API
 # tokens in this file. Keep this Worker on the Workers Free plan.
-account_id = "f25bbc251a70676f521c097b1d047d95"
 
 [vars]
 ALLOWED_ORIGINS = "https://dra9oncinema.com,https://www.dra9oncinema.com"

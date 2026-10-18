@@ -1,5 +1,6 @@
 import registry from '../registry.json' with {type:'json'};
 import {privateRequest,verifyOwner} from './private-reader.mjs';
+import {requestGate} from '../../security/rate-limit.mjs';
 
 const PROD_ORIGINS = new Set(['https://dra9oncinema.com','https://www.dra9oncinema.com']);
 const REFERRERS = ['direct','google','naver','youtube','instagram','x','other'];
@@ -161,6 +162,10 @@ export function createWorker(entries,options={}) {
     const url=new URL(request.url),origin=allowedOrigin(request,env);
     if(url.search)return json({error:'Query strings are not accepted.'},400,origin);
     if(request.headers.has('Origin')&&!origin)return json({error:'Origin not allowed.'},403);
+    if(request.method!=='OPTIONS'){
+      const gate=await requestGate(request,env,'metrics',request.method!=='GET',now());
+      if(gate!==200){const response=json({error:gate===429?'Too many requests. Please retry shortly.':'Request protection unavailable.'},gate,origin);if(gate===429)response.headers.set('Retry-After','60');return response;}
+    }
     if(url.pathname==='/private/collect')return privateRequest(request,env,origin,options.privateOptions||{});
     if(url.pathname==='/private/visits'||url.pathname==='/daily'){
       if(request.method==='OPTIONS'){

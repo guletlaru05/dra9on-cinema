@@ -1,4 +1,5 @@
 /* No provider credentials or request bodies are logged. VAPID private key stays in GitHub Secrets. */
+import {requestGate} from '../../security/rate-limit.mjs';
 const ORIGINS=new Set(['https://dra9oncinema.com','https://www.dra9oncinema.com']);
 export const LANGS=['ko','en','ja','es'];
 export const sha=async text=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)))).map(x=>x.toString(16).padStart(2,'0')).join('');
@@ -35,6 +36,7 @@ export function createWorker(options={}){
   if(request.method==='OPTIONS')return origin&&!admin?new Response(null,{status:204,headers:{...headers(origin),'Access-Control-Allow-Methods':'GET, POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type'}}):answer({error:'Not allowed.'},403);
   if(admin){const auth=request.headers.get('Authorization')||'';if(!auth.startsWith('Bearer ')||auth.length>300||!env.DISPATCH_TOKEN_SHA256||await sha(auth.slice(7))!==env.DISPATCH_TOKEN_SHA256)return answer({error:'Dispatcher authentication required.'},401);}
   else if(!origin&&url.pathname!=='/key')return answer({error:'Origin required.'},403);
+  if(!admin){const gate=await requestGate(request,env,'push',request.method==='POST',now());if(gate!==200){const response=answer({error:gate===429?'Too many requests. Please retry shortly.':'Request protection unavailable.'},gate,origin);if(gate===429)response.headers.set('Retry-After','60');return response;}}
   if(url.pathname==='/key'&&request.method==='GET')return env.VAPID_PUBLIC_KEY?answer({publicKey:env.VAPID_PUBLIC_KEY},200,origin):answer({error:'Not configured.'},503,origin);
   if(!['/subscribe','/unsubscribe','/sync','/batch','/ack'].includes(url.pathname))return answer({error:'Not found.'},404,origin);
   if(request.method!=='POST')return answer({error:'Method not allowed.'},405,origin);

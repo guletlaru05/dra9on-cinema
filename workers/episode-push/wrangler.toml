@@ -5,6 +5,16 @@ workers_dev = true
 preview_urls = false
 account_id = "f25bbc251a70676f521c097b1d047d95"
 
+[[ratelimits]]
+name = "REQUEST_LIMITER"
+namespace_id = "9707201"
+simple = { limit = 180, period = 60 }
+
+[[ratelimits]]
+name = "WRITE_LIMITER"
+namespace_id = "9707202"
+simple = { limit = 60, period = 60 }
+
 [vars]
 VAPID_PUBLIC_KEY = "BD4IbZYcSmkQyXkXLlIrKFvXclE2SqBkTXEEvn8P_7lY5FxjIVf4Luvrq-u95balWCrxMLDuexCpwJ4rvF708gc"
 DISPATCH_TOKEN_SHA256 = "8c4937f69e09d36f6cc7064efccb311d1eb739fa47b19e78450db55c9f77cd15"

@@ -16,7 +16,7 @@ const pair=await crypto.subtle.generateKey({name:'ECDH',namedCurve:'P-256'},true
 const p256dh=Buffer.from(await crypto.subtle.exportKey('raw',pair.publicKey)).toString('base64url');
 const auth=Buffer.alloc(16,8).toString('base64url');
 function episode(id='newvideo001',when='2026-10-18T11:00:00Z',number=2){return {id,season:3,episode:number,publishedAt:when,image:'/assets/portfolio/'+id+'.jpg',locales:Object.fromEntries(['ko','en','ja','es'].map(lang=>[lang,{title:'FALL 707 '+lang,url:(lang==='ko'?'':'/'+lang)+'/watch/fall-707-s3-ep'+number+'/'}]))};}
-async function setup(){let time=new Date('2026-10-18T10:00:00Z');const DB=new D1(),env={DB,DISPATCH_TOKEN_SHA256:await sha(secret),VAPID_PUBLIC_KEY:'public-key'},worker=createWorker({now:()=>time});
+async function setup(){let time=new Date('2026-10-18T10:00:00Z');const DB=new D1(),env={DB,DISPATCH_TOKEN_SHA256:await sha(secret),VAPID_PUBLIC_KEY:'public-key',REQUEST_LIMITER:{limit:async()=>({success:true})},WRITE_LIMITER:{limit:async()=>({success:true})}},worker=createWorker({now:()=>time});
  const request=async(path,input={},headers={})=>worker.fetch(new Request('https://push.example'+path,{method:'POST',headers:{Origin:ORIGIN,'Content-Type':'application/json',...(['/sync','/batch','/ack'].includes(path)?{Authorization:'Bearer '+secret}:{}),...headers},body:JSON.stringify(input)}),env);
  const subscribe=(suffix='abc',lang='ko')=>request('/subscribe',{endpoint:'https://fcm.googleapis.com/fcm/send/'+suffix,keys:{p256dh,auth},lang,unsubscribeToken:token});
  const sync=episodes=>request('/sync',{episodes,revision:'a'.repeat(40),generatedAt:time.toISOString()});

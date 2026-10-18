@@ -10,3 +10,8 @@ outputs/
 .DS_Store
 Thumbs.db
 .cache/
+min-stickers-art.md
+production-notes-art.md
+private-notes/
+fall707_prompts_codex.md
+*.bundle
