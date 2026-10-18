@@ -1,6 +1,7 @@
 import registry from '../registry.json' with {type:'json'};
 import {privateRequest,verifyOwner} from './private-reader.mjs';
 import {requestGate} from '../../security/rate-limit.mjs';
+import {SECURITY_HEADERS} from '../../security/headers.mjs';
 
 const PROD_ORIGINS = new Set(['https://dra9oncinema.com','https://www.dra9oncinema.com']);
 const REFERRERS = ['direct','google','naver','youtube','instagram','x','other'];
@@ -35,7 +36,7 @@ export const SQL = Object.freeze({
 });
 
 function headers(origin, cache=false) {
-  const result = {'Content-Type':'application/json; charset=utf-8',
+  const result = {...SECURITY_HEADERS,'Content-Type':'application/json; charset=utf-8',
     'X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer',
     'Cache-Control':cache?'public, max-age=60, s-maxage=60':'no-store',
     'Vary':'Origin'};

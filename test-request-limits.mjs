@@ -9,6 +9,7 @@ test('blocked clients never reach storage, private readers, or subscription pars
  const env={REQUEST_LIMITER:{limit:async()=>({success:false})},WRITE_LIMITER:{limit:async()=>{throw Error('must not call');}},DB:new Proxy({},{get(){throw Error('storage must not be touched');}})};
  for(const [worker,path,method] of [[metrics({}),'/event','POST'],[metrics({}),'/summary','GET'],[metrics({}),'/private/collect','POST'],[push(),'/subscribe','POST'],[push(),'/unsubscribe','POST'],[push(),'/key','GET']]){
   const r=await worker.fetch(req(path,method),env);assert.equal(r.status,429,path);assert.equal(r.headers.get('Retry-After'),'60');assert.equal(r.headers.get('Cache-Control'),'no-store');assert.equal(r.headers.get('Access-Control-Allow-Origin'),'https://dra9oncinema.com');
+  assert.equal(r.headers.get('X-Frame-Options'),'DENY');assert.ok(r.headers.get('Strict-Transport-Security'));assert.match(r.headers.get('Content-Security-Policy'),/frame-ancestors 'none'/);
  }
 });
 test('missing or failed bindings fail closed, writes have their own tighter budget',async()=>{

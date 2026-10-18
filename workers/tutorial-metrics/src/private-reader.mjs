@@ -1,10 +1,11 @@
 import {createRemoteJWKSet,jwtVerify} from 'jose';
 import {parse} from 'parse5';
+import {SECURITY_HEADERS} from '../../security/headers.mjs';
 const PROJECT='dra9on-cinema-stats';
 const KEYS=createRemoteJWKSet(new URL('https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com'),{timeoutDuration:6000,cooldownDuration:30000});
 const HOSTS=new Set(['dra9oncinema.com','www.dra9oncinema.com','higgsfield.ai','www.higgsfield.ai','klingai.com','www.klingai.com','app.klingai.com','kling.ai','www.kling.ai','docs.byteplus.com','seed.bytedance.com','www.seed.bytedance.com','dreamina.capcut.com','zcre.co.kr','www.zcre.co.kr','bbanana.ai','www.bbanana.ai','threads.com','www.threads.com','threads.net','www.threads.net','x.com','www.x.com','twitter.com','www.twitter.com','instagram.com','www.instagram.com','openart.ai','www.openart.ai']);
 export const PRIVATE_BUDGET_SQL='INSERT INTO private_read_budget(day,reads) VALUES(?,1) ON CONFLICT(day) DO UPDATE SET reads=reads+1 WHERE reads<50 RETURNING reads';
-function answer(body,status,origin){return new Response(JSON.stringify(body),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','Vary':'Origin','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer',...(origin?{'Access-Control-Allow-Origin':origin}:{})}});}
+function answer(body,status,origin){return new Response(JSON.stringify(body),{status,headers:{...SECURITY_HEADERS,'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','Vary':'Origin',...(origin?{'Access-Control-Allow-Origin':origin}:{})}});}
 export async function verifyOwner(token,env,options={}){
  const {payload}=await jwtVerify(token,options.keys||KEYS,{algorithms:['RS256'],issuer:'https://securetoken.google.com/'+PROJECT,audience:PROJECT,currentDate:options.date||new Date(),requiredClaims:['sub','exp','iat','auth_time','email','email_verified']});
  const time=Math.floor((options.date||new Date()).getTime()/1000);

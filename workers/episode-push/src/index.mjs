@@ -1,5 +1,6 @@
 /* No provider credentials or request bodies are logged. VAPID private key stays in GitHub Secrets. */
 import {requestGate} from '../../security/rate-limit.mjs';
+import {SECURITY_HEADERS} from '../../security/headers.mjs';
 const ORIGINS=new Set(['https://dra9oncinema.com','https://www.dra9oncinema.com']);
 export const LANGS=['ko','en','ja','es'];
 export const sha=async text=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)))).map(x=>x.toString(16).padStart(2,'0')).join('');
@@ -16,7 +17,7 @@ export function validEpisode(input,date){
  if(input.image!=='/assets/portfolio/'+input.id+'.jpg'||!input.locales||Object.keys(input.locales).length!==4)return false;
  return LANGS.every(lang=>{const row=input.locales[lang];return row&&typeof row.title==='string'&&row.title.length>0&&row.title.length<=200&&row.url===(lang==='ko'?'':'/'+lang)+'/watch/fall-707-s'+input.season+'-ep'+input.episode+'/';});
 }
-const headers=origin=>({'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Vary':'Origin',...(origin?{'Access-Control-Allow-Origin':origin}:{})});
+const headers=origin=>({...SECURITY_HEADERS,'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','Vary':'Origin',...(origin?{'Access-Control-Allow-Origin':origin}:{})});
 const answer=(body,status=200,origin=null)=>new Response(JSON.stringify(body),{status,headers:headers(origin)});
 async function body(request){
  if(!/^application\/json(?:;|$)/i.test(request.headers.get('Content-Type')||''))throw Error('mime');
