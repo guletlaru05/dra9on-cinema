@@ -43,16 +43,19 @@ class InternationalPages(unittest.TestCase):
     with Image.open(Path('dist/assets/press')/(name+'.webp')) as image:self.assertEqual(image.size,(540,720))
  def test_world_episode_and_character_coverage(self):
   from world_details import CAST,EDGES
+  from lounge import enabled as lounge_enabled
   from PIL import Image
   metadata=json.loads(Path('dist/assets/world/manifest.json').read_text(encoding='utf-8'))
   for lang in ('','en/','ja/','es/'):
    source=(Path('dist')/lang/'fall-707/world/index.html').read_text(encoding='utf-8')
    self.assertEqual(set(re.findall(r'data-world-episode="(s\de\d)"',source)),{f's{s}e{e}' for s in (1,2) for e in range(1,7)})
-   self.assertEqual(len(re.findall(r'<article id="person-',source)),11)
+   expected_people=12 if lounge_enabled() else 11
+   self.assertEqual(len(re.findall(r'<article id="person-',source)),expected_people)
+   if lounge_enabled():self.assertIn('fall-707/characters/hyeolmaek/',source)
    lead=re.search(r'class="world-people world-lead">(.*?)</div>',source).group(1)
    self.assertEqual(re.findall(r'id="person-([^"]+)"',lead),['captain-min'])
    supporting=re.search(r'class="world-people world-supporting">(.*?)</section>',source).group(1)
-   self.assertEqual(len(re.findall(r'<article id="person-',supporting)),10)
+   self.assertEqual(len(re.findall(r'<article id="person-',supporting)),expected_people-1)
    for person,_,_ in CAST:self.assertIn('id="person-'+person+'"',source)
    for first,second,_ in EDGES:
     for person in (first,second):self.assertIn('id="person-'+person+'"',source)

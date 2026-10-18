@@ -137,6 +137,8 @@ def build(out,origin,works,head,base_path=''):
  ]
  for file in out.rglob('*.html'):
   path=file.relative_to(out).as_posix();lang=path.split('/')[0] if path.startswith(('en/','ja/','es/')) else 'ko';doc=file.read_text(encoding='utf-8')
+  if lang!='ko':
+   doc=doc.replace('DRA9ON CINEMA 〈낙하 707: 리부트〉 FALL 707 키비주얼',{'en':'DRA9ON CINEMA FALL 707 key visual','ja':'DRA9ON CINEMA FALL 707 キービジュアル','es':'Imagen principal de FALL 707, DRA9ON CINEMA'}[lang])
   doc=re.sub(r'(<a\b[^>]*href=")[^"<>]*?/questions/(?:#[^"]*)?("[^>]*>)[\s\S]*?</a>',lambda m:m[1]+pre(lang)+'/lounge/'+m[2]+t('lounge',lang)+'</a>',doc)
   if path in ('index.html','en/index.html','ja/index.html','es/index.html'):
    links=[]
