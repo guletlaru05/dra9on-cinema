@@ -1,6 +1,15 @@
 """Remove repeated external video anchors from home, keeping viewing shelves."""
 import re
 
+def contain_hero_media(document):
+    """Keep the poster, silent preview and shade in one independently sized frame."""
+    if 'class="hero-media"' in document:
+        return document
+    document,count=re.subn(r'(<img\b[^>]*class="hero-image"[^>]*>)(\s*<div class="hero-shade"></div>)',r'<div class="hero-media">\1\2</div>',document,count=1)
+    if count!=1:
+        raise ValueError('Home must have one poster and shade to group into its media frame')
+    return document
+
 def simplify_home_links(document):
     allowed=[(m.start(),m.end()) for m in re.finditer(r'<(?:header|footer)\b[^>]*>[\s\S]*?</(?:header|footer)>',document)]
     hero=re.search(r'<p class="hero-subscribe">[\s\S]*?</p>',document)

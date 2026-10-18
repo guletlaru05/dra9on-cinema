@@ -249,10 +249,10 @@ for page in out.rglob('*.html'):
  page.write_text(document,encoding='utf-8')
 
 # Keep the four home pages small before final CSP hashes are computed.
-from home_layout import simplify_home_links
+from home_layout import simplify_home_links,contain_hero_media
 for home_path in ("index.html", "en/index.html", "ja/index.html", "es/index.html"):
  page=out/home_path
- page.write_text(simplify_home_links(page.read_text(encoding="utf-8")),encoding="utf-8")
+ page.write_text(contain_hero_media(simplify_home_links(page.read_text(encoding="utf-8"))),encoding="utf-8")
 
 # Prevent third-party requests before the visitor chooses a media/service.
 for page in out.rglob('*.html'):

@@ -72,7 +72,7 @@ jobs:
           SITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
         run: python3 verify-site.py --origin "$SITE_ORIGIN" --base-path "$SITE_BASE_PATH"
       - name: Verify translated routes and native still dimensions
-        run: python3 -m unittest test_international test_aesthetics_tutorial test_lighting_tutorial test_tutorial_catalog test_tutorial_images test_pwa test_lounge
+        run: python3 -m unittest test_international test_aesthetics_tutorial test_lighting_tutorial test_tutorial_catalog test_tutorial_images test_pwa test_lounge test_home_layout
       - name: Publish anonymous metrics registry
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
