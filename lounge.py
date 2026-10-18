@@ -172,8 +172,8 @@ def build(out,origin,works,head,base_path=''):
     target_prefix='/en' if lang in ('ja','es') and route in ('/notes/','/stickers/') else pre(lang)
     links.append('<a href="'+target_prefix+route+'">'+e(label[lang])+'<span aria-hidden="true">↗</span></a>')
    navigation='<nav class="home-explore" aria-label="'+e(t('explore',lang))+'"><p class="section-eyebrow">'+e(t('explore',lang))+'</p><div class="home-explore-grid">'+''.join(links)+'</div></nav>'
-   if '<div class="catalog" id="catalog">' not in doc:raise ValueError('Home navigation insertion point is missing')
-   doc=doc.replace('<div class="catalog" id="catalog">',navigation+'<div class="catalog" id="catalog">',1)
+   if '<main id="main">' not in doc:raise ValueError('Home navigation insertion point is missing')
+   doc=doc.replace('<main id="main">','<main id="main">'+navigation,1)
    doc=doc.replace('</head>','<link rel="stylesheet" href="'+css+'"></head>',1)
   if '/fall-707/world/' in '/'+path:
    for p in PEOPLE:

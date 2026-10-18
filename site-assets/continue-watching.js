@@ -29,7 +29,7 @@
   const note=document.createElement('span');note.textContent=text.note;
   const clear=document.createElement('button');clear.type='button';clear.textContent='×';clear.setAttribute('aria-label',text.clear);
   clear.addEventListener('click',()=>{try{localStorage.removeItem(KEY);}catch{}record=null;widget.remove();});
-  widget.append(link,note,clear);document.querySelector('main')?.prepend(widget);
+  widget.append(link,note,clear);const navigation=document.querySelector('main>.home-explore');if(navigation)navigation.after(widget);else document.querySelector('main')?.prepend(widget);
  }
  if(document.body.dataset.page==='home')paintHome();
  if(document.body.dataset.page==='watch'&&byId.has(document.body.dataset.id)){

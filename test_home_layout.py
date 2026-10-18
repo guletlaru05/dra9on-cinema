@@ -39,4 +39,12 @@ class HeroLayoutTests(unittest.TestCase):
             attributes=parser.photo[0][1]
             self.assertEqual(int(attributes['width'])/int(attributes['height']),16/9,language)
 
+    def test_four_home_pages_put_navigation_before_video_below_header(self):
+        if not Path('dist/index.html').exists():self.skipTest('Build site first')
+        for language in ('','en','ja','es'):
+            document=(Path('dist')/language/'index.html').read_text(encoding='utf-8')
+            self.assertEqual(document.count('class="home-explore"'),1,language)
+            self.assertLess(document.index('</header>'),document.index('class="home-explore"'),language)
+            self.assertLess(document.index('class="home-explore"'),document.index('id="hero"'),language)
+
 if __name__=='__main__':unittest.main()
