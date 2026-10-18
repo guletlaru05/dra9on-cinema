@@ -17,7 +17,7 @@
   if(card)body.card=card;
   fetch(endpoint+'/event',{method:'POST',mode:'cors',credentials:'omit',referrerPolicy:'no-referrer',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),keepalive:true}).catch(()=>{});
  };
- const canonicalLink=node=>{try{let p=new URL(node.href,location.href).pathname;const match=p.match(/\/(?:en\/)?tutorials\/([^/]+)\/$/);return match?'/tutorials/'+match[1]+'/':null;}catch{return null;}};
+ const canonicalLink=node=>{try{let p=new URL(node.href,location.href).pathname;const match=p.match(/\/(?:(?:en|ja|es)\/)?tutorials\/([^/]+)\/$/);return match?'/tutorials/'+match[1]+'/':null;}catch{return null;}};
  const dataFor=node=>summary?.tutorials?.[canonicalLink(node)]||null;
  const totalLabel=value=>t('조회 ','Views ')+String(value.views)+t(' · 프롬프트 복사 ',' · Prompt copies ')+String(value.copies);
  const homeTemplate=document.querySelector('[data-home-tutorial-candidates]');

@@ -216,6 +216,10 @@ for page in out.rglob('*.html'):
 
 # The public visit ledger is added after translation, with its own hashed assets.
 # Site visit totals are owner-only; public collection continues without a widget.
+from tutorial_catalog import inject_catalog
+inject_catalog(out,base_path)
+from tutorial_images import inject_images
+inject_images(out,base_path)
 from tutorial_metrics import inject_metrics
 analytics_configuration=inject_metrics(out,base_path)
 from youtube_site import inject_youtube_counts

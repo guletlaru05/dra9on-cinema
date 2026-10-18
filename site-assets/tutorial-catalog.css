@@ -1,0 +1,22 @@
+[data-tutorial-catalog] [hidden]{display:none!important}
+[data-tutorial-catalog]>h1{font-size:clamp(30px,3.8vw,58px);line-height:1.25;word-break:keep-all;overflow-wrap:anywhere;max-width:1100px}
+[data-tutorial-catalog] .tutorial-intro{max-width:900px}
+[data-tutorial-catalog] .tutorial-teaser{padding-top:0;border-top:0;margin-top:30px}
+.tutorial-browser{padding-top:22px;border-top:1px solid #ffffff26}
+.tutorial-topic-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.tutorial-topic-tabs button{font:inherit;font-size:14px;min-height:44px;padding:10px 17px;border:1px solid #ffffff32;border-radius:4px;background:transparent;color:#b9b9c2;cursor:pointer}
+.tutorial-topic-tabs button[aria-pressed=true]{background:#f3f1ed;color:#101011;border-color:#f3f1ed}
+.tutorial-topic-tabs button:hover{border-color:#f3f1ed}
+.tutorial-browser-inputs{display:flex;gap:14px;align-items:end}
+.tutorial-browser label{display:flex;flex-direction:column;gap:8px;font-size:12px;color:#aaaab5;min-width:0}
+.tutorial-search{flex:1;max-width:620px}
+.tutorial-browser input,.tutorial-browser select{font:inherit;font-size:15px;min-height:48px;background:#17171b;border:1px solid #ffffff32;border-radius:4px;color:#f3f1ed;padding:11px 14px;width:100%;min-width:0}
+.tutorial-browser .tutorial-topic-select{display:none}
+.tutorial-search-clear{font:inherit;font-size:13px;background:transparent;color:#ddd;border:1px solid #ffffff32;border-radius:4px;min-height:48px;padding:10px 14px;cursor:pointer}
+.tutorial-result-count{font-size:13px;color:#aaaab5;margin:16px 0 0}
+[data-tutorial-catalog] .tutorial-sort{margin:16px 0 22px}
+[data-tutorial-empty]{padding:30px 0;color:#b1b1ba;line-height:1.8}
+.tutorial-tool-tags{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 16px}
+.tutorial-main .tutorial-tool-tags span{font-size:11px;line-height:1.5;color:#aaaab5;border:1px solid #ffffff20;border-radius:3px;padding:3px 7px;margin:0}
+.tutorial-browser :is(button,input,select):focus-visible{outline:2px solid #f5d4db;outline-offset:4px}
+@media(max-width:800px){.tutorial-topic-tabs{display:none}.tutorial-browser .tutorial-topic-select{display:flex;flex:0 0 auto;width:100%}.tutorial-browser-inputs{flex-wrap:wrap}.tutorial-search{flex-basis:100%;max-width:none}.tutorial-browser{padding-top:20px}.tutorial-browser-inputs:has(.tutorial-search-clear:not([hidden])) .tutorial-search{flex-basis:calc(100% - 120px)}.tutorial-browser input,.tutorial-browser select{font-size:16px}.tutorial-main .tutorial-tool-tags span{font-size:11px}}

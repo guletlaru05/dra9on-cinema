@@ -23,10 +23,6 @@ main.querySelectorAll('pre').forEach((pre)=>{
 const checks=Array.from(main.querySelectorAll('.lesson-ready input')),progress=main.querySelector('.lesson-progress');
 function update(){if(progress)progress.textContent=t('준비 완료 ','Ready ')+checks.filter(c=>c.checked).length+' / '+checks.length;}
 checks.forEach(c=>c.addEventListener('change',update));update();
-const dialog=document.createElement('dialog');dialog.className='lesson-image-dialog';dialog.setAttribute('aria-label',t('실습 이미지 크게 보기','Enlarged practice image'));
-const close=document.createElement('button');close.type='button';close.textContent=t('닫기 ×','Close ×');
-const image=document.createElement('img'),caption=document.createElement('p');dialog.append(close,image,caption);document.body.append(dialog);close.addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});
-main.querySelectorAll('a[href^="/assets/notes/"]').forEach(link=>{if(!link.querySelector('img'))return;link.addEventListener('click',e=>{if(e.ctrlKey||e.metaKey||e.shiftKey)return;e.preventDefault();image.src=link.href;image.alt=link.querySelector('img').alt;caption.textContent=image.alt;dialog.showModal();});});
 })();'''
 
 def enhance(article, out, t):
