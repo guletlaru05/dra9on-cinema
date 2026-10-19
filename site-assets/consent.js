@@ -2,6 +2,12 @@
 (() => {
  'use strict';
  const KEY='d9-external-media-choice-v1',TTL=180*86400000;
+ const mediaText={
+  ko:{play:'동의하고 재생',notice:'재생하면 {service} 쿠키가 사용될 수 있습니다',privacy:'개인정보처리방침',revoked:'외부 영상 동의를 철회했습니다.'},
+  en:{play:'Agree and play',notice:'Playing may use {service} cookies',privacy:'Privacy policy',revoked:'External-media consent withdrawn.'},
+  ja:{play:'同意して再生',notice:'再生すると{service}のCookieが使用される場合があります',privacy:'プライバシーポリシー',revoked:'外部動画への同意を取り消しました。'},
+  es:{play:'Aceptar y reproducir',notice:'Al reproducir se pueden usar cookies de {service}',privacy:'Política de privacidad',revoked:'Se ha retirado el consentimiento para vídeos externos.'},
+ }[document.documentElement.lang]||{play:'Agree and play',notice:'Playing may use {service} cookies',privacy:'Privacy policy',revoked:'External-media consent withdrawn.'};
  const en=document.documentElement.lang==='en';
  const t=(ko,english)=>window.D9Locale?.translate(ko,english)??(en?english:ko);
  let choice=null,returnFocus=null;
@@ -12,8 +18,18 @@
   [new URL('community.js',assetRoot).pathname,'board'],
   [new URL('library/library.js',assetRoot).pathname,'library'],
  ]);
+ function parsed(raw){try{const saved=JSON.parse(raw);return saved&&['granted','denied'].includes(saved.value)&&Number.isFinite(saved.expires)&&saved.expires>Date.now()?saved:null;}catch{return null;}}
+ function storage(kind){try{return kind==='local'?localStorage:sessionStorage;}catch{return null;}}
  function read(){
-  try{const saved=JSON.parse(localStorage.getItem(KEY));return saved&&['granted','denied'].includes(saved.value)&&saved.expires>Date.now()?saved.value:null;}catch{return null;}
+  const records=[];
+  for(const kind of ['local','session']){try{const item=parsed(storage(kind)?.getItem(KEY));if(item)records.push(item);}catch{}}
+  records.sort((a,b)=>(b.updated??b.expires-TTL)-(a.updated??a.expires-TTL));
+  return records[0]?.value??null;
+ }
+ function remember(value){
+  const record=JSON.stringify({value,expires:Date.now()+TTL,updated:Date.now()});
+  // Session fallback is functional consent only; no cookies or visitor IDs.
+  for(const kind of ['local','session']){try{storage(kind)?.setItem(KEY,record);}catch{}}
  }
  function clearLegacy(){
   const oldKeys=new Set(['d9-analytics-consent-v1','d9-consent']);
@@ -35,8 +51,9 @@
   try{
    const url=new URL(raw,location.href);
    if(url.protocol!=='https:'||url.username||url.password)return null;
-   if(url.hostname==='www.youtube-nocookie.com'&&/^\/embed\/[A-Za-z0-9_-]{11}$/.test(url.pathname)){
-    return {url:url.href,service:'YouTube',watch:'https://www.youtube.com/watch?v='+url.pathname.split('/').pop()};
+   if(['www.youtube-nocookie.com','youtube-nocookie.com','www.youtube.com','youtube.com'].includes(url.hostname)&&/^\/embed\/[A-Za-z0-9_-]{11}$/.test(url.pathname)&&!url.port){
+    url.hostname='www.youtube-nocookie.com';
+    return {url:url.href,service:'YouTube',id:url.pathname.split('/').pop(),watch:'https://www.youtube.com/watch?v='+url.pathname.split('/').pop()};
    }
    if(url.href==='https://www.instagram.com/reel/DelRHYDunY-/embed/'){
     return {url:url.href,service:'Instagram',watch:'https://www.instagram.com/reel/DelRHYDunY-/'};
@@ -46,10 +63,23 @@
  }
  function syncFrame(frame,state){
   const allowed=choice==='granted'&&state.media;
-  if(allowed){if(frame.getAttribute('src')!==state.media.url)frame.setAttribute('src',state.media.url);}
-  else frame.removeAttribute('src');
+  if(allowed){
+   const url=new URL(state.media.url);
+   // Only the clicked player starts. Remembered permission loads other players
+   // without unexpectedly starting every video on the page.
+   if(state.playRequested&&state.media.service==='YouTube'){url.searchParams.set('autoplay','1');url.searchParams.set('playsinline','1');}
+   const permission=new Set((frame.getAttribute('allow')||'').split(';').map(s=>s.trim()).filter(Boolean));permission.add('autoplay');
+   frame.setAttribute('allow',[...permission].join('; '));
+   if(frame.getAttribute('src')!==url.href)frame.setAttribute('src',url.href);
+  }else{frame.removeAttribute('src');state.playRequested=false;}
   frame.hidden=!allowed;state.placeholder.hidden=!!allowed;
   frame.parentElement?.classList.toggle('external-media-blocked',!allowed);
+ }
+ function poster(frame,info){
+  const record=info.service==='YouTube'?window.PORTFOLIO?.find(item=>item.id===info.id):null;
+  const fallback=new URL('external-media-poster.svg',assetRoot).href;
+  const candidate=frame.getAttribute('data-external-poster')||record?.image||(info.service==='YouTube'?new URL('assets/portfolio/'+info.id+'.jpg',assetRoot).href:fallback);
+  try{const url=new URL(candidate,location.href);return url.origin===location.origin&&!url.username&&!url.password?url.href:fallback;}catch{return fallback;}
  }
  function prepare(root=document){
   const candidates=[];
@@ -60,16 +90,21 @@
    if(!state){
     const info=media(frame.getAttribute('data-external-src'));
     const placeholder=document.createElement('div');placeholder.className='external-media-placeholder';
-    const title=document.createElement('strong');title.textContent=frame.title||t('외부 영상','External video');
-    const description=document.createElement('p');
-    description.textContent=info?t('허용하면 이 사이트의 YouTube·Instagram 영상이 연결되며, 각 서비스가 쿠키와 기기 정보를 처리할 수 있습니다. 선택은 이 브라우저에 저장됩니다.','Allowing connects YouTube and Instagram videos across this site. These services may process cookies and device information. Your choice is saved in this browser.'):t('이 외부 영상 주소는 허용되지 않았습니다. 원본 링크를 이용해 주세요.','This external embed address is not allowed. Use the original link instead.');
-    placeholder.append(title,description);
     if(info){
-     const load=document.createElement('button');load.type='button';load.textContent=t('외부 영상 허용하고 불러오기','Allow and load external media');
-     load.addEventListener('click',()=>save('granted'));
-     const watch=document.createElement('a');watch.href=info.watch;watch.target='_blank';watch.rel='noopener noreferrer';watch.textContent=t(info.service+'에서 보기 ↗','Watch on '+info.service+' ↗');
-     const privacy=document.createElement('a');privacy.href=policy.href;privacy.textContent=t('개인정보처리방침','Privacy policy');
-     placeholder.append(load,watch,privacy);
+     placeholder.classList.toggle('external-media-instagram',info.service==='Instagram');
+     const load=document.createElement('button');load.type='button';load.className='external-media-play';load.setAttribute('aria-label',mediaText.play+' · '+info.service+' · '+(frame.title||''));
+     const image=document.createElement('img');image.src=poster(frame,info);image.alt='';image.decoding='async';
+     image.addEventListener('error',()=>{const fallback=new URL('external-media-poster.svg',assetRoot).href;if(image.src!==fallback)image.src=fallback;});
+     const icon=document.createElement('span');icon.className='external-media-play-icon';icon.textContent='▶';icon.setAttribute('aria-hidden','true');
+     const label=document.createElement('span');label.className='external-media-play-label';label.textContent=info.service+' · '+mediaText.play;
+     load.append(image,icon,label);
+     load.addEventListener('click',()=>{returnFocus=null;save('granted',frame);frame.focus();});
+     const notice=document.createElement('p');notice.className='external-media-notice';
+     const text=document.createElement('span');text.textContent=mediaText.notice.replace('{service}',info.service)+' · ';
+     const privacy=document.createElement('a');privacy.href=policy.href;privacy.textContent=mediaText.privacy;
+     notice.append(text,privacy);placeholder.append(load,notice);
+    }else{
+     const description=document.createElement('p');description.textContent=t('이 외부 영상 주소는 허용되지 않았습니다. 원본 링크를 이용해 주세요.','This external embed address is not allowed. Use the original link instead.');placeholder.append(description);
     }
     frame.before(placeholder);state={media:info,placeholder};frames.set(frame,state);
    }
@@ -124,9 +159,10 @@
   window.dispatchEvent(new CustomEvent('d9:external-consent',{detail:{value:choice,canLoadMedia:choice==='granted'}}));
   window.dispatchEvent(new CustomEvent('d9:analytics-consent',{detail:{value:'denied'}}));
  }
- function save(value){
+ function save(value,playFrame=null){
   const wasGranted=choice==='granted';choice=value;
-  try{localStorage.setItem(KEY,JSON.stringify({value,expires:Date.now()+TTL}));}catch{}
+  remember(value);
+  if(playFrame&&frames.has(playFrame))frames.get(playFrame).playRequested=true;
   banner.hidden=true;frames.forEach((state,frame)=>syncFrame(frame,state));notify();
   if(value==='denied'&&wasGranted){location.reload();return;}
   returnFocus?.focus();
@@ -137,6 +173,8 @@
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!banner.hidden){event.preventDefault();closeSettings();}});
  reject.addEventListener('click',()=>save('denied'));accept.addEventListener('click',()=>save('granted'));
  document.addEventListener('click',event=>{
+  const revoke=event.target.closest?.('[data-external-media-revoke]');
+  if(revoke){event.preventDefault();save('denied');const status=document.getElementById('external-media-revoke-status');if(status)status.textContent=mediaText.revoked;return;}
   const settings=event.target.closest?.('[data-cookie-settings]');
   if(settings){event.preventDefault();showSettings(settings);}
  });
@@ -144,8 +182,17 @@
  // Retained only for old integrations: analytics is never granted by media consent.
  window.D9AnalyticsConsent=Object.freeze({get:()=> 'denied'});
  window.addEventListener('storage',event=>{
-  if(event.key!==KEY)return;const wasGranted=choice==='granted';choice=read();
+  if(event.key!==KEY&&event.key!==null)return;const wasGranted=choice==='granted';
+  if(event.newValue!==undefined||event.key===null){
+   const received=event.key===null?null:parsed(event.newValue);choice=received?.value??null;
+   try{const session=storage('session');received?session?.setItem(KEY,JSON.stringify(received)):session?.removeItem(KEY);}catch{}
+  }else choice=read();
   banner.hidden=true;frames.forEach((state,frame)=>syncFrame(frame,state));notify();
+  if(wasGranted&&choice!=='granted')location.reload();
+ });
+ window.addEventListener('pageshow',event=>{
+  if(!event.persisted)return;const wasGranted=choice==='granted';choice=read();
+  frames.forEach((state,frame)=>syncFrame(frame,state));notify();
   if(wasGranted&&choice!=='granted')location.reload();
  });
  // Request permission inside the video slot. Open the page-wide settings bar

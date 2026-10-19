@@ -4,7 +4,7 @@ from site_config import CONTACT_EMAIL
 
 COPY = [
 ('개인정보처리방침', 'Privacy policy'),
-('시행일: 2026년 10월 18일', 'Effective date: October 18, 2026'),
+('시행일: 2026년 10월 19일', 'Effective date: October 19, 2026'),
 ('운영자와 문의', 'Operator and contact'),
 ('DRA9ON CINEMA는 이 사이트를 운영합니다. 개인정보 관련 문의, 열람·삭제·동의 철회 요청은 아래 이메일로 보내주세요.', 'DRA9ON CINEMA operates this site. Contact the email below with privacy questions or requests for access, deletion or withdrawal of consent.'),
 ('쿠키 없는 방문 통계', 'Cookie-free visit analytics'),
@@ -19,7 +19,7 @@ COPY = [
 ('외부 영상 허용·차단 선택은 기능을 위한 로컬 저장소에 최대 180일간 기억합니다. 찜한 작품과 언어 등 사용자가 선택한 설정도 사이트 기능을 위한 저장소를 사용할 수 있습니다. 이 설정을 방문자 추적 식별자로 사용하지 않습니다. 브라우저 저장소를 지우면 선택이 초기화됩니다.', 'Your external-media allow or block choice is remembered in functional local storage for up to 180 days. Saved films and user-selected settings such as language may also use functional storage. These preferences are not used as visitor-tracking identifiers. Clearing browser storage resets them.'),
 ('이전 방식의 _ga 계열 분석 쿠키와 사이트의 이전 분석 동의·방문 집계용 저장소 항목은 전환 시 이 사이트가 접근할 수 있는 범위에서 삭제합니다. 다른 도메인의 쿠키나 서버에 이미 저장된 이전 기록까지 브라우저에서 자동 삭제할 수는 없습니다. 이전 데이터의 열람·삭제 요청은 운영자에게 연락해 주세요. 새 통계는 이전 브라우저 식별자를 재사용하지 않습니다.', 'During migration, the site removes accessible legacy _ga analytics cookies and its previous analytics-choice and visit-counter storage entries. A browser cannot automatically remove other domains’ cookies or records already stored on a server. Contact the operator for access to or deletion of previous records. The new analytics do not reuse previous browser identifiers.'),
 ('외부 영상과 선택 변경', 'External media and changing your choice'),
-('YouTube와 Instagram 삽입 영상은 외부 영상 허용을 선택하기 전에는 불러오지 않습니다. 초기 페이지에는 연결되지 않은 자리표시자와 허용 버튼, 원본 영상 링크를 표시합니다. 허용하지 않아도 사이트 글을 읽고 원본 링크로 이동할 수 있습니다. 원본 사이트로 이동하면 그 사이트의 정책이 적용됩니다.', 'Embedded YouTube and Instagram media are not loaded until you allow external media. Initially the page shows an unconnected placeholder, an allow button and a link to the original. You can read site content and follow original links without allowing embeds. Once you visit the original site, that site’s policies apply.'),
+('YouTube와 Instagram 삽입 영상은 동의하기 전에는 불러오지 않습니다. 처음에는 이 사이트에 보관한 미리보기 이미지와 쿠키 안내를 표시하며, 재생 썸네일을 누르면 이 사이트의 YouTube·Instagram 삽입 영상 연결에 동의하고 선택한 플레이어를 불러옵니다. YouTube에는 선택한 영상의 재생도 요청합니다. Instagram이나 브라우저의 재생 정책에 따라 플레이어에서 재생을 한 번 더 눌러야 할 수 있습니다. 동의가 저장된 같은 브라우저에서는 다른 삽입 영상도 동의 단계 없이 불러옵니다. 허용하지 않아도 사이트 글을 읽고 원본 링크로 이동할 수 있으며, 원본 사이트에서는 해당 사이트의 정책이 적용됩니다.', 'Embedded YouTube and Instagram media are not loaded before consent. Initially, a preview image hosted on this site and a cookie notice are shown. Clicking a play thumbnail consents to connecting YouTube and Instagram embeds across this site and loads the selected player. Playback is also requested for the selected YouTube video. Instagram or browser playback policies may require another press of the player’s play button. Other embeds load without another consent step when permission is remembered in the same browser. You can read site content and follow original links without allowing embeds; the original site’s policies apply there.'),
 ('YouTube 영상은 youtube-nocookie.com의 개인정보 보호 강화 모드로 삽입합니다. 이 도메인을 사용하더라도 영상을 불러오거나 재생할 때 Google·YouTube가 네트워크·기기 정보와 쿠키 또는 저장소를 자체 정책에 따라 처리할 수 있습니다. Instagram 릴스를 불러오면 Meta에도 연결되며 해당 정책이 적용됩니다. 따라서 사이트 전체가 어떤 상황에서도 쿠키를 쓰지 않는다고 설명하지 않습니다.', 'YouTube videos use the privacy-enhanced youtube-nocookie.com domain. Even with this domain, loading or playing media may involve Google and YouTube processing network and device information, cookies or storage under their own policies. Loading an Instagram Reel connects to Meta and is subject to its policies. The site therefore does not claim to be entirely cookie-free under all circumstances.'),
 ('외부 영상 선택은 페이지 하단의 외부 영상 설정에서 언제든 바꿀 수 있습니다. 허용을 철회하면 삽입 영상 연결을 중지하고 페이지를 다시 불러와 이미 실행된 외부 플레이어도 중단합니다. 다른 도메인에 이미 생긴 쿠키나 제공자의 이전 데이터까지 지우지는 못합니다. 하단의 얇은 설정 바는 방문 통계 동의를 요청하는 팝업이 아니라 선택적인 외부 영상 연결을 관리합니다.', 'Change your external-media choice at any time using External media settings at the bottom of a page. Withdrawing permission disconnects embeds and reloads the page to stop external players that were already running. It cannot erase cookies on other domains or previous data held by providers. The thin bottom settings bar manages optional external-media connections; it is not an analytics-consent popup.'),
 ('영상 조회수와 채널 구독자 수', 'Video views and channel subscribers'),
@@ -48,6 +48,9 @@ COPY = [
 ]
 
 TRANSLATIONS = dict(COPY)
+WITHDRAW=('외부 영상 동의 철회','Withdraw external-media consent')
+STORAGE_NOTE=('저장소 접근이 제한되면 현재 탭의 세션 저장소, 그것도 사용할 수 없으면 현재 페이지에서만 선택을 유지합니다. 저장소 삭제·만료, 사파리의 저장 정책, 시크릿 모드, 서로 다른 브라우저·앱·도메인에서는 다시 선택해야 할 수 있습니다. 이 선택은 방문자를 식별하는 데 사용하지 않습니다.','If persistent storage is restricted, the choice falls back to this tab’s session storage, or to the current page if that is also unavailable. Storage deletion or expiry, Safari storage policies, private browsing, and different browsers, apps or domains may require a new choice. This preference is not used to identify visitors.')
+TRANSLATIONS.update([WITHDRAW,STORAGE_NOTE])
 
 def build_privacy(out, origin, head, header, footer):
  title=COPY[0][0]
@@ -57,6 +60,8 @@ def build_privacy(out, origin, head, header, footer):
   tag='h2' if ko in headings else 'p'
   body+=f'<{tag}>{escape(ko)}</{tag}>'
   if i==3:body+=f'<p><a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a></p>'
+  if ko=='브라우저 저장소와 이전 데이터':body+='<p>'+STORAGE_NOTE[0]+'</p>'
+  if ko=='외부 영상과 선택 변경':body+='<p><button type="button" data-external-media-revoke>'+WITHDRAW[0]+'</button></p><p id="external-media-revoke-status" role="status"></p>'
  body+='<p><a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare Privacy Policy</a> · <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a> · <a href="https://privacycenter.instagram.com/policy/" target="_blank" rel="noopener noreferrer">Meta Privacy Policy</a> · <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub Privacy Statement</a></p></main>'+footer()+'</body></html>'
  path=out/'privacy';path.mkdir(exist_ok=True)
  schema={'@context':'https://schema.org','@type':'WebPage','name':title,'url':origin+'/privacy/'}

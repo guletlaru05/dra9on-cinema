@@ -7,3 +7,17 @@
 @media(prefers-reduced-transparency:reduce){#consent-banner{background:#17171b}}
 .watch-screen.external-media-blocked,#player-mount.external-media-blocked{height:auto;aspect-ratio:auto;min-height:280px}.watch-screen.external-media-blocked>.external-media-placeholder,#player-mount.external-media-blocked>.external-media-placeholder{height:auto;min-height:280px}
 .functional-service-gate{padding:20px;border:1px solid #666;margin:0 0 28px;border-radius:5px;background:#18181c;color:#ccc;font:14px/1.8 var(--font,sans-serif)}.functional-service-gate p{margin:0 0 12px}.functional-service-gate p[role=status]:empty{display:none}.functional-service-gate button{min-height:44px;border:1px solid #aaa;background:#f2f2f2;color:#101011;padding:10px 16px;border-radius:4px;font:inherit;cursor:pointer}.functional-service-gate button:focus-visible{outline:2px solid #fff;outline-offset:4px}
+.external-media-placeholder{display:block;height:auto;min-height:0;padding:0;background:#101011;text-align:left}
+.external-media-placeholder .external-media-play{display:block;position:relative;width:100%;height:auto;min-height:0;aspect-ratio:16/9;overflow:hidden;margin:0;padding:0;border:0;border-radius:0;background:#17171b;isolation:isolate;cursor:pointer}
+.external-media-play img{display:block;width:100%;height:100%;object-fit:cover;opacity:.8}
+.external-media-play-icon{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:70px;height:70px;padding-left:4px;box-sizing:border-box;border-radius:50%;border:1px solid #ffffff90;background:#101011b8;color:white;font-size:26px}
+.external-media-play-label{position:absolute;left:16px;bottom:14px;max-width:calc(100% - 32px);padding:5px 9px;border-radius:3px;background:#101011d9;color:#fff;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+.external-media-placeholder .external-media-notice{display:block;max-width:none;margin:0;padding:8px 2px;color:#a9a9b2;font:12px/1.65 var(--font,sans-serif);overflow-wrap:anywhere}
+.external-media-placeholder .external-media-notice a{display:inline;min-height:0;color:inherit;text-decoration:underline;text-underline-offset:3px}
+.external-media-placeholder .external-media-play:focus-visible{outline:2px solid white;outline-offset:-4px}
+.watch-screen.external-media-blocked,#player-mount.external-media-blocked,.watch-screen.external-media-blocked>.external-media-placeholder,#player-mount.external-media-blocked>.external-media-placeholder{height:auto;min-height:0;aspect-ratio:auto}
+.newtake-result>.external-media-placeholder{min-height:0;border:0;border-radius:0}
+.external-media-instagram .external-media-play{aspect-ratio:540/740}
+.privacy-copy [data-external-media-revoke]{min-height:44px;padding:10px 16px;background:#25252c;border:1px solid #858590;border-radius:4px;color:#f4f4f4;font:inherit;cursor:pointer}
+.privacy-copy [data-external-media-revoke]:focus-visible{outline:2px solid white;outline-offset:3px}
+@media(max-width:600px){.external-media-play-icon{width:58px;height:58px;font-size:22px}.external-media-play-label{left:10px;bottom:10px;font-size:12px}.external-media-placeholder .external-media-notice{font-size:11px;letter-spacing:-.01em}.external-media-notice a{white-space:nowrap}}
