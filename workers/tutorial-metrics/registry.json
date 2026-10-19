@@ -359,6 +359,14 @@
     "canonicalPath": "/fall-707/characters/yuna/",
     "type": "page"
   },
+  "/es/notes/fall-707-beginnings/": {
+    "canonicalPath": "/notes/fall-707-beginnings/",
+    "type": "page"
+  },
+  "/es/notes/workflow/": {
+    "canonicalPath": "/notes/workflow/",
+    "type": "page"
+  },
   "/es/tutorials/lighting-contrast/": {
     "canonicalPath": "/tutorials/lighting-contrast/",
     "type": "tutorial"
@@ -537,6 +545,14 @@
   },
   "/ja/fall-707/characters/yuna/": {
     "canonicalPath": "/fall-707/characters/yuna/",
+    "type": "page"
+  },
+  "/ja/notes/fall-707-beginnings/": {
+    "canonicalPath": "/notes/fall-707-beginnings/",
+    "type": "page"
+  },
+  "/ja/notes/workflow/": {
+    "canonicalPath": "/notes/workflow/",
     "type": "page"
   },
   "/ja/tutorials/lighting-contrast/": {

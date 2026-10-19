@@ -128,7 +128,8 @@ def supported_routes(works):
  if find_spec('notes_update') is not None:
   from notes_update import routes as note_routes
  from lounge import routes as lounge_routes
- return {'/tutorials/','/tutorials/lighting-contrast/','/','/fall-707/','/press/',*[w['path'] for w in works if w['season']],*(['/fall-707/world/'] if WORLD_ENABLED else []),*note_routes(),*lounge_routes()}
+ from notes_workflow import routes as workflow_routes
+ return {'/tutorials/','/tutorials/lighting-contrast/','/','/fall-707/','/press/',*[w['path'] for w in works if w['season']],*(['/fall-707/world/'] if WORLD_ENABLED else []),*note_routes(),*workflow_routes(),*lounge_routes()}
 
 def build_languages(out,origin,works,data,head,header,footer,base_path=''):
  routes=supported_routes(works)

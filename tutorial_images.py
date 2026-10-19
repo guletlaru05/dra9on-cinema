@@ -22,7 +22,8 @@ def inject_images(out,base_path=''):
   note_routes=lambda:set()
   if find_spec('notes_update') is not None:
    from notes_update import routes as note_routes
-  is_note=canonical in (note_routes()-{'/notes/'})
+  from notes_workflow import routes as workflow_routes
+  is_note=canonical in (note_routes()-{'/notes/'}) | workflow_routes()
   from lounge import new_routes
   is_character=canonical in new_routes()
   if not is_note and not is_character and (not canonical.startswith('/tutorials/') or canonical=='/tutorials/'):continue

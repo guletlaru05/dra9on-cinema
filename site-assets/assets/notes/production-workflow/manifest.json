@@ -1,0 +1,140 @@
+[
+  {
+    "file": "creator-1.webp",
+    "width": 1344,
+    "height": 752,
+    "bytes": 89948,
+    "kind": "illustration",
+    "tool": "Higgsfield",
+    "model": "GPT Image 2.5"
+  },
+  {
+    "file": "creator-2.webp",
+    "width": 1344,
+    "height": 752,
+    "bytes": 95000,
+    "kind": "illustration",
+    "tool": "Higgsfield",
+    "model": "GPT Image 2.5"
+  },
+  {
+    "file": "creator-3.webp",
+    "width": 1344,
+    "height": 752,
+    "bytes": 84462,
+    "kind": "illustration",
+    "tool": "Higgsfield",
+    "model": "GPT Image 2.5"
+  },
+  {
+    "file": "creator-4.webp",
+    "width": 1344,
+    "height": 752,
+    "bytes": 78352,
+    "kind": "illustration",
+    "tool": "Higgsfield",
+    "model": "GPT Image 2.5"
+  },
+  {
+    "file": "creator-5.webp",
+    "width": 1344,
+    "height": 752,
+    "bytes": 101068,
+    "kind": "illustration",
+    "tool": "Higgsfield",
+    "model": "GPT Image 2.5"
+  },
+  {
+    "file": "creator-6.webp",
+    "width": 1344,
+    "height": 752,
+    "bytes": 84186,
+    "kind": "illustration",
+    "tool": "Higgsfield",
+    "model": "GPT Image 2.5"
+  },
+  {
+    "file": "patch-10.webp",
+    "width": 190,
+    "height": 260,
+    "bytes": 5988,
+    "kind": "actual-video-frame",
+    "source": "https://www.youtube.com/watch?v=QdBomArrBTE",
+    "time_seconds": 10,
+    "crop_xywh": [
+      20,
+      430,
+      190,
+      260
+    ]
+  },
+  {
+    "file": "patch-21.webp",
+    "width": 220,
+    "height": 210,
+    "bytes": 3038,
+    "kind": "actual-video-frame",
+    "source": "https://www.youtube.com/watch?v=QdBomArrBTE",
+    "time_seconds": 21.2,
+    "crop_xywh": [
+      850,
+      410,
+      220,
+      210
+    ]
+  },
+  {
+    "file": "pilot-10.webp",
+    "width": 1280,
+    "height": 720,
+    "bytes": 62614,
+    "kind": "actual-video-frame",
+    "source": "https://www.youtube.com/watch?v=QdBomArrBTE",
+    "time_seconds": 10,
+    "crop_xywh": null
+  },
+  {
+    "file": "pilot-21.webp",
+    "width": 1280,
+    "height": 720,
+    "bytes": 60418,
+    "kind": "actual-video-frame",
+    "source": "https://www.youtube.com/watch?v=QdBomArrBTE",
+    "time_seconds": 21.2,
+    "crop_xywh": null
+  },
+  {
+    "file": "pilot-ep2.webp",
+    "width": 1280,
+    "height": 720,
+    "bytes": 27290,
+    "kind": "actual-video-frame",
+    "source": "https://www.youtube.com/watch?v=maprxaL_1iw",
+    "time_seconds": 12.0
+  },
+  {
+    "file": "pilot-min.webp",
+    "width": 1280,
+    "height": 720,
+    "bytes": 61496,
+    "kind": "actual-video-frame",
+    "source": "https://www.youtube.com/watch?v=QdBomArrBTE",
+    "time_seconds": 62.3
+  },
+  {
+    "file": "reboot-min.webp",
+    "width": 976,
+    "height": 550,
+    "bytes": 18568,
+    "kind": "actual-video-frame",
+    "source": "https://www.youtube.com/watch?v=NV9PeKvKv7c",
+    "time_seconds": 74.4
+  },
+  {
+    "file": "workflow-hero.webp",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 198832,
+    "kind": "illustration"
+  }
+]

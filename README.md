@@ -55,6 +55,10 @@ python verify-site.py --origin https://guletlaru05.github.io --base-path /dra9on
 
 ## 수정할 파일
 
+### 제작 순서와 초기 습작 후기
+
+`notes-content/production-workflow/`에는 소유자가 검토·게시 승인한 한국어·영어·일본어·스페인어 본문을 보관합니다. `notes_workflow.py`가 기존 공통 화면과 결합해 `/notes/workflow/`, `/notes/fall-707-beginnings/`를 만들고 언어 전환·사이트맵·공통 이미지 확대창을 연결합니다. 초기 패치 및 복장 비교는 소유자 채널의 실제 정지 프레임이며, `site-assets/assets/notes/production-workflow/manifest.json`에 출처·시각·원래 치수와 크롭 정보를 기록했습니다. 제작자 일러스트에는 실제 작업 화면이 아니라는 안내를 유지합니다. 새 미디어 생성은 하지 않았습니다.
+
 ### Claude · MCP · Newtake 튜토리얼
 
 `/tutorials/claude-mcp-newtake/`와 `/en/tutorials/claude-mcp-newtake/`는 `tutorial-content/`의 한·영 Markdown 원고를 사용합니다. 제목·설명·날짜·태그는 각 원고의 frontmatter에서 읽습니다. 홈페이지와 튜토리얼 목록의 첫 카드, 언어 전환 링크와 사이트맵은 기존 빌드에 연결되어 있습니다.

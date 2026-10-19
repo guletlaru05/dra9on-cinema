@@ -160,6 +160,8 @@ from importlib.util import find_spec
 if find_spec('notes_update') is not None:
  from notes_update import build as build_notes_update
  build_notes_update(out,origin,head,base_path)
+from notes_workflow import build as build_notes_workflow
+build_notes_workflow(out,origin,base_path)
 from lounge import build as build_lounge
 build_lounge(out,origin,works,head,base_path)
 from international import update_language_links
