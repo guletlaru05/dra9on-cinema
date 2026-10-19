@@ -167,11 +167,13 @@ def build(out,origin,works,head,base_path=''):
    doc=doc.replace('DRA9ON CINEMA 〈낙하 707: 리부트〉 FALL 707 키비주얼',{'en':'DRA9ON CINEMA FALL 707 key visual','ja':'DRA9ON CINEMA FALL 707 キービジュアル','es':'Imagen principal de FALL 707, DRA9ON CINEMA'}[lang])
   doc=re.sub(r'(<a\b[^>]*href=")[^"<>]*?/questions/(?:#[^"]*)?("[^>]*>)[\s\S]*?</a>',lambda m:m[1]+pre(lang)+'/lounge/'+m[2]+t('lounge',lang)+'</a>',doc)
   if path in ('index.html','en/index.html','ja/index.html','es/index.html'):
-   links=[]
+   primary_links=[];secondary_links=[]
    for route,label in shortcuts:
     target_prefix='/en' if lang in ('ja','es') and route in ('/notes/','/stickers/') else pre(lang)
-    links.append('<a href="'+target_prefix+route+'">'+e(label[lang])+'<span aria-hidden="true">↗</span></a>')
-   navigation='<nav class="home-explore" aria-label="'+e(t('explore',lang))+'"><p class="section-eyebrow">'+e(t('explore',lang))+'</p><div class="home-explore-grid">'+''.join(links)+'</div></nav>'
+    link='<a href="'+target_prefix+route+'">'+e(label[lang])+'</a>'
+    (primary_links if route in ('/fall-707/','/notes/','/tutorials/','/lounge/') else secondary_links).append(link)
+   more=row('더 보기','More','もっと見る','Más')[lang]
+   navigation='<nav class="home-explore" aria-label="'+e(t('explore',lang))+'"><div class="home-explore-bar"><div class="home-explore-primary">'+''.join(primary_links)+'</div><details class="home-explore-more"><summary>'+e(more)+'<span aria-hidden="true">+</span></summary><div class="home-explore-secondary">'+''.join(secondary_links)+'</div></details></div></nav>'
    if '<main id="main">' not in doc:raise ValueError('Home navigation insertion point is missing')
    doc=doc.replace('<main id="main">','<main id="main">'+navigation,1)
    doc=doc.replace('</head>','<link rel="stylesheet" href="'+css+'"></head>',1)
