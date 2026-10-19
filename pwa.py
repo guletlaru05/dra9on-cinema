@@ -29,6 +29,9 @@ def build_pwa(out,origin,works,base_path=''):
   title,body,button=OFFLINE[lang]
   offline=f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#101011"><title>{title} | DRA9ON CINEMA</title><style>body{{margin:0;background:#101011;color:#f4f4f2;font:16px/1.8 system-ui,sans-serif;min-height:100svh;display:grid;place-items:center}}main{{max-width:520px;padding:32px}}strong{{color:#e62143;letter-spacing:2px}}h1{{font-size:clamp(25px,5vw,38px)}}p{{color:#aaaab6}}a{{display:inline-block;background:#f4f4f2;color:#101011;padding:10px 20px;border-radius:4px;text-decoration:none}}</style></head><body><main><strong>DRA9ON CINEMA</strong><h1>{title}</h1><p>{body}</p><a href="{base_path+prefix+'/'}">{button}</a></main></body></html>'''
   (folder/f'offline-{lang}.html').write_text(offline,encoding='utf-8')
+ # Include the same section links everywhere, before hashing offline fallbacks.
+ from site_navigation import inject_navigation
+ inject_navigation(out,base_path)
  # Keep the push feed limited to released episodic works, in the existing four languages.
  catalogs={}
  for lang in LANGS:

@@ -150,33 +150,11 @@ def build(out,origin,works,head,base_path=''):
   home_doc=(out/('' if lang=='ko' else lang)/'index.html').read_text(encoding='utf-8')
   (folder/'index.html').write_text(redirect_head+'<body>'+re.search(r'<header class="header"[\s\S]*?</header>',home_doc).group()+'<a href="'+target+'">'+tr('lounge')+' →</a>'+re.search(r'<footer[\s\S]*?</footer>',home_doc).group()+'</body></html>',encoding='utf-8')
  # Change the existing menu entry in place, including old localized fallback links.
- shortcuts=[
-  ('/fall-707/',row('FALL 707','FALL 707','FALL 707','FALL 707')),
-  ('/fall-707/world/',row('세계관','Story world','作品世界','Universo')),
-  ('/#originals',row('작품집','Originals','作品集','Obras')),
-  ('/notes/',row('제작 비하인드','Behind the scenes','制作の舞台裏','Entre bastidores')),
-  ('/tutorials/',row('튜토리얼','Tutorials','チュートリアル','Tutoriales')),
-  ('/lounge/',UI['lounge']),
-  ('/stickers/',row('이모티콘','Stickers','ステッカー','Stickers')),
-  ('/#collaboration',row('협업 문의','Collaborate','コラボのお問い合わせ','Colaboraciones')),
-  ('/#about',row('소개','About','紹介','Acerca de')),
- ]
  for file in out.rglob('*.html'):
   path=file.relative_to(out).as_posix();lang=path.split('/')[0] if path.startswith(('en/','ja/','es/')) else 'ko';doc=file.read_text(encoding='utf-8')
   if lang!='ko':
    doc=doc.replace('DRA9ON CINEMA 〈낙하 707: 리부트〉 FALL 707 키비주얼',{'en':'DRA9ON CINEMA FALL 707 key visual','ja':'DRA9ON CINEMA FALL 707 キービジュアル','es':'Imagen principal de FALL 707, DRA9ON CINEMA'}[lang])
   doc=re.sub(r'(<a\b[^>]*href=")[^"<>]*?/questions/(?:#[^"]*)?("[^>]*>)[\s\S]*?</a>',lambda m:m[1]+pre(lang)+'/lounge/'+m[2]+t('lounge',lang)+'</a>',doc)
-  if path in ('index.html','en/index.html','ja/index.html','es/index.html'):
-   primary_links=[];secondary_links=[]
-   for route,label in shortcuts:
-    target_prefix='/en' if lang in ('ja','es') and route in ('/notes/','/stickers/') else pre(lang)
-    link='<a href="'+target_prefix+route+'">'+e(label[lang])+'</a>'
-    (primary_links if route in ('/fall-707/','/notes/','/tutorials/','/lounge/') else secondary_links).append(link)
-   more=row('더 보기','More','もっと見る','Más')[lang]
-   navigation='<nav class="home-explore" aria-label="'+e(t('explore',lang))+'"><div class="home-explore-bar"><div class="home-explore-primary">'+''.join(primary_links)+'</div><details class="home-explore-more"><summary>'+e(more)+'<span aria-hidden="true">+</span></summary><div class="home-explore-secondary">'+''.join(secondary_links)+'</div></details></div></nav>'
-   if '<main id="main">' not in doc:raise ValueError('Home navigation insertion point is missing')
-   doc=doc.replace('<main id="main">','<main id="main">'+navigation,1)
-   doc=doc.replace('</head>','<link rel="stylesheet" href="'+css+'"></head>',1)
   if '/fall-707/world/' in '/'+path:
    for p in PEOPLE:
     target=pre(lang)+BASE+p['slug']+'/'
