@@ -12,6 +12,9 @@ SEASONS={
   ('Las personas que vino a rescatar se han convertido en sus enemigos. Aun así, no puede abandonarlas.','Tras tres meses en Joseon, Min Seo-a encuentra una frágil calma junto a Yeonhwa en el invierno de Mokpojin. Una infiltración y el sonido de una campana sobrenatural vuelven a quebrarla. Para proteger a Yeonhwa y encontrar a sus compañeros, Min tendrá que luchar más allá de todo lo que conoce.')]
 }
 WORKS={
+ 'S1v3yFoAK5w':{
+  'ja':('退くな','禁じられた扉の先へ。ミン・ソア大尉は、帰らぬハン軍曹を捜して、さらに深い地下へと進む。罠と闇が行く手を阻む一方、屋敷では彼女の帰りを待つ人々がいた。'),
+  'es':('No retrocedas','Tras cruzar la puerta prohibida, la capitana Min Seo-a desciende aún más en busca del sargento Han. Mientras las trampas y la oscuridad le cierran el paso, en la mansión esperan su regreso.')},
  '0I75_YXhMSM':{
   'ja':('禁じられた扉を、彼女は開いた','あの夜から半年。かりそめの平穏の中、キム軍曹に異変が現れ始める。ハン軍曹は今も行方不明。仲間を捜すミン・ソア大尉の前に、隠された道と、決して開けるなと告げられた扉が現れる。'),
   'es':('Le advirtieron que no abriera la puerta. Ella entró.','Seis meses después de aquella noche, una paz frágil se rompe cuando el sargento Kim empieza a mostrar síntomas inquietantes. El sargento Han sigue desaparecido. Para encontrar a su compañero, la capitana Min Seo-a deberá enfrentarse a un camino oculto y una puerta prohibida.')},

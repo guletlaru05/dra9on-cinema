@@ -53,7 +53,9 @@ class YouTubeSiteTests(unittest.TestCase):
                     'season':season,'episode':episode,'category':category or f's{season}',
                     'nameEn':f'A Test Signal {season}','summaryEn':'A private automated build fixture.',
                     'apiViewCount':'0' if season==4 else '123456789012345'}
-            records['syncTest302']=future('syncTest302',3,2,1)
+            # Keep this synthetic future release beyond authored Season 3 entries.
+            next_episode=max([video.get('episode',0) for video in manual['videos'] if video.get('season')==3]+[2])+1
+            records['syncTest302']=future('syncTest302',3,next_episode,1)
             records['syncTest401']=future('syncTest401',4,1,2)
             records['syncTest4FL']=future('syncTest4FL',4,0,3,category='full')
             snapshot={'schemaVersion':1,'status':'ready','fetchedAt':fetched,
