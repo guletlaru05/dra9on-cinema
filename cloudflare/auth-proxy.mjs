@@ -18,4 +18,5 @@ export async function handle(request,env,fetcher=fetch){
   return new Response(response.body,{status:response.status,headers:out});
  }catch{return new Response('Firebase sign-in helper is unavailable. Retry sign-in.',{status:502,headers:{'Cache-Control':'no-store'}});}
 }
-export default {fetch:handle};
+// Pages passes ExecutionContext as the third argument; it is not our fetch seam.
+export default {fetch(request,env){return handle(request,env);}};

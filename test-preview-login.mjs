@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';import vm from 'node:vm';
-import {handle} from './cloudflare/auth-proxy.mjs';
+import authWorker,{handle} from './cloudflare/auth-proxy.mjs';
 import {installPreviewLogin,PENDING,errorText,mobileBrowser} from './cloudflare/preview-login.mjs';
 function fixture({nav={},pending=false,currentUser=null,result=null,blocked=false,popupError=null}={}){
  const nodes=new Map(['login','login-redirect','status'].map(id=>[id,{disabled:false,textContent:'',events:{},addEventListener(t,fn){this.events[t]=fn;}}]));
@@ -36,4 +36,11 @@ test('auth proxy has a fixed host/upstream and preserves query, never site crede
  assert.equal((await handle(new Request('https://other.pages.dev/__/auth/handler'),{})).status,403);
  assert.equal((await handle(new Request('https://dra9on-cinema.pages.dev/__/auth/handler',{method:'DELETE'}),{})).status,405);
  assert.equal((await handle(new Request('https://dra9on-cinema.pages.dev/actors/'),{ASSETS:{fetch:()=>new Response('static')}})).status,200);
+});
+test('Pages ExecutionContext does not replace the upstream fetch implementation',async()=>{
+ const previous=globalThis.fetch;let fetched=false;
+ try{globalThis.fetch=async()=>{fetched=true;return new Response('helper');};
+  const response=await authWorker.fetch(new Request('https://dra9on-cinema.pages.dev/__/auth/iframe'),{},{waitUntil(){}});
+  assert.equal(response.status,200);assert.equal(fetched,true);
+ }finally{globalThis.fetch=previous;}
 });
