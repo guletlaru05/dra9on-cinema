@@ -1,0 +1,37 @@
+name: Refresh shared public YouTube snapshot
+on:
+  schedule:
+    - cron: '0 20 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: youtube-public-snapshot
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - name: Refresh from the owner's public channel only
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: |
+          python3 youtube_sync.py --cache build-assets/youtube-public.json --require-key
+          python3 scripts/publish_youtube_snapshot.py build-assets/youtube-public.json
+      - name: Commit only the validated public snapshot when changed
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- build-assets/youtube-public.json
+          if git diff --cached --quiet; then
+            echo 'Public snapshot unchanged; no commit or deployment required.'
+          else
+            git commit -m 'Refresh public YouTube metadata'
+            git push origin HEAD:main
+          fi

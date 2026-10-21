@@ -1,0 +1,28 @@
+name: Verify Cloudflare preview deployment
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cloudflare-preview-verification
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Wait for the exact commit and four-language episode feed
+        run: python3 scripts/check_cloudflare_deploy.py "$GITHUB_SHA" --attempts 20
+      - run: npm ci --ignore-scripts --no-fund --no-audit --prefix workers/episode-push
+      - name: Test notification feed without sending to any subscriber
+        env:
+          PUSH_DRY_RUN: 'true'
+          PUSH_SITE_ORIGIN: https://dra9on-cinema.pages.dev
+          EXPECTED_REVISION: ${{ github.sha }}
+        run: node workers/episode-push/notify.mjs

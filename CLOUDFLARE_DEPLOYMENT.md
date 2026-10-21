@@ -1,0 +1,54 @@
+# Cloudflare deployment preparation
+
+Stage 2 deploys the public site to `https://dra9on-cinema.pages.dev` through
+the selected-repository Cloudflare Workers and Pages GitHub App. It does not
+change DNS, the production domain, Firebase rules, subscriptions, or R2.
+
+## Build settings
+
+- Production branch: `main`; framework: None.
+- Build command: `bash scripts/cloudflare-build.sh`; output directory: `dist`.
+- `SITE_ORIGIN=https://dra9on-cinema.pages.dev`
+- `D9_DEPLOYMENT_STAGE=preview`, `PYTHON_VERSION=3.11`, `NODE_VERSION=24`.
+- Disable branch previews. Do not authorize arbitrary deployment hostnames for
+  Firebase or API access. The fixed temporary hostname is reviewed separately.
+- Do not copy GitHub Secrets into the Cloudflare build. Public builds consume
+  only `build-assets/youtube-public.json`, validated against the owner's channel.
+- `CF_PAGES_COMMIT_SHA` becomes the episode feed and deployment revision.
+- Preview HTML and robots.txt exclude indexing. Preview analytics collection is
+  disabled so verification traffic does not enter production counters.
+
+## Automations
+
+`youtube-snapshot.yml` refreshes metadata daily at 05:00 KST and supports manual
+dispatch. Only the validated public JSON is committed, and only when changed.
+Cloudflare's Git integration builds the resulting main commit automatically.
+The server API key remains in GitHub Secrets. A failed refresh preserves the
+last good public metadata and fails the workflow visibly.
+
+`cloudflare-preview-check.yml` waits for the exact revision and checks the four
+language episode feed. Its notification dry run reads the preview only; it
+cannot send or lease production notifications. Commits made by GITHUB_TOKEN
+do not start other GitHub workflows, so this independent check is run on normal
+human pushes or manually; Cloudflare Git deployment is checked in its own UI.
+
+`weekly-site-check-backup.yml` runs Mondays at 08:30 KST and manually. It checks
+privacy/access invariants, builds the public site, verifies a full Git bundle,
+and stores that bundle plus the public build and SHA-256 manifest for 7 days.
+No Firestore/D1 rows, private-library corpus, credentials or PC originals are
+included. Private database backups still need a separate secure destination.
+
+The existing GitHub Pages workflow remains enabled as the live site and
+fallback. It reads the same metadata snapshot and still deploys the existing
+two API Workers. Production episode notifications continue to read only
+`https://dra9oncinema.com`, verify revisions and deduplicate releases. The
+public domain does not change at cutover, so subscription keys stay unchanged.
+
+## Gates still required before cutover
+
+- Preview Firebase/App Check/API origin authorization and real browser checks.
+- Stage 3 security response headers (not applied in Stage 2).
+- Owner-performed nameserver change, certificate and email verification.
+- Production-origin build settings and canonical SEO checks at Stage 5.
+- Keep GitHub Pages for at least a week; do not make this GitHub Free repository
+  private until the owner decides how to preserve branch protection/fallback.

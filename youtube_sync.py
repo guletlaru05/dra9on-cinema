@@ -2,7 +2,9 @@
 
 The source portfolio remains editorially authoritative. API-derived counts are
 decimal strings exactly as returned, never estimates, rounded abbreviations, or
-site playback counters. Generated cache files must not be committed.
+site playback counters. Cache directories must not be committed. The separate
+validated public snapshot is published by scripts/publish_youtube_snapshot.py
+so GitHub Pages and Cloudflare consume the same API facts without API secrets.
 """
 from __future__ import annotations
 

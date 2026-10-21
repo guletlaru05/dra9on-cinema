@@ -1,0 +1,42 @@
+name: Weekly site checks and public backup
+on:
+  schedule:
+    - cron: '30 23 * * 0'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  checks-and-backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: python3 -m pip install --disable-pip-version-check -r requirements-build.txt
+      - run: npm ci --ignore-scripts --no-fund --no-audit --prefix workers/tutorial-metrics
+      - run: npm ci --ignore-scripts --no-fund --no-audit --prefix workers/episode-push
+      - name: Verify synchronization, privacy, access checks and rate limits
+        run: |
+          python3 -m unittest test_cloudflare_build test_robots_policy test_youtube_sync test_youtube_site test_lounge
+          node test-consent.cjs
+          node test-continue-watching.cjs
+          node --test test-pwa.cjs test-pwa-ui.cjs test-request-limits.mjs
+          node --test workers/tutorial-metrics/test/worker.test.mjs workers/tutorial-metrics/test/private-reader.test.mjs
+          node --test workers/episode-push/test/push.test.mjs workers/episode-push/test/board.test.mjs workers/episode-push/test/migration.test.mjs
+      - name: Build and verify public site for backup
+        env:
+          SITE_ORIGIN: https://dra9on-cinema.pages.dev
+          D9_DEPLOYMENT_STAGE: preview
+        run: python3 scripts/build_cloudflare.py
+      - name: Verify repository history and public build backup
+        run: python3 scripts/backup_public.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: public-site-backup-${{ github.run_id }}
+          path: .cache/public-backup/
+          retention-days: 7
+          if-no-files-found: error

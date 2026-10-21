@@ -1,16 +1,26 @@
 import {buildPushPayload} from '@block65/webcrypto-web-push';
-import {validEndpoint} from './src/index.mjs';
+import {validEndpoint,validEpisode} from './src/index.mjs';
 import {pathToFileURL} from 'node:url';
 const ENDPOINT='https://dra9on-episode-push.tutorial-metrics.workers.dev',SITE='https://dra9oncinema.com';
 const text={ko:(s,e)=>`FALL 707 시즌 ${s} ${e}화가 공개됐습니다.`,en:(s,e)=>`FALL 707 Season ${s}, Episode ${e} is now available.`,ja:(s,e)=>`FALL 707 シーズン${s}・第${e}話を公開しました。`,es:(s,e)=>`Ya está disponible FALL 707, temporada ${s}, episodio ${e}.`};
 export function notification(row){const e=row.episode,lang=Object.hasOwn(text,row.lang)?row.lang:'en';return {id:e.id,title:e.locales[lang].title,body:text[lang](e.season,e.episode),url:e.locales[lang].url,image:e.image,lang};}
-async function main(){
- const token=process.env.PUSH_DISPATCH_TOKEN?.trim(),publicKey=process.env.PUSH_VAPID_PUBLIC_KEY?.trim(),privateKey=process.env.PUSH_VAPID_PRIVATE_KEY?.trim();
+export async function readNotificationFeed(env={},fetcher=fetch){
+ const dry=env.PUSH_DRY_RUN==='true',site=env.PUSH_SITE_ORIGIN||SITE;
+ if(site!==SITE&&!(dry&&site==='https://dra9on-cinema.pages.dev'))throw Error('Unapproved notification source.');
+ const response=await fetcher(site+'/pwa/episodes.json?build='+encodeURIComponent(env.EXPECTED_REVISION||Date.now()),{cache:'no-store',redirect:'error',signal:AbortSignal.timeout(25000)});
+ if(!response.ok)throw Error('Published episode feed unavailable.');const feed=await response.json();
+ if(!/^[a-f0-9]{40}$/.test(feed.revision||'')||!Array.isArray(feed.episodes)||feed.episodes.length>200||!feed.episodes.every(e=>validEpisode(e,new Date())))throw Error('Invalid public episode feed.');
+ if(env.EXPECTED_REVISION&&feed.revision!==env.EXPECTED_REVISION)throw Error('The new site revision is not visible yet.');
+ return feed;
+}
+export async function main(env=process.env,fetcher=fetch){
+ const feed=await readNotificationFeed(env,fetcher);
+ if(env.PUSH_DRY_RUN==='true'){
+  console.log(JSON.stringify({dryRun:true,revision:feed.revision,episodes:feed.episodes.length,dispatched:false}));return;
+ }
+ const token=env.PUSH_DISPATCH_TOKEN?.trim(),publicKey=env.PUSH_VAPID_PUBLIC_KEY?.trim(),privateKey=env.PUSH_VAPID_PRIVATE_KEY?.trim();
  if(!token||!publicKey||!privateKey)throw Error('Push secrets are not configured.');
  const api=async(route,input)=>{const response=await fetch(ENDPOINT+route,{method:'POST',redirect:'error',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(input),signal:AbortSignal.timeout(25000)});if(!response.ok)throw Error('Dispatcher request failed: '+response.status);return response.json();};
- const feedResponse=await fetch(SITE+'/pwa/episodes.json?build='+encodeURIComponent(process.env.EXPECTED_REVISION||Date.now()),{cache:'no-store',redirect:'error',signal:AbortSignal.timeout(25000)});
- if(!feedResponse.ok)throw Error('Published episode feed unavailable.');const feed=await feedResponse.json();
- if(process.env.EXPECTED_REVISION&&feed.revision!==process.env.EXPECTED_REVISION)throw Error('The new site revision is not visible yet; scheduled retry will sync the published feed.');
  const synced=await api('/sync',feed);let sent=0,expired=0,retry=0;
  // At most 1000 deliveries/run, using only the existing public-repository runner.
  for(let page=0;page<50;page++){

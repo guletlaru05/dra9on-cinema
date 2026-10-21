@@ -4,11 +4,6 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-    inputs:
-      refresh_youtube:
-        description: Refresh YouTube metadata now for a newly published episode
-        type: boolean
-        default: false
   schedule:
     - cron: '17 20 * * *'
 
@@ -47,28 +42,8 @@ jobs:
           python3 -m unittest test_tutorial_references
           node --test test-pwa.cjs test-pwa-ui.cjs workers/episode-push/test/push.test.mjs workers/episode-push/test/board.test.mjs
           node --test test-request-limits.mjs
-      - name: Restore YouTube API snapshot
-        uses: actions/cache/restore@v4
-        with:
-          path: .cache/youtube-api.json
-          key: youtube-api-v1-${{ github.run_id }}
-          restore-keys: youtube-api-v1-
-      - name: Refresh public YouTube metadata once daily
-        continue-on-error: true
-        env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-          REFRESH_YOUTUBE: ${{ github.event_name == 'workflow_dispatch' && inputs.refresh_youtube == true }}
-        run: |
-          if [ "$REFRESH_YOUTUBE" = "true" ]; then
-            python3 youtube_sync.py --force
-          else
-            python3 youtube_sync.py
-          fi
-      - name: Save YouTube API snapshot
-        uses: actions/cache/save@v4
-        with:
-          path: .cache/youtube-api.json
-          key: youtube-api-v1-${{ github.run_id }}
+      - name: Read the same validated public YouTube snapshot as Cloudflare
+        run: python3 scripts/publish_youtube_snapshot.py build-assets/youtube-public.json
       - name: Read Pages address
         id: pages
         uses: actions/configure-pages@v5
@@ -78,6 +53,7 @@ jobs:
           SITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
           CF_WEB_ANALYTICS_TOKEN: ${{ vars.CF_WEB_ANALYTICS_TOKEN }}
           D9_METRICS_ENDPOINT: ${{ vars.D9_METRICS_ENDPOINT }}
+          YOUTUBE_SNAPSHOT_PATH: build-assets/youtube-public.json
         run: python3 build-portfolio.py --origin "$SITE_ORIGIN" --base-path "$SITE_BASE_PATH"
       - name: Check links, translations, and metadata
         env:
