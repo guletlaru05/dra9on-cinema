@@ -6,6 +6,7 @@ import shutil
 from site_config import CONTACT_EMAIL, SOCIAL_LINKS, ABOUT_PARAGRAPHS, OG_ALT, ready, web_url
 from robots_policy import render_robots
 from youtube_sync import load_snapshot, merge_portfolio_data, latest_episode, count_html
+from home_layout import is_home_episode, home_episode_card
 p = argparse.ArgumentParser()
 p.add_argument('--origin', required=True, help='Host origin, e.g. https://username.github.io')
 p.add_argument('--base-path', default='', help='Project path, e.g. /dra9on-cinema; empty for a custom domain')
@@ -43,6 +44,8 @@ for v in data['videos']:
  works.append({**{k:v.get(k) for k in ['id','title','duration','uploadDate','seconds','releaseAt','preview','source','nameEn','summaryEn','thumbnail','apiViewCount','apiStatisticsUpdatedAt']},'name':name,'category':cat,'season':season,'episode':ep,'label':label,'path':f'/watch/{slug}/','image':f'/assets/portfolio/{v["id"]}.jpg','summary':summary})
 from youtube_site import prepare_images
 prepare_images(works,out,root)
+for work in works:work['homeEpisode']=is_home_episode(work)
+home_works=[work for work in works if work['homeEpisode']]
 byid={v['id']:v for v in works}
 season_numbers=sorted({v['season'] for v in works if re.fullmatch(r's[1-9][0-9]*',v['category'])})
 season_works={season:sorted([v for v in works if v['category']==f's{season}'],key=lambda v:v['episode']) for season in season_numbers}
@@ -68,7 +71,7 @@ def header(home=False):
  search=f'<div class="search-wrap" id="search-wrap"><button class="icon-button" id="search-toggle" aria-label="작품 검색" aria-expanded="false">{icon("search")}</button><input type="search" id="search" placeholder="작품, 에피소드 검색" aria-label="작품 또는 에피소드 검색" autocomplete="off" hidden></div>' if home else ''
  return f'<a class="skip-link" href="#main">콘텐츠로 바로 가기</a><header class="header">{brand}<nav class="nav" aria-label="주 메뉴">{nav}</nav><div class="header-actions">{search}{social_links("channel-button")}</div></header>'
 def footer():return f'<footer>{brand}<p>AI로 세계관을 실사화하는 크리에이터.<br><span>© 2026 DRA9ON CINEMA. All rights reserved.</span><br><span>작품·이미지·텍스트의 무단 복제, 재업로드 및 상업적 이용을 금합니다. 이용 문의는 이메일로 연락해 주세요.</span></p><div class="footer-links">{social_links()}<a href="/library/">PRIVATE LIBRARY</a><a class="press-kit-link" href="/press/">Press Kit</a><a href="/#collaboration">Collaboration / Business {icon("arrow")}</a><a href="mailto:{CONTACT_EMAIL}">채널 문의 {icon("arrow")}</a></div></footer>'
-def card(v):return f'<article class="card"><a class="card-open" href="{v["path"]}" data-detail="{v["id"]}" aria-label="{esc(v["label"]+" "+v["name"])} 상세 보기"><div class="card-image"><img src="{v["image"]}" alt="{esc(v["name"])} 공식 썸네일" width="720" height="405" loading="lazy" decoding="async"><span class="duration">{esc(v["duration"] or "")}</span><span class="card-hover-play"><span>{icon("play")}</span></span></div><p class="card-label">{v["label"]}</p><h3 class="card-name">{esc(v["name"])}</h3></a><button class="card-save" data-save="{v["id"]}" aria-label="{esc(v["name"])} 찜하기" aria-pressed="false">{icon("plus")}</button></article>'
+def card(v):return home_episode_card(v)
 def shelf(id,title,subtitle,items):return f'<section class="shelf" id="{id}" aria-labelledby="{id}-title"><div class="shelf-heading"><div><p class="section-eyebrow">{subtitle}</p><h2 class="shelf-title" id="{id}-title">{title}</h2></div><div class="shelf-controls"><button data-scroll="{id}-track" data-direction="-1" aria-label="{title} 이전 보기">{icon("left")}</button><button data-scroll="{id}-track" data-direction="1" aria-label="{title} 다음 보기">{icon("right")}</button></div></div><div class="shelf-track" id="{id}-track">'+''.join(card(v) for v in items)+'</div></section>'
 def head(title,desc,path='/',schema=None):
  work=next((v for v in works if v['path']==path), None)
@@ -94,17 +97,18 @@ main=main.replace('alt="FALL 707 REBOOT 시즌 3 — 민 대위"','alt="'+esc(la
 main=main.replace('FALL 707 · S3 EP.01','FALL 707 · '+latest_label,1).replace('<strong>S3 EP.01</strong>','<strong>'+latest_label+'</strong>',1)
 main=main.replace('열지 말라던 문…<br>그녀는 들어갔다.',esc(latest['name']),1).replace('<span>시즌 1–3</span>','<span>'+season_range+'</span>',1)
 main=re.sub(r'<button class="filter" data-category="s3".*?<button class="filter" data-category="full"',season_filters+'<button class="filter" data-category="full"',main,count=1)
-newest=sorted([v for v in works if re.fullmatch(r's[1-9][0-9]*',v['category'])],key=lambda v:v.get('uploadDate') or '',reverse=True)[:3]
+main=re.sub(r'<button class="filter" data-category="(?:full|original|ost)"[^>]*>.*?</button>','',main)
+main=main.replace(f'{len(works):02} FILMS & EPISODES',f'{len(home_works):02} FILMS & EPISODES')
+newest=sorted(home_works,key=lambda v:v.get('uploadDate') or '',reverse=True)[:3]
 main+='<aside class="world-home-entry"><div><p class="section-eyebrow">FALL 707 / THE WORLD</p><p>처음 보는 분께. FALL 707 세계관과 인물 관계부터 살펴보세요.</p></div><a class="text-button" href="/fall-707/world/">FALL 707 세계관 살펴보기 →</a></aside>'
 main+=shelf('latest-episodes','최신 회차','LATEST EPISODES',newest)
 for season in reversed(season_numbers):
  shelf_id='episodes' if season==latest['season'] else {1:'season-one',2:'season-two'}.get(season,f'season-{season}')
  title='모든 이야기의 시작, 시즌 1' if season==1 else f'FALL 707 · 시즌 {season}'
  subtitle={2:'THE STORY CONTINUES',3:'THE FORBIDDEN DOOR'}.get(season,'FALL 707 : REBOOT')
- main+=shelf(shelf_id,title,subtitle,season_works[season])
-main+=shelf('binge-watch','FALL 707 몰아보기','FULL MOVIES',[v for v in works if v['category']=='full'])
-main+=shelf('soundtracks','낙하 707 · OST','THE MUSIC OF FALL 707',[v for v in works if v['category']=='ost'])
-main+=shelf('originals','세계관은 계속 넓어진다','MORE FROM DRA9ON CINEMA',[v for v in works if v['category']=='original'])+shelf('more-cuts','예고편','TRAILERS',[v for v in works if v['category']=='trailer'])
+ main+=shelf(shelf_id,title,subtitle,[v for v in season_works[season] if v['homeEpisode']])
+# Other collections remain available through the existing public links page.
+main+='<aside id="originals" class="world-home-entry"><a class="text-button" href="/links/">전체 작품 링크 →</a></aside>'
 main+='</div><section id="browse-results" hidden aria-labelledby="browse-title"><h1 id="browse-title"></h1><p id="result-count" aria-live="polite"></p><div class="results-grid" id="results-grid"></div><div class="empty-state" id="empty-state" hidden><h2>아직 작품이 없어요.</h2><p>다른 검색어를 입력하거나 보고 싶은 작품의 + 버튼을 눌러주세요.</p><button class="button button-white" id="reset-browse">전체 작품 보기</button></div></section></div>'
 main+=home_teaser()+teaser()+tutorial_teaser(limit=3)+render_collaboration(icon)
 about_paragraphs=''.join(f'<p>{esc(text)}</p>' for text in ABOUT_PARAGRAPHS['ko'])
@@ -264,6 +268,9 @@ for page in out.rglob('*.html'):
  document=re.sub(r'(<iframe\b[^>]*?)\ssrc="([^"]+)"',r'\1 data-external-src="\2"',document,flags=re.I)
  document=re.sub(r'(<script\b[^>]*?)\ssrc="([^"]*(?:/community\.js|/library\.js)[^"]*)"',r'\1 data-service-src="\2"',document,flags=re.I)
  page.write_text(document,encoding='utf-8')
+
+from cinema_interactions import inject_cinema_interactions
+inject_cinema_interactions(out,base_path)
 
 from pwa import build_pwa
 build_pwa(out,origin,works,base_path)

@@ -140,6 +140,7 @@ def build_languages(out,origin,works,data,head,header,footer,base_path=''):
   for w in records:w['path']=base_path+w['path'];w['image']=base_path+w['image']
   catalog='window.PORTFOLIO = '+json.dumps(records,ensure_ascii=False).replace('</','<\\/')+';\n';(folder/'catalog.js').write_text(catalog,encoding='utf-8')
   d=dictionary(lang,out)
+  d['All film links →']='すべての作品リンク →' if lang=='ja' else 'Enlaces a todas las obras →'
   for original in works:
    translated=local_work(original,lang)
    for field in ('name','summary','title'):

@@ -1,0 +1,41 @@
+/* Static background texture: no fixed layer, animation, download or hit target. */
+body{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.025'/%3E%3C/svg%3E")}
+/* Only the home thumbnail slot changes; card typography and desktop grid stay. */
+body[data-page="home"] .card-inline .card-image{aspect-ratio:16/9;width:100%;min-width:0;background:#101011}
+body[data-page="home"] .card-inline .card-image::after{content:none}
+.home-player iframe[hidden]{display:none!important}
+.home-player iframe{display:block;width:100%;height:100%;aspect-ratio:16/9;border:0;max-width:100%}
+.card-inline .card-open{padding-right:36px}
+.card-inline .card-label{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card-inline .card-inline-duration{position:static;background:none;padding:0;white-space:nowrap;font:inherit;letter-spacing:0;color:#aaaab5}
+.card-inline .card-save{top:auto;bottom:12px}
+.home-player .home-media-facade{height:100%;position:relative}
+.home-media-facade .external-media-play{width:100%;height:100%;aspect-ratio:16/9}
+.home-media-facade .external-media-notice{position:absolute;top:100%;left:0;right:0;margin:0;font-size:9px;padding:4px 0!important;line-height:1.3}
+.card-inline .home-player{margin-bottom:26px}
+@media(max-width:600px){
+ body[data-page="home"] .shelf-track{grid-auto-flow:row;grid-template-columns:minmax(0,1fr);grid-auto-columns:auto;gap:26px;overflow:visible;scroll-snap-type:none}
+ body[data-page="home"] .shelf-controls{display:none}
+ body[data-page="home"] .card-inline .card-save{opacity:1}
+}
+@media(prefers-reduced-motion:no-preference){
+ .cinema-reveal{transition:opacity .6s ease,translate .6s cubic-bezier(.22,.61,.36,1)}
+ .cinema-reveal-pending{opacity:0;translate:0 18px}
+ .cinema-title-enter{animation:cinema-title-enter .85s ease-out both}
+ @keyframes cinema-title-enter{from{opacity:0}to{opacity:1}}
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+ .card{transition:transform .3s ease,box-shadow .3s ease,opacity .6s ease,translate .6s cubic-bezier(.22,.61,.36,1)}
+ .card:hover{transform:scale(1.02);box-shadow:0 0 0 1px #ffffff26,0 8px 24px #ffffff06}
+ .cinema-link{background-image:linear-gradient(currentColor,currentColor)!important;background-repeat:no-repeat!important;background-position:left bottom!important;background-size:0 1px!important;transition:background-size .3s ease}
+ .cinema-link:hover,.cinema-link:focus-visible{background-size:100% 1px!important}
+}
+@media(hover:none),(pointer:coarse){
+ .card-open:hover img{transform:none}
+ .button:hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+ .cinema-reveal,.cinema-reveal-pending{opacity:1;translate:none}
+ .card:hover{transform:none}
+}

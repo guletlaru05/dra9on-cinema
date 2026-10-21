@@ -135,7 +135,7 @@ Cloudflare Web Analytics is the selected free, cookie-free provider. On 2026-10-
 
 Tutorial lists default to newest, with an optional actual-view ranking. The homepage shows up to three tutorials that have recorded views; before real collection begins no popularity is invented. Every public tutorial prompt block gains a copy button; only a successful clipboard write records a copy. The same canonical tutorial combines Korean and English totals. `/summary`, `/daily` and `/weekly` expose numeric public aggregates; new public pages are registered from each build. The private library is excluded.
 
-External YouTube/Instagram frames arrive without a `src`. `site-assets/consent.js` shows per-video load controls. The slim settings bar opens only when the visitor chooses the footer settings button; it does not open automatically. All YouTube frames use `youtube-nocookie.com`; this does not promise third parties use no cookies after interaction. Media choices expire after 180 days and can be withdrawn using the footer. Firebase authentication and reCAPTCHA remain protected behind explicit board/library activation, independent of analytics or media permission. Privacy pages: `/privacy/` and `/en/privacy/`. Detailed operational records are kept in the owner's private backup.
+External YouTube/Instagram frames arrive without a `src`. Home episode cards use click-only facades: a local thumbnail and play button, with no YouTube iframe requests on load or scroll. Each card connects its own nocookie iframe only after its play button is clicked, even with remembered media permission. The selected video may play in response to that click; no other home player autoloads. Home-only title/category filtering removes compilations, OSTs and other non-episode videos without changing the full catalogs or season pages. `site-assets/consent.js` shows per-video load controls. The slim settings bar opens only when the visitor chooses the footer settings button; it does not open automatically. All YouTube frames use `youtube-nocookie.com`; this does not promise third parties use no cookies after interaction. Media choices expire after 180 days and can be withdrawn using the footer. Firebase authentication and reCAPTCHA remain protected behind explicit board/library activation, independent of analytics or media permission. Privacy pages: `/privacy/` and `/en/privacy/`. Detailed operational records are kept in the owner's private backup.
 
 ## Daily YouTube metadata
 
@@ -154,3 +154,21 @@ Continue watching stores only the last video ID and completed episode IDs in thi
 ## Validation
 
 Run `python -m unittest test_robots_policy test_youtube_sync test_youtube_site`, `node test-consent.cjs`, and `node --test test-tutorial-metrics.cjs workers/tutorial-metrics/test/worker.test.mjs`, then the existing build and `verify-site.py` commands. The YouTube fixture verifies a new episode, a new season and its full movie in both languages without storing its artificial snapshot in the real cache.
+
+
+## Restrained public-page interactions (2026-10-22)
+
+`cinema_interactions.py` injects content-addressed `cinema-motion.css/js` into
+all generated pages. Sections/headings and cards reveal once at 18px/0.6s;
+home-title opacity runs once per document. Fine-pointer hover uses scale(1.02)
+and subtle edges, with left-to-right text-link underlines. The film grain is
+one static background tile, never a layer over players. Reduced-motion disables
+animations and transitions, and touch devices do not receive hover scaling.
+Without JavaScript or IntersectionObserver, content remains visible. Protected
+library content is excluded from reveal hiding. Newly filtered cards are
+prepared explicitly; there is no page-wide animation MutationObserver.
+
+Run `python -m unittest test_home_players test_home_layout` and
+`node test-consent.cjs` alongside the existing build/verification checks. Keep
+preview changes local until the owner has reviewed them; a main-branch push
+would trigger Cloudflare production deployment.

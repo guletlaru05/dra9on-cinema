@@ -163,7 +163,8 @@ for path in html_files:
         assert any(a.get('href') == prefix + '/watch/fall-707-s1-ep1/' and 'hero-start' in a.get('class', '') for a in page.anchors), path
         for route in ('/', '/#episodes', '/#originals', '/#collaboration', '/#about'):
             assert any(a.get('href') == prefix + route and 'nav-link' in a.get('class', '') for a in page.anchors), (path, route)
-        assert source.index('id="more-cuts"') < source.index('id="about"'), path
+        assert source.index('id="latest-episodes"') < source.index('id="about"'), path
+        assert 'id="binge-watch"' not in source and 'id="soundtracks"' not in source, path
         assert source.index('id="collaboration"') < source.index('id="about"'), path
         assert source.count('id="collaboration"') == 1, path
         hero=next(img for img in page.images if 'hero-image' in img.get('class','').split())

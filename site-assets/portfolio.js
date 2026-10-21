@@ -29,6 +29,9 @@ const pageLanguage=document.documentElement.lang,en=pageLanguage!=='ko',t=(ko,en
 const works=window.PORTFOLIO||[],byId=id=>works.find(v=>v.id===id),$=id=>document.getElementById(id);
 
 const isReleased=v=>window.D9Release?.released(v)??true;
+const homePage=document.body.dataset.page==='home';
+const isHomeEpisode=v=>typeof v.homeEpisode==='boolean'?v.homeEpisode:/^s[1-9][0-9]*$/.test(v.category)&&v.episode>0&&!/(?:몰아보기|풀버전|(?:^|[^a-z])(?:FULL|OST)(?=$|[^a-z]))/i.test(v.title||'');
+const browseWorks=homePage?works.filter(isHomeEpisode):works;
 
 const statsAssetRoot=new URL('../../',document.currentScript.src);
 
@@ -101,9 +104,14 @@ function syncSaved(){document.querySelectorAll('[data-save]').forEach(b=>{const 
 
 function setSaved(id,value){if(!byId(id))throw new Error(t('올바른 작품 ID가 필요합니다.','A valid film ID is required.'));const next=new Set(saved);value?next.add(id):next.delete(id);try{localStorage.setItem('dra9on-portfolio-saved',JSON.stringify([...next]))}catch{notify(t('이 브라우저에서는 찜 목록을 저장할 수 없습니다.','Your list cannot be saved in this browser.'));throw new Error(t('브라우저 저장소 사용 불가','Browser storage is unavailable'))}saved=next;syncSaved();if(category==='saved')render();notify(value?t('찜한 작품에 담았어요','Added to your list'):t('찜한 작품에서 삭제했어요','Removed from your list'))}
 
-function card(v){return `<article class="card"><a class="card-open" href="${v.path}" data-detail="${v.id}" aria-label="${escapeHTML(v.label+' '+v.name)} ${t('상세 보기','View details')}"><div class="card-image"><img src="${v.image}" alt="${escapeHTML(v.name)} ${t('공식 썸네일','official thumbnail')}" width="720" height="405" loading="lazy" decoding="async"><span class="duration">${v.duration||''}</span><span class="card-hover-play"><span>${icon('play')}</span></span></div><p class="card-label">${v.label}</p><h3 class="card-name">${escapeHTML(v.name)}</h3></a><button class="card-save" data-save="${v.id}" aria-label="${escapeHTML(v.name)} ${t('찜하기','Save')}" aria-pressed="false">${icon('plus')}</button></article>`}
+function card(v){
+ if(homePage){
+  const id=escapeHTML(v.id),name=escapeHTML(v.name),label=escapeHTML(v.label);
+  return `<article class="card card-inline" data-home-episode="${id}"><div class="card-image home-player"><iframe data-home-player data-home-src="https://www.youtube-nocookie.com/embed/${id}?rel=0&amp;playsinline=1&amp;autoplay=0" title="${escapeHTML(v.title)}" width="720" height="405" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><a class="card-open" href="${escapeHTML(v.path)}" data-detail="${id}" aria-label="${label} ${name} ${t('상세 보기','View details')}"><p class="card-label">${label}<span class="duration card-inline-duration">${escapeHTML(v.duration||'')}</span></p><h3 class="card-name">${name}</h3></a><button class="card-save" data-save="${id}" aria-label="${name} ${t('찜하기','Save')}" aria-pressed="false">${icon('plus')}</button></article>`;
+ }
+ return `<article class="card"><a class="card-open" href="${v.path}" data-detail="${v.id}" aria-label="${escapeHTML(v.label+' '+v.name)} ${t('상세 보기','View details')}"><div class="card-image"><img src="${v.image}" alt="${escapeHTML(v.name)} ${t('공식 썸네일','official thumbnail')}" width="720" height="405" loading="lazy" decoding="async"><span class="duration">${v.duration||''}</span><span class="card-hover-play"><span>${icon('play')}</span></span></div><p class="card-label">${v.label}</p><h3 class="card-name">${escapeHTML(v.name)}</h3></a><button class="card-save" data-save="${v.id}" aria-label="${escapeHTML(v.name)} ${t('찜하기','Save')}" aria-pressed="false">${icon('plus')}</button></article>`}
 
-function filtered(){return works.filter(v=>(view==='all'||(view==='fall'?!!v.season:v.category==='original'))&&(category==='all'||(category==='saved'?saved.has(v.id):v.category===category))&&(!query||`${v.name} ${v.title} ${v.label} ${v.searchText||''} ${v.season?'FALL 707 낙하707 낙하 707':''}`.toLowerCase().includes(query.toLowerCase())))}
+function filtered(){return browseWorks.filter(v=>(view==='all'||(view==='fall'?!!v.season:v.category==='original'))&&(category==='all'||(category==='saved'?saved.has(v.id):v.category===category))&&(!query||`${v.name} ${v.title} ${v.label} ${v.searchText||''} ${v.season?'FALL 707 낙하707 낙하 707':''}`.toLowerCase().includes(query.toLowerCase())))}
 
 function render(){if(!$('browse-results'))return;const home=category==='all'&&view==='all'&&!query;document.body.classList.toggle('browse-mode',!home);$('hero').hidden=!home;$('home-rows').hidden=!home;$('browse-results').hidden=home;document.querySelectorAll('[data-category]').forEach(b=>{const yes=b.dataset.category===category;b.classList.toggle('active',yes);b.setAttribute('aria-pressed',String(yes))});document.querySelectorAll('[data-view]').forEach(b=>{const yes=b.dataset.view===view;b.classList.toggle('active',yes);yes?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});if(!home){const result=filtered();if(/^s[1-9][0-9]*$/.test(category))result.sort((a,b)=>a.episode-b.episode);const labels={ost:'FALL 707 · OST',all:t('모든 작품','All films'),s1:t('FALL 707 · 시즌 1','FALL 707 · Season 1'),s2:t('FALL 707 · 시즌 2','FALL 707 · Season 2'),s3:t('FALL 707 · 시즌 3','FALL 707 · Season 3'),full:t('몰아보기','Full movies'),original:t('오리지널 작품','Original films'),saved:t('찜한 작품','My list')};$('browse-title').textContent=query?t(`“${query}” 검색 결과`,`Results for “${query}”`):category!=='all'?(labels[category]||t('FALL 707 · 시즌 '+category.slice(1),'FALL 707 · Season '+category.slice(1))):view==='fall'?'FALL 707: REBOOT':view==='original'?t('오리지널 작품','Original films'):t('모든 작품','All films');$('result-count').textContent=`${result.length}${t('편',result.length===1?' film':' films')}${category==='saved'?t(' · 이 브라우저에 저장된 목록',' · Saved in this browser'):''}`;$('results-grid').innerHTML=result.map(card).join('');decorateCards($('results-grid')); $('empty-state').hidden=result.length>0}syncSaved();document.querySelectorAll('.shelf-track').forEach(updateArrows)}
 
@@ -249,16 +257,13 @@ if ($('hero')) {
 
   const season=Math.max(...works.filter(v=>/^s[1-9][0-9]*$/.test(v.category)&&isReleased(v)).map(v=>v.season));
 
-  const seasonTwoFull=works.find(v=>v.id==='sFw17ZPE42A');
+  // Home recommendations use the same episode-only catalog as the cards.
   const featuredSlides=()=>[
-    ...works.filter(v=>v.category===`s${season}`&&isReleased(v)).sort((a,b)=>b.episode-a.episode),
-    ...(seasonTwoFull&&isReleased(seasonTwoFull)?[seasonTwoFull]:[]),
-    ...works.filter(v=>v.category==='s2'&&v.season!==season&&isReleased(v)).sort((a,b)=>b.episode-a.episode)
+    ...browseWorks.filter(v=>v.category===`s${season}`&&isReleased(v)).sort((a,b)=>b.episode-a.episode),
+    ...browseWorks.filter(v=>v.category==='s2'&&v.season!==season&&isReleased(v)).sort((a,b)=>b.episode-a.episode)
   ];
   const slides=featuredSlides();
-  const seasonOneFull=works.find(v=>v.id==='4f6Zguf7c2M');
 
-  if(seasonOneFull)slides.push(seasonOneFull);
 
   if (slides.length>1) {
 
@@ -536,7 +541,7 @@ function decorateCards(root=document){
 
   const link=cardEl.querySelector('[data-detail]'),v=link&&byId(link.dataset.detail);if(!v||cardEl.querySelector('.card-direct'))return;
 
-  if(/^s[1-9][0-9]*$/.test(v.category)){const number=document.createElement('span');number.className='episode-number';number.setAttribute('aria-hidden','true');number.textContent=String(v.episode).padStart(2,'0');link.append(number);cardEl.classList.add('numbered-card')}
+  if(!cardEl.classList.contains('card-inline')&&/^s[1-9][0-9]*$/.test(v.category)){const number=document.createElement('span');number.className='episode-number';number.setAttribute('aria-hidden','true');number.textContent=String(v.episode).padStart(2,'0');link.append(number);cardEl.classList.add('numbered-card')}
 
   link.setAttribute('aria-label',v.label+' '+v.name+' '+t('재생 페이지 열기','Open watch page'));
 
@@ -564,6 +569,8 @@ function decorateCards(root=document){
   if(!isReleased(v))stats.hidden=true;
 
  });
+ window.D9ExternalConsent?.prepare(root);
+ window.D9CinemaMotion?.prepare(root);
 
 }
 
@@ -575,122 +582,7 @@ if(document.body.dataset.page==='watch'){const frame=document.querySelector('.wa
 
 
 
-// Keep hero media slightly behind the normal scroll pace on desktop only.
-
-(() => {
-
- const hero = document.querySelector('body[data-page="home"] #hero');
-
- if (!hero) return;
-
- const enabled = matchMedia('(min-width: 801px) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
-
- let pending = 0, inView = true;
-
- function paint() {
-
-  pending = 0;
-
-  const rect = hero.getBoundingClientRect();
-
-  const shift = enabled.matches ? Math.min(260, Math.max(0, -rect.top * .35)) : 0;
-
-  hero.style.setProperty('--hero-parallax', `${shift.toFixed(2)}px`);
-
- }
-
- function schedule() { if (!pending) pending = requestAnimationFrame(paint); }
-
- function sync() {
-
-  window.removeEventListener('scroll', schedule);
-
-  if (enabled.matches && inView) window.addEventListener('scroll', schedule, {passive:true});
-
-  schedule();
-
- }
-
- if('IntersectionObserver' in window)new IntersectionObserver(entries=>{inView=entries[0].isIntersecting;sync();}).observe(hero);
- enabled.addEventListener('change', sync);
-
- window.addEventListener('resize', schedule, {passive:true});
-
- window.addEventListener('pageshow', schedule);
-
- sync();
-
-})();
-
-
-
-// Reveal shelves once as they enter the viewport; content stays visible without JS.
-
-(() => {
-
- const shelves = [...document.querySelectorAll('body[data-page="home"] #home-rows > .shelf')];
-
- const motion = matchMedia('(prefers-reduced-motion: reduce)');
-
- if (!shelves.length || !('IntersectionObserver' in window)) return;
-
- let observer;
-
- function setup() {
-
-  observer?.disconnect();
-
-  shelves.forEach(shelf => shelf.classList.remove('shelf-reveal-pending'));
-
-  if (motion.matches) return;
-
-  observer = new IntersectionObserver(entries => {
-
-   entries.forEach(entry => {
-
-    if (!entry.isIntersecting) return;
-
-    entry.target.classList.remove('shelf-reveal-pending');
-
-    entry.target.dataset.revealed = 'true';
-
-    observer.unobserve(entry.target);
-
-   });
-
-  }, {threshold:0, rootMargin:'0px 0px -45px 0px'});
-
-  shelves.forEach(shelf => {
-
-   shelf.classList.add('shelf-reveal');
-
-   shelf.querySelectorAll('.card').forEach((card,index) => card.style.setProperty('--reveal-delay', `${Math.min(index,5)*65}ms`));
-
-   if (shelf.dataset.revealed || shelf.getBoundingClientRect().top < innerHeight - 45) return;
-
-   shelf.classList.add('shelf-reveal-pending');
-
-   observer.observe(shelf);
-
-  });
-
- }
-
- motion.addEventListener('change', setup);
-
- document.addEventListener('focusin', event => {
-
-  const shelf = event.target.closest('.shelf-reveal-pending');
-
-  if (shelf) { shelf.classList.remove('shelf-reveal-pending'); shelf.dataset.revealed='true'; observer?.unobserve(shelf); }
-
- });
-
- setup();
-
-})();
-
-
+// Shared, progressive scroll reveals live in cinema-motion.js.
 
 // Unlock without a reload, so a visitor watching another episode is not interrupted.
 

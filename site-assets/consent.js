@@ -62,13 +62,16 @@
   return null;
  }
  function syncFrame(frame,state){
-  const allowed=choice==='granted'&&state.media;
+  // Home facades always wait for their own play click, even when media
+  // permission is already stored. Scrolling never connects a home iframe.
+  const allowed=!!state.media&&(state.inline?choice==='granted'&&state.playRequested:choice==='granted');
   if(allowed){
    const url=new URL(state.media.url);
    // Only the clicked player starts. Remembered permission loads other players
    // without unexpectedly starting every video on the page.
    if(state.playRequested&&state.media.service==='YouTube'){url.searchParams.set('autoplay','1');url.searchParams.set('playsinline','1');}
-   const permission=new Set((frame.getAttribute('allow')||'').split(';').map(s=>s.trim()).filter(Boolean));permission.add('autoplay');
+   const permission=new Set((frame.getAttribute('allow')||'').split(';').map(s=>s.trim()).filter(Boolean));
+   permission.add('autoplay');
    frame.setAttribute('allow',[...permission].join('; '));
    if(frame.getAttribute('src')!==url.href)frame.setAttribute('src',url.href);
   }else{frame.removeAttribute('src');state.playRequested=false;}
@@ -82,22 +85,28 @@
   try{const url=new URL(candidate,location.href);return url.origin===location.origin&&!url.username&&!url.password?url.href:fallback;}catch{return fallback;}
  }
  function prepare(root=document){
+  frames.forEach((state,frame)=>{if(frame.isConnected===false){frames.delete(frame);}});
   const candidates=[];
-  if(root.matches?.('iframe[data-external-src]'))candidates.push(root);
-  root.querySelectorAll?.('iframe[data-external-src]').forEach(frame=>candidates.push(frame));
+  if(root.matches?.('iframe[data-external-src],iframe[data-home-src]'))candidates.push(root);
+  root.querySelectorAll?.('iframe[data-external-src],iframe[data-home-src]').forEach(frame=>candidates.push(frame));
   candidates.forEach(frame=>{
    let state=frames.get(frame);
    if(!state){
-    const info=media(frame.getAttribute('data-external-src'));
+    const inline=document.body.dataset.page==='home'&&frame.hasAttribute('data-home-player');
+    const info=media(frame.getAttribute(inline?'data-home-src':'data-external-src'));
     const placeholder=document.createElement('div');placeholder.className='external-media-placeholder';
     if(info){
      placeholder.classList.toggle('external-media-instagram',info.service==='Instagram');
      const load=document.createElement('button');load.type='button';load.className='external-media-play';load.setAttribute('aria-label',mediaText.play+' · '+info.service+' · '+(frame.title||''));
-     const image=document.createElement('img');image.src=poster(frame,info);image.alt='';image.decoding='async';
-     image.addEventListener('error',()=>{const fallback=new URL('external-media-poster.svg',assetRoot).href;if(image.src!==fallback)image.src=fallback;});
+     {
+      const image=document.createElement('img');image.src=poster(frame,info);image.alt='';image.decoding='async';image.loading='lazy';image.width=720;image.height=405;
+      image.addEventListener('error',()=>{const fallback=new URL('external-media-poster.svg',assetRoot).href;if(image.src!==fallback)image.src=fallback;});
+      load.append(image);
+     }
      const icon=document.createElement('span');icon.className='external-media-play-icon';icon.textContent='▶';icon.setAttribute('aria-hidden','true');
      const label=document.createElement('span');label.className='external-media-play-label';label.textContent=info.service+' · '+mediaText.play;
-     load.append(image,icon,label);
+     load.append(icon,label);
+     if(inline)placeholder.classList.add('home-media-facade');
      load.addEventListener('click',()=>{returnFocus=null;save('granted',frame);frame.focus();});
      const notice=document.createElement('p');notice.className='external-media-notice';
      const text=document.createElement('span');text.textContent=mediaText.notice.replace('{service}',info.service)+' · ';
@@ -106,7 +115,7 @@
     }else{
      const description=document.createElement('p');description.textContent=t('이 외부 영상 주소는 허용되지 않았습니다. 원본 링크를 이용해 주세요.','This external embed address is not allowed. Use the original link instead.');placeholder.append(description);
     }
-    frame.before(placeholder);state={media:info,placeholder};frames.set(frame,state);
+    frame.before(placeholder);state={media:info,placeholder,inline};frames.set(frame,state);
    }
    syncFrame(frame,state);
   });

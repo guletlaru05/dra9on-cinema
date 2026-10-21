@@ -242,6 +242,7 @@ def localize_site(out, works, origin, base_path=''):
         (out/path).write_text('window.PORTFOLIO = ' + json.dumps(published_records, ensure_ascii=False).replace('</', '<\\/') + ';\n', encoding='utf-8')
     base_translations = dict(UI)
     base_translations['최신 회차'] = 'Latest episodes'
+    base_translations['전체 작품 링크 →'] = 'All film links →'
     season_numbers=sorted({work['season'] for work in works if re.fullmatch(r's[1-9][0-9]*',work['category'])})
     for season in season_numbers:
         base_translations[f'시즌 {season}'] = f'Season {season}'
