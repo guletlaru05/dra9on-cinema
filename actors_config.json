@@ -500,5 +500,126 @@
       }
     ]
   },
-  "haseul_eyewear_policy": "Owner correction: use sunglasses photographs only for Haseul on the website and publication. No-glasses drafts stay private and are excluded from web build."
+  "haseul_eyewear_policy": "Owner correction: use sunglasses photographs only for Haseul on the website and publication. No-glasses drafts stay private and are excluded from web build.",
+  "behind_scenes_approved": true,
+  "behind_scenes": {
+    "min-seoa": [
+      {
+        "file": "min-seoa-behind-1.webp",
+        "width": 800,
+        "height": 1062,
+        "label": {
+          "ko": "민서아 · 촬영장 휴식",
+          "en": "Min Seo-a · A break on set",
+          "ja": "ミン・ソア・撮影の合間",
+          "es": "Min Seo-a · Descanso en el set"
+        }
+      },
+      {
+        "file": "min-seoa-behind-2.webp",
+        "width": 800,
+        "height": 1062,
+        "label": {
+          "ko": "민서아 · 일상",
+          "en": "Min Seo-a · Everyday life",
+          "ja": "ミン・ソア・日常",
+          "es": "Min Seo-a · Vida cotidiana"
+        }
+      },
+      {
+        "file": "min-seoa-behind-3.webp",
+        "width": 800,
+        "height": 1062,
+        "label": {
+          "ko": "민서아 · 풀장비 촬영",
+          "en": "Min Seo-a · Filming in full gear",
+          "ja": "ミン・ソア・フル装備で撮影",
+          "es": "Min Seo-a · Rodaje con equipo completo"
+        }
+      }
+    ],
+    "yeonhwa": [
+      {
+        "file": "yeonhwa-behind-1.webp",
+        "width": 800,
+        "height": 1062,
+        "label": {
+          "ko": "연화 · 촬영장 휴식",
+          "en": "Yeonhwa · A break on set",
+          "ja": "ヨンファ・撮影の合間",
+          "es": "Yeonhwa · Descanso en el set"
+        }
+      },
+      {
+        "file": "yeonhwa-behind-2.webp",
+        "width": 800,
+        "height": 1062,
+        "label": {
+          "ko": "연화 · 일상",
+          "en": "Yeonhwa · Everyday life",
+          "ja": "ヨンファ・日常",
+          "es": "Yeonhwa · Vida cotidiana"
+        }
+      }
+    ],
+    "yuna": [
+      {
+        "file": "yuna-behind-1.webp",
+        "width": 800,
+        "height": 1062,
+        "label": {
+          "ko": "유나 · 촬영장 휴식",
+          "en": "Yuna · A break on set",
+          "ja": "ユナ・撮影の合間",
+          "es": "Yuna · Descanso en el set"
+        }
+      },
+      {
+        "file": "yuna-behind-2.webp",
+        "width": 800,
+        "height": 1062,
+        "label": {
+          "ko": "유나 · 일상",
+          "en": "Yuna · Everyday life",
+          "ja": "ユナ・日常",
+          "es": "Yuna · Vida cotidiana"
+        }
+      }
+    ],
+    "haseul": [
+      {
+        "file": "haseul-behind-1.webp",
+        "width": 800,
+        "height": 1062,
+        "label": {
+          "ko": "하슬 · 촬영장 휴식",
+          "en": "Haseul · A break on set",
+          "ja": "ハスル・撮影の合間",
+          "es": "Haseul · Descanso en el set"
+        }
+      },
+      {
+        "file": "haseul-behind-2.webp",
+        "width": 800,
+        "height": 1062,
+        "label": {
+          "ko": "하슬 · 일상",
+          "en": "Haseul · Everyday life",
+          "ja": "ハスル・日常",
+          "es": "Haseul · Vida cotidiana"
+        }
+      }
+    ]
+  },
+  "behind_scenes_group": {
+    "file": "group-behind-1.webp",
+    "width": 1200,
+    "height": 671,
+    "label": {
+      "ko": "함께하는 점심시간",
+      "en": "Lunch together on set",
+      "ja": "撮影現場で一緒にランチ",
+      "es": "Almuerzo juntas en el set"
+    }
+  }
 }
