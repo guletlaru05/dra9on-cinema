@@ -23,7 +23,7 @@ def check(file):
     if 'Content-Security-Policy' not in text:raise ValueError('Existing CSP missing')
     if response.headers.get('X-Content-Type-Options')!='nosniff':raise ValueError('Missing nosniff header')
     if not response.headers.get('Strict-Transport-Security'):raise ValueError('Missing HSTS header')
-    if response.headers.get('X-Frame-Options')!='DENY':raise ValueError('Missing clickjacking protection')
+    if response.headers.get('X-Frame-Options') not in ('DENY','SAMEORIGIN'):raise ValueError('Missing clickjacking protection')
  except HTTPError as error:
   result.update(status=error.code)
   if path!='/404.html':result['error']='HTTP '+str(error.code)

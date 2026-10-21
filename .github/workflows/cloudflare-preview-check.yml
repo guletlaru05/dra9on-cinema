@@ -1,4 +1,4 @@
-name: Verify Cloudflare preview deployment
+name: Verify Cloudflare production deployment
 on:
   push:
     branches: [main]
@@ -23,7 +23,7 @@ jobs:
       - name: Test notification feed without sending to any subscriber
         env:
           PUSH_DRY_RUN: 'true'
-          PUSH_SITE_ORIGIN: ${{ vars.CF_SITE_ORIGIN || 'https://dra9on-cinema.pages.dev' }}
+          PUSH_SITE_ORIGIN: ${{ vars.CF_SITE_ORIGIN || 'https://dra9oncinema.com' }}
           EXPECTED_REVISION: ${{ github.sha }}
         run: node workers/episode-push/notify.mjs
       - run: python3 -m pip install --disable-pip-version-check -r requirements-build.txt
@@ -33,12 +33,12 @@ jobs:
           node --test test-preview-login.mjs
       - name: Build the list of public pages and assets to verify
         env:
-          SITE_ORIGIN: ${{ vars.CF_SITE_ORIGIN || 'https://dra9on-cinema.pages.dev' }}
-          D9_DEPLOYMENT_STAGE: ${{ vars.CF_DEPLOYMENT_STAGE || 'preview' }}
+          SITE_ORIGIN: ${{ vars.CF_SITE_ORIGIN || 'https://dra9oncinema.com' }}
+          D9_DEPLOYMENT_STAGE: ${{ vars.CF_DEPLOYMENT_STAGE || 'production' }}
         run: python3 scripts/build_cloudflare.py
       - name: Verify security headers, private metrics CSP and canonical auth isolation
         run: python3 -m unittest test_cutover_security
-      - name: Check every public preview page and asset
+      - name: Check every public production page and asset
         run: python3 scripts/verify_preview_site.py
       - uses: actions/upload-artifact@v4
         if: always()

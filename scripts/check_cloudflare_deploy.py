@@ -2,7 +2,7 @@
 from pathlib import Path
 import argparse,json,re,time
 from urllib.request import Request,urlopen
-HOST='https://dra9on-cinema.pages.dev'
+HOST='https://dra9oncinema.com'
 
 def read(path):
  with urlopen(Request(HOST+path,headers={'Cache-Control':'no-cache','User-Agent':'DRA9ON-deploy-check/1.0'}),timeout=20) as response:
@@ -16,8 +16,7 @@ def check(revision,attempts=1):
    deployment=read('/deployment.json?revision='+revision)
    feed=read('/pwa/episodes.json?revision='+revision)
    if deployment.get('revision')==revision and feed.get('revision')==revision:
-    origins={'preview':HOST,'production':'https://dra9oncinema.com'}
-    if deployment.get('origin')!=origins.get(deployment.get('stage')):raise ValueError('Not an approved deployment origin')
+    if deployment.get('origin')!=HOST or deployment.get('stage')!='production':raise ValueError('Not the canonical production deployment')
     if not isinstance(feed.get('episodes'),list) or not feed['episodes']:raise ValueError('Missing episode feed')
     if any(set(e.get('locales',{}))!={'ko','en','ja','es'} for e in feed['episodes']):raise ValueError('Missing language in episode feed')
     return {'revision':revision,'pages':deployment.get('htmlPages'),'episodes':len(feed['episodes']),'notificationDispatch':False}
