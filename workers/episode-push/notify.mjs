@@ -7,7 +7,7 @@ const text={ko:(s,e)=>`FALL 707 시즌 ${s} ${e}화가 공개됐습니다.`,en:(
 export function notification(row){const e=row.episode,lang=Object.hasOwn(text,row.lang)?row.lang:'en';return {id:e.id,title:e.locales[lang].title,body:text[lang](e.season,e.episode),url:e.locales[lang].url,image:e.image,lang};}
 export async function readNotificationFeed(env={},fetcher=fetch,readPublicFeed=()=>readFile(new URL('../../.cache/canonical-episodes.json',import.meta.url),'utf8')){
  const dry=env.PUSH_DRY_RUN==='true',site=env.PUSH_SITE_ORIGIN||SITE;
- if(site!==SITE&&!(dry&&site==='https://dra9on-cinema.pages.dev'))throw Error('Unapproved notification source.');
+ if(site!==SITE)throw Error('Unapproved notification source.');
  let feed;
  if(env.PUSH_VERIFIED_FEED_FILE==='true'){
   if(!/^[a-f0-9]{40}$/.test(env.EXPECTED_REVISION||''))throw Error('A verified feed requires its expected revision.');

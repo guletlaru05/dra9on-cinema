@@ -3,8 +3,8 @@ import {privateRequest,verifyOwner} from './private-reader.mjs';
 import {requestGate} from '../../security/rate-limit.mjs';
 import {SECURITY_HEADERS} from '../../security/headers.mjs';
 
-// Temporary fixed preview origin: remove after Stage 5 production validation.
-const PROD_ORIGINS = new Set(['https://dra9oncinema.com','https://www.dra9oncinema.com','https://dra9on-cinema.pages.dev']);
+// Only canonical production origins are allowed after migration validation.
+const PROD_ORIGINS = new Set(['https://dra9oncinema.com','https://www.dra9oncinema.com']);
 const REFERRERS = ['direct','google','naver','youtube','instagram','x','other'];
 const MAX_BYTES = 1024;
 const MAX_EVENTS = 20000;
