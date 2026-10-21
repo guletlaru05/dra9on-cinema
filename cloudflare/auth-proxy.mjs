@@ -8,6 +8,11 @@ export async function handle(request,env,fetcher=fetch){
  const helper=url.pathname.startsWith('/__/auth/')||url.pathname==='/__/firebase/init.json';
  if(!helper)return env.ASSETS.fetch(request);
  if(!['GET','POST','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405});
+ if(url.pathname==='/__/firebase/init.json'){
+  if(request.method==='POST')return new Response('Method not allowed',{status:405});
+  const response=await env.ASSETS.fetch(request),out=new Headers(response.headers);
+  out.set('Cache-Control','no-store, max-age=0');return new Response(response.body,{status:response.status,headers:out});
+ }
  const target=new URL(url.pathname+url.search,UPSTREAM),headers=new Headers();
  for(const key of ['accept','content-type','user-agent','referer'])if(request.headers.has(key))headers.set(key,request.headers.get(key));
  // Do not forward the site's Cookie or Authorization headers to Firebase.

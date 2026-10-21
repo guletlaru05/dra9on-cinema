@@ -3,7 +3,7 @@
 Production source files and GitHub Pages output are left byte-for-byte intact.
 """
 from pathlib import Path
-import json
+import json,re
 ROOT=Path(__file__).resolve().parents[1]
 def replace_once(text,old,new):
  if text.count(old)!=1:raise ValueError('Login source changed; review preview integration before deploying')
@@ -32,3 +32,10 @@ def configure(out,stage):
  for name in ('login-bootstrap.js','preview-login.mjs'):(out/'library'/name).write_bytes((ROOT/'cloudflare'/name).read_bytes())
  (out/'_worker.js').write_bytes((ROOT/'cloudflare/auth-proxy.mjs').read_bytes())
  (out/'_routes.json').write_text(json.dumps({'version':1,'include':['/__/auth/*','/__/firebase/init.json'],'exclude':[]}),encoding='utf-8')
+ # Auth is enabled without a Firebase Hosting release, so its init.json is 404.
+ # Publish only the existing public web IDs; never include App Check tokens/owner data.
+ source=(out/'engagement-config.js').read_text(encoding='utf-8')
+ public={key:re.search(r'\b'+key+r':\s*"([^"]+)"',source).group(1) for key in ('apiKey','projectId','appId')}
+ if public['projectId']!='dra9on-cinema-stats':raise ValueError('Unexpected Firebase project')
+ public['authDomain']='dra9on-cinema.pages.dev'
+ init=out/'__/firebase/init.json';init.parent.mkdir(parents=True,exist_ok=True);init.write_text(json.dumps(public),encoding='utf-8')

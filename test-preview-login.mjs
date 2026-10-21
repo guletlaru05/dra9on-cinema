@@ -44,3 +44,7 @@ test('Pages ExecutionContext does not replace the upstream fetch implementation'
   assert.equal(response.status,200);assert.equal(fetched,true);
  }finally{globalThis.fetch=previous;}
 });
+test('public Firebase initialization is served locally without another upstream request',async()=>{
+ const response=await handle(new Request('https://dra9on-cinema.pages.dev/__/firebase/init.json'),{ASSETS:{fetch:async()=>new Response('{"projectId":"dra9on-cinema-stats"}')}},()=>{throw Error('No upstream for public init');});
+ assert.equal(response.status,200);assert.equal((await response.json()).projectId,'dra9on-cinema-stats');assert.match(response.headers.get('cache-control'),/no-store/);
+});

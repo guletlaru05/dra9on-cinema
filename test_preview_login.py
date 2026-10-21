@@ -23,4 +23,6 @@ class PreviewLoginTests(unittest.TestCase):
    # The complete owner/Firestore loader is preserved, including verified-Google check.
    self.assertEqual(code[code.index(' async function load(user)'):code.index(' $("retry-load")')],source[source.index(' async function load(user)'):source.index(' $("retry-load")')])
    self.assertTrue((out/'_worker.js').is_file());self.assertIn('login-bootstrap.js',(out/'library/index.html').read_text(encoding='utf-8'))
+   import json
+   public=json.loads((out/'__/firebase/init.json').read_text());self.assertEqual(set(public),{'apiKey','projectId','appId','authDomain'})
 if __name__=='__main__':unittest.main()
