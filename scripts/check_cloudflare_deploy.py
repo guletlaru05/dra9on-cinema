@@ -16,7 +16,8 @@ def check(revision,attempts=1):
    deployment=read('/deployment.json?revision='+revision)
    feed=read('/pwa/episodes.json?revision='+revision)
    if deployment.get('revision')==revision and feed.get('revision')==revision:
-    if deployment.get('stage')!='preview' or deployment.get('origin')!=HOST:raise ValueError('Not the approved preview')
+    origins={'preview':HOST,'production':'https://dra9oncinema.com'}
+    if deployment.get('origin')!=origins.get(deployment.get('stage')):raise ValueError('Not an approved deployment origin')
     if not isinstance(feed.get('episodes'),list) or not feed['episodes']:raise ValueError('Missing episode feed')
     if any(set(e.get('locales',{}))!={'ko','en','ja','es'} for e in feed['episodes']):raise ValueError('Missing language in episode feed')
     return {'revision':revision,'pages':deployment.get('htmlPages'),'episodes':len(feed['episodes']),'notificationDispatch':False}

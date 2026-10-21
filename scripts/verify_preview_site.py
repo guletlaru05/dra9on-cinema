@@ -7,6 +7,7 @@ import json
 ROOT=Path(__file__).resolve().parents[1]
 SITE=ROOT/'dist'
 HOST='https://dra9on-cinema.pages.dev'
+STAGE='preview'
 
 def check(file):
  rel=file.relative_to(SITE).as_posix()
@@ -18,8 +19,11 @@ def check(file):
    result.update(status=response.status,url=response.geturl())
    if file.suffix=='.html':
     text=response.read(2_000_000).decode('utf-8')
-    if 'noindex,nofollow,noarchive' not in text:raise ValueError('Preview is indexable')
+    if STAGE=='preview' and 'noindex,nofollow,noarchive' not in text:raise ValueError('Preview is indexable')
     if 'Content-Security-Policy' not in text:raise ValueError('Existing CSP missing')
+    if response.headers.get('X-Content-Type-Options')!='nosniff':raise ValueError('Missing nosniff header')
+    if not response.headers.get('Strict-Transport-Security'):raise ValueError('Missing HSTS header')
+    if response.headers.get('X-Frame-Options')!='DENY':raise ValueError('Missing clickjacking protection')
  except HTTPError as error:
   result.update(status=error.code)
   if path!='/404.html':result['error']='HTTP '+str(error.code)
@@ -27,8 +31,11 @@ def check(file):
  return result
 
 def main():
+ global HOST,STAGE
+ record=json.loads((SITE/'deployment.json').read_text());STAGE=record['stage'];HOST=record['origin']
+ if (STAGE,HOST) not in [('preview','https://dra9on-cinema.pages.dev'),('production','https://dra9oncinema.com')]:raise ValueError('Unapproved verification origin')
  # Advanced-mode Worker and routing configuration are deployment inputs, not public files.
- files=[p for p in SITE.rglob('*') if p.is_file() and p.name not in ('_worker.js','_routes.json')]
+ files=[p for p in SITE.rglob('*') if p.is_file() and p.name not in ('_worker.js','_routes.json','_headers')]
  if not files:raise ValueError('Build first')
  with ThreadPoolExecutor(max_workers=4) as pool:rows=list(pool.map(check,files))
  errors=[r for r in rows if r.get('error')]

@@ -55,6 +55,26 @@ public domain does not change at cutover, so subscription keys stay unchanged.
 
 ## Required temporary-access cleanup after Stage 5
 
+2026-10-21 cutover authorization: continue Stages 3-5 without stage gates;
+stop for owner authentication, payment, removal of existing DNS/data, or a
+production outage lasting 30 minutes. Preserve GitHub Pages for at least 7 days.
+Do not change repository visibility or activate R2.
+
+Cloudflare builds now emit response headers in `_headers`, retain existing meta
+CSP, and protect Firebase helper responses directly in the Worker. Public HTML
+uses DENY / frame-ancestors none; same-origin Firebase helpers use SAMEORIGIN /
+frame-ancestors self. The canonical Cloudflare build uses the same tested login
+flow with its authDomain fixed to dra9oncinema.com. GitHub fallback keeps its
+existing authentication flow. Add the canonical OAuth redirect handler before
+switching the Pages build to production; preserve the original Firebase handler.
+
+When switching Pages variables to SITE_ORIGIN=https://dra9oncinema.com and
+D9_DEPLOYMENT_STAGE=production, set GitHub repository variables CF_SITE_ORIGIN
+and CF_DEPLOYMENT_STAGE to matching values. Keep preview-only workflow reads and
+notification dry runs until the final canonical checks, then revise/disable
+temporary preview checks. Owner-library metrics API connectivity is explicitly
+allowed by library CSP independently of the analytics collection configuration.
+
 Owner approved ONLY `dra9on-cinema.pages.dev` for validation. After nameservers
 have propagated and `dra9oncinema.com` works on the new deployment, remove:
 

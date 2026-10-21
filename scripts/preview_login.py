@@ -8,8 +8,11 @@ ROOT=Path(__file__).resolve().parents[1]
 def replace_once(text,old,new):
  if text.count(old)!=1:raise ValueError('Login source changed; review preview integration before deploying')
  return text.replace(old,new,1)
-def configure(out,stage):
- if stage!='preview':return
+def configure(out,stage,origin=None):
+ if stage!='preview' and origin is None:return
+ origin=origin or 'https://dra9on-cinema.pages.dev'
+ if origin not in ('https://dra9on-cinema.pages.dev','https://dra9oncinema.com'):raise ValueError('Unapproved auth origin')
+ host=origin.split('://',1)[1]
  library=out/'library/library.js';code=library.read_text(encoding='utf-8')
  code=replace_once(code,'const config=window.D9_ENGAGEMENT_CONFIG,app=','const config={...window.D9_ENGAGEMENT_CONFIG,authDomain:"dra9on-cinema.pages.dev"},app=')
  code='import {installPreviewLogin} from "./preview-login.mjs?v=20261021-login1";\n'+code
@@ -39,3 +42,7 @@ def configure(out,stage):
  if public['projectId']!='dra9on-cinema-stats':raise ValueError('Unexpected Firebase project')
  public['authDomain']='dra9on-cinema.pages.dev'
  init=out/'__/firebase/init.json';init.parent.mkdir(parents=True,exist_ok=True);init.write_text(json.dumps(public),encoding='utf-8')
+ # The same hardened login flow is used at the canonical origin after cutover.
+ for path in (library,index,out/'library/login-bootstrap.js',out/'_worker.js',init):
+  path.write_text(path.read_text(encoding='utf-8').replace('dra9on-cinema.pages.dev',host),encoding='utf-8')
+ (out/'_headers').write_bytes((ROOT/'cloudflare/headers.txt').read_bytes())

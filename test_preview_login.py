@@ -25,4 +25,10 @@ class PreviewLoginTests(unittest.TestCase):
    self.assertTrue((out/'_worker.js').is_file());self.assertIn('login-bootstrap.js',(out/'library/index.html').read_text(encoding='utf-8'))
    import json
    public=json.loads((out/'__/firebase/init.json').read_text());self.assertEqual(set(public),{'apiKey','projectId','appId','authDomain'})
+ def test_cloudflare_production_auth_is_canonical_and_has_headers(self):
+  with tempfile.TemporaryDirectory() as temp:
+   out=Path(temp);self.fixture(out);preview.configure(out,'production','https://dra9oncinema.com')
+   for path in ('library/library.js','library/index.html','library/login-bootstrap.js','_worker.js','__/firebase/init.json'):
+    value=(out/path).read_text(encoding='utf-8');self.assertNotIn('dra9on-cinema.pages.dev',value);self.assertIn('dra9oncinema.com',value)
+   self.assertIn("frame-ancestors 'none'",(out/'_headers').read_text())
 if __name__=='__main__':unittest.main()

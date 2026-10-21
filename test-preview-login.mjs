@@ -32,6 +32,7 @@ test('an unloaded login click starts preparation and timeout, not a dead button'
 test('auth proxy has a fixed host/upstream and preserves query, never site credentials',async()=>{
  let seen;const request=new Request('https://dra9on-cinema.pages.dev/__/auth/iframe?apiKey=public&v=12',{headers:{Cookie:'private',Authorization:'Bearer private',Referer:'https://dra9on-cinema.pages.dev/library/'}});
  const response=await handle(request,{},async(url,options)=>{seen={url,options};return new Response('helper');});
+ assert.equal(response.headers.get('x-frame-options'),'SAMEORIGIN');assert.match(response.headers.get('content-security-policy'),/frame-ancestors 'self'/);assert.equal(response.headers.get('x-content-type-options'),'nosniff');
  assert.equal(seen.url,'https://dra9on-cinema-stats.firebaseapp.com/__/auth/iframe?apiKey=public&v=12');assert.equal(seen.options.headers.has('cookie'),false);assert.equal(seen.options.headers.has('authorization'),false);assert.match(response.headers.get('cache-control'),/no-store/);
  assert.equal((await handle(new Request('https://other.pages.dev/__/auth/handler'),{})).status,403);
  assert.equal((await handle(new Request('https://dra9on-cinema.pages.dev/__/auth/handler',{method:'DELETE'}),{})).status,405);

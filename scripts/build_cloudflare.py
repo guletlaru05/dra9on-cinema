@@ -40,9 +40,10 @@ def main():
  stage,origin,revision=configuration(os.environ)
  env={**os.environ,'GITHUB_SHA':revision,'YOUTUBE_SNAPSHOT_PATH':str(ROOT/'build-assets/youtube-public.json')}
  if stage=='preview':env.update(CF_WEB_ANALYTICS_TOKEN='',D9_METRICS_ENDPOINT='')
+ if stage=='production':env.setdefault('D9_METRICS_ENDPOINT','https://dra9on-tutorial-metrics.tutorial-metrics.workers.dev')
  subprocess.run([sys.executable,'build-portfolio.py','--origin',origin],cwd=ROOT,env=env,check=True)
  subprocess.run([sys.executable,'verify-site.py','--origin',origin],cwd=ROOT,env=env,check=True)
- configure_preview_login(ROOT/'dist',stage)
+ configure_preview_login(ROOT/'dist',stage,origin)
  print(json.dumps(finalize(ROOT/'dist',stage,origin,revision)))
 
 if __name__=='__main__':main()
