@@ -75,15 +75,19 @@ def build(out,origin,works,head,base_path=''):
   path=asset(item['file']);label=item['label'][lang]
   disclosure=row('AI 캐릭터 · 촬영장 비하인드(연출 이미지)','AI characters · Behind the scenes (staged AI image)','AIキャラクター・撮影舞台裏（演出画像）','Personajes de IA · Detrás de cámaras (imagen escenificada con IA)')[lang]
   alt=label+' · '+disclosure
-  return '<figure class="actor-behind-photo"><button type="button" class="actor-photo" data-actor-photo="'+e(path,quote=True)+'" aria-label="'+e(label+' · '+row('사진 크게 보기','Enlarge photo','写真を拡大','Ampliar foto')[lang],quote=True)+'"><img data-actor-image src="'+e(path,quote=True)+'" width="'+str(item['width'])+'" height="'+str(item['height'])+'" alt="'+e(alt,quote=True)+'" loading="lazy" decoding="async" draggable="false"></button><figcaption><span>'+e(label)+'</span><small>'+e(disclosure)+'</small></figcaption></figure>'
- def behind(actor,lang):
-  items=config.get('behind_scenes',{}).get(actor['slug'],[])
-  if not items:return ''
-  title=row('비하인드','Behind the scenes','舞台裏','Detrás de cámaras')[lang]
-  return '<section id="behind-the-scenes" class="actor-gallery-section actor-behind-section" aria-label="'+e(title,quote=True)+'"><p class="section-eyebrow">OFF CAMERA</p><h2>'+e(title)+'</h2><div class="actor-gallery actor-behind-gallery" data-count="'+str(len(items))+'">'+''.join(behind_photo(item,lang,actor) for item in items)+'</div></section>'
+  cast=[actor] if actor else ACTORS
+  cast_links='<span class="actor-behind-cast">'+''.join('<a href="'+base_path+prefix(lang)+'/actors/'+a['slug']+'/">'+e(a['name'][lang])+' <span aria-hidden="true">↗</span></a>' for a in cast)+'</span>'
+  return '<figure class="actor-behind-photo"><button type="button" class="actor-photo" data-actor-photo="'+e(path,quote=True)+'" aria-label="'+e(label+' · '+row('사진 크게 보기','Enlarge photo','写真を拡大','Ampliar foto')[lang],quote=True)+'"><img data-actor-image src="'+e(path,quote=True)+'" width="'+str(item['width'])+'" height="'+str(item['height'])+'" alt="'+e(alt,quote=True)+'" loading="lazy" decoding="async" draggable="false"></button><figcaption>'+cast_links+'<span>'+e(label)+'</span><small>'+e(disclosure)+'</small></figcaption></figure>'
+ def behind(lang):
+  items=[(actor,item) for actor in ACTORS for item in config.get('behind_scenes',{}).get(actor['slug'],[])]
+  group=config.get('behind_scenes_group')
+  if not items and not group:return ''
+  title=row('촬영장 비하인드','BEHIND THE SCENES','撮影の舞台裏','DETRÁS DE CÁMARAS')[lang]
+  featured='<div class="actors-group-behind">'+behind_photo(group,lang)+'</div>' if group else ''
+  return '<section id="behind-the-scenes" class="actor-gallery-section actor-behind-section" aria-label="'+e(title,quote=True)+'"><p class="section-eyebrow">BEHIND THE SCENES</p><h2>'+e(title)+'</h2>'+featured+'<div class="actor-gallery actor-behind-gallery">'+''.join(behind_photo(item,lang,actor) for actor,item in items)+'</div></section>'
  def photo_dialog(lang,title,filename):
   close=row('사진 닫기','Close photo','写真を閉じる','Cerrar foto')[lang]
-  return '<dialog id="actor-photo-dialog" aria-label="'+e(title,quote=True)+'"><button type="button" data-actor-close aria-label="'+close+'">'+close+' ×</button><img data-actor-image src="'+e(asset(filename),quote=True)+'" draggable="false" alt="'+e(title+' · '+UI['ai_keyword'][lang],quote=True)+'"></dialog>'
+  return '<dialog id="actor-photo-dialog" aria-label="'+e(title,quote=True)+'"><button type="button" data-actor-close aria-label="'+close+'">'+close+' ×</button><img data-actor-image src="'+e(asset(filename),quote=True)+'" draggable="false" alt="'+e(title+' · '+UI['ai_keyword'][lang],quote=True)+'"><p data-actor-dialog-caption hidden></p></dialog>'
  def gallery(actor,lang,screen=False):
   key='screen_stills' if screen else 'lookbook';items=config.get(key,{}).get(actor['slug'],[])
   if not items:return ''
@@ -131,10 +135,11 @@ def build(out,origin,works,head,base_path=''):
  for lang in LANGS:
   pre=base_path+prefix(lang)
   listing='<main id="main" class="actors-main"><header class="actors-intro"><p class="section-eyebrow">DRA9ON CINEMA / ORIGINAL TALENT</p><div><h1>'+tr('title',lang)+'</h1><p>'+tr('intro',lang)+'</p></div></header><section class="actors-grid" aria-label="'+tr('back',lang)+'">'+''.join(card(a,lang) for a in ACTORS)+'</section>'+notice_html(lang,base_path)+'</main>'
-  if config.get('behind_scenes_group'):
-   group=config['behind_scenes_group']
-   listing=listing.replace('<section class="actors-grid"','<div class="actors-group-behind">'+behind_photo(group,lang)+'</div><section class="actors-grid"',1)
-   listing+=photo_dialog(lang,UI['title'][lang],group['file'])
+  behind_gallery=behind(lang)
+  if behind_gallery:
+   listing=listing.replace(notice_html(lang,base_path),behind_gallery+notice_html(lang,base_path),1)
+   first_photo=config.get('behind_scenes_group') or next(item for actor in ACTORS for item in config.get('behind_scenes',{}).get(actor['slug'],[]))
+   listing+=photo_dialog(lang,UI['title'][lang],first_photo['file'])
   page(lang,'/actors/',UI['title'][lang],UI['intro'][lang],listing)
   for actor in ACTORS:
    name=e(actor['name'][lang]);role=e(actor['role'][lang])
@@ -151,7 +156,8 @@ def build(out,origin,works,head,base_path=''):
    body+=photo_dialog(lang,actor['name'][lang],photos[actor['slug']]['fullbody'])
    body=body.replace('<p class="actor-copyright">'+tr('copyright',lang)+'</p>',notice_html(lang,base_path))
    body=body.replace('<a class="actor-back" href="'+pre+'/actors/">← '+tr('back',lang)+'</a>',profile_navigation(actor,lang,base_path),1)
-   body=body.replace('<section class="actor-screen-work">',gallery(actor,lang)+gallery(actor,lang,True)+behind(actor,lang)+'<section class="actor-screen-work">',1)
+   behind_link='<p class="actor-behind-link"><a class="text-button" href="'+pre+'/actors/#behind-the-scenes">'+e(row('비하인드 사진 보기','View behind-the-scenes photos','舞台裏の写真を見る','Ver fotos detrás de cámaras')[lang])+' →</a></p>' if behind_gallery else ''
+   body=body.replace('<section class="actor-screen-work">',gallery(actor,lang)+gallery(actor,lang,True)+behind_link+'<section class="actor-screen-work">',1)
    page(lang,'/actors/'+actor['slug']+'/',actor['name'][lang]+' · '+UI['title'][lang],actor['line'][lang]+' '+UI['disclosure'][lang],body)
  # Add the same entry points to the already-localised site without moving board data.
  for file in out.rglob('*.html'):

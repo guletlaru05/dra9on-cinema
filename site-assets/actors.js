@@ -11,6 +11,12 @@
       const image = dialog.querySelector('img');
       image.src = button.dataset.actorPhoto;
       image.alt = button.querySelector('img').alt;
+      const caption = dialog.querySelector('[data-actor-dialog-caption]');
+      if (caption) {
+        caption.textContent = button.closest('.actor-behind-photo')?.querySelector('figcaption small')?.textContent || '';
+        caption.hidden = !caption.textContent;
+        dialog.classList.toggle('has-caption', Boolean(caption.textContent));
+      }
       dialog.showModal();
     }));
     dialog.querySelector('[data-actor-close]').addEventListener('click', () => dialog.close());
