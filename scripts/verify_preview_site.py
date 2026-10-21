@@ -14,7 +14,7 @@ def check(file):
  method='GET' if file.suffix=='.html' else 'HEAD'
  result={'path':path,'method':method}
  try:
-  with urlopen(Request(HOST+path,method=method),timeout=30) as response:
+  with urlopen(Request(HOST+path,method=method,headers={'User-Agent':'DRA9ON-deploy-check/1.0'}),timeout=30) as response:
    result.update(status=response.status,url=response.geturl())
    if file.suffix=='.html':
     text=response.read(2_000_000).decode('utf-8')
@@ -34,6 +34,6 @@ def main():
  report={'checked':len(rows),'html':sum(p.suffix=='.html' for p in files),'errors':errors,'files':rows,'privateDataRead':False,'postsWritten':False,'notificationsSent':False}
  destination=ROOT/'.cache/preview-live-verification.json';destination.parent.mkdir(exist_ok=True)
  destination.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
- print(json.dumps({k:v for k,v in report.items() if k!='files'},ensure_ascii=False))
+ print(json.dumps({'checked':len(rows),'html':report['html'],'errorCount':len(errors),'firstErrors':errors[:10]},ensure_ascii=False))
  if errors:raise SystemExit(1)
 if __name__=='__main__':main()
