@@ -21,7 +21,7 @@
     }
   },
   "watermark_policy": "Preserve the owner-supplied central watermark unchanged. No crop, overlay, removal, relocation or retouching; web compression only.",
-  "note": "Owner approved publication on 2026-10-21 after preview. Haseul uses sunglasses only. Source originals, generated high-resolution drafts and prompts remain private on this PC.",
+  "note": "Owner approved eight season 3 still additions on 2026-10-21. Six screen stills and five profile photos per actor. Season 3 stills first. Haseul uses sunglasses only. High-resolution originals remain private on this PC.",
   "additional_photos_approved": true,
   "screen_stills_approved": true,
   "lookbook": {
@@ -229,6 +229,28 @@
   "screen_stills": {
     "min-seoa": [
       {
+        "file": "min-seoa-s3-1.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "acting",
+        "season": 3,
+        "episode": 1,
+        "seconds": 588,
+        "source_url": "https://www.youtube.com/watch?v=0I75_YXhMSM",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "min-seoa-s3-2.webp",
+        "width": 960,
+        "height": 418,
+        "kind": "closeup",
+        "season": 3,
+        "episode": 2,
+        "seconds": 149,
+        "source_url": "https://www.youtube.com/watch?v=S1v3yFoAK5w",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
         "file": "min-seoa-screen-1.webp",
         "width": 960,
         "height": 412,
@@ -274,6 +296,28 @@
       }
     ],
     "yeonhwa": [
+      {
+        "file": "yeonhwa-s3-1.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "closeup",
+        "season": 3,
+        "episode": 1,
+        "seconds": 240,
+        "source_url": "https://www.youtube.com/watch?v=0I75_YXhMSM",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "yeonhwa-s3-2.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "acting",
+        "season": 3,
+        "episode": 1,
+        "seconds": 480,
+        "source_url": "https://www.youtube.com/watch?v=0I75_YXhMSM",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
       {
         "file": "yeonhwa-screen-1.webp",
         "width": 960,
@@ -321,6 +365,28 @@
     ],
     "yuna": [
       {
+        "file": "yuna-s3-1.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "acting",
+        "season": 3,
+        "episode": 1,
+        "seconds": 912,
+        "source_url": "https://www.youtube.com/watch?v=0I75_YXhMSM",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "yuna-s3-2.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "acting",
+        "season": 3,
+        "episode": 1,
+        "seconds": 324,
+        "source_url": "https://www.youtube.com/watch?v=0I75_YXhMSM",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
         "file": "yuna-screen-1.webp",
         "width": 960,
         "height": 412,
@@ -366,6 +432,28 @@
       }
     ],
     "haseul": [
+      {
+        "file": "haseul-s3-1.webp",
+        "width": 960,
+        "height": 418,
+        "kind": "acting",
+        "season": 3,
+        "episode": 2,
+        "seconds": 340,
+        "source_url": "https://www.youtube.com/watch?v=S1v3yFoAK5w",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "haseul-s3-2.webp",
+        "width": 960,
+        "height": 418,
+        "kind": "closeup",
+        "season": 3,
+        "episode": 2,
+        "seconds": 355,
+        "source_url": "https://www.youtube.com/watch?v=S1v3yFoAK5w",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
       {
         "file": "haseul-screen-1.webp",
         "width": 960,
