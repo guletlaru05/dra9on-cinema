@@ -19,6 +19,8 @@ jobs:
     if: vars.PUBLISH_SITE == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      YOUTUBE_SNAPSHOT_PATH: build-assets/youtube-public.json
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v4
