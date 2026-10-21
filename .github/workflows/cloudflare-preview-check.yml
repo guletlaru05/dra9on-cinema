@@ -26,3 +26,17 @@ jobs:
           PUSH_SITE_ORIGIN: https://dra9on-cinema.pages.dev
           EXPECTED_REVISION: ${{ github.sha }}
         run: node workers/episode-push/notify.mjs
+      - run: python3 -m pip install --disable-pip-version-check -r requirements-build.txt
+      - name: Build the list of public pages and assets to verify
+        env:
+          SITE_ORIGIN: https://dra9on-cinema.pages.dev
+          D9_DEPLOYMENT_STAGE: preview
+        run: python3 scripts/build_cloudflare.py
+      - name: Check every public preview page and asset
+        run: python3 scripts/verify_preview_site.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: preview-live-verification-${{ github.run_id }}
+          path: .cache/preview-live-verification.json
+          retention-days: 7

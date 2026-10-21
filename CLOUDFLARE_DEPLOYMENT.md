@@ -52,3 +52,20 @@ public domain does not change at cutover, so subscription keys stay unchanged.
 - Production-origin build settings and canonical SEO checks at Stage 5.
 - Keep GitHub Pages for at least a week; do not make this GitHub Free repository
   private until the owner decides how to preserve branch protection/fallback.
+
+## Required temporary-access cleanup after Stage 5
+
+Owner approved ONLY `dra9on-cinema.pages.dev` for validation. After nameservers
+have propagated and `dra9oncinema.com` works on the new deployment, remove:
+
+1. Firebase Authentication `authorizedDomains`: `dra9on-cinema.pages.dev`.
+2. reCAPTCHA Enterprise key allowed domains: `dra9on-cinema.pages.dev`.
+3. Firebase browser API key HTTP referrers: `https://dra9on-cinema.pages.dev/*`.
+4. Tutorial metrics/private-reader Worker `PROD_ORIGINS` and `ALLOWED_ORIGINS`:
+   `https://dra9on-cinema.pages.dev`.
+5. Episode push Worker `ORIGINS`: `https://dra9on-cinema.pages.dev`.
+
+Preserve all previous production domains, API restrictions, owner authentication
+and Firestore rules. Verify the fixed preview origin is then rejected again.
+Revise/disable preview-only checks and notification dry-run allowlist, switch
+the Pages origin/stage to production, and repeat canonical-domain smoke tests.

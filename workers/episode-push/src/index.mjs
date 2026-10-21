@@ -2,7 +2,8 @@
 import {requestGate} from '../../security/rate-limit.mjs';
 import {SECURITY_HEADERS} from '../../security/headers.mjs';
 import {boardFetch,boardScheduled} from './board.mjs';
-const ORIGINS=new Set(['https://dra9oncinema.com','https://www.dra9oncinema.com']);
+// Temporary fixed preview origin: remove after Stage 5 production validation.
+const ORIGINS=new Set(['https://dra9oncinema.com','https://www.dra9oncinema.com','https://dra9on-cinema.pages.dev']);
 export const LANGS=['ko','en','ja','es'];
 export const sha=async text=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)))).map(x=>x.toString(16).padStart(2,'0')).join('');
 const decode=value=>Uint8Array.from(atob(value.replace(/-/g,'+').replace(/_/g,'/')+'='.repeat((4-value.length%4)%4)),c=>c.charCodeAt(0));

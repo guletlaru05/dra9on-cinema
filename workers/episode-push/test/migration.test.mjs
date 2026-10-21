@@ -1,6 +1,8 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {main,readNotificationFeed} from '../notify.mjs';
+import {createWorker as pushWorker} from '../src/index.mjs';
+import {createWorker as metricsWorker} from '../../tutorial-metrics/src/index.mjs';
 const feed={revision:'a'.repeat(40),generatedAt:new Date().toISOString(),episodes:[{id:'newvideo001',season:3,episode:2,publishedAt:'2026-10-18T00:00:00Z',image:'/assets/portfolio/newvideo001.jpg',locales:Object.fromEntries(['ko','en','ja','es'].map(lang=>[lang,{title:'FALL 707',url:(lang==='ko'?'':'/'+lang)+'/watch/fall-707-s3-ep2/'}]))}]};
 test('preview dry run performs one read and cannot dispatch or require secrets',async()=>{
  const calls=[];await main({PUSH_DRY_RUN:'true',PUSH_SITE_ORIGIN:'https://dra9on-cinema.pages.dev',EXPECTED_REVISION:feed.revision},async(url,options)=>{calls.push({url,options});return Response.json(feed);});
@@ -12,4 +14,15 @@ test('preview cannot be a real dispatch source; wrong revisions stop before disp
  await assert.rejects(main({PUSH_SITE_ORIGIN:'https://dra9on-cinema.pages.dev'},fake),/Unapproved/);assert.equal(reads,0);
  await assert.rejects(main({PUSH_DRY_RUN:'true',EXPECTED_REVISION:'b'.repeat(40)},fake),/revision/);assert.equal(reads,1);
  await assert.rejects(readNotificationFeed({PUSH_DRY_RUN:'true',PUSH_SITE_ORIGIN:'https://evil.example'},fake),/Unapproved/);
+});
+test('only fixed preview origin is trusted; private data still requires owner authentication',async()=>{
+ const approved='https://dra9on-cinema.pages.dev',env={VAPID_PUBLIC_KEY:'public-test-key',REQUEST_LIMITER:{limit:async()=>({success:true})},WRITE_LIMITER:{limit:async()=>({success:true})}};
+ const key=await pushWorker().fetch(new Request('https://push.example/key',{headers:{Origin:approved}}),env);
+ assert.equal(key.status,200);assert.equal(key.headers.get('Access-Control-Allow-Origin'),approved);
+ const locked=await metricsWorker().fetch(new Request('https://metrics.example/private/visits',{headers:{Origin:approved}}),env);
+ assert.equal(locked.status,401);assert.equal(locked.headers.get('Access-Control-Allow-Origin'),approved);
+ for(const origin of ['https://another.pages.dev','https://evil.dra9on-cinema.pages.dev','https://dra9on-cinema.pages.dev.evil.example']){
+  assert.equal((await pushWorker().fetch(new Request('https://push.example/key',{headers:{Origin:origin}}),env)).status,403);
+  assert.equal((await metricsWorker().fetch(new Request('https://metrics.example/private/visits',{headers:{Origin:origin}}),env)).status,403);
+ }
 });
