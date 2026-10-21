@@ -7,7 +7,7 @@ const feed={revision:'a'.repeat(40),generatedAt:new Date().toISOString(),episode
 test('preview dry run performs one read and cannot dispatch or require secrets',async()=>{
  const calls=[];await main({PUSH_DRY_RUN:'true',PUSH_SITE_ORIGIN:'https://dra9on-cinema.pages.dev',EXPECTED_REVISION:feed.revision},async(url,options)=>{calls.push({url,options});return Response.json(feed);});
  assert.equal(calls.length,1);assert.equal(calls[0].options.method,undefined);assert.ok(calls[0].url.startsWith('https://dra9on-cinema.pages.dev/pwa/episodes.json?'));
- assert.equal(calls[0].options.headers,undefined);
+ assert.deepEqual(calls[0].options.headers,{'User-Agent':'DRA9ON-deploy-check/1.0','Accept':'application/json'});
 });
 test('preview cannot be a real dispatch source; wrong revisions stop before dispatch',async()=>{
  let reads=0;const fake=async()=>{reads++;return Response.json(feed);};
@@ -25,4 +25,8 @@ test('only fixed preview origin is trusted; private data still requires owner au
   assert.equal((await pushWorker().fetch(new Request('https://push.example/key',{headers:{Origin:origin}}),env)).status,403);
   assert.equal((await metricsWorker().fetch(new Request('https://metrics.example/private/visits',{headers:{Origin:origin}}),env)).status,403);
  }
+});
+
+test('public feed denial gives only the HTTP status, never provider body',async()=>{
+ await assert.rejects(readNotificationFeed({PUSH_DRY_RUN:'true'},async()=>new Response('private diagnostic body',{status:403})),/^Error: Published episode feed unavailable \(HTTP 403\)\.$/);
 });

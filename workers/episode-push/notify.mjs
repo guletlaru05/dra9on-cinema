@@ -7,8 +7,8 @@ export function notification(row){const e=row.episode,lang=Object.hasOwn(text,ro
 export async function readNotificationFeed(env={},fetcher=fetch){
  const dry=env.PUSH_DRY_RUN==='true',site=env.PUSH_SITE_ORIGIN||SITE;
  if(site!==SITE&&!(dry&&site==='https://dra9on-cinema.pages.dev'))throw Error('Unapproved notification source.');
- const response=await fetcher(site+'/pwa/episodes.json?build='+encodeURIComponent(env.EXPECTED_REVISION||Date.now()),{cache:'no-store',redirect:'error',signal:AbortSignal.timeout(25000)});
- if(!response.ok)throw Error('Published episode feed unavailable.');const feed=await response.json();
+ const response=await fetcher(site+'/pwa/episodes.json?build='+encodeURIComponent(env.EXPECTED_REVISION||Date.now()),{cache:'no-store',redirect:'error',headers:{'User-Agent':'DRA9ON-deploy-check/1.0','Accept':'application/json'},signal:AbortSignal.timeout(25000)});
+ if(!response.ok)throw Error('Published episode feed unavailable (HTTP '+response.status+').');const feed=await response.json();
  if(!/^[a-f0-9]{40}$/.test(feed.revision||'')||!Array.isArray(feed.episodes)||feed.episodes.length>200||!feed.episodes.every(e=>validEpisode(e,new Date())))throw Error('Invalid public episode feed.');
  if(env.EXPECTED_REVISION&&feed.revision!==env.EXPECTED_REVISION)throw Error('The new site revision is not visible yet.');
  return feed;
@@ -39,4 +39,4 @@ export async function main(env=process.env,fetcher=fetch){
  }
  console.log(JSON.stringify({initialized:synced.initialized,newEpisodes:synced.newEpisodes,sent,expired,retry}));
 }
-if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)main().catch(()=>{console.error('Episode notification dispatch failed. Check configuration or retry. No subscription data was logged.');process.exitCode=1;});
+if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)main().catch(error=>{const reason=/^(Published episode feed unavailable \(HTTP \d{3}\)\.|The new site revision is not visible yet\.|Invalid public episode feed\.|fetch failed)$/.test(error.message)?error.message:'Check configuration or retry.';console.error('Episode notification dispatch failed. '+reason+' No subscription data was logged.');process.exitCode=1;});
