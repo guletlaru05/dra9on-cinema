@@ -27,7 +27,8 @@ def check(file):
  return result
 
 def main():
- files=[p for p in SITE.rglob('*') if p.is_file()]
+ # Advanced-mode Worker and routing configuration are deployment inputs, not public files.
+ files=[p for p in SITE.rglob('*') if p.is_file() and p.name not in ('_worker.js','_routes.json')]
  if not files:raise ValueError('Build first')
  with ThreadPoolExecutor(max_workers=4) as pool:rows=list(pool.map(check,files))
  errors=[r for r in rows if r.get('error')]

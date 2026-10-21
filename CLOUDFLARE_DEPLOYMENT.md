@@ -64,6 +64,24 @@ have propagated and `dra9oncinema.com` works on the new deployment, remove:
 4. Tutorial metrics/private-reader Worker `PROD_ORIGINS` and `ALLOWED_ORIGINS`:
    `https://dra9on-cinema.pages.dev`.
 5. Episode push Worker `ORIGINS`: `https://dra9on-cinema.pages.dev`.
+6. Google OAuth web client authorized redirect URI:
+   `https://dra9on-cinema.pages.dev/__/auth/handler`.
+
+The temporary library login fix is applied ONLY by the preview build. It uses
+Firebase's documented same-origin helper proxy, routed only at `/__/auth/*`
+and `/__/firebase/init.json`. Production library scripts, Firebase config,
+owner checks and Firestore rules remain unchanged. No auth request bodies or
+tokens are logged, cached or stored by the proxy. Static requests do not invoke
+the proxy Worker. At production cutover the preview-only bootstrap, authDomain
+override, helper route and proxy output are omitted automatically. Remove the
+temporary OAuth redirect at the same time as the five earlier allowlists.
+
+An initially unloaded login button starts the explicit Firebase preparation and
+shows progress; a second click after readiness starts sign-in. On iPhone/iPad,
+use same-window redirect; on desktop, popup opens directly in the click stack.
+Blocked popup/storage, module timeout and a missing redirect result show an
+accessible on-screen reason. The deployment must remain at Stage 2 until the
+owner confirms an actual iPhone Safari and PC Chrome sign-in.
 
 Preserve all previous production domains, API restrictions, owner authentication
 and Firestore rules. Verify the fixed preview origin is then rejected again.

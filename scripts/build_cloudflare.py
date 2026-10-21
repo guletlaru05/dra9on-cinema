@@ -1,6 +1,8 @@
 """Build the same public site on Pages without moving credentials or DNS."""
 from pathlib import Path
 import json,os,re,subprocess,sys
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from preview_login import configure as configure_preview_login
 from urllib.parse import urlsplit
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -40,6 +42,7 @@ def main():
  if stage=='preview':env.update(CF_WEB_ANALYTICS_TOKEN='',D9_METRICS_ENDPOINT='')
  subprocess.run([sys.executable,'build-portfolio.py','--origin',origin],cwd=ROOT,env=env,check=True)
  subprocess.run([sys.executable,'verify-site.py','--origin',origin],cwd=ROOT,env=env,check=True)
+ configure_preview_login(ROOT/'dist',stage)
  print(json.dumps(finalize(ROOT/'dist',stage,origin,revision)))
 
 if __name__=='__main__':main()
