@@ -30,3 +30,11 @@ test('only fixed preview origin is trusted; private data still requires owner au
 test('public feed denial gives only the HTTP status, never provider body',async()=>{
  await assert.rejects(readNotificationFeed({PUSH_DRY_RUN:'true'},async()=>new Response('private diagnostic body',{status:403})),/^Error: Published episode feed unavailable \(HTTP 403\)\.$/);
 });
+
+test('validated canonical snapshot avoids a second bot-challenged HTTP read and rejects stale revisions',async()=>{
+ let calls=0;const never=async()=>{calls++;throw Error('unexpected HTTP read');};
+ const env={PUSH_VERIFIED_FEED_FILE:'true',EXPECTED_REVISION:feed.revision};
+ assert.equal((await readNotificationFeed(env,never,async()=>JSON.stringify(feed))).revision,feed.revision);
+ assert.equal(calls,0);
+ await assert.rejects(readNotificationFeed({...env,EXPECTED_REVISION:'b'.repeat(40)},never,async()=>JSON.stringify(feed)),/revision/);
+});

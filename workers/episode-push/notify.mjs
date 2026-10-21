@@ -1,14 +1,21 @@
+import {readFile} from 'node:fs/promises';
 import {buildPushPayload} from '@block65/webcrypto-web-push';
 import {validEndpoint,validEpisode} from './src/index.mjs';
 import {pathToFileURL} from 'node:url';
 const ENDPOINT='https://dra9on-episode-push.tutorial-metrics.workers.dev',SITE='https://dra9oncinema.com';
 const text={ko:(s,e)=>`FALL 707 시즌 ${s} ${e}화가 공개됐습니다.`,en:(s,e)=>`FALL 707 Season ${s}, Episode ${e} is now available.`,ja:(s,e)=>`FALL 707 シーズン${s}・第${e}話を公開しました。`,es:(s,e)=>`Ya está disponible FALL 707, temporada ${s}, episodio ${e}.`};
 export function notification(row){const e=row.episode,lang=Object.hasOwn(text,row.lang)?row.lang:'en';return {id:e.id,title:e.locales[lang].title,body:text[lang](e.season,e.episode),url:e.locales[lang].url,image:e.image,lang};}
-export async function readNotificationFeed(env={},fetcher=fetch){
+export async function readNotificationFeed(env={},fetcher=fetch,readPublicFeed=()=>readFile(new URL('../../.cache/canonical-episodes.json',import.meta.url),'utf8')){
  const dry=env.PUSH_DRY_RUN==='true',site=env.PUSH_SITE_ORIGIN||SITE;
  if(site!==SITE&&!(dry&&site==='https://dra9on-cinema.pages.dev'))throw Error('Unapproved notification source.');
+ let feed;
+ if(env.PUSH_VERIFIED_FEED_FILE==='true'){
+  if(!/^[a-f0-9]{40}$/.test(env.EXPECTED_REVISION||''))throw Error('A verified feed requires its expected revision.');
+  const text=await readPublicFeed();if(text.length>1000000)throw Error('Invalid public episode feed.');feed=JSON.parse(text);
+ }else{
  const response=await fetcher(site+'/pwa/episodes.json?build='+encodeURIComponent(env.EXPECTED_REVISION||Date.now()),{cache:'no-store',redirect:'error',headers:{'User-Agent':'DRA9ON-deploy-check/1.0','Accept':'application/json'},signal:AbortSignal.timeout(25000)});
- if(!response.ok)throw Error('Published episode feed unavailable (HTTP '+response.status+').');const feed=await response.json();
+ if(!response.ok)throw Error('Published episode feed unavailable (HTTP '+response.status+').');feed=await response.json();
+ }
  if(!/^[a-f0-9]{40}$/.test(feed.revision||'')||!Array.isArray(feed.episodes)||feed.episodes.length>200||!feed.episodes.every(e=>validEpisode(e,new Date())))throw Error('Invalid public episode feed.');
  if(env.EXPECTED_REVISION&&feed.revision!==env.EXPECTED_REVISION)throw Error('The new site revision is not visible yet.');
  return feed;

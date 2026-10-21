@@ -109,10 +109,13 @@ jobs:
         with:
           node-version: '24'
       - run: npm ci --ignore-scripts --no-fund --no-audit --prefix workers/episode-push
+      - name: Wait for canonical Cloudflare revision and save its public feed
+        run: python3 scripts/check_cloudflare_deploy.py "$GITHUB_SHA" --attempts 20 --save-feed
       - name: Announce only newly deployed episodes
         env:
           PUSH_DISPATCH_TOKEN: ${{ secrets.PUSH_DISPATCH_TOKEN }}
           PUSH_VAPID_PRIVATE_KEY: ${{ secrets.PUSH_VAPID_PRIVATE_KEY }}
           PUSH_VAPID_PUBLIC_KEY: ${{ vars.PUSH_VAPID_PUBLIC_KEY }}
           EXPECTED_REVISION: ${{ github.sha }}
+          PUSH_VERIFIED_FEED_FILE: 'true'
         run: node workers/episode-push/notify.mjs

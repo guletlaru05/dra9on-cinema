@@ -9,7 +9,7 @@ def read(path):
   if response.geturl().split('?',1)[0]!=HOST+path.split('?',1)[0]:raise ValueError('Unexpected redirect')
   return json.loads(response.read(1_000_000).decode('utf-8'))
 
-def check(revision,attempts=1):
+def check(revision,attempts=1,save_feed=False):
  if not re.fullmatch('[a-f0-9]{40}',revision):raise ValueError('Invalid expected revision')
  for attempt in range(attempts):
   try:
@@ -19,6 +19,8 @@ def check(revision,attempts=1):
     if deployment.get('origin')!=HOST or deployment.get('stage')!='production':raise ValueError('Not the canonical production deployment')
     if not isinstance(feed.get('episodes'),list) or not feed['episodes']:raise ValueError('Missing episode feed')
     if any(set(e.get('locales',{}))!={'ko','en','ja','es'} for e in feed['episodes']):raise ValueError('Missing language in episode feed')
+    if save_feed:
+     out=Path(__file__).resolve().parents[1]/'.cache/canonical-episodes.json';out.parent.mkdir(exist_ok=True);out.write_text(json.dumps(feed,ensure_ascii=False),encoding='utf-8')
     return {'revision':revision,'pages':deployment.get('htmlPages'),'episodes':len(feed['episodes']),'notificationDispatch':False}
   except (OSError,ValueError):
    if attempt+1==attempts:raise
@@ -26,6 +28,6 @@ def check(revision,attempts=1):
  raise RuntimeError('Cloudflare revision is not visible yet')
 
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('revision');p.add_argument('--attempts',type=int,default=1);a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('revision');p.add_argument('--attempts',type=int,default=1);p.add_argument('--save-feed',action='store_true');a=p.parse_args()
  if not 1<=a.attempts<=20:raise ValueError('Attempts must be bounded')
- print(json.dumps(check(a.revision,a.attempts)))
+ print(json.dumps(check(a.revision,a.attempts,a.save_feed)))

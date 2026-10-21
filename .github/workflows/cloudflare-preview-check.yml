@@ -18,11 +18,12 @@ jobs:
         with:
           node-version: '24'
       - name: Wait for the exact commit and four-language episode feed
-        run: python3 scripts/check_cloudflare_deploy.py "$GITHUB_SHA" --attempts 20
+        run: python3 scripts/check_cloudflare_deploy.py "$GITHUB_SHA" --attempts 20 --save-feed
       - run: npm ci --ignore-scripts --no-fund --no-audit --prefix workers/episode-push
       - name: Test notification feed without sending to any subscriber
         env:
           PUSH_DRY_RUN: 'true'
+          PUSH_VERIFIED_FEED_FILE: 'true'
           PUSH_SITE_ORIGIN: ${{ vars.CF_SITE_ORIGIN || 'https://dra9oncinema.com' }}
           EXPECTED_REVISION: ${{ github.sha }}
         run: node workers/episode-push/notify.mjs
