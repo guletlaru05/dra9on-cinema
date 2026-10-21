@@ -44,11 +44,11 @@ two API Workers. Production episode notifications continue to read only
 `https://dra9oncinema.com`, verify revisions and deduplicate releases. The
 public domain does not change at cutover, so subscription keys stay unchanged.
 
-## Gates still required before cutover
+## Cutover checklist
 
 - Preview Firebase/App Check/API origin authorization and real browser checks.
-- Stage 3 security response headers (not applied in Stage 2).
-- Owner-performed nameserver change, certificate and email verification.
+- Stage 3 security response headers applied and verified on the temporary deployment.
+- Owner-authorized nameserver change, certificate readiness and applicable email verification.
 - Production-origin build settings and canonical SEO checks at Stage 5.
 - Keep GitHub Pages for at least a week; do not make this GitHub Free repository
   private until the owner decides how to preserve branch protection/fallback.
@@ -87,21 +87,22 @@ have propagated and `dra9oncinema.com` works on the new deployment, remove:
 6. Google OAuth web client authorized redirect URI:
    `https://dra9on-cinema.pages.dev/__/auth/handler`.
 
-The temporary library login fix is applied ONLY by the preview build. It uses
-Firebase's documented same-origin helper proxy, routed only at `/__/auth/*`
-and `/__/firebase/init.json`. Production library scripts, Firebase config,
-owner checks and Firestore rules remain unchanged. No auth request bodies or
-tokens are logged, cached or stored by the proxy. Static requests do not invoke
-the proxy Worker. At production cutover the preview-only bootstrap, authDomain
-override, helper route and proxy output are omitted automatically. Remove the
-temporary OAuth redirect at the same time as the five earlier allowlists.
+The Cloudflare library build uses Firebase's documented same-origin helper
+proxy, routed only at `/__/auth/*` and `/__/firebase/init.json`. Preview uses
+the fixed temporary hostname; canonical production uses `dra9oncinema.com`.
+Keep the hardened bootstrap and helper routing on canonical Cloudflare hosting.
+Only the temporary hostname and its OAuth redirect/allowlist entries are removed.
+GitHub Pages fallback scripts, owner checks and Firestore rules are unchanged.
+No auth request bodies or tokens are logged, cached or stored by the proxy;
+static requests do not invoke it.
 
 An initially unloaded login button starts the explicit Firebase preparation and
 shows progress; a second click after readiness starts sign-in. On iPhone/iPad,
 use same-window redirect; on desktop, popup opens directly in the click stack.
 Blocked popup/storage, module timeout and a missing redirect result show an
-accessible on-screen reason. The deployment must remain at Stage 2 until the
-owner confirms an actual iPhone Safari and PC Chrome sign-in.
+accessible on-screen reason. Actual iPhone Safari and standalone PC Chrome sign-in remain owner device
+checks; the latest owner instruction permits Stages 3-5 to continue autonomously.
+Record untested devices explicitly instead of claiming an actual device test.
 
 Preserve all previous production domains, API restrictions, owner authentication
 and Firestore rules. Verify the fixed preview origin is then rejected again.
