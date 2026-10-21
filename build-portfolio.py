@@ -164,6 +164,8 @@ from notes_workflow import build as build_notes_workflow
 build_notes_workflow(out,origin,base_path)
 from lounge import build as build_lounge
 build_lounge(out,origin,works,head,base_path)
+from actors import build as build_actors
+build_actors(out,origin,works,head,base_path)
 from international import update_language_links
 update_language_links(out,origin,works,base_path)
 # Public ownership proof for the owner's Google and Naver webmaster properties.

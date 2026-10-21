@@ -1,6 +1,7 @@
 """Plain-language bilingual site terms for a free film showcase."""
 from html import escape
 from site_config import CONTACT_EMAIL
+from actor_rights import terms_section, TRANSLATIONS as ACTOR_RIGHTS_TRANSLATIONS
 COPY = [
 ('이용약관','Terms of use'),
 ('시행일: 2026년 9월 28일','Effective date: September 28, 2026'),
@@ -20,12 +21,15 @@ COPY = [
 ('이용 허락, 사이트 이용 또는 권리 침해 관련 문의는 아래 이메일로 보내주세요. 관련 페이지 주소와 요청 내용을 함께 알려주시면 확인하겠습니다.','For permission requests, site questions or rights concerns, email us below with the relevant page URL and details of your request.'),
 ]
 TRANSLATIONS=dict(COPY)
+TRANSLATIONS.update(ACTOR_RIGHTS_TRANSLATIONS)
+TRANSLATIONS['섭외 문의']='Casting enquiry'
 def build_terms(out,origin,head,header,footer):
  title=COPY[0][0]
  body='<body class="watch-page">'+header()+'<main id="main" class="privacy-copy"><h1>'+title+'</h1><p>'+COPY[1][0]+'</p>'
  for i,(ko,en) in enumerate(COPY[2:],2):
   tag='h2' if i%2==0 else 'p'
   body+=f'<{tag}>{escape(ko)}</{tag}>'
+ body+=terms_section()
  body+=f'<p><a href="mailto:{escape(CONTACT_EMAIL)}">{escape(CONTACT_EMAIL)}</a></p><p><a href="/privacy/">개인정보처리방침</a></p></main>'+footer()+'</body></html>'
  folder=out/'terms';folder.mkdir(exist_ok=True)
  schema={'@context':'https://schema.org','@type':'WebPage','name':title,'url':origin+'/terms/'}

@@ -121,7 +121,8 @@ new_bilingual_routes=lambda:[]
 if find_spec('notes_update') is not None:
  from notes_update import new_bilingual_routes
 from lounge import extra_bilingual
-assert len(html_files) == 2 * (video_count + 10 + len(TUTORIAL_ROUTES)+len(new_bilingual_routes())+extra_bilingual())+2*len(translated_routes), len(html_files)
+from actors import routes as actor_routes
+assert len(html_files) == 2 * (video_count + 10 + len(TUTORIAL_ROUTES)+len(new_bilingual_routes())+extra_bilingual()+len(actor_routes()))+2*len(translated_routes), len(html_files)
 for path in html_files:
     source = path.read_text(encoding='utf-8')
     assert source.count('/consent.js?v=') == 1, path
@@ -299,7 +300,7 @@ for ko, en in zip(*catalogs):
 
 sitemap = ET.parse(root / 'sitemap.xml').getroot()
 from lounge import extra_bilingual
-assert len(sitemap) == 2 * (video_count + 9 + len(TUTORIAL_ROUTES)+len(new_bilingual_routes())+extra_bilingual())+2*len(translated_routes)
+assert len(sitemap) == 2 * (video_count + 9 + len(TUTORIAL_ROUTES)+len(new_bilingual_routes())+extra_bilingual()+len(actor_routes()))+2*len(translated_routes)
 for entry in sitemap:
     local_file(entry.find('{http://www.sitemaps.org/schemas/sitemap/0.9}loc').text)
 assert (root / '.nojekyll').exists()

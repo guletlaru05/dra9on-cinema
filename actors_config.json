@@ -1,0 +1,416 @@
+{
+  "approved_for_publication": true,
+  "photos_approved": true,
+  "profiles_approved": true,
+  "photos": {
+    "min-seoa": {
+      "fullbody": "min-seoa.webp",
+      "small": "min-seoa-small.webp"
+    },
+    "yeonhwa": {
+      "fullbody": "yeonhwa.webp",
+      "small": "yeonhwa-small.webp"
+    },
+    "yuna": {
+      "fullbody": "yuna.webp",
+      "small": "yuna-small.webp"
+    },
+    "haseul": {
+      "fullbody": "haseul.webp",
+      "small": "haseul-small.webp"
+    }
+  },
+  "watermark_policy": "Preserve the owner-supplied central watermark unchanged. No crop, overlay, removal, relocation or retouching; web compression only.",
+  "note": "Owner approved publication on 2026-10-21 after preview. Haseul uses sunglasses only. Source originals, generated high-resolution drafts and prompts remain private on this PC.",
+  "additional_photos_approved": true,
+  "screen_stills_approved": true,
+  "lookbook": {
+    "min-seoa": [
+      {
+        "file": "min-seoa-look-1.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "카멜 코트 · 워킹",
+          "en": "Camel coat · Walking",
+          "ja": "キャメルコート・ウォーキング",
+          "es": "Abrigo camel · Caminando"
+        }
+      },
+      {
+        "file": "min-seoa-look-2.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "니트 폴로 · 앉은 자세",
+          "en": "Knit polo · Seated",
+          "ja": "ニットポロ・座り姿",
+          "es": "Polo de punto · Sentada"
+        }
+      },
+      {
+        "file": "min-seoa-look-3.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "레더 재킷 · 시크",
+          "en": "Leather jacket · Chic",
+          "ja": "レザージャケット・シック",
+          "es": "Chaqueta de cuero · Sofisticada"
+        }
+      },
+      {
+        "file": "min-seoa-look-4.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "네이비 원피스 · 수줍은 미소",
+          "en": "Navy dress · A shy smile",
+          "ja": "ネイビーワンピース・はにかむ笑顔",
+          "es": "Vestido azul marino · Sonrisa tímida"
+        }
+      }
+    ],
+    "yeonhwa": [
+      {
+        "file": "yeonhwa-look-1.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "옐로 카디건 · 발랄함",
+          "en": "Yellow cardigan · Playful",
+          "ja": "イエローカーディガン・はつらつ",
+          "es": "Cárdigan amarillo · Alegre"
+        }
+      },
+      {
+        "file": "yeonhwa-look-2.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "민트 원피스 · 부드러운 미소",
+          "en": "Mint dress · A gentle smile",
+          "ja": "ミントワンピース・優しい笑顔",
+          "es": "Vestido menta · Sonrisa suave"
+        }
+      },
+      {
+        "file": "yeonhwa-look-3.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "데님 재킷 · 가벼운 외출",
+          "en": "Denim jacket · A casual outing",
+          "ja": "デニムジャケット・気軽なお出かけ",
+          "es": "Chaqueta vaquera · Paseo informal"
+        }
+      },
+      {
+        "file": "yeonhwa-look-4.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "코럴 카디건 · 환한 웃음",
+          "en": "Coral cardigan · A bright smile",
+          "ja": "コーラルカーディガン・明るい笑顔",
+          "es": "Cárdigan coral · Sonrisa luminosa"
+        }
+      }
+    ],
+    "yuna": [
+      {
+        "file": "yuna-look-1.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "캠퍼스 룩 · 책과 함께",
+          "en": "Campus look · With books",
+          "ja": "キャンパスルック・本を持って",
+          "es": "Estilo universitario · Con libros"
+        }
+      },
+      {
+        "file": "yuna-look-2.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "체크 스커트 · 쉬는 시간",
+          "en": "Checked skirt · A study break",
+          "ja": "チェックスカート・休憩時間",
+          "es": "Falda de cuadros · Descanso"
+        }
+      },
+      {
+        "file": "yuna-look-3.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "레드 카디건 · 반가운 인사",
+          "en": "Red cardigan · A friendly wave",
+          "ja": "レッドカーディガン・親しい挨拶",
+          "es": "Cárdigan rojo · Un saludo cercano"
+        }
+      },
+      {
+        "file": "yuna-look-4.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "반바지 · 편안한 미소",
+          "en": "Shorts · A relaxed smile",
+          "ja": "ショートパンツ・自然な笑顔",
+          "es": "Pantalones cortos · Sonrisa relajada"
+        }
+      }
+    ],
+    "haseul": [
+      {
+        "file": "haseul-look-1.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "블랙 앤 화이트 · 자신감",
+          "en": "Black and white · Confident",
+          "ja": "ブラック＆ホワイト・自信",
+          "es": "Blanco y negro · Confianza"
+        }
+      },
+      {
+        "file": "haseul-look-2.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "스톤 그레이 · 여유",
+          "en": "Stone gray · Composed",
+          "ja": "ストーングレー・余裕",
+          "es": "Gris piedra · Serenidad"
+        }
+      },
+      {
+        "file": "haseul-look-5.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "버건디 원피스 · 선글라스",
+          "en": "Burgundy dress · Sunglasses",
+          "ja": "バーガンディのワンピース・サングラス",
+          "es": "Vestido burdeos · Gafas de sol"
+        }
+      },
+      {
+        "file": "haseul-look-6.webp",
+        "width": 800,
+        "height": 1200,
+        "kind": "look",
+        "label": {
+          "ko": "플리츠 스커트 · 차분한 미소",
+          "en": "Pleated skirt · A composed smile",
+          "ja": "プリーツスカート・落ち着いた笑顔",
+          "es": "Falda plisada · Sonrisa serena"
+        }
+      }
+    ]
+  },
+  "screen_stills": {
+    "min-seoa": [
+      {
+        "file": "min-seoa-screen-1.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "closeup",
+        "season": 2,
+        "episode": 1,
+        "seconds": 168,
+        "source_url": "https://www.youtube.com/watch?v=l2G5ITnriFQ",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "min-seoa-screen-2.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "closeup",
+        "season": 2,
+        "episode": 2,
+        "seconds": 90,
+        "source_url": "https://www.youtube.com/watch?v=WZ0ozLABZwE",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "min-seoa-screen-3.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "action",
+        "season": 2,
+        "episode": 6,
+        "seconds": 440,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "min-seoa-screen-4.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "action",
+        "season": 2,
+        "episode": 6,
+        "seconds": 552,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      }
+    ],
+    "yeonhwa": [
+      {
+        "file": "yeonhwa-screen-1.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "closeup",
+        "season": 2,
+        "episode": 1,
+        "seconds": 144,
+        "source_url": "https://www.youtube.com/watch?v=l2G5ITnriFQ",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "yeonhwa-screen-2.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "closeup",
+        "season": 2,
+        "episode": 1,
+        "seconds": 336,
+        "source_url": "https://www.youtube.com/watch?v=l2G5ITnriFQ",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "yeonhwa-screen-3.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "acting",
+        "season": 2,
+        "episode": 1,
+        "seconds": 348,
+        "source_url": "https://www.youtube.com/watch?v=l2G5ITnriFQ",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "yeonhwa-screen-4.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "acting",
+        "season": 2,
+        "episode": 1,
+        "seconds": 540,
+        "source_url": "https://www.youtube.com/watch?v=l2G5ITnriFQ",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      }
+    ],
+    "yuna": [
+      {
+        "file": "yuna-screen-1.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "closeup",
+        "season": 2,
+        "episode": 6,
+        "seconds": 32,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "yuna-screen-2.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "closeup",
+        "season": 2,
+        "episode": 6,
+        "seconds": 928,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "yuna-screen-3.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "action",
+        "season": 2,
+        "episode": 6,
+        "seconds": 568,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "yuna-screen-4.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "action",
+        "season": 2,
+        "episode": 6,
+        "seconds": 584,
+        "source_url": "https://www.youtube.com/watch?v=F-MEc4hmxJU",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      }
+    ],
+    "haseul": [
+      {
+        "file": "haseul-screen-1.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "closeup",
+        "season": 3,
+        "episode": 1,
+        "seconds": 576,
+        "source_url": "https://www.youtube.com/watch?v=0I75_YXhMSM",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "haseul-screen-2.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "closeup",
+        "season": 3,
+        "episode": 1,
+        "seconds": 1008,
+        "source_url": "https://www.youtube.com/watch?v=0I75_YXhMSM",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "haseul-screen-3.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "acting",
+        "season": 3,
+        "episode": 1,
+        "seconds": 360,
+        "source_url": "https://www.youtube.com/watch?v=0I75_YXhMSM",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      },
+      {
+        "file": "haseul-screen-4.webp",
+        "width": 960,
+        "height": 412,
+        "kind": "acting",
+        "season": 3,
+        "episode": 1,
+        "seconds": 984,
+        "source_url": "https://www.youtube.com/watch?v=0I75_YXhMSM",
+        "channel_id": "UCEZSQzQw7lIy2DBbojztyqg"
+      }
+    ]
+  },
+  "haseul_eyewear_policy": "Owner correction: use sunglasses photographs only for Haseul on the website and publication. No-glasses drafts stay private and are excluded from web build."
+}

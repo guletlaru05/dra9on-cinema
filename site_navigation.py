@@ -19,14 +19,17 @@ LINKS=[
 ]
 
 def navigation(out,lang,path,base_path=''):
+ from actors import enabled as actors_enabled, MENU
  prefix='' if lang=='ko' else '/'+lang
  local_path=path[len(prefix):] if prefix and path.startswith(prefix+'/') else path
- matches=[route for route,_,_ in LINKS if '#' not in route and local_path.startswith(route)]
+ links=list(LINKS)
+ if actors_enabled():links.insert(1,('/actors/',MENU,True))
+ matches=[route for route,_,_ in links if '#' not in route and local_path.startswith(route)]
  active=max(matches,key=len) if matches else None
  if local_path.startswith('/watch/fall-707-'):active='/fall-707/'
  if local_path.startswith('/watch/film-'):active='/#originals'
  primary=[];secondary=[];secondary_active=False
- for route,names,main in LINKS:
+ for route,names,main in links:
   target=prefix+route
   if not (out/(target.split('#')[0].strip('/')+'/index.html').lstrip('/')).is_file():
    target=('/en' if (out/('en'+route.split('#')[0]+'index.html')).is_file() else '')+route
