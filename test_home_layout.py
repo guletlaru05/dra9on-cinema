@@ -37,7 +37,7 @@ class HeroLayoutTests(unittest.TestCase):
             self.assertIn('hero-media',parser.photo[0][0],language);self.assertIn('hero-media',parser.shade[0],language)
             self.assertEqual(parser.copy,[False],language)
             attributes=parser.photo[0][1]
-            self.assertEqual(int(attributes['width'])/int(attributes['height']),16/9,language)
+            self.assertAlmostEqual(int(attributes['width'])/int(attributes['height']),16/9,delta=.003,msg=language)
 
     def test_four_home_pages_put_navigation_before_video_below_header(self):
         if not Path('dist/index.html').exists():self.skipTest('Build site first')

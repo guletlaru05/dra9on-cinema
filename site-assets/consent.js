@@ -99,7 +99,10 @@
      placeholder.classList.toggle('external-media-instagram',info.service==='Instagram');
      const load=document.createElement('button');load.type='button';load.className='external-media-play';load.setAttribute('aria-label',mediaText.play+' · '+info.service+' · '+(frame.title||''));
      {
-      const image=document.createElement('img');image.src=poster(frame,info);image.alt='';image.decoding='async';image.loading='lazy';image.width=720;image.height=405;
+      const image=document.createElement('img');image.src=poster(frame,info);image.alt='';image.decoding='async';image.loading=inline?'lazy':'eager';image.fetchPriority=inline?'auto':'high';image.width=720;image.height=405;
+      const responsive=window.D9ResponsiveImages?.[info.id];
+      image.srcset=frame.getAttribute('data-poster-srcset')||responsive?.srcset||'';image.sizes=frame.getAttribute('data-poster-sizes')||(inline?'(max-width:600px) 100vw, 400px':'100vw');
+      if(responsive&&!frame.hasAttribute('data-external-poster'))image.src=responsive.src;
       image.addEventListener('error',()=>{const fallback=new URL('external-media-poster.svg',assetRoot).href;if(image.src!==fallback)image.src=fallback;});
       load.append(image);
      }

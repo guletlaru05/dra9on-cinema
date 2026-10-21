@@ -1,0 +1,37 @@
+[
+  {
+    "file": "NotoSansKR-Variable.ttf",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanskr/NotoSansKR%5Bwght%5D.ttf",
+    "gitBlob": "b386890ba945e1f39448a6b59f20c5d194f58808"
+  },
+  {
+    "file": "NotoSansJP-Variable.ttf",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosansjp/NotoSansJP%5Bwght%5D.ttf",
+    "gitBlob": "cdd8f083c1f5928ff3361f8cda4d3fc9462cbe89"
+  },
+  {
+    "file": "BarlowCondensed-Bold.ttf",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/barlowcondensed/BarlowCondensed-Bold.ttf",
+    "gitBlob": "9e480f467d703009e3abfce290b2ec2b7d24e188"
+  },
+  {
+    "file": "BarlowCondensed-BoldItalic.ttf",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/barlowcondensed/BarlowCondensed-BoldItalic.ttf",
+    "gitBlob": "26e8dc259f1727505dfaf7418ddeda8c51f7a7b9"
+  },
+  {
+    "file": "BarlowCondensed-ExtraBold.ttf",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/barlowcondensed/BarlowCondensed-ExtraBold.ttf",
+    "gitBlob": "d5a6c7505459f142b20d65d3579e1b840462b75f"
+  },
+  {
+    "file": "BarlowCondensed-ExtraBoldItalic.ttf",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/barlowcondensed/BarlowCondensed-ExtraBoldItalic.ttf",
+    "gitBlob": "fbb716a1922dcc8c5a939394609c1d55a6d5d292"
+  },
+  {
+    "file": "BarlowCondensed-SemiBold.ttf",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/barlowcondensed/BarlowCondensed-SemiBold.ttf",
+    "gitBlob": "9df66576492bee4bd0559066825472808fa98adc"
+  }
+]

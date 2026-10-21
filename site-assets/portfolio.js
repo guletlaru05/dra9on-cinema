@@ -171,10 +171,10 @@ function createHeroPreview(hero){
   function label(){button.textContent=ended||blocked?t('↻ 무음 미리보기','↻ Silent preview'):stopped||(!previewReady&&!manual)?t('▶ 미리보기 재생','▶ Play preview'):t('Ⅱ 미리보기 정지','Ⅱ Pause preview');}
 
   let previewReady=false;
-  const constrained=()=>!!navigator.connection?.saveData||['slow-2g','2g'].includes(navigator.connection?.effectiveType);
+  const constrained=()=>!!navigator.connection?.saveData||['slow-2g','2g','3g'].includes(navigator.connection?.effectiveType);
   afterMainPaint(()=>{previewReady=true;label();sync();});
 
-  function allowed(){return (manual||previewReady)&&seen&&!hero.hidden&&!document.hidden&&!document.querySelector('dialog[open]')&&!stopped&&(manual||(!motion.matches&&!constrained()));}
+  function allowed(){return (manual||previewReady)&&seen&&!hero.hidden&&!document.hidden&&!document.querySelector('dialog[open]')&&!stopped&&(manual||(!motion.matches&&!constrained()&&!matchMedia('(max-width:700px)').matches));}
 
   function sync(){
 
@@ -230,9 +230,9 @@ function createHeroPreview(hero){
 
     const name=v.category==='full'?'s1-full':`s${v.season}-${v.episode}`;
 
-    source=new URL(name+'.mp4',previewRoot).href;ended=false;blocked=false;loading=false;
+    source=new URL(name+(matchMedia('(max-width:700px)').matches?'-mobile':'')+'.mp4',previewRoot).href;ended=false;blocked=false;loading=false;
 
-    stopped=userStopped||motion.matches||constrained();manual=false;label();sync();
+    stopped=userStopped||motion.matches||constrained()||matchMedia('(max-width:700px)').matches;manual=false;label();sync();
 
   }};
 
@@ -291,7 +291,8 @@ if ($('hero')) {
 
       const v=slides[index], image=hero.querySelector('.hero-image');
 
-      image.src=v.image; image.alt=v.name;
+      const responsive=window.D9ResponsiveImages?.[v.id];
+      image.src=responsive?.src||v.image;image.srcset=responsive?.srcset||'';image.sizes='100vw';image.alt=v.name;
 
       hero.querySelector('.hero-kicker').textContent=v.category==='full'?t(`FALL 707 · 시즌 ${v.season} 풀버전`,`FALL 707 · SEASON ${v.season} FULL MOVIE`):`FALL 707 · S${v.season} EP.${String(v.episode).padStart(2,'0')}`;
       hero.querySelector('.hero-tagline').textContent=v.name;

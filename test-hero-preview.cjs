@@ -1,12 +1,12 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const source=fs.readFileSync('site-assets/portfolio.js','utf8');
-function fixture({reduced=false,saveData=false,rejectPlay=false}={}){
+function fixture({reduced=false,saveData=false,rejectPlay=false,mobile=false,effectiveType='4g'}={}){
  const created=[],idle=[],observers=[];
  function node(){const events={},attrs={},classes=new Set();return {events,paused:true,currentTime:0,hidden:false,classList:{add:v=>classes.add(v),remove:v=>classes.delete(v),contains:v=>classes.has(v)},setAttribute(k,v){attrs[k]=v;},getAttribute(k){return k==='src'?this.src:attrs[k];},removeAttribute(k){if(k==='src')delete this.src;else delete attrs[k];},load(){},pause(){this.paused=true;},play(){if(rejectPlay)return Promise.reject({name:'NotAllowedError'});this.paused=false;events.playing?.();return Promise.resolve();},addEventListener(k,cb){events[k]=cb;}};}
  const image={src:'https://dra9oncinema.com/assets/portfolio/example.jpg',after(){}};
  const hero={hidden:false,querySelector:()=>image,append(){}};
- const context={URL,navigator:{connection:{saveData}},matchMedia:()=>({matches:reduced,addEventListener(){}}),afterMainPaint:cb=>idle.push(cb),t:(ko)=>ko,document:{hidden:false,querySelector:()=>null,querySelectorAll:()=>[],addEventListener(){},createElement(){const n=node();created.push(n);return n;}},MutationObserver:class{observe(){}},IntersectionObserver:class{constructor(cb){observers.push(cb);}observe(){}}};
+ const context={URL,navigator:{connection:{saveData,effectiveType}},matchMedia:query=>({matches:query.includes('max-width')?mobile:reduced,addEventListener(){}}),afterMainPaint:cb=>idle.push(cb),t:(ko)=>ko,document:{hidden:false,querySelector:()=>null,querySelectorAll:()=>[],addEventListener(){},createElement(){const n=node();created.push(n);return n;}},MutationObserver:class{observe(){}},IntersectionObserver:class{constructor(cb){observers.push(cb);}observe(){}}};
  vm.createContext(context);vm.runInContext(source.slice(source.indexOf('function createHeroPreview('),source.indexOf("if ($('hero'))")),context);
  const preview=context.createHeroPreview(hero);return {preview,video:created[0],button:created[1],ready(){observers[0]([{isIntersecting:true}]);idle[0]();}};
 }
@@ -17,3 +17,6 @@ test('visible hero plays a muted inline local preview after initial paint',()=>{
 test('motion and data preferences prevent autoplay but allow explicit playback',()=>{for(const options of [{reduced:true},{saveData:true}]){const f=fixture(options);f.preview.select({category:'s3',season:3,episode:1});f.ready();assert.equal(f.video.src,undefined);f.button.events.click();assert.equal(f.video.paused,false);}});
 test('unsupported compilation keeps its poster and a later episode can play',async()=>{const f=fixture();f.preview.select({category:'s3',season:3,episode:1});f.ready();await Promise.resolve();await Promise.resolve();f.preview.select({category:'full',season:2,preview:false});assert.equal(f.button.hidden,true);assert.equal(f.video.src,undefined);f.preview.select({category:'s2',season:2,episode:6});assert.equal(f.button.hidden,false);assert.equal(f.video.src,'https://dra9oncinema.com/assets/previews/s2-6.mp4');});
 test('autoplay rejection preserves poster and exposes a manual retry',async()=>{const f=fixture({rejectPlay:true});f.preview.select({category:'s3',season:3,episode:1});f.ready();await Promise.resolve();await Promise.resolve();assert.equal(f.video.classList.contains('is-playing'),false);assert.match(f.button.textContent,/미리보기/);});
+
+test('mobile hero selects a separate sub-megabyte local clip',()=>{const f=fixture({mobile:true});f.preview.select({category:'s3',season:3,episode:2});f.ready();assert.equal(f.video.src,undefined);f.button.events.click();assert.equal(f.video.src,'https://dra9oncinema.com/assets/previews/s3-2-mobile.mp4');assert.ok(fs.statSync('site-assets/assets/previews/s3-2-mobile.mp4').size<1000000);});
+test('slow 3G leaves the poster without downloading video',()=>{const f=fixture({effectiveType:'3g'});f.preview.select({category:'s3',season:3,episode:2});f.ready();assert.equal(f.video.src,undefined);});

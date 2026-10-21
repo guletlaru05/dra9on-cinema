@@ -172,3 +172,28 @@ Run `python -m unittest test_home_players test_home_layout` and
 `node test-consent.cjs` alongside the existing build/verification checks. Keep
 preview changes local until the owner has reviewed them; a main-branch push
 would trigger Cloudflare production deployment.
+
+
+## Responsive assets and local fonts (2026-10-22)
+
+`performance.py` creates aspect-preserving AVIF/WebP srcsets for actor photos,
+production stills and video posters. Original files stay in place; central
+watermarks are never removed, moved or cropped. Actor AVIF derivatives include
+copyright EXIF, and WebP derivatives include copyright XMP. Dynamic lightbox
+images retain their original web-sized source so changing a photo cannot leave
+an old picture source selected.
+
+The same Noto Sans and Barlow Condensed families are served locally as WOFF2,
+subset from visible public text with font-display:swap. Font sources, licences
+and upstream blob identities are in build-assets/fonts. Compiled derivatives
+in build-assets/performance-cache avoid repeating image encoding on each build;
+new content or source changes regenerate only the necessary variants. Install
+requirements-build.txt for the build-only font tools. No paid image service is used.
+
+Mobile hero clips are separate 360p MP4 files. Mobile starts with the poster;
+explicit playback selects the small clip. Reduced motion, Save-Data and slow
+2G/3G keep the poster until a deliberate play request. The original clips stay.
+Cloudflare headers cache hashed CSS/JS, optimized images and subset fonts for
+one year; original media for a week. Library shells are no-store and PWA feeds
+and the service worker revalidate. Dynamic catalog/auth/API paths are not given
+an immutable cache policy.

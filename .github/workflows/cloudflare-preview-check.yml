@@ -38,7 +38,7 @@ jobs:
           D9_DEPLOYMENT_STAGE: ${{ vars.CF_DEPLOYMENT_STAGE || 'production' }}
         run: python3 scripts/build_cloudflare.py
       - name: Verify security headers, private metrics CSP and canonical auth isolation
-        run: python3 -m unittest test_cutover_security
+        run: python3 -m unittest test_cutover_security test_performance test_home_players
       - name: Check every public production page and asset
         run: python3 scripts/verify_preview_site.py
       - uses: actions/upload-artifact@v4

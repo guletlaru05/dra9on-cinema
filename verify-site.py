@@ -46,6 +46,16 @@ def local_file(url):
     return result
 
 
+def hero_image_sources(markup):
+    sources={latest_work['image']}
+    script=re.search(r'<script[^>]+src="([^" >]*/responsive-media\.[a-f0-9]+\.js)"',markup)
+    if script:
+        mapping=json.loads(local_file(script[1]).read_text(encoding='utf-8').split('=',1)[1].rstrip(';'))
+        optimized=mapping.get(latest_work['id'],{}).get('src')
+        if optimized:sources.add(optimized)
+    return sources
+
+
 class Page(HTMLParser):
     def __init__(self, source):
         super().__init__()
@@ -168,7 +178,7 @@ for path in html_files:
         assert source.index('id="collaboration"') < source.index('id="about"'), path
         assert source.count('id="collaboration"') == 1, path
         hero=next(img for img in page.images if 'hero-image' in img.get('class','').split())
-        assert hero['src']==latest_work['image'], 'Homepage hero does not use the newest episode'
+        assert hero['src'] in hero_image_sources(source), 'Homepage hero does not use the newest episode'
         assert any(a.get('href')==base+('/en' if lang=='en' else '')+latest_work['path'][len(base):] and 'hero-feature-link' in a.get('class','') for a in page.anchors), 'Latest episode link is stale'
         assert 'id="latest-episodes"' in source
         for season in {video['season'] for video in published_catalog if re.fullmatch(r's[1-9][0-9]*',video['category'])}:
@@ -220,7 +230,7 @@ if '0I75_YXhMSM' in expected_ids:
         homepage = (root/(prefix.lstrip('/') + '/index.html').lstrip('/')).read_text(encoding='utf-8')
         home = Page(homepage)
         hero = next(img for img in home.images if 'hero-image' in img.get('class', '').split())
-        assert hero['src'] == latest_work['image']
+        assert hero['src'] in hero_image_sources(homepage)
         assert any(a.get('href') == route_prefix + latest_work['path'][len(base):] and 'hero-feature-link' in a.get('class', '') for a in home.anchors)
         assert 'data-category="s3"' in homepage
         assert homepage.index('id="episodes"') < homepage.index('id="season-two"')

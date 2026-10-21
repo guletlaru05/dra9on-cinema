@@ -16,7 +16,8 @@ def check(file):
  result={'path':path,'method':method}
  try:
   with urlopen(Request(HOST+path,method=method,headers={'User-Agent':'DRA9ON-deploy-check/1.0'}),timeout=30) as response:
-   result.update(status=response.status,url=response.geturl())
+   result.update(status=response.status,url=response.geturl(),cacheControl=response.headers.get('Cache-Control'))
+   if path.startswith(('/assets/build/','/assets/optimized/','/assets/fonts/')) and 'max-age=31536000' not in (response.headers.get('Cache-Control') or ''):raise ValueError('Missing long-lived versioned asset cache header')
    if file.suffix=='.html':
     text=response.read(2_000_000).decode('utf-8')
     if STAGE=='preview' and 'noindex,nofollow,noarchive' not in text:raise ValueError('Preview is indexable')

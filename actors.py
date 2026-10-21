@@ -66,7 +66,7 @@ def build(out,origin,works,head,base_path=''):
   alt=actor['name'][lang]+' · '+UI['ai_keyword'][lang]+' · '+UI['fullbody'][lang]
   sizes='(max-width: 700px) 100vw, 54vw' if large else '(max-width: 600px) 46vw, (max-width: 1000px) 46vw, 23vw'
   srcset=(asset(record['small'])+' 400w, '+path+' 800w') if record.get('small') and not record.get('portrait') else path+' 800w'
-  image='<img data-actor-image src="'+e(path,quote=True)+'" srcset="'+e(srcset,quote=True)+'" sizes="'+sizes+'" width="800" height="1200" alt="'+e(alt,quote=True)+'" draggable="false" '+('fetchpriority="high"' if large else 'loading="lazy"')+' decoding="async">'
+  image='<img data-actor-image src="'+e(path,quote=True)+'" srcset="'+e(srcset,quote=True)+'" sizes="'+sizes+'" width="800" height="1200" alt="'+e(alt,quote=True)+'" draggable="false" '+('fetchpriority="high"' if large or actor==ACTORS[0] else 'loading="lazy"')+' decoding="async">'
   if large:return '<button class="actor-photo" type="button" data-actor-photo="'+e(path,quote=True)+'" aria-label="'+e(actor['name'][lang]+' · '+row('사진 크게 보기','Enlarge photo','写真を拡大','Ampliar foto')[lang],quote=True)+'">'+image+'</button>'
   return image
  def inquiry(actor,lang):
