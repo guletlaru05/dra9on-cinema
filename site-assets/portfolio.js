@@ -137,6 +137,11 @@ if(document.modelContext?.registerTool&&$('browse-results')){const lifecycle=new
 
 // Short, silent local previews are separate from the click-to-play YouTube film.
 
+function heroSlideInterval(work){
+  // Leave time for the 15-second episode 2 clip and its initial media load.
+  return work?.id==='S1v3yFoAK5w'?16000:12000;
+}
+
 function createHeroPreview(hero){
 
   const previewRoot=new URL('../previews/',hero.querySelector('.hero-image').src);
@@ -307,9 +312,9 @@ if ($('hero')) {
 
     function schedule(){clearInterval(timer);timer=setInterval(()=>{
 
-      if(!hero.hasAttribute("data-swiping")&&!paused&&!hovered&&!focused&&visible&&!document.hidden&&!hero.hidden&&!document.querySelector('dialog[open]'))showSlide(index+1);
+      if(!hero.hasAttribute("data-swiping")&&!paused&&!hovered&&!focused&&visible&&!document.hidden&&!hero.hidden&&!document.querySelector('dialog[open]')){showSlide(index+1);schedule();}
 
-    },12000);}
+    },heroSlideInterval(slides[index]));}
 
     controls.querySelector('[data-hero-prev]').addEventListener('click',()=>{showSlide(index-1);schedule();});
 
