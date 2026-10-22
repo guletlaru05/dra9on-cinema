@@ -27,7 +27,7 @@
     if (privatePage || motion.matches || !observer) return;
     const candidates = new Set();
     root.querySelectorAll(`section,article,${cards}`).forEach(node => {
-      if (node.closest('#hero,dialog,form,.functional-service-gate,[role="status"]') ||
+      if (node.closest('#hero,[data-actors-motion],dialog,form,.functional-service-gate,[role="status"]') ||
           node.matches('.continue-watching,[hidden]')) return;
       // Reveal a section heading and its cards independently, so translations
       // never stack to more than 18px on a single visible item.

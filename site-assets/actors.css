@@ -8,3 +8,29 @@
 .actor-behind-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}.actor-behind-photo{margin:0;min-width:0}.actor-behind-photo .actor-photo img{aspect-ratio:auto;width:100%;height:auto}.actor-behind-photo figcaption{margin-top:13px;font-size:13px;line-height:1.7;color:#d0d0d6}.actor-behind-photo figcaption small{display:block;margin-top:5px;font-size:11px;line-height:1.8;color:#a6a6ae}.actors-group-behind{max-width:1200px;margin:0 auto 52px}.actors-group-behind .actor-photo{background:transparent}@media(max-width:900px){.actor-behind-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.actor-behind-gallery{grid-template-columns:1fr}.actors-group-behind{margin-bottom:34px}}
 
 .actor-behind-section{scroll-margin-top:130px}.actor-behind-cast{display:flex;flex-wrap:wrap;gap:8px 20px;margin-bottom:7px}.actor-behind-cast a{color:#efeff3;text-underline-offset:4px}.actor-behind-link{margin-top:40px}#actor-photo-dialog.has-caption img{max-height:calc(100dvh - 130px)}#actor-photo-dialog [data-actor-dialog-caption]{font-size:12px;line-height:1.7;color:#b8b8c1;text-align:center;max-width:900px;margin:12px auto 0}
+.actors-opening{position:relative;isolation:isolate;--actor-drift:0px;--actor-backdrop-drift:0px}
+.actors-opening::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 75% 28%,#31313a40,transparent 68%);transform:translateY(var(--actor-backdrop-drift))}
+.actor-title-mask{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.actor-title-mask>span{display:block}
+.actor-card-motion{transform:translateY(var(--actor-drift))}
+.actor-card-details>p:not(.section-eyebrow){font-size:13px;line-height:1.8;color:#bdbdc4;margin:0 0 14px}
+@media(max-width:700px){.actor-card-details>p:not(.section-eyebrow){font-size:12px}}
+@media(prefers-reduced-motion:no-preference){
+ .actors-opening.is-preparing .actor-card-photo,.actors-opening.is-preparing .actor-card-details{opacity:0}
+ .actors-opening.is-preparing .actor-title-mask>span{transform:translateY(105%)}
+ .actors-opening.is-entering .actor-card-photo{animation:actor-photo-enter .45s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--actor-order)*.15s)}
+ .actors-opening.is-entering .actor-card-details{animation:actor-details-enter .25s ease-out .9s both}
+ .actors-opening.is-entering .actor-title-mask>span{animation:actor-title-enter .6s cubic-bezier(.2,.7,.2,1) both}
+ .actors-opening.is-entering .actor-title-mask:nth-child(2)>span{animation-delay:.12s}
+ @keyframes actor-photo-enter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+ @keyframes actor-details-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+ @keyframes actor-title-enter{from{transform:translateY(105%)}to{transform:translateY(0)}}
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+ .actors-opening.is-settled .actor-card-photo{transition:transform .25s ease,opacity .25s ease}
+ .actors-opening.is-settled .actor-card-link:hover .actor-card-photo,.actors-opening.is-settled .actor-card-link:focus-visible .actor-card-photo{transform:scale(1.02)}
+ .actors-opening.is-settled .actors-grid:has(.actor-card-link:hover) .actor-card-link:not(:hover) .actor-card-photo{opacity:.78}
+}
+@media(prefers-reduced-motion:reduce){
+ .actors-opening::before,.actor-card-motion,.actor-card-photo,.actor-card-details,.actor-title-mask>span{transform:none!important;opacity:1!important;animation:none!important;transition:none!important}
+}

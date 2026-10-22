@@ -67,7 +67,7 @@ def build(out,origin,works,head,base_path=''):
   alt=actor['name'][lang]+' · '+UI['ai_keyword'][lang]+' · '+UI['fullbody'][lang]
   sizes='(max-width: 700px) 100vw, 54vw' if large else '(max-width: 600px) 46vw, (max-width: 1000px) 46vw, 23vw'
   srcset=(asset(record['small'])+' 400w, '+path+' 800w') if record.get('small') and not record.get('portrait') else path+' 800w'
-  image='<img data-actor-image src="'+e(path,quote=True)+'" srcset="'+e(srcset,quote=True)+'" sizes="'+sizes+'" width="800" height="1200" alt="'+e(alt,quote=True)+'" draggable="false" '+('fetchpriority="high"' if large or actor==ACTORS[0] else 'loading="lazy"')+' decoding="async">'
+  image='<img data-actor-image src="'+e(path,quote=True)+'" srcset="'+e(srcset,quote=True)+'" sizes="'+sizes+'" width="800" height="1200" alt="'+e(alt,quote=True)+'" draggable="false" '+('fetchpriority="high"' if large or actor==ACTORS[0] else 'loading="eager"')+' decoding="async">'
   if large:return '<button class="actor-photo" type="button" data-actor-photo="'+e(path,quote=True)+'" aria-label="'+e(actor['name'][lang]+' · '+row('사진 크게 보기','Enlarge photo','写真を拡大','Ampliar foto')[lang],quote=True)+'">'+image+'</button>'
   return image
  def inquiry(actor,lang):
@@ -118,7 +118,7 @@ def build(out,origin,works,head,base_path=''):
    result+='<figure>'+start+img+end+'<figcaption>'+('<a href="'+base_path+prefix(lang)+work['path']+'">'+e(caption)+' ↗</a>' if screen else e(caption))+'</figcaption></figure>'
   return result+'</div></section>'
  def card(actor,lang):
-  return '<article class="actor-card"><a class="actor-card-link" href="'+base_path+prefix(lang)+'/actors/'+actor['slug']+'/"><div class="actor-card-photo">'+photo(actor,lang)+'</div><div class="actor-card-caption"><p class="section-eyebrow">FALL 707: REBOOT</p><h2>'+e(actor['name'][lang])+'<span aria-hidden="true">↗</span></h2><p>'+e(actor['line'][lang])+'</p><small class="actor-disclosure">'+tr('disclosure',lang)+'</small></div></a></article>'
+  return '<article class="actor-card" style="--actor-order:'+str(ACTORS.index(actor))+'"><a class="actor-card-link" href="'+base_path+prefix(lang)+'/actors/'+actor['slug']+'/"><div class="actor-card-motion"><div class="actor-card-photo">'+photo(actor,lang)+'</div></div><div class="actor-card-caption"><div class="actor-card-details"><p class="section-eyebrow">FALL 707: REBOOT</p><h2>'+e(actor['name'][lang])+'<span aria-hidden="true">↗</span></h2><p>'+e(actor['line'][lang])+'</p></div><small class="actor-disclosure">'+tr('disclosure',lang)+'</small></div></a></article>'
  def page(lang,path,title,description,body):
   home=(out/prefix(lang).strip('/')/'index.html').read_text(encoding='utf-8')
   nav=re.search(r'<header class="header"[\s\S]*?</header>',home).group()
@@ -158,7 +158,9 @@ def build(out,origin,works,head,base_path=''):
   (folder/'index.html').write_text(doc+'<body class="watch-page actor-page"><a class="skip-link" href="#main">'+tr('profile',lang)+'</a>'+nav+banner+body+foot+'</body></html>',encoding='utf-8')
  for lang in LANGS:
   pre=base_path+prefix(lang)
-  listing='<main id="main" class="actors-main"><header class="actors-intro"><p class="section-eyebrow">DRA9ON CINEMA / ORIGINAL TALENT</p><div><h1>'+tr('title',lang)+'</h1><p>'+tr('intro',lang)+'</p></div></header><section class="actors-grid" aria-label="'+tr('back',lang)+'">'+''.join(card(a,lang) for a in ACTORS)+'</section>'+notice_html(lang,base_path)+'</main>'
+  title_lines={'ko':['AI 배우','에이전시'],'en':['AI Actor','Agency'],'ja':['AI俳優','エージェンシー'],'es':['Agencia de','actores IA']}[lang]
+  motion_title=''.join('<span class="actor-title-mask"><span>'+e(line)+'</span></span>' for line in title_lines)
+  listing='<main id="main" class="actors-main"><div class="actors-opening" data-actors-motion><header class="actors-intro"><p class="section-eyebrow">DRA9ON CINEMA / ORIGINAL TALENT</p><div><h1 aria-label="'+tr('title',lang)+'">'+motion_title+'</h1><p>'+tr('intro',lang)+'</p></div></header><section class="actors-grid" aria-label="'+tr('back',lang)+'">'+''.join(card(a,lang) for a in ACTORS)+'</section></div>'+notice_html(lang,base_path)+'</main>'
   behind_gallery=behind(lang)
   if behind_gallery:
    listing=listing.replace(notice_html(lang,base_path),behind_gallery+notice_html(lang,base_path),1)
