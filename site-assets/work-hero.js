@@ -11,6 +11,7 @@
   const constrained=()=>motion.matches||Boolean(connection?.saveData)||/^(slow-2g|2g|3g)$/.test(connection?.effectiveType||'')||(connection?.downlink>0&&connection.downlink<1.5);
   let index=0,ready=false,visible=!env.IntersectionObserver,paused=false,dialogOpen=false,active,spare;
   let frame=0,lastTick=null,elapsed=0,prepared=-1,starting=false,generation=0;
+  let posterBuffer=null,preparedPoster=-1;
   const failed=new Set(),prefetchFailed=new Set();
   let lastFocus='';
   function focusAt(s,time=0){
@@ -38,6 +39,12 @@
   function source(s,v){return mobile.matches?s.mobile:(v.canPlayType('video/webm')?(large.matches&&s.hdWebm?s.hdWebm:s.webm):(large.matches&&s.hdMp4?s.hdMp4:s.mp4));}
   function load(v,i){v.dataset.workIndex=String(i);v.preload='auto';v.src=source(slides[i],v);v.load();}
   function paintProgress(value){lines[index].style.transform='scaleX('+Math.min(1,Math.max(0,value))+')';}
+  function warmNextPoster(){
+   const next=(index+1)%slides.length;if(preparedPoster===next||!env.Image)return;
+   preparedPoster=next;posterBuffer=new env.Image();posterBuffer.decoding='async';
+   posterBuffer.src=mobile.matches&&slides[next].mobilePoster?slides[next].mobilePoster:slides[next].poster;
+   posterBuffer.decode?.().catch(()=>{});
+  }
   function updatePause(){pause.textContent=paused?'▶':'Ⅱ';pause.setAttribute('aria-label',paused?config.resume:config.pause);pause.setAttribute('aria-pressed',String(paused));}
   function schedule(){if(!frame&&canRun())frame=env.requestAnimationFrame(tick);}
   function fallBack(){failed.add(index);starting=false;release(active);clearSpare();elapsed=0;lastTick=null;schedule();}
@@ -76,11 +83,13 @@
    if(posterOnly()){
     if(lastTick!==null)elapsed+=Math.min(now-lastTick,250);lastTick=now;
     paintProgress(elapsed/(slides[index].duration*1000));
+    if(elapsed>=slides[index].duration*1000-1000)warmNextPoster();
     if(elapsed>=slides[index].duration*1000){select(index+1);return;}
    }else{
     focusAt(slides[index],active.currentTime);
     const duration=Number.isFinite(active.duration)?Math.min(active.duration,slides[index].duration):slides[index].duration;
     paintProgress(active.currentTime/duration);
+    if(active.currentTime>=duration-1)warmNextPoster();
     if(active.currentTime>=duration-1&&prepared<0&&!prefetchFailed.has((index+1)%slides.length)){prepared=(index+1)%slides.length;load(spare,prepared);}
     if(active.ended||active.currentTime>=duration-.03){select(index+1);return;}
    }

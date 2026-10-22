@@ -1,7 +1,7 @@
 const {test}=require('node:test'),assert=require('node:assert/strict');
 const {createWorkHero}=require('./site-assets/work-hero.js');
 function fixture({reduced=false,saveData=false,effectiveType='4g',downlink=5,mobile=false,large=false,rejectPlay=false}={}){
- const requests=[],videos=[],queue=new Map(),events={},observers=[];let id=0;
+ const imageRequests=[],requests=[],videos=[],queue=new Map(),events={},observers=[];let id=0;
  const element=()=>{const handlers={},attrs={},classes=new Set();return {dataset:{},style:{},paused:true,currentTime:0,duration:8,ended:false,textContent:'',classList:{add:x=>classes.add(x),remove:x=>classes.delete(x),contains:x=>classes.has(x)},addEventListener(k,f){(handlers[k]??=[]).push(f);},emit(k,arg={}){for(const f of handlers[k]||[])f(arg);},setAttribute(k,v){attrs[k]=v;},getAttribute(k){return attrs[k]??null;},removeAttribute(k){delete attrs[k];},focus(){},scrollIntoView(){},canPlayType:()=>true,load(){this.currentTime=0;this.ended=false;},pause(){this.paused=true;},play(){if(rejectPlay)return Promise.reject({name:'NotAllowedError'});this.paused=false;this.emit('playing');return Promise.resolve();},set src(v){attrs.src=v;requests.push(v);},get src(){return attrs.src;}};};
  const slides=Array.from({length:5},(_,i)=>({id:'clip-'+i,title:'Title '+i,description:'Description '+i,label:'Label '+i,tab:'Work '+i,url:'/work-'+i+'/',poster:'poster-'+i+'.jpg',mobilePoster:i===4?'actor-mobile.jpg':null,mobileWidth:i===4?640:640,mobileHeight:i===4?1138:360,focusTrack:i===3?[{at:4,mobile:'80% 30%'}]:[],webm:'clip-'+i+'.webm',hdWebm:'clip-'+i+'-hd.webm',hdMp4:'clip-'+i+'-hd.mp4',mp4:'clip-'+i+'.mp4',mobile:'clip-'+i+'-mobile.mp4',duration:8,focus:{desktop:i===4?'50% 0%':'45% 15%',mobile:'50% 5%'},fit:i===4?'cover':'contain',width:i===4?1280:960,height:i===4?720:540}));
  const tabs=slides.map(()=>{const x=element(),line=element();x.querySelector=()=>line;return x;});
@@ -12,10 +12,10 @@ function fixture({reduced=false,saveData=false,effectiveType='4g',downlink=5,mob
  const root={dataset:{},style:{setProperty(name,value){this[name]=value;}},hidden:false,querySelector:s=>nodes[s],querySelectorAll:()=>tabs};
  const doc={readyState:'loading',hidden:false,body:{},createElement:element,querySelector:()=>null,addEventListener(k,f){events[k]=f;}};
  const motion={matches:reduced,addEventListener(k,f){this.change=f;}},viewport={matches:mobile,addEventListener(k,f){this.change=f;}};
- const env={document:doc,navigator:{connection:{saveData,effectiveType,downlink}},matchMedia:s=>s.includes('max-width')?viewport:s.includes('min-width')?{matches:large}:motion,addEventListener(k,f){events[k]=f;},requestAnimationFrame(f){queue.set(++id,f);return id;},cancelAnimationFrame(i){queue.delete(i);},IntersectionObserver:class{constructor(cb){observers.push(cb);}observe(){}},MutationObserver:class{observe(){}}};
+ const env={Image:class{set src(value){imageRequests.push(value);}decode(){return Promise.resolve();}},document:doc,navigator:{connection:{saveData,effectiveType,downlink}},matchMedia:s=>s.includes('max-width')?viewport:s.includes('min-width')?{matches:large}:motion,addEventListener(k,f){events[k]=f;},requestAnimationFrame(f){queue.set(++id,f);return id;},cancelAnimationFrame(i){queue.delete(i);},IntersectionObserver:class{constructor(cb){observers.push(cb);}observe(){}},MutationObserver:class{observe(){}}};
  const controller=createWorkHero(root,env);
  const step=now=>{const tasks=[...queue.values()];queue.clear();tasks.forEach(f=>f(now));};
- return {requests,videos,root,doc,tabs,heading,view,panel,pause,poster,posterSource,viewport,controller,step,ready(){observers[0]([{isIntersecting:true}]);events.load();step(0);step(0);},visible(value){observers[0]([{isIntersecting:value}]);},hidden(value){doc.hidden=value;events.visibilitychange();}};
+ return {imageRequests,requests,videos,root,doc,tabs,heading,view,panel,pause,poster,posterSource,viewport,controller,step,ready(){observers[0]([{isIntersecting:true}]);events.load();step(0);step(0);},visible(value){observers[0]([{isIntersecting:value}]);},hidden(value){doc.hidden=value;events.visibilitychange();}};
 }
 
 test('each clip switches its own framing, poster dimensions and responsive posters on desktop/mobile',()=>{
@@ -59,4 +59,9 @@ test('autoplay rejection keeps the poster and releases the failed video',async()
 });
 test('failed prefetch is not retried every animation frame',()=>{
  const f=fixture();f.ready();f.videos[0].currentTime=7.2;f.step(100);f.videos[1].emit('error');for(let t=200;t<2000;t+=100)f.step(t);assert.equal(f.requests.length,2);
+});
+test('poster-only mode decodes just the next poster in the final second without any video',()=>{
+ const f=fixture({saveData:true});f.ready();for(let t=0;t<=6500;t+=250)f.step(t);
+ assert.deepEqual(f.imageRequests,[]);for(let t=6750;t<=7500;t+=250)f.step(t);
+ assert.deepEqual(f.imageRequests,['poster-1.jpg']);assert.deepEqual(f.requests,[]);
 });

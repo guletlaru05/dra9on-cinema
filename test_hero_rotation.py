@@ -22,7 +22,7 @@ class WorkHeroTests(unittest.TestCase):
   config=json.loads((ROOT/'hero_rotation_config.json').read_text(encoding='utf-8'))
   for clip in config['clips']:
    for kind,name in clip['files'].items():
-    self.assertRegex(name,r'\.[a-f0-9]{12}\.(?:mp4|webm|jpg)$')
+    self.assertRegex(name,r'\.[a-f0-9]{12}\.(?:mp4|webm|jpg|webp)$')
     file=ROOT/'site-assets/assets/hero'/name;self.assertLess(file.stat().st_size,1_000_000 if kind in ('mobile','poster','mobilePoster') else 5_000_000)
     if kind=='poster':
      with Image.open(file) as im:self.assertEqual(im.size,tuple(clip.get('dimensions',{'desktop':[960,540]})['desktop']))
