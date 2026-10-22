@@ -13,6 +13,12 @@ OFFLINE={
  'ja':('インターネットに接続されていません','接続を確認して、もう一度お試しください。動画の再生にはインターネット接続が必要です。','再接続'),
  'es':('Sin conexión','Comprueba tu conexión e inténtalo de nuevo. Los vídeos necesitan conexión a internet.','Volver a conectar')}
 
+def worker_version(out,template,revision):
+ version_hash=sha256((template+revision).encode())
+ for page in sorted(out.rglob('*.html')):
+  version_hash.update(page.relative_to(out).as_posix().encode());version_hash.update(page.read_bytes())
+ return version_hash.hexdigest()[:16]
+
 def build_pwa(out,origin,works,base_path=''):
  folder=out/'pwa';folder.mkdir(exist_ok=True)
  # Resize the existing brand asset, never synthesize a replacement logo.
@@ -48,7 +54,9 @@ def build_pwa(out,origin,works,base_path=''):
   episodes.append({'id':work['id'],'season':work['season'],'episode':work['episode'],'publishedAt':work.get('releaseAt') or work['uploadDate'], 'image':work['image'],'locales':{lang:{'title':catalogs[lang][work['id']]['name'],'url':catalogs[lang][work['id']]['path']} for lang in LANGS}})
  (folder/'episodes.json').write_text(json.dumps({'revision':os.getenv('GITHUB_SHA','local'),'generatedAt':now.isoformat(),'episodes':episodes},ensure_ascii=False),encoding='utf-8')
  template=(out/'service-worker-template.js').read_text(encoding='utf-8')
- version=sha256((template+''.join((folder/f'offline-{lang}.html').read_text(encoding='utf-8') for lang in LANGS)).encode()).hexdigest()[:16]
+ # Any changed page/deployment must change sw.js, including releases whose
+ # offline screen is unchanged. Otherwise existing tabs retain obsolete assets.
+ version=worker_version(out,template,os.getenv('GITHUB_SHA','local'))
  (out/'sw.js').write_text(template.replace('__BASE_JSON__',json.dumps(base_path)).replace('__VERSION__',version),encoding='utf-8')
  (out/'service-worker-template.js').unlink()
  asset_version=sha256((out/'pwa.js').read_bytes()+(out/'pwa.css').read_bytes()).hexdigest()[:12]

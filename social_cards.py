@@ -231,7 +231,7 @@ def build_social_cards(out, origin, base_path='',works=None):
         elif kind == 'notes': sources = [out/'assets/notes/creator-workflow.png']
         elif kind == 'tutorials':
             sources = [out/'assets/tutorials/lighting-contrast/gpt-rembrandt.webp']
-            desc = TUTORIAL_INTRO[lang]
+            # SEO already supplies the localized introduction and brand aliases.
         elif route == '/stickers/': sources = [out/'assets/notes/min-stickers-12-center-soft-wm.webp']
         elif kind == 'actor':
             slug = route.strip('/').split('/')[-1]

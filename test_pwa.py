@@ -1,7 +1,16 @@
-import unittest,json,re
+import unittest,json,re,tempfile
 from pathlib import Path
 from PIL import Image
 class PWA(unittest.TestCase):
+ def test_page_or_revision_changes_update_the_worker_without_relying_on_offline_copy(self):
+  from pwa import worker_version
+  with tempfile.TemporaryDirectory() as directory:
+   root=Path(directory);page=root/'index.html';page.write_text('old page')
+   old=worker_version(root,'same worker template','commit-a')
+   self.assertEqual(old,worker_version(root,'same worker template','commit-a'))
+   page.write_text('new page referencing new hashed assets')
+   new=worker_version(root,'same worker template','commit-a');self.assertNotEqual(old,new)
+   self.assertNotEqual(new,worker_version(root,'same worker template','commit-b'))
  def test_four_languages_install_and_launch_without_changing_catalogs(self):
   root=Path('dist')
   for lang in ('ko','en','ja','es'):

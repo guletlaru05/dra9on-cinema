@@ -281,7 +281,7 @@ for lang, prefix in [('ko',''),('en','/en')]:
     article = document.split(NEWTAKE_START,1)[1].split(NEWTAKE_END,1)[0]
     assert article.replace(' data-external-src=', ' src=') == newtake_article(lang), 'Newtake body was changed by the shared page pipeline'
     assert page.metas['description'] == [metadata['description']]
-    assert page.metas['og:title'] == [metadata['title']+' | DRA9ON CINEMA']
+    assert page.metas['og:title'] == [metadata['title']+' | 드래곤시네마 DRA9ON CINEMA']
     assert page.metas['og:description'] == [metadata['description']]
     assert page.metas['og:type'] == ['article']
     assert page.metas['article:published_time'] == [metadata['date']]

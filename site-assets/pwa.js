@@ -10,7 +10,14 @@
  }[lang];
  if(!('serviceWorker'in navigator)||!window.isSecureContext)return;
  const register=()=>navigator.serviceWorker.register(base+'/sw.js',{scope:base+'/',updateViaCache:'none'});
- const registration=register().then(()=>navigator.serviceWorker.ready).catch(()=>null);
+ let currentRegistration=null,lastUpdate=Date.now();
+ const registration=register().then(reg=>{currentRegistration=reg;return navigator.serviceWorker.ready;}).catch(()=>null);
+ // Long-lived installed apps also check on returning to the foreground.
+ // Activation owns the single refresh; a controllerchange reload here would double it.
+ window.addEventListener('focus',()=>{
+  if(!currentRegistration||Date.now()-lastUpdate<60000)return;
+  lastUpdate=Date.now();void currentRegistration.update().catch(()=>{});
+ });
  // Private pages get the generic offline fallback but no subscription controls.
  if(location.pathname.startsWith(base+'/library/'))return;
  const standalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;

@@ -5,6 +5,7 @@ from urllib.error import HTTPError
 from concurrent.futures import ThreadPoolExecutor
 from time import sleep
 import json
+import re
 from html.parser import HTMLParser
 ROOT=Path(__file__).resolve().parents[1]
 SITE=ROOT/'dist'
@@ -18,14 +19,31 @@ class SocialMeta(HTMLParser):
   attrs=dict(pairs)
   if tag=='meta':self.values[attrs.get('property',attrs.get('name'))]=attrs.get('content','')
 
+def organizations(value):
+ if isinstance(value,dict):
+  if value.get('@type')=='Organization':yield value
+  for child in value.values():yield from organizations(child)
+ elif isinstance(value,list):
+  for child in value:yield from organizations(child)
+
 def check_once(file):
  rel=file.relative_to(SITE).as_posix()
  path='/'+rel.removesuffix('index.html') if rel.endswith('index.html') else '/'+rel
- method='GET' if file.suffix=='.html' else 'HEAD'
+ method='GET' if file.suffix=='.html' or rel=='sw.js' else 'HEAD'
  result={'path':path,'method':method}
  try:
   with urlopen(Request(HOST+path,method=method,headers={'User-Agent':'DRA9ON-deploy-check/1.0'}),timeout=30) as response:
    result.update(status=response.status,url=response.geturl(),cacheControl=response.headers.get('Cache-Control'))
+   if rel in ('sw.js','pwa.js'):
+    control=response.headers.get('Cache-Control','').lower()
+    if 'no-cache' not in control and 'no-store' not in control:raise ValueError('PWA updater is cacheable')
+    if response.headers.get('CF-Cache-Status','').upper() in ('HIT','STALE','UPDATING','REVALIDATED'):raise ValueError('PWA updater served from edge cache')
+    if response.headers.get('Clear-Site-Data'):raise ValueError('Unexpected login-clearing recovery header')
+    result['cfCacheStatus']=response.headers.get('CF-Cache-Status')
+   if rel=='sw.js':
+    worker=response.read().decode('utf-8')
+    if 'Do not await navigate()' not in worker or "cache:'no-store'" not in worker:raise ValueError('Old service worker deployed')
+    result['pwaCacheVersion']=re.search(r"CACHE='([^']+)'",worker)[1]
    if path.startswith(('/assets/build/','/assets/optimized/','/assets/fonts/','/assets/og/pages/','/assets/hero/')) and 'max-age=31536000' not in (response.headers.get('Cache-Control') or ''):raise ValueError('Missing long-lived versioned asset cache header')
    if file.suffix=='.html':
     text=response.read(2_000_000).decode('utf-8')
@@ -41,6 +59,9 @@ def check_once(file):
       if actual.get(key)!=expected.get(key):raise ValueError('Live social metadata differs from this build: '+key)
      result['ogImage']=actual['og:image']
      result['socialMetadata']={key:actual.get(key,'') for key in ('og:image','twitter:image','og:title','og:description','twitter:card')}
+     entities=[org for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>',text,re.S) for org in organizations(json.loads(block))]
+     if not any(org.get('name')=='드래곤시네마 DRA9ON CINEMA' and {'드래곤 시네마','dragon cinema','드래곤나인'}.issubset(org.get('alternateName',[])) for org in entities):raise ValueError('Live Organization brand aliases missing')
+     result['organizationAliasesVerified']=True
  except HTTPError as error:
   result.update(status=error.code)
   if path!='/404.html':result['error']='HTTP '+str(error.code)

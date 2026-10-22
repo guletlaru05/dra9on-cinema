@@ -4,20 +4,43 @@ const offline=lang=>BASE+'/pwa/offline-'+lang+'.html';
 const language=path=>path.slice(BASE.length).split('/')[1];
 const langs=new Set(['ko','en','ja','es']);
 self.addEventListener('install',event=>{event.waitUntil((async()=>{
- const cache=await caches.open(CACHE);
- await cache.addAll([...langs].map(offline).concat([BASE+'/pwa/icon-192.png',BASE+'/pwa/icon-512.png']));
+ // A blocked/quota-limited CacheStorage must never prevent an online recovery.
+ try{
+  const cache=await caches.open(CACHE);
+  await cache.addAll([...langs].map(offline).concat([BASE+'/pwa/icon-192.png',BASE+'/pwa/icon-512.png']).map(url=>new Request(url,{cache:'reload'})));
+ }catch{}
  await self.skipWaiting();
 })());});
 self.addEventListener('activate',event=>{event.waitUntil((async()=>{
- await Promise.all((await caches.keys()).filter(k=>k.startsWith('dra9on-pwa-')&&k!==CACHE).map(k=>caches.delete(k)));
+ let upgrading=false;
+ try{
+  const previous=(await caches.keys()).filter(k=>k.startsWith('dra9on-pwa-')&&k!==CACHE);
+  upgrading=previous.length>0;
+  await Promise.all(previous.map(k=>caches.delete(k)));
+ }catch{}
  await self.clients.claim();
+ // Activation runs once per version. Refresh even old pages without an update
+ // listener, without deleting cookies, Firebase IndexedDB or push subscriptions.
+ // Keep Google's auth helper/popup in place while it completes a sign-in.
+ if(upgrading){
+  const windows=await self.clients.matchAll({type:'window',includeUncontrolled:true});
+  for(const client of windows){
+   // Do not await navigate(): its fetch waits for activation to finish.
+   // Waiting here would deadlock the very page we are trying to recover.
+   try{const url=new URL(client.url);if(url.origin===self.location.origin&&url.pathname.startsWith(BASE+'/')&&!url.pathname.startsWith(BASE+'/__/')&&'navigate'in client)void client.navigate(url.href).catch(()=>{});}catch{}
+  }
+ }
 })());});
 self.addEventListener('fetch',event=>{
  const url=new URL(event.request.url);
- if(event.request.method!=='GET'||url.origin!==self.location.origin||event.request.mode!=='navigate')return;
+ if(event.request.method!=='GET'||url.origin!==self.location.origin||event.request.mode!=='navigate'||url.pathname.startsWith(BASE+'/__/'))return;
  event.respondWith((async()=>{
   try{return await fetch(event.request,{cache:'no-store'});}
-  catch{const lang=language(url.pathname);return await (await caches.open(CACHE)).match(offline(langs.has(lang)?lang:'ko'))||new Response('Offline',{status:503});}
+  catch{
+   const lang=language(url.pathname);
+   try{const fallback=await (await caches.open(CACHE)).match(offline(langs.has(lang)?lang:'ko'));if(fallback)return fallback;}catch{}
+   return new Response('Offline — please reconnect and reload.',{status:503,headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'no-store'}});
+  }
  })());
 });
 function safePage(value){
