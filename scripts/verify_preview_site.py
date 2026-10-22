@@ -40,6 +40,7 @@ def check_once(file):
      for key in ('og:image','twitter:image','og:title','og:description','twitter:card'):
       if actual.get(key)!=expected.get(key):raise ValueError('Live social metadata differs from this build: '+key)
      result['ogImage']=actual['og:image']
+     result['socialMetadata']={key:actual.get(key,'') for key in ('og:image','twitter:image','og:title','og:description','twitter:card')}
  except HTTPError as error:
   result.update(status=error.code)
   if path!='/404.html':result['error']='HTTP '+str(error.code)

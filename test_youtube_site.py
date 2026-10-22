@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 import io
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -77,7 +78,11 @@ class YouTubeSiteTests(unittest.TestCase):
                                    cwd=ROOT,env=env,capture_output=True,text=True,encoding='utf-8',timeout=90)
             self.assertEqual(checked.returncode,0,checked.stdout+'\n'+checked.stderr)
             home=(out/'index.html').read_text(encoding='utf-8')
-            self.assertIn('FALL 707 · S4 EP.01',home)
+            # New releases lead the episode shelf; the approved hero reel stays
+            # tied to its own footage rather than relabeling an old clip as S4.
+            latest=re.search(r'<section[^>]*id="latest-episodes"[^>]*>([\s\S]*?)</section>',home)[1]
+            self.assertEqual(re.search(r'data-home-episode="([^"]+)"',latest)[1],'syncTest401')
+            self.assertIn('S4 · EP.01',latest)
             self.assertIn('data-category="s4"',home)
             self.assertIn('/watch/fall-707-s4-ep1/',home)
             self.assertIn('<strong>13800</strong>',home)
@@ -89,7 +94,7 @@ class YouTubeSiteTests(unittest.TestCase):
             english=(out/'en/index.html').read_text(encoding='utf-8')
             self.assertIn('Season 4',english)
             self.assertIn('A Test Signal 4',english)
-            self.assertIn('YouTube subscribers <strong>13800</strong>',english)
+            self.assertIn('<dd><strong>13800</strong><span>subscribers</span></dd>',english)
             watch=(out/'en/watch/fall-707-s4-ep1/index.html').read_text(encoding='utf-8')
             self.assertIn('YouTube views <strong>0</strong>',watch)
             self.assertNotIn('AIza',json.dumps(snapshot))
