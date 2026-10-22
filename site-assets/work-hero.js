@@ -3,21 +3,27 @@
  'use strict';
  function createWorkHero(root,env=window){
   const doc=env.document,config=JSON.parse(root.querySelector('[data-work-hero-config]').textContent);
-  const slides=config.slides,media=root.querySelector('.hero-media'),poster=root.querySelector('.hero-image'),ambience=root.querySelector('.hero-ambience');
+  const slides=config.slides,media=root.querySelector('.hero-media'),poster=root.querySelector('.hero-image'),mobilePoster=root.querySelector('.hero-mobile-poster');
   const heading=root.querySelector('#hero-title'),label=root.querySelector('.d9-work-label'),description=root.querySelector('.d9-work-description');
   const view=root.querySelector('.hero-feature-link'),panel=root.querySelector('[role=tabpanel]');
   const tabs=[...root.querySelectorAll('[data-work-index]')],lines=tabs.map(t=>t.querySelector('i')),pause=root.querySelector('.d9-work-pause');
-  const motion=env.matchMedia('(prefers-reduced-motion: reduce)'),mobile=env.matchMedia('(max-width:700px)'),connection=env.navigator.connection;
+  const motion=env.matchMedia('(prefers-reduced-motion: reduce)'),mobile=env.matchMedia('(max-width:700px)'),large=env.matchMedia('(min-width:1600px)'),connection=env.navigator.connection;
   const constrained=()=>motion.matches||Boolean(connection?.saveData)||/^(slow-2g|2g|3g)$/.test(connection?.effectiveType||'')||(connection?.downlink>0&&connection.downlink<1.5);
   let index=0,ready=false,visible=!env.IntersectionObserver,paused=false,dialogOpen=false,active,spare;
   let frame=0,lastTick=null,elapsed=0,prepared=-1,starting=false,generation=0;
   const failed=new Set(),prefetchFailed=new Set();
+  let lastFocus='';
+  function focusAt(s,time=0){
+   let focus=mobile.matches?s.focus?.mobile:s.focus?.desktop;
+   for(const point of s.focusTrack||[]){if(time<point.at)break;focus=(mobile.matches?point.mobile:point.desktop)||focus;}
+   focus=focus||'50% 30%';if(focus!==lastFocus){root.style.setProperty('--d9-hero-focus',focus);lastFocus=focus;}
+  }
   function composition(s){
-   const focus=mobile.matches?s.focus?.mobile:s.focus?.desktop;
-   root.style.setProperty('--d9-hero-focus',focus||'50% 15%');
-   root.style.setProperty('--d9-hero-fit',s.fit==='cover'?'cover':'contain');
-   if(ambience)ambience.src=s.poster;
-   poster.width=s.width||960;poster.height=s.height||540;
+   focusAt(s);root.style.setProperty('--d9-hero-fit','cover');
+   if(mobilePoster)mobilePoster.srcset=s.mobilePoster||s.poster;
+   poster.src=mobile.matches&&s.mobilePoster&&!mobilePoster?s.mobilePoster:s.poster;
+   poster.width=mobile.matches&&s.mobileWidth?s.mobileWidth:(s.width||960);
+   poster.height=mobile.matches&&s.mobileHeight?s.mobileHeight:(s.height||540);
   }
   function createVideo(){
    const v=doc.createElement('video');v.muted=true;v.defaultMuted=true;v.playsInline=true;v.preload='none';v.disablePictureInPicture=true;
@@ -29,7 +35,7 @@
   const posterOnly=()=>constrained()||failed.has(index);
   function release(v){v.pause();v.classList.remove('is-playing');if(v.getAttribute('src')){v.removeAttribute('src');v.load();}delete v.dataset.workIndex;}
   function clearSpare(){release(spare);prepared=-1;}
-  function source(s,v){return mobile.matches?s.mobile:(v.canPlayType('video/webm')?s.webm:s.mp4);}
+  function source(s,v){return mobile.matches?s.mobile:(v.canPlayType('video/webm')?(large.matches&&s.hdWebm?s.hdWebm:s.webm):(large.matches&&s.hdMp4?s.hdMp4:s.mp4));}
   function load(v,i){v.dataset.workIndex=String(i);v.preload='auto';v.src=source(slides[i],v);v.load();}
   function paintProgress(value){lines[index].style.transform='scaleX('+Math.min(1,Math.max(0,value))+')';}
   function updatePause(){pause.textContent=paused?'▶':'Ⅱ';pause.setAttribute('aria-label',paused?config.resume:config.pause);pause.setAttribute('aria-pressed',String(paused));}
@@ -72,6 +78,7 @@
     paintProgress(elapsed/(slides[index].duration*1000));
     if(elapsed>=slides[index].duration*1000){select(index+1);return;}
    }else{
+    focusAt(slides[index],active.currentTime);
     const duration=Number.isFinite(active.duration)?Math.min(active.duration,slides[index].duration):slides[index].duration;
     paintProgress(active.currentTime/duration);
     if(active.currentTime>=duration-1&&prepared<0&&!prefetchFailed.has((index+1)%slides.length)){prepared=(index+1)%slides.length;load(spare,prepared);}
@@ -97,6 +104,7 @@
   if(env.MutationObserver)new env.MutationObserver(()=>{dialogOpen=Boolean(doc.querySelector('dialog[open]'));sync();}).observe(doc.body,{subtree:true,attributes:true,attributeFilter:['hidden','open']});
   motion.addEventListener?.('change',()=>{generation++;starting=false;lastTick=null;sync();});
   mobile.addEventListener?.('change',()=>{generation++;release(active);clearSpare();starting=false;composition(slides[index]);sync();});
+  large.addEventListener?.('change',()=>{generation++;release(active);clearSpare();starting=false;sync();});
   connection?.addEventListener?.('change',()=>{generation++;starting=false;lastTick=null;sync();});
   const afterLoad=()=>env.requestAnimationFrame(()=>env.requestAnimationFrame(()=>{ready=true;sync();}));
   if(doc.readyState==='complete')afterLoad();else env.addEventListener('load',afterLoad,{once:true});

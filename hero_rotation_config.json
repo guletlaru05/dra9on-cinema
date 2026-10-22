@@ -12,117 +12,247 @@
       "id": "01-min-current",
       "duration": 8,
       "files": {
-        "mp4": "01-min-current.270fb84e83e3.mp4",
-        "webm": "01-min-current.c39653df1d7e.webm",
-        "mobile": "01-min-current-mobile.6687e554e12f.mp4",
-        "poster": "01-min-current.b611c06b0fab.jpg"
+        "mp4": "01-min-current-mp4-responsive.05ff2e270505.mp4",
+        "webm": "01-min-current-webm-responsive.94d273c6b745.webm",
+        "mobile": "01-min-current-mobile-responsive.82376b3b02cd.mp4",
+        "poster": "01-min-current.fccb974c077f.jpg",
+        "hdMp4": "01-min-current.b50cbab4f927.mp4",
+        "hdWebm": "01-min-current.4cff7f53b567.webm",
+        "mobilePoster": "01-min-current-phone-poster.7e54117eb101.jpg"
       },
       "approved": true,
       "bytes": {
-        "mp4": 701207,
-        "webm": 851111,
-        "mobile": 329485,
-        "poster": 44945
+        "mp4": 2492891,
+        "webm": 2326353,
+        "mobile": 757066,
+        "poster": 83407,
+        "hdMp4": 3675161,
+        "hdWebm": 4828533,
+        "mobilePoster": 70294
       },
       "focus": {
-        "desktop": "50% 15%",
-        "mobile": "50% 15%"
+        "desktop": "50% 32%",
+        "mobile": "45% 30%"
       },
-      "fit": "contain"
+      "fit": "cover",
+      "dimensions": {
+        "desktop": [
+          1920,
+          836
+        ],
+        "mobile": [
+          640,
+          278
+        ]
+      },
+      "posterDimensions": {
+        "mobile": [
+          640,
+          1138
+        ]
+      },
+      "focusTrack": [
+        {
+          "at": 0,
+          "mobile": "45% 30%"
+        },
+        {
+          "at": 3.25,
+          "mobile": "78% 30%"
+        }
+      ]
     },
     {
       "id": "02-s2",
       "duration": 8,
       "files": {
-        "mp4": "02-s2.d7a229532001.mp4",
-        "webm": "02-s2.119e5a7f240f.webm",
-        "mobile": "02-s2-mobile.01740630f166.mp4",
-        "poster": "02-s2.6034677984ad.jpg"
+        "mp4": "02-s2-combat-mp4.d700198633af.mp4",
+        "webm": "02-s2-combat-webm.4faf84d65438.webm",
+        "mobile": "02-s2-combat-mobile-portrait.28d50a0434cd.mp4",
+        "poster": "02-s2-combat-clear-poster.beb2b91d8050.jpg",
+        "hdMp4": "02-s2-combat-hdMp4.963f5027d202.mp4",
+        "hdWebm": "02-s2-combat-hdWebm.ccddcddf6f26.webm",
+        "mobilePoster": "02-s2-combat-clear-mobilePoster.ba16547cf8db.jpg"
       },
       "approved": true,
       "bytes": {
-        "mp4": 333376,
-        "webm": 266452,
-        "mobile": 158467,
-        "poster": 31432
+        "mp4": 3271059,
+        "webm": 2512478,
+        "mobile": 746888,
+        "poster": 158956,
+        "hdMp4": 3499285,
+        "hdWebm": 2742160,
+        "mobilePoster": 56798
       },
       "focus": {
-        "desktop": "50% 15%",
-        "mobile": "50% 15%"
+        "desktop": "50% 30%",
+        "mobile": "50% 0%"
       },
-      "fit": "contain"
+      "fit": "cover",
+      "dimensions": {
+        "desktop": [
+          1920,
+          1080
+        ],
+        "mobile": [
+          640,
+          1138
+        ]
+      },
+      "posterDimensions": {
+        "mobile": [
+          640,
+          1138
+        ]
+      },
+      "selection": "Owner approved C: forest close combat, 8 seconds, 2026-10-22",
+      "composition": "C approved forest action; face-safe centred mobile foreground over same-video blurred fill."
     },
     {
       "id": "03-s1",
       "duration": 8,
       "files": {
-        "mp4": "03-s1.ee48812aec87.mp4",
-        "webm": "03-s1.f93be0f3e216.webm",
-        "mobile": "03-s1-mobile.3e589b7b266f.mp4",
-        "poster": "03-s1.24aaa6345c7d.jpg"
+        "mp4": "03-s1-mp4-responsive.179362b1e986.mp4",
+        "webm": "03-s1-webm-responsive.786a150bf39e.webm",
+        "mobile": "03-s1-mobile-responsive.a9814bc212f0.mp4",
+        "poster": "03-s1.b605a3a74119.jpg",
+        "hdMp4": "03-s1.0e68cb498896.mp4",
+        "hdWebm": "03-s1.4be65bc3cd42.webm",
+        "mobilePoster": "03-s1-phone-poster.dca48835e9c7.jpg"
       },
       "approved": true,
       "bytes": {
-        "mp4": 878431,
-        "webm": 926455,
-        "mobile": 424522,
-        "poster": 34618
+        "mp4": 2641401,
+        "webm": 1965541,
+        "mobile": 827499,
+        "poster": 71404,
+        "hdMp4": 3453804,
+        "hdWebm": 3801420,
+        "mobilePoster": 54491
       },
       "focus": {
-        "desktop": "50% 15%",
-        "mobile": "50% 15%"
+        "desktop": "50% 30%",
+        "mobile": "40% 30%"
       },
-      "fit": "contain"
-    },
-    {
-      "id": "04-immortal",
-      "duration": 8,
-      "files": {
-        "mp4": "04-immortal.49ded46fb2db.mp4",
-        "webm": "04-immortal.c977c847ebf7.webm",
-        "mobile": "04-immortal-mobile.45e459d31832.mp4",
-        "poster": "04-immortal.87ac749d732c.jpg"
-      },
-      "approved": true,
-      "bytes": {
-        "mp4": 364410,
-        "webm": 383530,
-        "mobile": 169609,
-        "poster": 42092
-      },
-      "focus": {
-        "desktop": "50% 15%",
-        "mobile": "50% 15%"
-      },
-      "fit": "contain"
-    },
-    {
-      "id": "05-actors",
-      "duration": 8,
-      "files": {
-        "mp4": "05-actors.d94f7647d0db.mp4",
-        "webm": "05-actors.35d7ae26e48e.webm",
-        "mobile": "05-actors-mobile.bde605cdf823.mp4",
-        "poster": "05-actors.d534aef887a4.jpg"
-      },
-      "approved": true,
-      "bytes": {
-        "mp4": 811657,
-        "webm": 403237,
-        "mobile": 237486,
-        "poster": 136334
-      },
+      "fit": "cover",
       "dimensions": {
         "desktop": [
-          1280,
-          720
+          1920,
+          1080
         ],
         "mobile": [
           640,
           360
         ]
       },
-      "composition": "Approved daily photos, upper-body landscape framing with same-photo blurred sides; existing watermarks retained.",
+      "posterDimensions": {
+        "mobile": [
+          640,
+          1138
+        ]
+      },
+      "focusTrack": [
+        {
+          "at": 0,
+          "mobile": "40% 30%"
+        },
+        {
+          "at": 1.6,
+          "mobile": "50% 30%"
+        }
+      ]
+    },
+    {
+      "id": "04-immortal",
+      "duration": 8,
+      "files": {
+        "mp4": "04-immortal-mp4-responsive.706d6cbf05bc.mp4",
+        "webm": "04-immortal-webm-responsive.4345d323fc83.webm",
+        "mobile": "04-immortal-mobile-responsive.7ea8cbc4f04c.mp4",
+        "poster": "04-immortal.96714ebf97fc.jpg",
+        "hdMp4": "04-immortal.c11e76f2cac7.mp4",
+        "hdWebm": "04-immortal.4b1a2ef311af.webm",
+        "mobilePoster": "04-immortal-phone-poster.547c21ecc858.jpg"
+      },
+      "approved": true,
+      "bytes": {
+        "mp4": 1013732,
+        "webm": 715344,
+        "mobile": 338387,
+        "poster": 42921,
+        "hdMp4": 1281527,
+        "hdWebm": 884141,
+        "mobilePoster": 45370
+      },
+      "focus": {
+        "desktop": "50% 25%",
+        "mobile": "50% 30%"
+      },
+      "fit": "cover",
+      "dimensions": {
+        "desktop": [
+          1280,
+          652
+        ],
+        "mobile": [
+          640,
+          326
+        ]
+      },
+      "focusTrack": [
+        {
+          "at": 0,
+          "mobile": "55% 25%"
+        },
+        {
+          "at": 2,
+          "mobile": "50% 25%"
+        },
+        {
+          "at": 4,
+          "mobile": "65% 25%"
+        },
+        {
+          "at": 5.5,
+          "mobile": "18% 25%"
+        }
+      ],
+      "posterDimensions": {
+        "mobile": [
+          640,
+          1138
+        ]
+      }
+    },
+    {
+      "id": "05-actors",
+      "duration": 8,
+      "files": {
+        "mp4": "05-actors.1d5a5f9e045f.mp4",
+        "webm": "05-actors.405207aaa511.webm",
+        "mobile": "05-actors-mobile.0817b1904c50.mp4",
+        "poster": "05-actors.966d5ec327c5.jpg",
+        "mobilePoster": "05-actors-phone.b7b01c1bad98.jpg"
+      },
+      "approved": true,
+      "bytes": {
+        "mp4": 1403815,
+        "webm": 536723,
+        "mobile": 573046,
+        "poster": 227518,
+        "mobilePoster": 105814
+      },
+      "dimensions": {
+        "desktop": [
+          1920,
+          1080
+        ],
+        "mobile": [
+          640,
+          1138
+        ]
+      },
+      "composition": "Same approved daily photos; feathered landscape right of copy and centred portrait; existing watermarks retained.",
       "focus": {
         "desktop": "50% 0%",
         "mobile": "50% 0%"
