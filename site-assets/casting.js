@@ -46,6 +46,11 @@
  dialog.addEventListener('close',()=>{
   if(widget!==null){window.turnstile?.remove(widget);widget=null;}token='';trigger?.focus();
  });
+ // Only an explicit casting link opens this form on arrival; ordinary profiles
+ // still load no challenge until their inquiry button is clicked.
+ if(window.location?.search&&new URLSearchParams(window.location.search).get('casting')==='1'&&typeof dialog.showModal==='function'){
+  trigger=document.querySelector('[data-casting-open]');dialog.showModal();security();
+ }
  if(!form)return;
  retry.addEventListener('click',()=>{
   if(widget!==null){window.turnstile?.remove(widget);widget=null;}token='';security();

@@ -262,6 +262,9 @@ for home_path in ("index.html", "en/index.html", "ja/index.html", "es/index.html
  page=out/home_path
  page.write_text(contain_hero_media(simplify_home_links(page.read_text(encoding="utf-8"))),encoding="utf-8")
 
+from hero_rotation import inject as inject_work_hero
+inject_work_hero(out,base_path)
+
 # Prevent third-party requests before the visitor chooses a media/service.
 for page in out.rglob('*.html'):
  document=page.read_text(encoding='utf-8')

@@ -47,6 +47,9 @@ def local_file(url):
 
 
 def hero_image_sources(markup):
+    if 'data-work-hero' in markup:
+        config=json.loads((Path(__file__).resolve().parent/'hero_rotation_config.json').read_text(encoding='utf-8'))
+        return {base+'/assets/hero/'+config['clips'][0]['files']['poster']}
     sources={latest_work['image']}
     script=re.search(r'<script[^>]+src="([^" >]*/responsive-media\.[a-f0-9]+\.js)"',markup)
     if script:
@@ -54,6 +57,10 @@ def hero_image_sources(markup):
         optimized=mapping.get(latest_work['id'],{}).get('src')
         if optimized:sources.add(optimized)
     return sources
+
+def hero_feature_path(markup):
+    data=re.search(r'<script type="application/json" data-work-hero-config>([\s\S]*?)</script>',markup)
+    return json.loads(data[1])['slides'][0]['url'] if data else latest_work['path']
 
 
 class Page(HTMLParser):
@@ -173,7 +180,7 @@ for path in html_files:
         assert share['sources']==[f'assets/og/og-{lang}.jpg'], path
         assert page.metas['og:image']==[share['url']], path
         prefix = base + ('/en' if lang == 'en' else '')
-        assert any(a.get('href') == prefix + '/watch/fall-707-s1-ep1/' and 'hero-start' in a.get('class', '') for a in page.anchors), path
+        assert any('hero-casting-link' in a.get('class','') and '/actors/min-seoa/?casting=1' in a.get('href','') for a in page.anchors), path
         for route in ('/', '/#episodes', '/#originals', '/#collaboration', '/#about'):
             assert any(a.get('href') == prefix + route and 'nav-link' in a.get('class', '') for a in page.anchors), (path, route)
         assert source.index('id="latest-episodes"') < source.index('id="about"'), path
@@ -182,14 +189,14 @@ for path in html_files:
         assert source.count('id="collaboration"') == 1, path
         hero=next(img for img in page.images if 'hero-image' in img.get('class','').split())
         assert hero['src'] in hero_image_sources(source), 'Homepage hero does not use the newest episode'
-        assert any(a.get('href')==base+('/en' if lang=='en' else '')+latest_work['path'][len(base):] and 'hero-feature-link' in a.get('class','') for a in page.anchors), 'Latest episode link is stale'
+        assert any(a.get('href')==hero_feature_path(source) and 'hero-feature-link' in a.get('class','') for a in page.anchors), 'Featured work link is stale'
         assert 'id="latest-episodes"' in source
         for season in {video['season'] for video in published_catalog if re.fullmatch(r's[1-9][0-9]*',video['category'])}:
             assert f'data-category="s{season}"' in source, 'A published season has no filter'
         channel_count=exact_count(source_data.get('channel',{}).get('apiSubscriberCount'))
         if channel_count is not None:
             label='YouTube subscribers' if lang=='en' else 'YouTube 구독자'
-            assert f'{label} <strong>{channel_count}</strong>' in source, 'Raw channel subscriber count was changed'
+            assert re.search(r'class="collaboration-stat" data-youtube-api-count[^>]*>[\s\S]*?<dd><strong>'+str(channel_count)+r'</strong>',source), 'Raw channel subscriber count was changed'
             stamp=source_data['channel']['apiStatisticsUpdatedAt']
             assert f'<time datetime="{stamp}">{stamp}</time>' in source, 'YouTube retrieval timestamp is absent'
     ko_relative = re.sub(r'^(?:en|ja|es)/','',relative)
@@ -234,7 +241,7 @@ if '0I75_YXhMSM' in expected_ids:
         home = Page(homepage)
         hero = next(img for img in home.images if 'hero-image' in img.get('class', '').split())
         assert hero['src'] in hero_image_sources(homepage)
-        assert any(a.get('href') == route_prefix + latest_work['path'][len(base):] and 'hero-feature-link' in a.get('class', '') for a in home.anchors)
+        assert any(a.get('href') == hero_feature_path(homepage) and 'hero-feature-link' in a.get('class', '') for a in home.anchors)
         assert 'data-category="s3"' in homepage
         assert homepage.index('id="episodes"') < homepage.index('id="season-two"')
         assert 'upcoming-episode' not in homepage
