@@ -34,4 +34,5 @@ test('rate limit, absent bindings and failed delivery never claim success or lea
 });
 test('MIME message cannot redirect recipients or expose the security token',()=>{
  const raw=compose(validate(sample),'123');assert.match(raw,/Reply-To: guletlaru05@gmail.com/);assert.doesNotMatch(raw,/Bcc:|test-token|test-secret/);
+ const words=raw.match(/=\?UTF-8\?B\?[^?]+\?=/g);assert.ok(words.every(word=>word.length<=75));assert.match(words.map(word=>Buffer.from(word.slice(10,-2),'base64').toString('utf8')).join(''),/AI 배우 섭외.*민서아 대위/);
 });

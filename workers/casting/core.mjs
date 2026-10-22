@@ -16,10 +16,16 @@ export function validate(data) {
  return {company,contact,email,message,actor:data.actor,purpose:data.purpose};
 }
 function b64(value){return btoa(String.fromCharCode(...new TextEncoder().encode(value)));}
+function encodedSubject(value){
+ const words=[];let part='';
+ for(const char of value){if(new TextEncoder().encode(part+char).length>42){words.push('=?UTF-8?B?'+b64(part)+'?=');part='';}part+=char;}
+ if(part)words.push('=?UTF-8?B?'+b64(part)+'?=');
+ return words.join('\r\n ');
+}
 export function compose(data,id) {
  const subject='[AI 배우 섭외] '+ACTORS[data.actor]+' / '+PURPOSES[data.purpose];
  const body=['DRA9ON CINEMA 섭외·협업 문의','접수 ID: '+id,'회사명: '+data.company,'담당자: '+data.contact,'이메일: '+data.email,'배우: '+ACTORS[data.actor],'용도: '+PURPOSES[data.purpose],'','내용:',data.message,'','※ 방문자가 작성한 문의입니다. 링크·첨부 요청은 별도로 확인하세요.'].join('\r\n');
- return ['From: DRA9ON CINEMA <casting@dra9oncinema.com>','To: '+DESTINATION,'Reply-To: '+data.email,'Subject: =?UTF-8?B?'+b64(subject)+'?=','MIME-Version: 1.0','Content-Type: text/plain; charset=UTF-8','Content-Transfer-Encoding: base64','Message-ID: <'+id+'@dra9oncinema.com>','Date: '+new Date().toUTCString(),'',''+b64(body).match(/.{1,76}/g).join('\r\n')].join('\r\n');
+ return ['From: DRA9ON CINEMA <casting@dra9oncinema.com>','To: '+DESTINATION,'Reply-To: '+data.email,'Subject: '+encodedSubject(subject),'MIME-Version: 1.0','Content-Type: text/plain; charset=UTF-8','Content-Transfer-Encoding: base64','Message-ID: <'+id+'@dra9oncinema.com>','Date: '+new Date().toUTCString(),'',''+b64(body).match(/.{1,76}/g).join('\r\n')].join('\r\n');
 }
 export async function handle(request,env,deps) {
  const cors=request.headers.get('Origin')===ORIGIN;
