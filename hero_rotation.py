@@ -49,7 +49,12 @@ def inject(out,base_path=''):
  if not config['approved']:raise ValueError('Hero clip approval is required')
  out=Path(out);tags=[]
  for name in ('work-hero.css','work-hero.js'):
-  data=(out/name).read_bytes();stem,ext=name.rsplit('.',1);hashed=stem+'.'+sha256(data).hexdigest()[:12]+'.'+ext
+  data=(out/name).read_bytes();stem,ext=name.rsplit('.',1)
+  if ext=='css':
+   # This small, home-only critical style needs no extra render-blocking request.
+   # The existing CSP already permits inline styles; no policy is broadened.
+   tags.append('<style data-work-hero-style>'+data.decode('utf-8')+'</style>');continue
+  hashed=stem+'.'+sha256(data).hexdigest()[:12]+'.'+ext
   (out/'assets/build'/hashed).write_bytes(data);url=base_path+'/assets/build/'+hashed
   tags.append('<link rel="stylesheet" href="'+url+'">' if ext=='css' else '<script src="'+url+'" defer></script>')
  for lang in LANGS:
