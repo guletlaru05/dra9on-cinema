@@ -18,6 +18,9 @@
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
+/assets/og/pages/*
+  Cache-Control: public, max-age=31536000, immutable
+
 /sw.js
   Cache-Control: no-cache
 

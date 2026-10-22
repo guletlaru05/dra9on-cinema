@@ -168,7 +168,10 @@ for path in html_files:
     if relative in ('index.html', 'en/index.html'):
         assert (width, height) == (1200, 630) and og_file.stat().st_size <= 300_000
         assert page.metas['og:image:alt'] == [OG_ALT[lang]], path
-        assert page.metas['og:image'] == [site + f'/assets/og/og-{lang}.jpg?v=20260924-fall707'], path
+        share_manifest=json.loads((root/'assets/og/pages/manifest.json').read_text(encoding='utf-8'))
+        share=next(row for row in share_manifest if row['kind']=='home' and row['language']==lang)
+        assert share['sources']==[f'assets/og/og-{lang}.jpg'], path
+        assert page.metas['og:image']==[share['url']], path
         prefix = base + ('/en' if lang == 'en' else '')
         assert any(a.get('href') == prefix + '/watch/fall-707-s1-ep1/' and 'hero-start' in a.get('class', '') for a in page.anchors), path
         for route in ('/', '/#episodes', '/#originals', '/#collaboration', '/#about'):

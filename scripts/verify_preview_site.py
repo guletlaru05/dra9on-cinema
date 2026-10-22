@@ -5,10 +5,18 @@ from urllib.error import HTTPError
 from concurrent.futures import ThreadPoolExecutor
 from time import sleep
 import json
+from html.parser import HTMLParser
 ROOT=Path(__file__).resolve().parents[1]
 SITE=ROOT/'dist'
 HOST='https://dra9on-cinema.pages.dev'
 STAGE='preview'
+
+class SocialMeta(HTMLParser):
+ def __init__(self,text):
+  super().__init__();self.values={};self.feed(text)
+ def handle_starttag(self,tag,pairs):
+  attrs=dict(pairs)
+  if tag=='meta':self.values[attrs.get('property',attrs.get('name'))]=attrs.get('content','')
 
 def check_once(file):
  rel=file.relative_to(SITE).as_posix()
@@ -18,7 +26,7 @@ def check_once(file):
  try:
   with urlopen(Request(HOST+path,method=method,headers={'User-Agent':'DRA9ON-deploy-check/1.0'}),timeout=30) as response:
    result.update(status=response.status,url=response.geturl(),cacheControl=response.headers.get('Cache-Control'))
-   if path.startswith(('/assets/build/','/assets/optimized/','/assets/fonts/')) and 'max-age=31536000' not in (response.headers.get('Cache-Control') or ''):raise ValueError('Missing long-lived versioned asset cache header')
+   if path.startswith(('/assets/build/','/assets/optimized/','/assets/fonts/','/assets/og/pages/')) and 'max-age=31536000' not in (response.headers.get('Cache-Control') or ''):raise ValueError('Missing long-lived versioned asset cache header')
    if file.suffix=='.html':
     text=response.read(2_000_000).decode('utf-8')
     if STAGE=='preview' and 'noindex,nofollow,noarchive' not in text:raise ValueError('Preview is indexable')
@@ -26,6 +34,12 @@ def check_once(file):
     if response.headers.get('X-Content-Type-Options')!='nosniff':raise ValueError('Missing nosniff header')
     if not response.headers.get('Strict-Transport-Security'):raise ValueError('Missing HSTS header')
     if response.headers.get('X-Frame-Options') not in ('DENY','SAMEORIGIN'):raise ValueError('Missing clickjacking protection')
+    expected=SocialMeta(file.read_text(encoding='utf-8')).values
+    if '/assets/og/pages/' in expected.get('og:image',''):
+     actual=SocialMeta(text).values
+     for key in ('og:image','twitter:image','og:title','og:description','twitter:card'):
+      if actual.get(key)!=expected.get(key):raise ValueError('Live social metadata differs from this build: '+key)
+     result['ogImage']=actual['og:image']
  except HTTPError as error:
   result.update(status=error.code)
   if path!='/404.html':result['error']='HTTP '+str(error.code)

@@ -32,6 +32,9 @@ def build_pwa(out,origin,works,base_path=''):
  # Include the same section links everywhere, before hashing offline fallbacks.
  from site_navigation import inject_navigation
  inject_navigation(out,base_path)
+ # Include progress assets before hashing offline HTML so installed apps update.
+ from scroll_progress import inject as inject_scroll_progress
+ inject_scroll_progress(out,base_path)
  # Keep the push feed limited to released episodic works, in the existing four languages.
  catalogs={}
  for lang in LANGS:
