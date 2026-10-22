@@ -3,7 +3,7 @@
  'use strict';
  function createWorkHero(root,env=window){
   const doc=env.document,config=JSON.parse(root.querySelector('[data-work-hero-config]').textContent);
-  const slides=config.slides,media=root.querySelector('.hero-media'),poster=root.querySelector('.hero-image');
+  const slides=config.slides,media=root.querySelector('.hero-media'),poster=root.querySelector('.hero-image'),ambience=root.querySelector('.hero-ambience');
   const heading=root.querySelector('#hero-title'),label=root.querySelector('.d9-work-label'),description=root.querySelector('.d9-work-description');
   const view=root.querySelector('.hero-feature-link'),panel=root.querySelector('[role=tabpanel]');
   const tabs=[...root.querySelectorAll('[data-work-index]')],lines=tabs.map(t=>t.querySelector('i')),pause=root.querySelector('.d9-work-pause');
@@ -12,6 +12,13 @@
   let index=0,ready=false,visible=!env.IntersectionObserver,paused=false,dialogOpen=false,active,spare;
   let frame=0,lastTick=null,elapsed=0,prepared=-1,starting=false,generation=0;
   const failed=new Set(),prefetchFailed=new Set();
+  function composition(s){
+   const focus=mobile.matches?s.focus?.mobile:s.focus?.desktop;
+   root.style.setProperty('--d9-hero-focus',focus||'50% 15%');
+   root.style.setProperty('--d9-hero-fit',s.fit==='cover'?'cover':'contain');
+   if(ambience)ambience.src=s.poster;
+   poster.width=s.width||960;poster.height=s.height||540;
+  }
   function createVideo(){
    const v=doc.createElement('video');v.muted=true;v.defaultMuted=true;v.playsInline=true;v.preload='none';v.disablePictureInPicture=true;
    v.setAttribute('muted','');v.setAttribute('playsinline','');v.setAttribute('aria-hidden','true');v.setAttribute('tabindex','-1');
@@ -49,7 +56,7 @@
    // Reuse only the requested next clip. Manual jumps cancel unrelated prefetches.
    release(active);
    if(prepared===index){[active,spare]=[spare,active];prepared=-1;}else clearSpare();
-   const s=slides[index];poster.src=s.poster;poster.alt=s.tab;
+   const s=slides[index];poster.src=s.poster;poster.alt=s.tab;composition(s);
    heading.textContent=s.title;label.textContent=s.label;description.textContent=s.description;view.href=s.url;if(s.viewLabel)view.textContent=s.viewLabel+' ↗';
    panel.setAttribute('aria-labelledby','work-tab-'+index);root.dataset.activeWork=s.id;
    tabs.forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i===index));tab.setAttribute('tabindex',i===index?'0':'-1');lines[i].style.transform='scaleX(0)';});
@@ -89,11 +96,11 @@
   if(env.IntersectionObserver)new env.IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync();},{threshold:.1}).observe(root);
   if(env.MutationObserver)new env.MutationObserver(()=>{dialogOpen=Boolean(doc.querySelector('dialog[open]'));sync();}).observe(doc.body,{subtree:true,attributes:true,attributeFilter:['hidden','open']});
   motion.addEventListener?.('change',()=>{generation++;starting=false;lastTick=null;sync();});
-  mobile.addEventListener?.('change',()=>{generation++;release(active);clearSpare();starting=false;sync();});
+  mobile.addEventListener?.('change',()=>{generation++;release(active);clearSpare();starting=false;composition(slides[index]);sync();});
   connection?.addEventListener?.('change',()=>{generation++;starting=false;lastTick=null;sync();});
   const afterLoad=()=>env.requestAnimationFrame(()=>env.requestAnimationFrame(()=>{ready=true;sync();}));
   if(doc.readyState==='complete')afterLoad();else env.addEventListener('load',afterLoad,{once:true});
-  updatePause();root.dataset.activeWork=slides[0].id;
+  updatePause();composition(slides[0]);root.dataset.activeWork=slides[0].id;
   return {select,sync};
  }
  if(typeof module!=='undefined'&&module.exports)module.exports={createWorkHero};

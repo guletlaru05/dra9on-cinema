@@ -23,7 +23,12 @@
         "webm": 851111,
         "mobile": 329485,
         "poster": 44945
-      }
+      },
+      "focus": {
+        "desktop": "50% 15%",
+        "mobile": "50% 15%"
+      },
+      "fit": "contain"
     },
     {
       "id": "02-s2",
@@ -40,7 +45,12 @@
         "webm": 266452,
         "mobile": 158467,
         "poster": 31432
-      }
+      },
+      "focus": {
+        "desktop": "50% 15%",
+        "mobile": "50% 15%"
+      },
+      "fit": "contain"
     },
     {
       "id": "03-s1",
@@ -57,7 +67,12 @@
         "webm": 926455,
         "mobile": 424522,
         "poster": 34618
-      }
+      },
+      "focus": {
+        "desktop": "50% 15%",
+        "mobile": "50% 15%"
+      },
+      "fit": "contain"
     },
     {
       "id": "04-immortal",
@@ -74,24 +89,45 @@
         "webm": 383530,
         "mobile": 169609,
         "poster": 42092
-      }
+      },
+      "focus": {
+        "desktop": "50% 15%",
+        "mobile": "50% 15%"
+      },
+      "fit": "contain"
     },
     {
       "id": "05-actors",
       "duration": 8,
       "files": {
-        "mp4": "05-actors.82eb60fd394f.mp4",
-        "webm": "05-actors.ceb3430371dc.webm",
-        "mobile": "05-actors-mobile.8e39effa44e4.mp4",
-        "poster": "05-actors.b67e3b385f09.jpg"
+        "mp4": "05-actors.d94f7647d0db.mp4",
+        "webm": "05-actors.35d7ae26e48e.webm",
+        "mobile": "05-actors-mobile.bde605cdf823.mp4",
+        "poster": "05-actors.d534aef887a4.jpg"
       },
       "approved": true,
       "bytes": {
-        "mp4": 176449,
-        "webm": 196960,
-        "mobile": 83602,
-        "poster": 37538
-      }
+        "mp4": 811657,
+        "webm": 403237,
+        "mobile": 237486,
+        "poster": 136334
+      },
+      "dimensions": {
+        "desktop": [
+          1280,
+          720
+        ],
+        "mobile": [
+          640,
+          360
+        ]
+      },
+      "composition": "Approved daily photos, upper-body landscape framing with same-photo blurred sides; existing watermarks retained.",
+      "focus": {
+        "desktop": "50% 0%",
+        "mobile": "50% 0%"
+      },
+      "fit": "cover"
     }
   ]
 }

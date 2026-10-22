@@ -16,6 +16,7 @@ class WorkHeroTests(unittest.TestCase):
    for s in payload['slides']:
     self.assertTrue(s['title'] and s['description'] and s['tab']);self.assertEqual(s['duration'],8)
     self.assertTrue((ROOT/'dist'/s['url'].lstrip('/')/'index.html').is_file())
+    self.assertEqual(set(s['focus']),{'desktop','mobile'})
    self.assertNotRegex(text,r'<video[^>]*\ssrc=')
  def test_versioned_web_media_and_posters_have_bounded_size(self):
   config=json.loads((ROOT/'hero_rotation_config.json').read_text(encoding='utf-8'))
@@ -24,4 +25,4 @@ class WorkHeroTests(unittest.TestCase):
     self.assertRegex(name,r'\.[a-f0-9]{12}\.(?:mp4|webm|jpg)$')
     file=ROOT/'site-assets/assets/hero'/name;self.assertLess(file.stat().st_size,1_000_000)
     if kind=='poster':
-     with Image.open(file) as im:self.assertEqual(im.size,(960,540))
+     with Image.open(file) as im:self.assertEqual(im.size,tuple(clip.get('dimensions',{'desktop':[960,540]})['desktop']))

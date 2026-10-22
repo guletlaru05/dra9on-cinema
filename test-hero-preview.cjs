@@ -3,20 +3,28 @@ const {createWorkHero}=require('./site-assets/work-hero.js');
 function fixture({reduced=false,saveData=false,effectiveType='4g',downlink=5,mobile=false,rejectPlay=false}={}){
  const requests=[],videos=[],queue=new Map(),events={},observers=[];let id=0;
  const element=()=>{const handlers={},attrs={},classes=new Set();return {dataset:{},style:{},paused:true,currentTime:0,duration:8,ended:false,textContent:'',classList:{add:x=>classes.add(x),remove:x=>classes.delete(x),contains:x=>classes.has(x)},addEventListener(k,f){(handlers[k]??=[]).push(f);},emit(k,arg={}){for(const f of handlers[k]||[])f(arg);},setAttribute(k,v){attrs[k]=v;},getAttribute(k){return attrs[k]??null;},removeAttribute(k){delete attrs[k];},focus(){},scrollIntoView(){},canPlayType:()=>true,load(){this.currentTime=0;this.ended=false;},pause(){this.paused=true;},play(){if(rejectPlay)return Promise.reject({name:'NotAllowedError'});this.paused=false;this.emit('playing');return Promise.resolve();},set src(v){attrs.src=v;requests.push(v);},get src(){return attrs.src;}};};
- const slides=Array.from({length:5},(_,i)=>({id:'clip-'+i,title:'Title '+i,description:'Description '+i,label:'Label '+i,tab:'Work '+i,url:'/work-'+i+'/',poster:'poster-'+i+'.jpg',webm:'clip-'+i+'.webm',mp4:'clip-'+i+'.mp4',mobile:'clip-'+i+'-mobile.mp4',duration:8}));
+ const slides=Array.from({length:5},(_,i)=>({id:'clip-'+i,title:'Title '+i,description:'Description '+i,label:'Label '+i,tab:'Work '+i,url:'/work-'+i+'/',poster:'poster-'+i+'.jpg',webm:'clip-'+i+'.webm',mp4:'clip-'+i+'.mp4',mobile:'clip-'+i+'-mobile.mp4',duration:8,focus:{desktop:i===4?'50% 0%':'45% 15%',mobile:'50% 5%'},fit:i===4?'cover':'contain',width:i===4?1280:960,height:i===4?720:540}));
  const tabs=slides.map(()=>{const x=element(),line=element();x.querySelector=()=>line;return x;});
- const config={textContent:JSON.stringify({slides,pause:'Pause',resume:'Resume'})},poster=element(),heading=element(),label=element(),description=element(),view=element(),panel=element(),pause=element();
+ const config={textContent:JSON.stringify({slides,pause:'Pause',resume:'Resume'})},poster=element(),ambience=element(),heading=element(),label=element(),description=element(),view=element(),panel=element(),pause=element();
  Object.defineProperty(poster,'src',{value:'',writable:true});
+ Object.defineProperty(ambience,'src',{value:'',writable:true});
  const media={querySelector(){return {};},insertBefore(v){videos.push(v);}};
- const nodes={'[data-work-hero-config]':config,'.hero-media':media,'.hero-image':poster,'#hero-title':heading,'.d9-work-label':label,'.d9-work-description':description,'.hero-feature-link':view,'[role=tabpanel]':panel,'.d9-work-pause':pause};
- const root={dataset:{},hidden:false,querySelector:s=>nodes[s],querySelectorAll:()=>tabs};
+ const nodes={'[data-work-hero-config]':config,'.hero-media':media,'.hero-image':poster,'.hero-ambience':ambience,'#hero-title':heading,'.d9-work-label':label,'.d9-work-description':description,'.hero-feature-link':view,'[role=tabpanel]':panel,'.d9-work-pause':pause};
+ const root={dataset:{},style:{setProperty(name,value){this[name]=value;}},hidden:false,querySelector:s=>nodes[s],querySelectorAll:()=>tabs};
  const doc={readyState:'loading',hidden:false,body:{},createElement:element,querySelector:()=>null,addEventListener(k,f){events[k]=f;}};
  const motion={matches:reduced,addEventListener(k,f){this.change=f;}},viewport={matches:mobile,addEventListener(k,f){this.change=f;}};
  const env={document:doc,navigator:{connection:{saveData,effectiveType,downlink}},matchMedia:s=>s.includes('max-width')?viewport:motion,addEventListener(k,f){events[k]=f;},requestAnimationFrame(f){queue.set(++id,f);return id;},cancelAnimationFrame(i){queue.delete(i);},IntersectionObserver:class{constructor(cb){observers.push(cb);}observe(){}},MutationObserver:class{observe(){}}};
  const controller=createWorkHero(root,env);
  const step=now=>{const tasks=[...queue.values()];queue.clear();tasks.forEach(f=>f(now));};
- return {requests,videos,root,doc,tabs,heading,view,panel,pause,controller,step,ready(){observers[0]([{isIntersecting:true}]);events.load();step(0);step(0);},visible(value){observers[0]([{isIntersecting:value}]);},hidden(value){doc.hidden=value;events.visibilitychange();}};
+ return {requests,videos,root,doc,tabs,heading,view,panel,pause,poster,ambience,viewport,controller,step,ready(){observers[0]([{isIntersecting:true}]);events.load();step(0);step(0);},visible(value){observers[0]([{isIntersecting:value}]);},hidden(value){doc.hidden=value;events.visibilitychange();}};
 }
+
+test('each clip switches its own framing, poster dimensions and blurred ambience on desktop/mobile',()=>{
+ const f=fixture();assert.equal(f.root.style['--d9-hero-fit'],'contain');assert.equal(f.root.style['--d9-hero-focus'],'45% 15%');
+ f.controller.select(4);assert.equal(f.root.style['--d9-hero-fit'],'cover');assert.equal(f.root.style['--d9-hero-focus'],'50% 0%');assert.equal(f.poster.width,1280);assert.equal(f.poster.height,720);assert.equal(f.ambience.src,'poster-4.jpg');
+ f.viewport.matches=true;f.viewport.change();assert.equal(f.root.style['--d9-hero-focus'],'50% 5%');
+ f.controller.select(0);assert.equal(f.root.style['--d9-hero-fit'],'contain');assert.equal(f.poster.width,960);assert.equal(f.ambience.src,'poster-0.jpg');
+});
 test('no media request before load and two paints; the single active video is muted and inline',()=>{
  const f=fixture();assert.equal(f.requests.length,0);f.ready();assert.deepEqual(f.requests,['clip-0.webm']);assert.equal(f.videos[0].muted,true);assert.equal(f.videos[0].playsInline,true);assert.equal(f.videos[1].getAttribute('src'),null);
 });
