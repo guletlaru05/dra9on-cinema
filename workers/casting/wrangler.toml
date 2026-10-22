@@ -1,0 +1,24 @@
+name = "dra9on-casting"
+main = "index.mjs"
+compatibility_date = "2026-10-22"
+account_id = "f25bbc251a70676f521c097b1d047d95"
+workers_dev = true
+preview_urls = false
+
+[[send_email]]
+name = "CASTING_EMAIL"
+destination_address = "guletlaru05@gmail.com"
+
+[[ratelimits]]
+name = "INQUIRY_LIMITER"
+namespace_id = "9707105"
+simple = { limit = 5, period = 60 }
+
+# TURNSTILE_SECRET is encrypted in Cloudflare, never committed or returned.
+[observability]
+enabled = false
+[observability.logs]
+enabled = false
+invocation_logs = false
+[observability.traces]
+enabled = false

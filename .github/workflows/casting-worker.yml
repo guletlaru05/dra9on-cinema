@@ -1,0 +1,25 @@
+name: Deploy casting inquiry Worker
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['workers/casting/**', '.github/workflows/casting-worker.yml']
+permissions:
+  contents: read
+concurrency:
+  group: casting-worker
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node --test workers/casting/test.mjs
+      - name: Deploy free Worker with recipient-restricted email and rate limit
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: npx --yes wrangler@4.151.1 deploy --config workers/casting/wrangler.toml
