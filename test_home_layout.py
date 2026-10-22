@@ -1,6 +1,7 @@
 """The photo/shade frame must not grow with translated copy or late fonts."""
 from html.parser import HTMLParser
 from pathlib import Path
+from PIL import Image
 import unittest
 from home_layout import contain_hero_media
 
@@ -9,7 +10,8 @@ class HeroMarkup(HTMLParser):
         super().__init__();self.stack=[];self.photo=[];self.shade=[];self.copy=[]
     def handle_starttag(self,tag,attributes):
         attributes=dict(attributes);classes=attributes.get('class','').split()
-        parent=self.stack[-1][1] if self.stack else []
+        # A responsive <picture> may sit between the image and its media plane.
+        parent=[name for _,classes in self.stack for name in classes]
         if 'hero-image' in classes:self.photo.append((parent,attributes))
         if 'hero-shade' in classes:self.shade.append(parent)
         if 'hero-content' in classes:self.copy.append(any('hero-media' in c for _,c in self.stack))
@@ -37,7 +39,9 @@ class HeroLayoutTests(unittest.TestCase):
             self.assertIn('hero-media',parser.photo[0][0],language);self.assertIn('hero-media',parser.shade[0],language)
             self.assertEqual(parser.copy,[False],language)
             attributes=parser.photo[0][1]
-            self.assertAlmostEqual(int(attributes['width'])/int(attributes['height']),16/9,delta=.003,msg=language)
+            media=Path('dist/assets')/attributes['src'].split('/assets/',1)[1]
+            with Image.open(media) as image:
+                self.assertEqual((int(attributes['width']),int(attributes['height'])),image.size,language)
 
     def test_four_home_pages_put_navigation_before_video_below_header(self):
         if not Path('dist/index.html').exists():self.skipTest('Build site first')
