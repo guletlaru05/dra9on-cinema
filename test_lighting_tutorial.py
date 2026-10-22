@@ -33,7 +33,7 @@ class LightingLesson(unittest.TestCase):
    for language in COPY:self.assertIn('hreflang="'+language+'"',source)
    for image in article.images:
     if 'lighting-contrast' in image['src']:self.assertTrue(any(model in image['alt'] for model in ['GPT Image 2.5','Seedream 5.0 Pro','Nano Banana 2','Midjourney v8.2']))
-   if lang!='ko':self.assertFalse(re.search('[가-힣]',source.replace('aria-label="한국어"','')),'Unexpected Korean in '+lang)
+   if lang!='ko':self.assertFalse(re.search('[가-힣]',source.split('</head>',1)[-1].replace('aria-label="한국어"','')),'Unexpected Korean in visible copy: '+lang)
   for record in records:
    self.assertEqual((assets/(record['id']+'-prompt.txt')).read_text(encoding='utf-8'),record['prompt'])
    with Image.open(assets/record['file'])as image:self.assertEqual(image.size,(record['width'],record['height']))

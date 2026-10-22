@@ -29,7 +29,7 @@ class ReviewedNotes(unittest.TestCase):
                 self.assertIn('data-tutorial-image-viewer', doc)
                 self.assertIn('data-image-close', doc)
                 if lang in ('ja', 'es'):
-                    self.assertFalse(re.search('[가-힣]', doc.replace('aria-label="한국어"', '')))
+                    self.assertFalse(re.search('[가-힣]', doc.split('</head>',1)[-1].replace('aria-label="한국어"', '')))
                 for code in ('ko', 'en', 'ja', 'es'):
                     alternate = 'https://dra9oncinema.com' + ('' if code == 'ko' else '/' + code) + '/notes/' + slug + '/'
                     self.assertIn(f'hreflang="{code}" href="{alternate}"', doc)

@@ -10,7 +10,8 @@ class InternationalPages(unittest.TestCase):
    self.assertTrue((Path('dist')/lang/'tutorials/lighting-contrast/index.html').exists())
    self.assertTrue((Path('dist')/lang/'tutorials/index.html').exists())
    for file in files:
-    source=file.read_text(encoding='utf-8').replace('aria-label="한국어"','')
+    # Korean brand aliases in SEO metadata are intentional; visible copy stays localized.
+    source=file.read_text(encoding='utf-8').split('</head>',1)[-1].replace('aria-label="한국어"','')
     residual=re.findall(r'[^<>]*[가-힣][^<>]*',source)
     self.assertFalse(residual,(str(file),residual[:4]))
  def test_catalog_has_localized_fall_routes_and_english_only_original_routes(self):
