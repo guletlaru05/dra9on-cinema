@@ -119,6 +119,13 @@ def build(out,origin,works,head,base_path=''):
   return result+'</div></section>'
  def card(actor,lang):
   return '<article class="actor-card" style="--actor-order:'+str(ACTORS.index(actor))+'"><a class="actor-card-link" href="'+base_path+prefix(lang)+'/actors/'+actor['slug']+'/"><div class="actor-card-motion"><div class="actor-card-photo">'+photo(actor,lang)+'</div></div><div class="actor-card-caption"><div class="actor-card-details"><p class="section-eyebrow">FALL 707: REBOOT</p><h2>'+e(actor['name'][lang])+'<span aria-hidden="true">↗</span></h2><p>'+e(actor['line'][lang])+'</p></div><small class="actor-disclosure">'+tr('disclosure',lang)+'</small></div></a></article>'
+ def motion_film(lang):
+  film=json.loads((HERE/'actors_motion_config.json').read_text(encoding='utf-8'))['variants']
+  url=lambda name:base_path+'/assets/actors-motion/'+name
+  play=row('모션그래픽 재생','Play motion graphic','モーショングラフィックを再生','Reproducir animación')[lang]
+  pause=row('일시정지','Pause','一時停止','Pausar')[lang]
+  scenes=e(json.dumps([a['name'][lang] for a in ACTORS],ensure_ascii=False),quote=True)
+  return '<section class="actors-film" data-actors-film data-scenes="'+scenes+'" aria-label="'+tr('title',lang)+'"><div class="actors-film-stage"><picture class="actors-film-poster"><source type="image/avif" media="(max-width:700px)" srcset="'+url(film['mobile']['poster'])+'"><img data-actor-image src="'+url(film['desktop']['poster'])+'" srcset="'+url(film['desktop']['poster'])+' 1440w" sizes="100vw" width="1440" height="810" alt="'+tr('title',lang)+' · '+tr('ai_keyword',lang)+'" draggable="false" fetchpriority="high"></picture><video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" data-desktop="'+url(film['desktop']['video'])+'" data-mobile="'+url(film['mobile']['video'])+'"></video><div class="actors-film-type" aria-hidden="true"><span>DRA9ON CINEMA / ORIGINAL TALENT</span><strong data-film-name></strong><small>FALL 707: REBOOT</small></div><button class="actors-film-toggle" type="button" data-play="'+e(play,quote=True)+'" data-pause="'+e(pause,quote=True)+'" aria-label="'+e(play,quote=True)+'" hidden>▶</button><div class="actors-film-line" aria-hidden="true"></div></div><div class="actors-film-bottom"><span class="actor-disclosure">'+tr('disclosure',lang)+'</span><span>20 SEC · 4 AI ACTORS · 20 LOOKS</span></div></section>'
  def page(lang,path,title,description,body):
   home=(out/prefix(lang).strip('/')/'index.html').read_text(encoding='utf-8')
   nav=re.search(r'<header class="header"[\s\S]*?</header>',home).group()
@@ -147,6 +154,10 @@ def build(out,origin,works,head,base_path=''):
   if preview:doc=doc.replace('content="index,follow,max-image-preview:large,max-video-preview:-1"','content="noindex,nofollow,noarchive"')
   if lang!='ko':doc=doc.replace('src="/catalog.js"','src="/'+lang+'/catalog.js"')
   doc=doc.replace('</head>','<link rel="stylesheet" href="'+base_path+css+'"><script src="'+base_path+script+'" defer></script></head>')
+  if path=='/actors/':
+   for filename in ('actors-film.css','actors-film.js'):
+    url=base_path+'/'+filename+'?v='+sha256((out/filename).read_bytes()).hexdigest()[:12]
+    doc=doc.replace('</head>',('<link rel="stylesheet" href="'+url+'">' if filename.endswith('.css') else '<script src="'+url+'" defer></script>')+'</head>')
   if path!='/actors/':
    extra=''
    for filename in ('casting.css','casting.js'):
@@ -161,6 +172,7 @@ def build(out,origin,works,head,base_path=''):
   title_lines={'ko':['AI 배우','에이전시'],'en':['AI Actor','Agency'],'ja':['AI俳優','エージェンシー'],'es':['Agencia de','actores IA']}[lang]
   motion_title=''.join('<span class="actor-title-mask"><span>'+e(line)+'</span></span>' for line in title_lines)
   listing='<main id="main" class="actors-main"><div class="actors-opening" data-actors-motion><header class="actors-intro"><p class="section-eyebrow">DRA9ON CINEMA / ORIGINAL TALENT</p><div><h1 aria-label="'+tr('title',lang)+'">'+motion_title+'</h1><p>'+tr('intro',lang)+'</p></div></header><section class="actors-grid" aria-label="'+tr('back',lang)+'">'+''.join(card(a,lang) for a in ACTORS)+'</section></div>'+notice_html(lang,base_path)+'</main>'
+  listing=listing.replace('<section class="actors-grid"',motion_film(lang)+'<section class="actors-grid"',1)
   behind_gallery=behind(lang)
   if behind_gallery:
    listing=listing.replace(notice_html(lang,base_path),behind_gallery+notice_html(lang,base_path),1)

@@ -1,0 +1,18 @@
+.actors-film{margin:0 0 46px}
+.actors-film-stage{position:relative;aspect-ratio:16/9;overflow:hidden;background:#101011;isolation:isolate}
+.actors-film-poster,.actors-film-poster img,.actors-film video{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:contain}
+.actors-film video{opacity:0;pointer-events:none;max-height:none;aspect-ratio:auto;background:#101011}
+.actors-film.has-frame video{opacity:1}
+.actors-film.has-frame .actors-film-poster{opacity:0}
+.actors-film-type{position:absolute;left:4.45%;top:13%;width:53%;pointer-events:none;opacity:0}
+.actors-film.has-frame .actors-film-type{opacity:1}
+.actors-film-type>span{display:block;font-size:clamp(9px,1vw,14px);letter-spacing:.14em;color:#aaaab4}
+.actors-film-type strong{display:block;font-size:clamp(32px,4.5vw,72px);letter-spacing:-.04em;line-height:1.15;color:#f1f1f3;margin:16px 0}
+.actors-film-type small{font-size:clamp(10px,1.3vw,18px);letter-spacing:.14em;color:#b9b9c2}
+.actors-film-toggle{position:absolute;top:14px;right:14px;border:1px solid #686870;border-radius:50%;width:38px;height:38px;background:#101011cc;color:#fff;cursor:pointer;font:15px system-ui}
+.actors-film-toggle[hidden]{display:none}
+.actors-film-line{position:absolute;bottom:0;left:0;right:0;height:2px;background:#ed233a;transform:scaleX(var(--film-progress,0));transform-origin:left;pointer-events:none}
+.actors-film-bottom{display:flex;justify-content:space-between;align-items:start;gap:20px;margin-top:13px}
+.actors-film-bottom>span:last-child{font-size:10px;color:#888892;white-space:nowrap;letter-spacing:.09em}
+@media(prefers-reduced-motion:no-preference){.actors-film-type.is-changing strong,.actors-film-type.is-changing small{animation:actors-film-type-in .4s ease-out both}.actors-film-type.is-changing small{animation-delay:.08s}@keyframes actors-film-type-in{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}}
+@media(max-width:700px){.actors-film-stage{aspect-ratio:4/5}.actors-film-type{left:5%;top:1.8%;width:75%}.actors-film-type>span{font-size:7px;letter-spacing:.06em}.actors-film-type strong{font-size:clamp(24px,6vw,38px);margin:4px 0;line-height:1.1}.actors-film-type small{font-size:8px}.actors-film-toggle{top:10px;right:8px;width:30px;height:30px;font-size:12px}.actors-film-bottom{display:block}.actors-film-bottom>span:last-child{display:block;margin-top:8px}.actors-film{margin-bottom:34px}}

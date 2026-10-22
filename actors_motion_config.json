@@ -1,0 +1,53 @@
+{
+  "audio": "off",
+  "duration": 20,
+  "fps": 24,
+  "sources": [
+    [
+      "min-seoa.webp",
+      "min-seoa-look-1.webp",
+      "min-seoa-look-2.webp",
+      "min-seoa-look-3.webp",
+      "min-seoa-look-4.webp"
+    ],
+    [
+      "yeonhwa.webp",
+      "yeonhwa-look-1.webp",
+      "yeonhwa-look-2.webp",
+      "yeonhwa-look-3.webp",
+      "yeonhwa-look-4.webp"
+    ],
+    [
+      "yuna.webp",
+      "yuna-look-1.webp",
+      "yuna-look-2.webp",
+      "yuna-look-3.webp",
+      "yuna-look-4.webp"
+    ],
+    [
+      "haseul.webp",
+      "haseul-look-1.webp",
+      "haseul-look-2.webp",
+      "haseul-look-5.webp",
+      "haseul-look-6.webp"
+    ]
+  ],
+  "facesRegenerated": false,
+  "watermarksPreserved": true,
+  "variants": {
+    "desktop": {
+      "video": "desktop.6093fe2ff95a.mp4",
+      "poster": "desktop-poster.210712f883d3.avif",
+      "width": 1440,
+      "height": 810,
+      "bytes": 966398
+    },
+    "mobile": {
+      "video": "mobile.52484362a4f3.mp4",
+      "poster": "mobile-poster.2efee6fdf698.avif",
+      "width": 720,
+      "height": 900,
+      "bytes": 588936
+    }
+  }
+}
