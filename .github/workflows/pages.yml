@@ -37,6 +37,7 @@ jobs:
           python3 -m unittest test_robots_policy test_youtube_sync test_youtube_site test_lounge
           node test-consent.cjs
           node test-continue-watching.cjs
+          node --test test-casting.cjs workers/casting/test.mjs
           node --test test-hero-preview.cjs
           node --test test-board-view.cjs
           node --test test-tutorial-metrics.cjs workers/tutorial-metrics/test/worker.test.mjs

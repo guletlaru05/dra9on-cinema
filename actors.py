@@ -10,6 +10,7 @@ from hashlib import sha256
 from actors_content import ACTORS, LANGS, UI, row
 from site_config import CONTACT_EMAIL, OG_ALT
 from actor_rights import notice_html, with_copyright
+import casting
 
 HERE=Path(__file__).resolve().parent
 MENU=row('AI 배우','AI Actors','AI俳優','Actores IA')
@@ -146,6 +147,12 @@ def build(out,origin,works,head,base_path=''):
   if preview:doc=doc.replace('content="index,follow,max-image-preview:large,max-video-preview:-1"','content="noindex,nofollow,noarchive"')
   if lang!='ko':doc=doc.replace('src="/catalog.js"','src="/'+lang+'/catalog.js"')
   doc=doc.replace('</head>','<link rel="stylesheet" href="'+base_path+css+'"><script src="'+base_path+script+'" defer></script></head>')
+  if path!='/actors/':
+   extra=''
+   for filename in ('casting.css','casting.js'):
+    url=base_path+'/'+filename+'?v='+sha256((out/filename).read_bytes()).hexdigest()[:12]
+    extra+=('<link rel="stylesheet" href="'+url+'">' if filename.endswith('.css') else '<script src="'+url+'" defer></script>')
+   doc=doc.replace('</head>',extra+'</head>')
   banner='<aside class="actor-draft">'+tr('draft',lang)+'</aside>' if preview else ''
   folder=out/prefix(lang).strip('/')/path.strip('/');folder.mkdir(parents=True,exist_ok=True)
   (folder/'index.html').write_text(doc+'<body class="watch-page actor-page"><a class="skip-link" href="#main">'+tr('profile',lang)+'</a>'+nav+banner+body+foot+'</body></html>',encoding='utf-8')
@@ -175,6 +182,9 @@ def build(out,origin,works,head,base_path=''):
    body=body.replace('<a class="actor-back" href="'+pre+'/actors/">← '+tr('back',lang)+'</a>',profile_navigation(actor,lang,base_path),1)
    behind_link='<p class="actor-behind-link"><a class="text-button" href="'+pre+'/actors/#behind-the-scenes">'+e(row('비하인드 사진 보기','View behind-the-scenes photos','舞台裏の写真を見る','Ver fotos detrás de cámaras')[lang])+' →</a></p>' if behind_gallery else ''
    body=body.replace('<section class="actor-screen-work">',gallery(actor,lang)+gallery(actor,lang,True)+behind_link+'<section class="actor-screen-work">',1)
+   top_cta,bottom_cta=casting.render(actor,lang,base_path)
+   body=re.sub(r'<a class="actor-inquire"[^>]*>.*?</a>',lambda match:top_cta,body,count=1)
+   body=body.replace(notice_html(lang,base_path),bottom_cta+notice_html(lang,base_path),1)
    page(lang,'/actors/'+actor['slug']+'/',actor['name'][lang]+' · '+UI['title'][lang],actor['line'][lang]+' '+UI['disclosure'][lang],body)
  # Add the same entry points to the already-localised site without moving board data.
  for file in out.rglob('*.html'):

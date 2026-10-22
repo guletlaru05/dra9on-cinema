@@ -218,3 +218,25 @@ build-portfolio.py), not in client JavaScript. A supplied verification file
 must be served unchanged at its exact root filename. Do not put tokens from
 another account in the site or invent verification values. After verification,
 submit https://dra9oncinema.com/sitemap.xml. Existing verification records stay.
+
+
+Actor casting inquiries
+----------------------
+The sixteen existing actor profiles (four actors, four languages) use casting.py
+and the deferred, interaction-only casting.js. Both the upper and lower CTA open
+a native dialog with the selected actor. Company, contact, email, actor, purpose,
+message and explicit transmission agreement are required. Turnstile loads only
+when the visitor opens the form; visible errors retain entries. The existing
+Japanese/Spanish profiles link to the existing English privacy policy.
+
+casting_config.json contains only the public widget key and endpoint. Never put
+TURNSTILE_SECRET in that file, generated HTML, logs or GitHub. The encrypted
+Cloudflare Worker secret is maintained in the dashboard. The separate free
+Worker at workers/casting uses server-side Siteverify, exact hostname/action,
+canonical-origin CORS, a five-per-minute per-location rate limiter, strict input
+limits, and a Send Email binding restricted to the verified owner Gmail. No
+request bodies or IPs are logged or persisted; no Firestore rules are changed.
+The existing GitHub Cloudflare deployment token deploys this Worker through
+casting-worker.yml without creating another account credential. Secrets are
+preserved by normal Wrangler deployment. Run node --test test-casting.cjs
+workers/casting/test.mjs and python -m unittest test_casting after building.
