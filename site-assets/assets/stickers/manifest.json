@@ -1,0 +1,356 @@
+{
+  "source": "site-assets/assets/notes/min-stickers-12-center-soft-wm.webp",
+  "sourceSha256": "2d0ed16029e6ff2eb8c04ae35fc0364c33ac157ccadab71b0f28ab606f3e11b5",
+  "count": 12,
+  "watermark": "Existing pixels preserved; no watermark added or removed.",
+  "tiles": [
+    {
+      "index": 0,
+      "crop": [
+        0,
+        0,
+        362,
+        362
+      ],
+      "files": [
+        {
+          "file": "min-01-240.webp",
+          "width": 240,
+          "height": 240,
+          "bytes": 11450
+        },
+        {
+          "file": "min-01-360.webp",
+          "width": 360,
+          "height": 360,
+          "bytes": 19512
+        },
+        {
+          "file": "min-01-full.webp",
+          "width": 362,
+          "height": 362,
+          "bytes": 70456
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "crop": [
+        362,
+        0,
+        724,
+        362
+      ],
+      "files": [
+        {
+          "file": "min-02-240.webp",
+          "width": 240,
+          "height": 240,
+          "bytes": 12346
+        },
+        {
+          "file": "min-02-360.webp",
+          "width": 360,
+          "height": 360,
+          "bytes": 21226
+        },
+        {
+          "file": "min-02-full.webp",
+          "width": 362,
+          "height": 362,
+          "bytes": 74614
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "crop": [
+        724,
+        0,
+        1086,
+        362
+      ],
+      "files": [
+        {
+          "file": "min-03-240.webp",
+          "width": 240,
+          "height": 240,
+          "bytes": 11164
+        },
+        {
+          "file": "min-03-360.webp",
+          "width": 360,
+          "height": 360,
+          "bytes": 19096
+        },
+        {
+          "file": "min-03-full.webp",
+          "width": 362,
+          "height": 362,
+          "bytes": 65796
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "crop": [
+        0,
+        362,
+        362,
+        724
+      ],
+      "files": [
+        {
+          "file": "min-04-240.webp",
+          "width": 240,
+          "height": 240,
+          "bytes": 15182
+        },
+        {
+          "file": "min-04-360.webp",
+          "width": 360,
+          "height": 360,
+          "bytes": 25748
+        },
+        {
+          "file": "min-04-full.webp",
+          "width": 362,
+          "height": 362,
+          "bytes": 88720
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "crop": [
+        362,
+        362,
+        724,
+        724
+      ],
+      "files": [
+        {
+          "file": "min-05-240.webp",
+          "width": 240,
+          "height": 240,
+          "bytes": 13460
+        },
+        {
+          "file": "min-05-360.webp",
+          "width": 360,
+          "height": 360,
+          "bytes": 23258
+        },
+        {
+          "file": "min-05-full.webp",
+          "width": 362,
+          "height": 362,
+          "bytes": 82150
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "crop": [
+        724,
+        362,
+        1086,
+        724
+      ],
+      "files": [
+        {
+          "file": "min-06-240.webp",
+          "width": 240,
+          "height": 240,
+          "bytes": 11734
+        },
+        {
+          "file": "min-06-360.webp",
+          "width": 360,
+          "height": 360,
+          "bytes": 20474
+        },
+        {
+          "file": "min-06-full.webp",
+          "width": 362,
+          "height": 362,
+          "bytes": 71966
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "crop": [
+        0,
+        724,
+        362,
+        1086
+      ],
+      "files": [
+        {
+          "file": "min-07-240.webp",
+          "width": 240,
+          "height": 240,
+          "bytes": 12254
+        },
+        {
+          "file": "min-07-360.webp",
+          "width": 360,
+          "height": 360,
+          "bytes": 21134
+        },
+        {
+          "file": "min-07-full.webp",
+          "width": 362,
+          "height": 362,
+          "bytes": 74750
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "crop": [
+        362,
+        724,
+        724,
+        1086
+      ],
+      "files": [
+        {
+          "file": "min-08-240.webp",
+          "width": 240,
+          "height": 240,
+          "bytes": 13118
+        },
+        {
+          "file": "min-08-360.webp",
+          "width": 360,
+          "height": 360,
+          "bytes": 22778
+        },
+        {
+          "file": "min-08-full.webp",
+          "width": 362,
+          "height": 362,
+          "bytes": 79578
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "crop": [
+        724,
+        724,
+        1086,
+        1086
+      ],
+      "files": [
+        {
+          "file": "min-09-240.webp",
+          "width": 240,
+          "height": 240,
+          "bytes": 11992
+        },
+        {
+          "file": "min-09-360.webp",
+          "width": 360,
+          "height": 360,
+          "bytes": 20484
+        },
+        {
+          "file": "min-09-full.webp",
+          "width": 362,
+          "height": 362,
+          "bytes": 73286
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "crop": [
+        0,
+        1086,
+        362,
+        1448
+      ],
+      "files": [
+        {
+          "file": "min-10-240.webp",
+          "width": 240,
+          "height": 240,
+          "bytes": 10710
+        },
+        {
+          "file": "min-10-360.webp",
+          "width": 360,
+          "height": 360,
+          "bytes": 18280
+        },
+        {
+          "file": "min-10-full.webp",
+          "width": 362,
+          "height": 362,
+          "bytes": 67588
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "crop": [
+        362,
+        1086,
+        724,
+        1448
+      ],
+      "files": [
+        {
+          "file": "min-11-240.webp",
+          "width": 240,
+          "height": 240,
+          "bytes": 12454
+        },
+        {
+          "file": "min-11-360.webp",
+          "width": 360,
+          "height": 360,
+          "bytes": 21692
+        },
+        {
+          "file": "min-11-full.webp",
+          "width": 362,
+          "height": 362,
+          "bytes": 76554
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "crop": [
+        724,
+        1086,
+        1086,
+        1448
+      ],
+      "files": [
+        {
+          "file": "min-12-240.webp",
+          "width": 240,
+          "height": 240,
+          "bytes": 14384
+        },
+        {
+          "file": "min-12-360.webp",
+          "width": 360,
+          "height": 360,
+          "bytes": 24356
+        },
+        {
+          "file": "min-12-full.webp",
+          "width": 362,
+          "height": 362,
+          "bytes": 86936
+        }
+      ]
+    }
+  ]
+}

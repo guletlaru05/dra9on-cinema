@@ -44,6 +44,14 @@ def build(out, origin, base_path=''):
             doc = ''.join(parser.parts)
 
         main = (CONTENT / article['fragment']).read_text(encoding='utf-8')
+        if 'class="min-stickers"' in main:
+            from min_stickers import render
+            gallery = render(lang=lang)
+            script_name = 'min-stickers.' + sha256((out / 'min-stickers.js').read_bytes()).hexdigest()[:12] + '.js'
+            gallery = gallery.replace('/min-stickers.js?v=20261022-grid', '/assets/build/' + script_name)
+            main, count = re.subn(r'<section class="min-stickers"[^>]*>[\s\S]*?</section><script[^>]*min-stickers[^>]*></script>', lambda _: gallery, main, count=1)
+            if count != 1:
+                raise ValueError('Expected exactly one shared sticker gallery: ' + article['fragment'])
         if base_path:
             main = re.sub(r'((?:href|src)=")(/(?!/)[^"]*)', lambda m: m[1] + base_path + m[2], main)
         doc = doc.replace('<main id="main"></main>', main, 1)

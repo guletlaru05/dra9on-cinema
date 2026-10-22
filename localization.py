@@ -266,6 +266,8 @@ def localize_site(out, works, origin, base_path=''):
     base_translations.update(TERMS_TRANSLATIONS)
     from production_notes import TRANSLATIONS as NOTE_TRANSLATIONS, ROUTES as NOTE_ROUTES
     base_translations.update(NOTE_TRANSLATIONS)
+    from min_stickers import TRANSLATIONS as STICKER_TRANSLATIONS
+    base_translations.update(STICKER_TRANSLATIONS)
     from tutorials import TRANSLATIONS as TUTORIAL_TRANSLATIONS, ROUTES as TUTORIAL_ROUTES
     base_translations.update(TUTORIAL_TRANSLATIONS)
     from questions import TRANSLATIONS as QUESTION_TRANSLATIONS, ROUTES as QUESTION_ROUTES

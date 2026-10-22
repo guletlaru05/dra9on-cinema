@@ -69,6 +69,8 @@ def dictionary(lang,out):
  d['GPT Image 2.5 · 창가 인물의 렘브란트 조명과 명암 비교']='GPT Image 2.5 · 窓辺のレンブラント照明と明暗差' if lang=='ja' else 'GPT Image 2.5 · Luz Rembrandt y contraste junto a la ventana'
  d['GPT Image 2.5 · Rembrandt window light and contrast on a fictional adult']=d['GPT Image 2.5 · 창가 인물의 렘브란트 조명과 명암 비교']
  for ko,ja,es in [('작품 뒤의 방법, 직접 해보세요.','作品づくりの裏側を、あなたも。','Descubre cómo se crean las escenas.'),('처음 만드는 사람도 한 단계씩. 로판·현대 드라마·밀리터리·오컬트·SF 장면으로 제작 방법을 직접 실습합니다.','初めてでも、一歩ずつ。さまざまなジャンルの場面で制作方法を試せます。','Paso a paso, incluso si empiezas de cero. Practica con escenas de distintos géneros.'),('강좌 열기','記事を読む','Abrir tutorial'),('조명 4종 · 모델 비교 · 전체 프롬프트','照明4種・モデル比較・プロンプト全文','Cuatro luces · Modelos · Prompts completos'),('프롬프트 복사','プロンプトをコピー','Copiar prompt'),('복사했어요.','コピーしました。','Copiado.'),('복사하지 못했어요. 텍스트를 선택해 복사해 주세요.','コピーできませんでした。テキストを選択してコピーしてください。','No se pudo copiar. Selecciona el texto y cópialo.'),('AI 이미지의 미감 만들기 — 여백·색·질감','AI画像の美しさをつくる — 余白・色・質感','Imágenes cinematográficas con IA — espacio, color y textura')]:d[ko]=ja if lang=='ja' else es
+ from min_stickers import translations as sticker_translations
+ d.update(sticker_translations(lang))
  return d
 
 class PageLanguage(HTMLParser):
@@ -130,7 +132,7 @@ def supported_routes(works):
  from lounge import routes as lounge_routes
  from notes_workflow import routes as workflow_routes
  from actors import routes as actor_routes
- return {'/tutorials/','/tutorials/lighting-contrast/','/','/fall-707/','/press/',*[w['path'] for w in works if w['season']],*(['/fall-707/world/'] if WORLD_ENABLED else []),*note_routes(),*workflow_routes(),*lounge_routes(),*actor_routes()}
+ return {'/stickers/','/tutorials/','/tutorials/lighting-contrast/','/','/fall-707/','/press/',*[w['path'] for w in works if w['season']],*(['/fall-707/world/'] if WORLD_ENABLED else []),*note_routes(),*workflow_routes(),*lounge_routes(),*actor_routes()}
 
 def build_languages(out,origin,works,data,head,header,footer,base_path=''):
  routes=supported_routes(works)
@@ -174,6 +176,7 @@ def build_languages(out,origin,works,data,head,header,footer,base_path=''):
    schema={'@context':'https://schema.org','@type':'VideoObject','name':w['name'],'description':w['summary'],'url':origin+original['path'],'thumbnailUrl':[origin+original['image']],'embedUrl':'https://www.youtube-nocookie.com/embed/'+w['id'],'uploadDate':w['uploadDate'],'duration':'PT'+str(w['seconds'])+'S'}
    pages[original['path']]=head(w['name']+' | DRA9ON CINEMA',w['summary'],original['path'],schema)+f'<body class="watch-page" data-page="watch" data-id="{w["id"]}">'+header()+view+footer()+'</body></html>'
   pages['/press/']=(out/'en/press/index.html').read_text(encoding='utf-8')
+  pages['/stickers/']=(out/'en/stickers/index.html').read_text(encoding='utf-8')
   pages['/fall-707/world/']=(out/'en/fall-707/world/index.html').read_text(encoding='utf-8')
   for route,source in pages.items():
    source=re.sub(r'<link rel="alternate" hreflang="[^"]+"[^>]*>','',source)
