@@ -279,7 +279,7 @@ from seo import optimize as optimize_seo
 optimize_seo(out)
 
 from social_cards import build_social_cards
-build_social_cards(out,origin,base_path)
+build_social_cards(out,origin,base_path,works=works)
 
 from performance import optimize as optimize_performance
 optimize_performance(out,base_path)

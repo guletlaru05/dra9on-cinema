@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import re
 from urllib.parse import unquote, urlsplit
+from datetime import datetime,timezone
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
@@ -189,7 +190,7 @@ def metadata(document, values):
         document = document.replace('</head>', tag+'</head>', 1)
     return document
 
-def build_social_cards(out, origin, base_path=''):
+def build_social_cards(out, origin, base_path='',works=None):
     out = Path(out); dest = out/'assets/og/pages'; dest.mkdir(parents=True, exist_ok=True)
     actor_config = json.loads((ROOT/'actors_config.json').read_text(encoding='utf-8'))
     from actors_content import ACTORS
@@ -215,9 +216,14 @@ def build_social_cards(out, origin, base_path=''):
             heading = LABELS[kind][lang]
         if kind in ('home','watch'):
             sources=[local_asset(out,parsed.meta['og:image'],base_path)]
-        elif kind in ('series', 'world'):
+        elif kind == 'series':
+            released=[work for work in (works or []) if re.fullmatch(r's[1-9][0-9]*',work.get('category','')) and work.get('episode',0)>0
+                      and (not work.get('releaseAt') or datetime.fromisoformat(work['releaseAt'].replace('Z','+00:00'))<=datetime.now(timezone.utc))]
+            if not released:raise ValueError('The series OG needs a released episode thumbnail')
+            latest=max(released,key=lambda work:(work['season'],work['episode']))
+            sources=[local_asset(out,latest['image'],base_path)];heading='FALL 707: REBOOT'
+        elif kind == 'world':
             sources = [out/'assets/og'/('og-ko.jpg' if lang == 'ko' else 'og-en.jpg')]
-            if kind == 'series': heading = 'FALL 707: REBOOT'
         elif kind == 'actors':
             sources = photo_sources; subtitle = LABELS['original'][lang]
             names = [actor_names[s][lang] for s in ('min-seoa', 'yeonhwa', 'yuna', 'haseul')]

@@ -46,3 +46,5 @@ class SocialCardsTests(unittest.TestCase):
   for lang in ('ko','en','ja','es'):
    group=next(r for r in manifest if r['kind']=='actors' and r['language']==lang)
    self.assertEqual([Path(s).stem for s in group['sources']],['min-seoa','yeonhwa','yuna','haseul'])
+   series=next(r for r in manifest if r['kind']=='series' and r['language']==lang)
+   self.assertTrue(series['sources'][0].startswith('assets/portfolio/'))
