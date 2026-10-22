@@ -59,9 +59,10 @@ def check_once(file):
       if actual.get(key)!=expected.get(key):raise ValueError('Live social metadata differs from this build: '+key)
      result['ogImage']=actual['og:image']
      result['socialMetadata']={key:actual.get(key,'') for key in ('og:image','twitter:image','og:title','og:description','twitter:card')}
-     entities=[org for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>',text,re.S) for org in organizations(json.loads(block))]
-     if not any(org.get('name')=='드래곤시네마 DRA9ON CINEMA' and {'드래곤 시네마','dragon cinema','드래곤나인'}.issubset(org.get('alternateName',[])) for org in entities):raise ValueError('Live Organization brand aliases missing')
-     result['organizationAliasesVerified']=True
+     if 'noindex' not in expected.get('robots',''):
+      entities=[org for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>',text,re.S) for org in organizations(json.loads(block))]
+      if not any(org.get('name')=='드래곤시네마 DRA9ON CINEMA' and {'드래곤 시네마','dragon cinema','드래곤나인'}.issubset(org.get('alternateName',[])) for org in entities):raise ValueError('Live Organization brand aliases missing')
+      result['organizationAliasesVerified']=True
  except HTTPError as error:
   result.update(status=error.code)
   if path!='/404.html':result['error']='HTTP '+str(error.code)
