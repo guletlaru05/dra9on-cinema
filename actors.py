@@ -123,6 +123,23 @@ def build(out,origin,works,head,base_path=''):
   nav=re.search(r'<header class="header"[\s\S]*?</header>',home).group()
   foot=re.search(r'<footer[\s\S]*?</footer>',home).group()
   schema={'@context':'https://schema.org','@type':'WebPage','name':title,'description':description,'inLanguage':lang,'url':origin+prefix(lang)+path,'publisher':{'@type':'Organization','name':'DRA9ON CINEMA'}}
+  def creative(actor):
+   return {'@type':'CreativeWork','@id':origin+'/actors/'+actor['slug']+'/#ai-character',
+    'name':actor['name'][lang],'url':origin+prefix(lang)+'/actors/'+actor['slug']+'/',
+    'description':actor['line'][lang]+' '+UI['disclosure'][lang],
+    'genre':'Original fictional AI character; not a real person',
+    'keywords':['AI character','fictional',*actor['keywords'][lang]],
+    'creator':{'@type':'Organization','name':'DRA9ON CINEMA'},
+    'copyrightHolder':{'@type':'Organization','name':'DRA9ON CINEMA'},
+    'license':origin+prefix(lang)+'/terms/#ai-actors',
+    'image':origin+asset(photos[actor['slug']]['fullbody']),
+    'isBasedOn':{'@type':'CreativeWorkSeries','name':'FALL 707: REBOOT','url':origin+prefix(lang)+'/fall-707/'}}
+  if path=='/actors/':
+   schema['@type']='CollectionPage'
+   schema['mainEntity']={'@type':'ItemList','itemListElement':[{'@type':'ListItem','position':i,'item':creative(actor)} for i,actor in enumerate(ACTORS,1)]}
+  else:
+   actor=next(actor for actor in ACTORS if path=='/actors/'+actor['slug']+'/')
+   schema['mainEntity']=creative(actor)
   doc=head(title+' | DRA9ON CINEMA',description,prefix(lang)+path,schema)
   doc=doc.replace('<html lang="ko">','<html lang="'+lang+'">').replace('property="og:type" content="video.episode"','property="og:type" content="website"').replace('property="og:locale" content="ko_KR"','property="og:locale" content="'+{'ko':'ko_KR','en':'en_US','ja':'ja_JP','es':'es_ES'}[lang]+'"')
   doc=doc.replace(e(OG_ALT['ko'],quote=True),e('DRA9ON CINEMA · '+UI['title'][lang],quote=True))

@@ -3,13 +3,14 @@ from pathlib import Path
 from urllib.request import Request,urlopen
 from urllib.error import HTTPError
 from concurrent.futures import ThreadPoolExecutor
+from time import sleep
 import json
 ROOT=Path(__file__).resolve().parents[1]
 SITE=ROOT/'dist'
 HOST='https://dra9on-cinema.pages.dev'
 STAGE='preview'
 
-def check(file):
+def check_once(file):
  rel=file.relative_to(SITE).as_posix()
  path='/'+rel.removesuffix('index.html') if rel.endswith('index.html') else '/'+rel
  method='GET' if file.suffix=='.html' else 'HEAD'
@@ -30,6 +31,14 @@ def check(file):
   if path!='/404.html':result['error']='HTTP '+str(error.code)
  except Exception as error:result['error']=str(error)
  return result
+
+def check(file):
+ # A single reset must not fail an otherwise healthy CDN deployment.
+ for attempt in range(3):
+  result=check_once(file)
+  transient=result.get('error') and result.get('status') in (None,429,502,503,504)
+  if not transient or attempt==2:return result
+  sleep(attempt+1)
 
 def main():
  global HOST,STAGE

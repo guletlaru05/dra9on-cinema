@@ -272,6 +272,9 @@ for page in out.rglob('*.html'):
 from cinema_interactions import inject_cinema_interactions
 inject_cinema_interactions(out,base_path)
 
+from seo import optimize as optimize_seo
+optimize_seo(out)
+
 from performance import optimize as optimize_performance
 optimize_performance(out,base_path)
 

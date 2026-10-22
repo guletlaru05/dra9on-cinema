@@ -197,3 +197,24 @@ Cloudflare headers cache hashed CSS/JS, optimized images and subset fonts for
 one year; original media for a week. Library shells are no-store and PWA feeds
 and the service worker revalidate. Dynamic catalog/auth/API paths are not given
 an immutable cache policy.
+
+
+## Search metadata and fictional AI actors (2026-10-22)
+
+Existing public routes, sitemap, robots and episode VideoObject metadata are
+preserved. seo.py gives indexable pages unique titles/descriptions, corrects
+tutorial-index summaries, synchronizes changed social/VideoObject descriptions,
+and excludes 404 pages from indexing. Actor profiles use CreativeWork; the
+listing uses CollectionPage and ItemList with explicitly fictional AI works.
+No actor is represented as Person, and no protected story identity is added.
+Run test_seo after building. Existing English URLs are updated in place.
+
+Search ownership is completed by the owner. For Google Search Console, use the
+URL-prefix property's HTML-tag or HTML-file verification screen; a domain
+property uses its DNS TXT method. For Naver Search Advisor, register the root
+URL in Webmaster Tools and choose HTML tag or file verification. A supplied
+meta tag belongs in the generated homepage head (permanent source: head() in
+build-portfolio.py), not in client JavaScript. A supplied verification file
+must be served unchanged at its exact root filename. Do not put tokens from
+another account in the site or invent verification values. After verification,
+submit https://dra9oncinema.com/sitemap.xml. Existing verification records stay.
