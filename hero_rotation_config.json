@@ -22,13 +22,13 @@
       },
       "approved": true,
       "bytes": {
-        "mp4": 2492891,
-        "webm": 2326353,
-        "mobile": 757066,
-        "poster": 83407,
-        "hdMp4": 3675161,
-        "hdWebm": 4828533,
-        "mobilePoster": 37198
+        "mp4": 2516835,
+        "webm": 1420298,
+        "mobile": 816749,
+        "hdMp4": 4550606,
+        "hdWebm": 2077959,
+        "poster": 124389,
+        "mobilePoster": 33878
       },
       "focus": {
         "desktop": "65% 20%",
