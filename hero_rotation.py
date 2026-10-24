@@ -12,9 +12,9 @@ def tr(*items):return dict(zip(LANGS,items))
 COPY=[
  {'title':tr('FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT'),
   'tab':tr('낙하 707 · 최신 회차','FALL 707 · Latest','FALL 707・最新話','FALL 707 · Lo más reciente'),
-  'label':tr('시즌 3 · EP.02','SEASON 3 · EP.02','シーズン3・EP.02','TEMPORADA 3 · EP.02'),
-  'description':tr('물러설 곳 없는 어둠 속, 민서아 대위의 다음 전투.','Captain Min faces her next battle in the dark.','暗闇の奥へ。ミン・ソア大尉の次なる戦い。','La capitana Min se enfrenta a su próxima batalla en la oscuridad.'),
-  'path':'/watch/fall-707-s3-ep2/'},
+  'label':tr('시즌 3 · EP.03','SEASON 3 · EP.03','シーズン3・EP.03','TEMPORADA 3 · EP.03'),
+  'description':tr('대저택을 포위한 칼끝. 같은 밤, 서울이 깨어난다.','The mansion is surrounded. On that same night, Seoul awakens.','屋敷を囲む刃。同じ夜、ソウルが目覚める。','La mansión está rodeada. Esa misma noche, Seúl despierta.'),
+  'path':'/watch/fall-707-s3-ep3/'},
  {'title':tr('FALL 707 · 시즌 2','FALL 707 · Season 2','FALL 707・シーズン2','FALL 707 · Temporada 2'),
   'tab':tr('시즌 2 · 몰아보기','Season 2 · Full story','シーズン2・一気見','Temporada 2 · Completa'),
   'label':tr('시즌 2 · 전체 이야기','SEASON 2 · FULL STORY','シーズン2・全編','TEMPORADA 2 · HISTORIA COMPLETA'),

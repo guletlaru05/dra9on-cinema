@@ -12,13 +12,13 @@
       "id": "01-min-current",
       "duration": 8,
       "files": {
-        "mp4": "01-min-current-mp4-responsive.05ff2e270505.mp4",
-        "webm": "01-min-current-webm-responsive.94d273c6b745.webm",
-        "mobile": "01-min-current-mobile-responsive.82376b3b02cd.mp4",
-        "poster": "01-min-current.fccb974c077f.jpg",
-        "hdMp4": "01-min-current.b50cbab4f927.mp4",
-        "hdWebm": "01-min-current.4cff7f53b567.webm",
-        "mobilePoster": "01-min-current-phone-poster.074bf4b95a59.webp"
+        "mp4": "01-s3ep3-mp4.3e100f888530.mp4",
+        "webm": "01-s3ep3-webm.dbebd2d8a76f.webm",
+        "mobile": "01-s3ep3-mobile.dab0b34dbc22.mp4",
+        "hdMp4": "01-s3ep3-hdMp4.2019d7a2a64e.mp4",
+        "hdWebm": "01-s3ep3-hdWebm.33656b29ed81.webm",
+        "poster": "01-s3ep3-poster.c6e77f0d1ec1.jpg",
+        "mobilePoster": "01-s3ep3-mobilePoster.25432cac46a3.webp"
       },
       "approved": true,
       "bytes": {
@@ -31,18 +31,18 @@
         "mobilePoster": 37198
       },
       "focus": {
-        "desktop": "50% 32%",
-        "mobile": "45% 30%"
+        "desktop": "65% 20%",
+        "mobile": "79% 0%"
       },
       "fit": "cover",
       "dimensions": {
         "desktop": [
-          1920,
-          836
+          1480,
+          832
         ],
         "mobile": [
-          640,
-          278
+          720,
+          404
         ]
       },
       "posterDimensions": {
@@ -54,13 +54,34 @@
       "focusTrack": [
         {
           "at": 0,
-          "mobile": "45% 30%"
+          "mobile": "79% 0%"
         },
         {
-          "at": 3.25,
-          "mobile": "78% 30%"
+          "at": 1.7,
+          "mobile": "70% 0%"
+        },
+        {
+          "at": 2.6,
+          "mobile": "62% 0%"
+        },
+        {
+          "at": 4,
+          "mobile": "56% 0%"
+        },
+        {
+          "at": 6,
+          "mobile": "40% 0%"
         }
-      ]
+      ],
+      "sizes": {
+        "mp4": 2516835,
+        "webm": 1420298,
+        "mobile": 816749,
+        "hdMp4": 4550606,
+        "hdWebm": 2077959,
+        "poster": 124389,
+        "mobilePoster": 33878
+      }
     },
     {
       "id": "02-s2",

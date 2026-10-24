@@ -12,6 +12,7 @@ SEASONS={
   ('Las personas que vino a rescatar se han convertido en sus enemigos. Aun así, no puede abandonarlas.','Tras tres meses en Joseon, Min Seo-a encuentra una frágil calma junto a Yeonhwa en el invierno de Mokpojin. Una infiltración y el sonido de una campana sobrenatural vuelven a quebrarla. Para proteger a Yeonhwa y encontrar a sus compañeros, Min tendrá que luchar más allá de todo lo que conoce.')]
 }
 WORKS={
+ 'DC9wgel53Jk':{'ja':('ソウルが目覚めた','私兵が屋敷を取り囲む夜。ミン大尉と仲間たちは、刃を前にしても退かない。朝鮮と現代のソウル。異なる時代に、同じ夜が訪れる。'),'es':('Seúl despierta','Los soldados privados rodean la mansión. Min y sus compañeros se niegan a retroceder ante las espadas. La misma noche llega a Joseon y al Seúl del presente.')},
  'S1v3yFoAK5w':{
   'ja':('退くな','禁じられた扉の先へ。ミン・ソア大尉は、帰らぬハン軍曹を捜して、さらに深い地下へと進む。罠と闇が行く手を阻む一方、屋敷では彼女の帰りを待つ人々がいた。'),
   'es':('No retrocedas','Tras cruzar la puerta prohibida, la capitana Min Seo-a desciende aún más en busca del sargento Han. Mientras las trampas y la oscuridad le cierran el paso, en la mansión esperan su regreso.')},
