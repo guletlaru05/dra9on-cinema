@@ -12,37 +12,37 @@
       "id": "01-min-current",
       "duration": 8,
       "files": {
-        "mp4": "01-s3ep3-mp4.3e100f888530.mp4",
-        "webm": "01-s3ep3-webm.dbebd2d8a76f.webm",
-        "mobile": "01-s3ep3-mobile.dab0b34dbc22.mp4",
-        "hdMp4": "01-s3ep3-hdMp4.2019d7a2a64e.mp4",
-        "hdWebm": "01-s3ep3-hdWebm.33656b29ed81.webm",
-        "poster": "01-s3ep3-poster.c6e77f0d1ec1.jpg",
-        "mobilePoster": "01-s3ep3-mobilePoster.25432cac46a3.webp"
+        "mp4": "01-s3ep4p1-mp4.d340a9c18707.mp4",
+        "webm": "01-s3ep4p1-webm.e1b2c7cd4cf1.webm",
+        "mobile": "01-s3ep4p1-mobile.f485bf718a56.mp4",
+        "hdMp4": "01-s3ep4p1-hdMp4.91efd64561b7.mp4",
+        "hdWebm": "01-s3ep4p1-hdWebm.2e74a028a359.webm",
+        "poster": "01-s3ep4p1-poster.3ef827640af5.jpg",
+        "mobilePoster": "01-s3ep4p1-mobilePoster.2c2ed0f982ec.webp"
       },
       "approved": true,
       "bytes": {
-        "mp4": 2516835,
-        "webm": 1420298,
-        "mobile": 816749,
-        "hdMp4": 4550606,
-        "hdWebm": 2077959,
-        "poster": 124389,
-        "mobilePoster": 33878
+        "mp4": 2292459,
+        "webm": 1425257,
+        "mobile": 1498698,
+        "hdMp4": 4141247,
+        "hdWebm": 2053307,
+        "poster": 115493,
+        "mobilePoster": 30376
       },
       "focus": {
-        "desktop": "65% 20%",
-        "mobile": "79% 0%"
+        "desktop": "50% 20%",
+        "mobile": "50% 0%"
       },
       "fit": "cover",
       "dimensions": {
         "desktop": [
-          1480,
-          832
+          1504,
+          846
         ],
         "mobile": [
-          720,
-          404
+          640,
+          1138
         ]
       },
       "posterDimensions": {
@@ -51,37 +51,17 @@
           1138
         ]
       },
-      "focusTrack": [
-        {
-          "at": 0,
-          "mobile": "79% 0%"
-        },
-        {
-          "at": 1.7,
-          "mobile": "70% 0%"
-        },
-        {
-          "at": 2.6,
-          "mobile": "62% 0%"
-        },
-        {
-          "at": 4,
-          "mobile": "56% 0%"
-        },
-        {
-          "at": 6,
-          "mobile": "40% 0%"
-        }
-      ],
+      "focusTrack": [],
       "sizes": {
-        "mp4": 2516835,
-        "webm": 1420298,
-        "mobile": 816749,
-        "hdMp4": 4550606,
-        "hdWebm": 2077959,
-        "poster": 124389,
-        "mobilePoster": 33878
-      }
+        "mp4": 2292459,
+        "webm": 1425257,
+        "mobile": 1498698,
+        "hdMp4": 4141247,
+        "hdWebm": 2053307,
+        "poster": 115493,
+        "mobilePoster": 30376
+      },
+      "selection": "Owner requested EP4 Part 1 hero update. Source 12:10–12:18, combat only; no ending or hidden identities."
     },
     {
       "id": "02-s2",

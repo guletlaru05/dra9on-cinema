@@ -12,9 +12,9 @@ def tr(*items):return dict(zip(LANGS,items))
 COPY=[
  {'title':tr('FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT'),
   'tab':tr('낙하 707 · 최신 회차','FALL 707 · Latest','FALL 707・最新話','FALL 707 · Lo más reciente'),
-  'label':tr('시즌 3 · EP.03','SEASON 3 · EP.03','シーズン3・EP.03','TEMPORADA 3 · EP.03'),
-  'description':tr('대저택을 포위한 칼끝. 같은 밤, 서울이 깨어난다.','The mansion is surrounded. On that same night, Seoul awakens.','屋敷を囲む刃。同じ夜、ソウルが目覚める。','La mansión está rodeada. Esa misma noche, Seúl despierta.'),
-  'path':'/watch/fall-707-s3-ep3/'},
+  'label':tr('시즌 3 · EP.04 · PART 1','SEASON 3 · EP.04 · PART 1','シーズン3・EP.04 · PART 1','TEMPORADA 3 · EP.04 · PART 1'),
+  'description':tr('다섯 개의 기둥, 그리고 마지막 한 발. 시즌 3 4화 상편 공개.','Five pillars. One last round. Season 3, Episode 4, Part 1 is out now.','五つの柱、そして最後の一発。シーズン3第4話・前編を公開。','Cinco pilares. Una última bala. Ya disponible: temporada 3, episodio 4, parte 1.'),
+  'path':'/watch/fall-707-s3-ep4-part1/'},
  {'title':tr('FALL 707 · 시즌 2','FALL 707 · Season 2','FALL 707・シーズン2','FALL 707 · Temporada 2'),
   'tab':tr('시즌 2 · 몰아보기','Season 2 · Full story','シーズン2・一気見','Temporada 2 · Completa'),
   'label':tr('시즌 2 · 전체 이야기','SEASON 2 · FULL STORY','シーズン2・全編','TEMPORADA 2 · HISTORIA COMPLETA'),
@@ -82,3 +82,4 @@ def inject(out,base_path=''):
   # mutually exclusive media queries avoid fetching the desktop image on phones.
   preload='<link rel="preload" as="image" href="'+e(first.get('mobilePoster',first['poster']))+'" media="(max-width:700px)" fetchpriority="high"><link rel="preload" as="image" href="'+e(first['poster'])+'" media="(min-width:701px)" fetchpriority="high">'
   document=document.replace('</head>',preload+''.join(tags)+'</head>',1);page.write_text(document,encoding='utf-8')
+
