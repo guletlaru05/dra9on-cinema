@@ -15,6 +15,16 @@ COPY=[
   'label':tr('시즌 3 · EP.04 · PART 1','SEASON 3 · EP.04 · PART 1','シーズン3・EP.04 · PART 1','TEMPORADA 3 · EP.04 · PART 1'),
   'description':tr('다섯 개의 기둥, 그리고 마지막 한 발. 시즌 3 4화 상편 공개.','Five pillars. One last round. Season 3, Episode 4, Part 1 is out now.','五つの柱、そして最後の一発。シーズン3第4話・前編を公開。','Cinco pilares. Una última bala. Ya disponible: temporada 3, episodio 4, parte 1.'),
   'path':'/watch/fall-707-s3-ep4-part1/'},
+ {'title':tr('FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT'),
+  'tab':tr('시즌 3 · 3화','Season 3 · Episode 3','シーズン3・第3話','Temporada 3 · Episodio 3'),
+  'label':tr('시즌 3 · EP.03','SEASON 3 · EP.03','シーズン3・EP.03','TEMPORADA 3 · EP.03'),
+  'description':tr('대저택을 포위한 칼끝. 같은 밤, 서울이 깨어난다.','The mansion is surrounded. On that same night, Seoul awakens.','屋敷を囲む刃。同じ夜、ソウルが目覚める。','La mansión está rodeada. Esa misma noche, Seúl despierta.'),
+  'path':'/watch/fall-707-s3-ep3/'},
+ {'title':tr('FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT'),
+  'tab':tr('시즌 3 · 2화','Season 3 · Episode 2','シーズン3・第2話','Temporada 3 · Episodio 2'),
+  'label':tr('시즌 3 · EP.02 · 물러서지 마라',"SEASON 3 · EP.02 · DON'T BACK DOWN",'シーズン3・EP.02・退くな','TEMPORADA 3 · EP.02 · NO RETROCEDAS'),
+  'description':tr('물러서지 않는 민서아 대위. 사격과 근접 교전으로 이어지는 액션.','Captain Min Seo-a refuses to back down. Gunfire gives way to close-quarters combat.','退かないミン・ソア大尉。銃撃から近接戦闘へ続くアクション。','La capitana Min Seo-a no retrocede. Los disparos dan paso al combate cuerpo a cuerpo.'),
+  'path':'/watch/fall-707-s3-ep2/'},
  {'title':tr('FALL 707 · 시즌 2','FALL 707 · Season 2','FALL 707・シーズン2','FALL 707 · Temporada 2'),
   'tab':tr('시즌 2 · 몰아보기','Season 2 · Full story','シーズン2・一気見','Temporada 2 · Completa'),
   'label':tr('시즌 2 · 전체 이야기','SEASON 2 · FULL STORY','シーズン2・全編','TEMPORADA 2 · HISTORIA COMPLETA'),
@@ -47,6 +57,8 @@ LABELS={
 def inject(out,base_path=''):
  config=json.loads((ROOT/'hero_rotation_config.json').read_text(encoding='utf-8'))
  if not config['approved']:raise ValueError('Hero clip approval is required')
+ if len(COPY)!=len(config['clips']) or [c['id'] for c in config['clips']]!=config['approvedOrder']:
+  raise ValueError('Hero copy, clips and approved order must match')
  out=Path(out);tags=[]
  for name in ('work-hero.css','work-hero.js'):
   data=(out/name).read_bytes();stem,ext=name.rsplit('.',1)
@@ -75,7 +87,7 @@ def inject(out,base_path=''):
   payload=json.dumps({'slides':slides,'pause':LABELS['pause'][lang],'resume':LABELS['resume'][lang]},ensure_ascii=False).replace('<',r'\u003c')
   tabs=''.join('<button type="button" class="d9-work-tab" id="work-tab-'+str(i)+'" role="tab" aria-selected="'+str(i==0).lower()+'" tabindex="'+('0' if i==0 else '-1')+'" aria-controls="work-hero-panel" data-work-index="'+str(i)+'"><span class="d9-work-line" aria-hidden="true"><i></i></span><span class="d9-work-number">'+str(i+1).zfill(2)+'</span><span class="d9-work-name">'+e(s['tab'])+'</span></button>' for i,s in enumerate(slides))
   fallback=''.join('<li><a href="'+e(s['url'])+'">'+e(s['title'])+'</a> — '+e(s['description'])+'</li>' for s in slides)
-  hero=f'''<section class="hero d9-work-hero" id="hero" data-work-hero aria-labelledby="hero-title"><div class="hero-media"><picture><source class="hero-mobile-poster" media="(max-width:700px)" srcset="{e(first.get('mobilePoster',first['poster']))}"><img class="hero-image" src="{e(first['poster'])}" alt="{e(first['tab'])}" width="{first['width']}" height="{first['height']}" fetchpriority="high" decoding="async"></picture><div class="hero-shade"></div></div><div class="hero-content" id="work-hero-panel" role="tabpanel" aria-labelledby="work-tab-0"><p class="eyebrow">DRA9ON CINEMA</p><p class="d9-work-label">{e(first['label'])}</p><h1 id="hero-title">{e(first['title'])}</h1><p class="d9-work-description">{e(first['description'])}</p><div class="hero-buttons"><a class="button button-white hero-feature-link" href="{e(first['url'])}">{e(LABELS['view'][lang])} ↗</a><a class="button button-glass hero-casting-link" href="{prefix}/actors/min-seoa/?casting=1#casting-inquiry">{e(LABELS['inquiry'][lang])} ↗</a></div></div><button type="button" class="d9-work-pause" aria-label="{e(LABELS['pause'][lang])}" aria-pressed="false">Ⅱ</button><div class="d9-work-tabs" role="tablist" aria-label="{e(LABELS['tabs'][lang])}">{tabs}</div><script type="application/json" data-work-hero-config>{payload}</script><noscript><ul class="d9-work-noscript">{fallback}</ul></noscript></section>'''
+  hero=f'''<section class="hero d9-work-hero" id="hero" data-work-hero style="--d9-work-count:{len(slides)}" aria-labelledby="hero-title"><div class="hero-media"><picture><source class="hero-mobile-poster" media="(max-width:700px)" srcset="{e(first.get('mobilePoster',first['poster']))}"><img class="hero-image" src="{e(first['poster'])}" alt="{e(first['tab'])}" width="{first['width']}" height="{first['height']}" fetchpriority="high" decoding="async"></picture><div class="hero-shade"></div></div><div class="hero-content" id="work-hero-panel" role="tabpanel" aria-labelledby="work-tab-0"><p class="eyebrow">DRA9ON CINEMA</p><p class="d9-work-label">{e(first['label'])}</p><h1 id="hero-title">{e(first['title'])}</h1><p class="d9-work-description">{e(first['description'])}</p><div class="hero-buttons"><a class="button button-white hero-feature-link" href="{e(first['url'])}">{e(LABELS['view'][lang])} ↗</a><a class="button button-glass hero-casting-link" href="{prefix}/actors/min-seoa/?casting=1#casting-inquiry">{e(LABELS['inquiry'][lang])} ↗</a></div></div><button type="button" class="d9-work-pause" aria-label="{e(LABELS['pause'][lang])}" aria-pressed="false">Ⅱ</button><div class="d9-work-tabs" role="tablist" aria-label="{e(LABELS['tabs'][lang])}">{tabs}</div><script type="application/json" data-work-hero-config>{payload}</script><noscript><ul class="d9-work-noscript">{fallback}</ul></noscript></section>'''
   document=page.read_text(encoding='utf-8');document,n=re.subn(r'<section\b[^>]*id="hero"[^>]*>[\s\S]*?</section>',lambda _:hero,document,count=1)
   if n!=1:raise ValueError('Expected exactly one home hero: '+lang)
   # The parser can start the correct first-screen poster before the hero markup;

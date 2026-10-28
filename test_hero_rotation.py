@@ -3,15 +3,15 @@ import json,re,unittest
 from PIL import Image
 ROOT=Path(__file__).resolve().parent
 class WorkHeroTests(unittest.TestCase):
- def test_approved_five_work_order_and_four_localized_homes(self):
+ def test_approved_seven_work_order_and_four_localized_homes(self):
   config=json.loads((ROOT/'hero_rotation_config.json').read_text(encoding='utf-8'))
-  self.assertTrue(config['approved']);self.assertEqual(config['approvedOrder'],['01-min-current','02-s2','03-s1','04-immortal','05-actors'])
+  self.assertTrue(config['approved']);self.assertEqual(config['approvedOrder'],['01-min-current','s3-ep3','s3-ep2','02-s2','03-s1','04-immortal','05-actors'])
   for lang in ('','en','ja','es'):
    text=(ROOT/'dist'/lang/'index.html').read_text(encoding='utf-8')
    self.assertIn('data-work-hero',text);self.assertNotIn('data-hero-next',text)
    payload=json.loads(re.search(r'<script type="application/json" data-work-hero-config>(.*?)</script>',text,re.S)[1])
    self.assertEqual([s['id'] for s in payload['slides']],config['approvedOrder'])
-   self.assertEqual(text.count('role="tab"'),5);self.assertIn('role="tabpanel"',text)
+   self.assertEqual(text.count('role="tab"'),7);self.assertIn('role="tabpanel"',text)
    self.assertIn('/actors/min-seoa/?casting=1#casting-inquiry',text)
    for s in payload['slides']:
     self.assertTrue(s['title'] and s['description'] and s['tab']);self.assertEqual(s['duration'],8)
