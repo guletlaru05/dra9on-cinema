@@ -14,7 +14,7 @@
       "files": {
         "mp4": "01-s3ep4p1-mp4.d340a9c18707.mp4",
         "webm": "01-s3ep4p1-webm.e1b2c7cd4cf1.webm",
-        "mobile": "01-s3ep4p1-mobile.f485bf718a56.mp4",
+        "mobile": "01-s3ep4p1-mobile.ce155b47717f.mp4",
         "hdMp4": "01-s3ep4p1-hdMp4.91efd64561b7.mp4",
         "hdWebm": "01-s3ep4p1-hdWebm.2e74a028a359.webm",
         "poster": "01-s3ep4p1-poster.3ef827640af5.jpg",
@@ -24,7 +24,7 @@
       "bytes": {
         "mp4": 2292459,
         "webm": 1425257,
-        "mobile": 1498698,
+        "mobile": 833236,
         "hdMp4": 4141247,
         "hdWebm": 2053307,
         "poster": 115493,
@@ -55,7 +55,7 @@
       "sizes": {
         "mp4": 2292459,
         "webm": 1425257,
-        "mobile": 1498698,
+        "mobile": 833236,
         "hdMp4": 4141247,
         "hdWebm": 2053307,
         "poster": 115493,
