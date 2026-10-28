@@ -4,6 +4,16 @@ import {main,readNotificationFeed} from '../notify.mjs';
 import {createWorker as pushWorker} from '../src/index.mjs';
 import {createWorker as metricsWorker} from '../../tutorial-metrics/src/index.mjs';
 const feed={revision:'a'.repeat(40),generatedAt:new Date().toISOString(),episodes:[{id:'newvideo001',season:3,episode:2,publishedAt:'2026-10-18T00:00:00Z',image:'/assets/portfolio/newvideo001.jpg',locales:Object.fromEntries(['ko','en','ja','es'].map(lang=>[lang,{title:'FALL 707',url:(lang==='ko'?'':'/'+lang)+'/watch/fall-707-s3-ep2/'}]))}]};
+test('canonical feed with a split episode passes the verified-file dry run without dispatch',async()=>{
+ const snapshot=structuredClone(feed),part=structuredClone(feed.episodes[0]);part.id='partvideo01';part.episode=4;part.image='/assets/portfolio/partvideo01.jpg';
+ for(const row of Object.values(part.locales))row.url=row.url.replace('ep2/','ep4-part1/');
+ snapshot.episodes.push(part);
+ let reads=0;const never=async()=>{reads++;throw Error('unexpected network or dispatch');};
+ const env={PUSH_DRY_RUN:'true',PUSH_VERIFIED_FEED_FILE:'true',EXPECTED_REVISION:feed.revision};
+ assert.equal((await readNotificationFeed(env,never,async()=>JSON.stringify(snapshot))).episodes.length,2);
+ assert.equal(reads,0);
+ await main({PUSH_DRY_RUN:'true',EXPECTED_REVISION:feed.revision},async(url,options)=>{reads++;assert.equal(options.method,undefined);assert.ok(url.startsWith('https://dra9oncinema.com/pwa/episodes.json?'));return Response.json(snapshot);});assert.equal(reads,1);
+});
 test('canonical dry run performs one read and cannot dispatch or require secrets',async()=>{
  const calls=[];await main({PUSH_DRY_RUN:'true',PUSH_SITE_ORIGIN:'https://dra9oncinema.com',EXPECTED_REVISION:feed.revision},async(url,options)=>{calls.push({url,options});return Response.json(feed);});
  assert.equal(calls.length,1);assert.equal(calls[0].options.method,undefined);assert.ok(calls[0].url.startsWith('https://dra9oncinema.com/pwa/episodes.json?'));

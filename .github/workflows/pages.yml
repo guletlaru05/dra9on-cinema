@@ -44,7 +44,7 @@ jobs:
           node --test test-tutorial-metrics.cjs workers/tutorial-metrics/test/worker.test.mjs
           node --test test-workspace.mjs test-workspace-auto.mjs workers/tutorial-metrics/test/private-reader.test.mjs
           python3 -m unittest test_tutorial_references
-          node --test test-pwa.cjs test-pwa-ui.cjs workers/episode-push/test/push.test.mjs workers/episode-push/test/board.test.mjs
+          node --test test-pwa.cjs test-pwa-ui.cjs workers/episode-push/test/push.test.mjs workers/episode-push/test/board.test.mjs workers/episode-push/test/migration.test.mjs
           node --test test-request-limits.mjs
       - name: Read the same validated public YouTube snapshot as Cloudflare
         run: python3 scripts/publish_youtube_snapshot.py build-assets/youtube-public.json

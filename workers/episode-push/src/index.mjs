@@ -17,7 +17,13 @@ export function validEpisode(input,date){
  if(!input||!/^[A-Za-z0-9_-]{11}$/.test(input.id)||!Number.isInteger(input.season)||input.season<1||input.season>99||!Number.isInteger(input.episode)||input.episode<1||input.episode>999)return false;
  if(typeof input.publishedAt!=='string'||!Number.isFinite(Date.parse(input.publishedAt))||Date.parse(input.publishedAt)>date.getTime())return false;
  if(input.image!=='/assets/portfolio/'+input.id+'.jpg'||!input.locales||Object.keys(input.locales).length!==4)return false;
- return LANGS.every(lang=>{const row=input.locales[lang];return row&&typeof row.title==='string'&&row.title.length>0&&row.title.length<=200&&row.url===(lang==='ko'?'':'/'+lang)+'/watch/fall-707-s'+input.season+'-ep'+input.episode+'/';});
+ const base='/watch/fall-707-s'+input.season+'-ep'+input.episode;
+ const korean=input.locales.ko?.url;
+ if(typeof korean!=='string')return false;
+ // A released part is its own video; all languages must identify the same part.
+ const route=korean.match(new RegExp('^'+base+'(-part[1-9][0-9]{0,2})?/$'));
+ if(!route)return false;
+ return LANGS.every(lang=>{const row=input.locales[lang];return row&&typeof row.title==='string'&&row.title.length>0&&row.title.length<=200&&row.url===(lang==='ko'?'':'/'+lang)+base+(route[1]||'')+'/';});
 }
 const headers=origin=>({...SECURITY_HEADERS,'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','Vary':'Origin',...(origin?{'Access-Control-Allow-Origin':origin}:{})});
 const answer=(body,status=200,origin=null)=>new Response(JSON.stringify(body),{status,headers:headers(origin)});

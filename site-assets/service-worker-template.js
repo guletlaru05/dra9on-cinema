@@ -44,7 +44,7 @@ self.addEventListener('fetch',event=>{
  })());
 });
 function safePage(value){
- try{const url=new URL(value,self.location.origin),episode=new RegExp('^'+BASE+'/(?:en/|ja/|es/)?watch/fall-707-s[1-9][0-9]*-ep[1-9][0-9]*/$').test(url.pathname)&&!url.hash,board=new RegExp('^'+BASE+'/(?:en/|ja/|es/)?lounge/$').test(url.pathname)&&/^#(?:board|post-[A-Za-z0-9_-]{1,128})$/.test(url.hash);return url.origin===self.location.origin&&!url.search&&(episode||board)?url.href:null;}catch{return null;}
+ try{const url=new URL(value,self.location.origin),episode=new RegExp('^'+BASE+'/(?:en/|ja/|es/)?watch/fall-707-s[1-9][0-9]*-ep[1-9][0-9]*(?:-part[1-9][0-9]{0,2})?/$').test(url.pathname)&&!url.hash,board=new RegExp('^'+BASE+'/(?:en/|ja/|es/)?lounge/$').test(url.pathname)&&/^#(?:board|post-[A-Za-z0-9_-]{1,128})$/.test(url.hash);return url.origin===self.location.origin&&!url.search&&(episode||board)?url.href:null;}catch{return null;}
 }
 self.addEventListener('push',event=>{event.waitUntil((async()=>{
  let data;try{data=event.data.json();}catch{return;}

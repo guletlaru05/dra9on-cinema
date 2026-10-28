@@ -3,8 +3,8 @@ import {buildPushPayload} from '@block65/webcrypto-web-push';
 import {validEndpoint,validEpisode} from './src/index.mjs';
 import {pathToFileURL} from 'node:url';
 const ENDPOINT='https://dra9on-episode-push.tutorial-metrics.workers.dev',SITE='https://dra9oncinema.com';
-const text={ko:(s,e)=>`FALL 707 시즌 ${s} ${e}화가 공개됐습니다.`,en:(s,e)=>`FALL 707 Season ${s}, Episode ${e} is now available.`,ja:(s,e)=>`FALL 707 シーズン${s}・第${e}話を公開しました。`,es:(s,e)=>`Ya está disponible FALL 707, temporada ${s}, episodio ${e}.`};
-export function notification(row){const e=row.episode,lang=Object.hasOwn(text,row.lang)?row.lang:'en';return {id:e.id,title:e.locales[lang].title,body:text[lang](e.season,e.episode),url:e.locales[lang].url,image:e.image,lang};}
+const text={ko:(s,e,p)=>`FALL 707 시즌 ${s} ${e}화${p?' Part '+p:''}가 공개됐습니다.`,en:(s,e,p)=>`FALL 707 Season ${s}, Episode ${e}${p?', Part '+p:''} is now available.`,ja:(s,e,p)=>`FALL 707 シーズン${s}・第${e}話${p?'・パート'+p:''}を公開しました。`,es:(s,e,p)=>`Ya está disponible FALL 707, temporada ${s}, episodio ${e}${p?', parte '+p:''}.`};
+export function notification(row){const e=row.episode,lang=Object.hasOwn(text,row.lang)?row.lang:'en',part=e.locales.ko.url.match(/-part([1-9][0-9]{0,2})\/$/)?.[1];return {id:e.id,title:e.locales[lang].title,body:text[lang](e.season,e.episode,part),url:e.locales[lang].url,image:e.image,lang};}
 export async function readNotificationFeed(env={},fetcher=fetch,readPublicFeed=()=>readFile(new URL('../../.cache/canonical-episodes.json',import.meta.url),'utf8')){
  const dry=env.PUSH_DRY_RUN==='true',site=env.PUSH_SITE_ORIGIN||SITE;
  if(site!==SITE)throw Error('Unapproved notification source.');

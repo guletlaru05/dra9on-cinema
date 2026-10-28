@@ -44,3 +44,20 @@ test('push shows a visible title and thumbnail; click only opens same-origin epi
  await s.invoke('notificationclick',{notification:{close(){},data:{url:note.url}}});assert.deepEqual(s.opened,['https://dra9oncinema.com'+note.url]);
  await s.invoke('push',{data:{json:()=>({...note,url:'https://evil.example/'})}});assert.equal(s.notifications.length,1);
 });
+
+test('part episode notifications display and open in every language without allowing arbitrary destinations',async()=>{
+ const s=setup();
+ for(const lang of ['ko','en','ja','es']){
+  const url=(lang==='ko'?'':'/'+lang)+'/watch/fall-707-s3-ep4-part1/';
+  await s.invoke('push',{data:{json:()=>({id:'partvideo01',title:'Episode 4 Part 1',url,lang})}});
+  assert.equal(s.notifications.at(-1).options.data.url,'https://dra9oncinema.com'+url);
+  await s.invoke('notificationclick',{notification:{close(){},data:{url}}});
+  assert.equal(s.opened.at(-1),'https://dra9oncinema.com'+url);
+ }
+ assert.equal(s.notifications.length,4);assert.equal(s.opened.length,4);
+ for(const url of ['/watch/fall-707-s3-ep4-part0/','/watch/fall-707-s3-ep4-part01/','/watch/fall-707-s3-ep4-part1000/','/watch/fall-707-s3-ep4-part1-extra/','/watch/fall-707-s3-ep4-part1/?redirect=evil','/watch/fall-707-s3-ep4-part1/#evil','https://evil.example/watch/fall-707-s3-ep4-part1/','/library/']){
+  await s.invoke('push',{data:{json:()=>({title:'Bad route',url})}});
+  await s.invoke('notificationclick',{notification:{close(){},data:{url}}});
+ }
+ assert.equal(s.notifications.length,4);assert.equal(s.opened.length,4);
+});

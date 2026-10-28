@@ -22,6 +22,38 @@ async function setup(){let time=new Date('2026-10-18T10:00:00Z');const DB=new D1
  const sync=episodes=>request('/sync',{episodes,revision:'a'.repeat(40),generatedAt:time.toISOString()});
  return {DB,env,worker,request,subscribe,sync,advance:hours=>{time=new Date(time.getTime()+hours*3600000);}};
 }
+
+function episodePart(part=1,id='partvideo01'){
+ const item=episode(id,'2026-10-18T11:00:00Z',4);
+ for(const row of Object.values(item.locales))row.url=row.url.replace(/\/$/,'-part'+part+'/');
+ return item;
+}
+
+test('part releases require a canonical route and the same part in all four languages',()=>{
+ const now=new Date('2026-10-18T12:00:00Z');
+ for(const part of [1,2,999])assert.equal(validEpisode(episodePart(part),now),true);
+ for(const part of [0,'01',1000,'-1','1-extra'])assert.equal(validEpisode(episodePart(part),now),false);
+ for(const url of ['/en/watch/fall-707-s3-ep4-part2/','/en/watch/fall-707-s3-ep4/','/en/watch/fall-707-s3-ep5-part1/','https://evil.example/','/en/watch/fall-707-s3-ep4-part1/?x=1']){
+  const item=episodePart();item.locales.en.url=url;assert.equal(validEpisode(item,now),false);
+ }
+ assert.equal(validEpisode(episodePart(),new Date('2026-10-18T10:00:00Z')),false);
+ for(const lang of ['ko','en','ja','es']){
+  const item=episodePart(),note=notification({episode:item,lang});
+  assert.equal(note.url,item.locales[lang].url);assert.match(note.body,/Part 1|パート1|parte 1/);
+ }
+});
+
+test('separate parts queue once per video and never replay after acknowledgement',async()=>{
+ const s=await setup();await s.subscribe('part-test','en');await s.sync([]);s.advance(2);
+ const parts=[episodePart(1,'partvideo01'),episodePart(2,'partvideo02')];
+ assert.equal((await (await s.sync(parts)).json()).newEpisodes,2);
+ assert.equal((await (await s.sync(parts)).json()).newEpisodes,0);
+ const {deliveries}=await (await s.request('/batch')).json();assert.equal(deliveries.length,2);
+ assert.deepEqual(deliveries.map(row=>notification(row).url).sort(),parts.map(e=>e.locales.en.url).sort());
+ await s.request('/ack',{results:deliveries.map(r=>({event_id:r.event_id,sub_id:r.sub_id,lease:r.lease,status:201}))});
+ s.advance(2);assert.equal((await (await s.sync(parts)).json()).newEpisodes,0);
+ assert.equal((await (await s.request('/batch')).json()).deliveries.length,0);
+});
 test('origin, endpoint, curve, body and admin authentication are enforced',async()=>{
  const s=await setup();assert.equal((await s.subscribe()).status,200);
  assert.equal((await s.request('/subscribe',{endpoint:'http://127.0.0.1/internal'})).status,400);
