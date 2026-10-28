@@ -138,8 +138,8 @@ def build(out,origin,works,head,base_path=''):
    for season,episode in appearances:
     matched=sorted([w for w in works if w.get('season')==season and w.get('episode')==episode and w.get('category')==f's{season}'],key=lambda w:w.get('part') or 0)
     for appearance in matched:
-     label='S'+str(season)+' EP.'+str(episode).zfill(2)+((' · Part '+str(appearance['part'])) if appearance.get('part') else '')
-     body+='<a class="button button-glass" href="'+prefix+appearance['path']+'">'+label+'</a>'
+     episode_label='S'+str(season)+' EP.'+str(episode).zfill(2)+((' · Part '+str(appearance['part'])) if appearance.get('part') else '')
+     body+='<a class="button button-glass" href="'+prefix+appearance['path']+'">'+episode_label+'</a>'
    body+='</div></section><section class="lounge-section"><h2>'+tr('quotes')+'</h2>'
    quotes=record.get('quotes',[])
    for q in quotes:body+='<figure class="character-quote"><blockquote>'+e(q['text'][lang])+'</blockquote><figcaption><a href="'+e(q['source_url'],quote=True)+'&t='+str(int(q['seconds']))+'s" target="_blank" rel="noopener noreferrer">S'+str(q['season'])+' EP.'+str(q['episode'])+' · '+tr('source')+' ↗</a></figcaption></figure>'
