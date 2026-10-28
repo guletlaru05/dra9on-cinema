@@ -135,7 +135,11 @@ def build(out,origin,works,head,base_path=''):
    if all_episodes:body+='<p>'+tr('every_episode')+'</p>'
    body+='<p>'+tr('first')+' · '+first+'</p><div class="character-episodes">'
    appearances=released_appearances(works) if all_episodes else sorted(set(p['appearances'])|{(f['season'],f['episode']) for f in frames})
-   for season,episode in appearances:body+='<a class="button button-glass" href="'+prefix+'/watch/fall-707-s'+str(season)+'-ep'+str(episode)+'/">S'+str(season)+' EP.'+str(episode).zfill(2)+'</a>'
+   for season,episode in appearances:
+    matched=sorted([w for w in works if w.get('season')==season and w.get('episode')==episode and w.get('category')==f's{season}'],key=lambda w:w.get('part') or 0)
+    for appearance in matched:
+     label='S'+str(season)+' EP.'+str(episode).zfill(2)+((' · Part '+str(appearance['part'])) if appearance.get('part') else '')
+     body+='<a class="button button-glass" href="'+prefix+appearance['path']+'">'+label+'</a>'
    body+='</div></section><section class="lounge-section"><h2>'+tr('quotes')+'</h2>'
    quotes=record.get('quotes',[])
    for q in quotes:body+='<figure class="character-quote"><blockquote>'+e(q['text'][lang])+'</blockquote><figcaption><a href="'+e(q['source_url'],quote=True)+'&t='+str(int(q['seconds']))+'s" target="_blank" rel="noopener noreferrer">S'+str(q['season'])+' EP.'+str(q['episode'])+' · '+tr('source')+' ↗</a></figcaption></figure>'
@@ -179,3 +183,4 @@ def build(out,origin,works,head,base_path=''):
   file=out/('' if lang=='ko' else lang)/'privacy/index.html';doc=file.read_text(encoding='utf-8');heading,*paragraphs=privacy_copy[lang]
   added='<section class="lounge-privacy"><h2>'+e(heading)+'</h2>'+''.join('<p>'+e(text)+'</p>' for text in paragraphs)+'</section>'
   file.write_text(doc.replace('</main>',added+'</main>',1),encoding='utf-8')
+
