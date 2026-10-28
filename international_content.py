@@ -12,6 +12,7 @@ SEASONS={
   ('Las personas que vino a rescatar se han convertido en sus enemigos. Aun así, no puede abandonarlas.','Tras tres meses en Joseon, Min Seo-a encuentra una frágil calma junto a Yeonhwa en el invierno de Mokpojin. Una infiltración y el sonido de una campana sobrenatural vuelven a quebrarla. Para proteger a Yeonhwa y encontrar a sus compañeros, Min tendrá que luchar más allá de todo lo que conoce.')]
 }
 WORKS={
+ '_K7G-_2d_EE':{'ja':('最後の一発 · Part 1','都に迫る闇を前に、ミン・ソア大尉と仲間たちは決死の戦いに挑む。シーズン3第4話・前編。'),'es':('La última bala · Parte 1','Mientras la oscuridad se cierne sobre la capital, la capitana Min Seo-a y sus compañeros afrontan una batalla desesperada. Temporada 3, episodio 4, parte 1.')},
  'DC9wgel53Jk':{'ja':('ソウルが目覚めた','私兵が屋敷を取り囲む夜。ミン大尉と仲間たちは、刃を前にしても退かない。朝鮮と現代のソウル。異なる時代に、同じ夜が訪れる。'),'es':('Seúl despierta','Los soldados privados rodean la mansión. Min y sus compañeros se niegan a retroceder ante las espadas. La misma noche llega a Joseon y al Seúl del presente.')},
  'S1v3yFoAK5w':{
   'ja':('退くな','禁じられた扉の先へ。ミン・ソア大尉は、帰らぬハン軍曹を捜して、さらに深い地下へと進む。罠と闇が行く手を阻む一方、屋敷では彼女の帰りを待つ人々がいた。'),
@@ -103,3 +104,4 @@ PRESS={
  'Let’s make the next story.':('次の物語を、一緒に。','Creemos la próxima historia.'),'Brand content · Advertisement':('ブランドコンテンツ・広告','Contenido de marca · Publicidad'),'Creator program':('クリエイタープログラム','Programa de creadores'),'Creator program · Selected in August and September 2026':('クリエイタープログラム・2026年8月と9月に選出','Programa de creadores · Seleccionado en agosto y septiembre de 2026'),'Tool workflow example':('制作ツールの活用例','Ejemplo de flujo de trabajo'),
 }
 STILL_CAPTIONS=[('現代の作戦現場','Una operación en el presente'),('707隊員の視線','A través de los ojos de una soldado del 707'),('見知らぬ時代の最初の瞬間','Los primeros momentos en otra época'),('朝鮮の宮殿での出会い','Un encuentro en el palacio'),('宮殿での対話','Una conversación en el palacio'),('冬のモクポジン','El invierno de Mokpojin'),('雪道のヨンファ','Yeonhwa en el camino nevado'),('夜のモクポジン','Mokpojin de noche')]
+

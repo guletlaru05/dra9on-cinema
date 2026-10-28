@@ -36,19 +36,22 @@ for v in data['videos']:
  if cat=='ost':season=0
  name=custom.get(v['id'],v.get('name') or title.split('|')[-1].strip());label=f'S{season} · EP.{ep:02}' if re.fullmatch(r's\d+',cat) else {'full':'FULL MOVIE','trailer':'TRAILER','original':'ORIGINAL FILM','ost':'VOCAL OST'}[cat]
  slug='fall-707-ost' if cat=='ost' else f'fall-707-s{season}-ep{ep}' if re.fullmatch(r's\d+',cat) else 'fall-707-season-1-full' if v['id']=='4f6Zguf7c2M' else 'fall-707-season-2-ep1-2' if v['id']=='dGnjxL64HHY' else 'fall-707-season-2-full' if v['id']=='sFw17ZPE42A' else 'film-'+v['id']
+ if v.get('part') and re.fullmatch(r's\d+',cat):
+  label+=f' · Part {int(v["part"])}'
+  slug+=f'-part{int(v["part"])}'
  paragraphs=[x.strip() for x in v.get('description','').split('\n\n') if x.strip()]
  korean=[x for x in paragraphs if re.search('[가-힣]',x) and not re.search(r'https?://|CHAPTERS|Business|▶|#',x)]
  summary=korean[0] if korean else f'DRA9ON CINEMA의 {name}. 공식 채널에서 공개한 오리지널 영상 작품을 감상하세요.'
  summary=summary.split('\nA Korean')[0].split('\nDRA9ON CINEMA')[0].strip()
  if len(summary)>420:summary=summary[:417].rsplit(' ',1)[0]+'…'
- works.append({**{k:v.get(k) for k in ['id','title','duration','uploadDate','seconds','releaseAt','preview','source','nameEn','summaryEn','thumbnail','apiViewCount','apiStatisticsUpdatedAt']},'name':name,'category':cat,'season':season,'episode':ep,'label':label,'path':f'/watch/{slug}/','image':f'/assets/portfolio/{v["id"]}.jpg','summary':summary})
+ works.append({**{k:v.get(k) for k in ['id','title','duration','uploadDate','seconds','releaseAt','preview','source','nameEn','summaryEn','part','thumbnail','apiViewCount','apiStatisticsUpdatedAt']},'name':name,'category':cat,'season':season,'episode':ep,'label':label,'path':f'/watch/{slug}/','image':f'/assets/portfolio/{v["id"]}.jpg','summary':summary})
 from youtube_site import prepare_images
 prepare_images(works,out,root)
 for work in works:work['homeEpisode']=is_home_episode(work)
 home_works=[work for work in works if work['homeEpisode']]
 byid={v['id']:v for v in works}
 season_numbers=sorted({v['season'] for v in works if re.fullmatch(r's[1-9][0-9]*',v['category'])})
-season_works={season:sorted([v for v in works if v['category']==f's{season}'],key=lambda v:v['episode']) for season in season_numbers}
+season_works={season:sorted([v for v in works if v['category']==f's{season}'],key=lambda v:(v['episode'],v.get('part') or 0)) for season in season_numbers}
 s1=season_works.get(1,[]);s2=season_works.get(2,[]);s3=season_works.get(3,[])
 (out/'catalog.js').write_text('window.PORTFOLIO = '+json.dumps(works,ensure_ascii=False).replace('</','<\\/')+';\n',encoding='utf-8')
 brand='<a href="/" class="wordmark" aria-label="DRA9ON CINEMA 홈"><span>DRA9ON</span><span class="brand-sub">CINEMA</span></a>'
@@ -333,3 +336,4 @@ for page in out.rglob('*.html'):
 # Only public tutorial HTML feeds the owner workspace reference index.
 from tutorial_references import build_reference_index
 build_reference_index(out, origin)
+
