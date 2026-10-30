@@ -14,3 +14,10 @@ let writes=0,created=0;
 vm.runInNewContext(fs.readFileSync('site-assets/continue-watching.js','utf8'),{Date,Set,Map,WeakSet,Promise,URL,localStorage:{getItem(){throw new Error('Storage unavailable');},setItem(){writes++;throw new Error('Storage unavailable');}},document:{documentElement:{lang:'ko'},body:{dataset:{page:'home'}},createElement(){created++;throw new Error('A resume widget must stay hidden');}},window:{PORTFOLIO:works,addEventListener(){}},MutationObserver:class{observe(){}}});
 assert.equal(writes,0);assert.equal(created,0);
 console.log('PASS: resume last episode, advance completed episodes, next-season recommendation, unfinished season, unknown and unreleased records.');
+
+const parts=[{id:'p2',category:'s3',season:3,episode:4,part:2},{id:'p1',category:'s3',season:3,episode:4,part:1},{id:'ep3',category:'s3',season:3,episode:3},{id:'ep5',category:'s3',season:3,episode:5}];
+assert.equal(recommend({lastId:'p1',completed:['p1']},parts).work.id,'p2');
+assert.equal(recommend({lastId:'p2',completed:['p2']},parts).work.id,'ep5');
+assert.equal(recommend({lastId:'ep3',completed:['ep3']},parts).work.id,'p1');
+assert.equal(recommend({lastId:'p2',completed:[]},parts).work.id,'p2');
+console.log('PASS: multi-part episodes advance chronologically even with newest-first input.');

@@ -12,6 +12,7 @@ SEASONS={
   ('Las personas que vino a rescatar se han convertido en sus enemigos. Aun así, no puede abandonarlas.','Tras tres meses en Joseon, Min Seo-a encuentra una frágil calma junto a Yeonhwa en el invierno de Mokpojin. Una infiltración y el sonido de una campana sobrenatural vuelven a quebrarla. Para proteger a Yeonhwa y encontrar a sus compañeros, Min tendrá que luchar más allá de todo lo que conoce.')]
 }
 WORKS={
+ 'oMJ0hhHa9RQ':{'ja': ('家に連れて帰って · Part 2', '終わらせるべき戦い。帰るべき家。漢陽を取り囲む闇の中、ミン・ソア大尉と仲間たちは退けない戦いを続ける。シーズン3第4話・後編。'), 'es': ('Llévame a casa · Parte 2', 'Una lucha que debe terminar. Un hogar al que volver. La capitana Min Seo-a y sus compañeros se enfrentan a la oscuridad que rodea Hanyang. Temporada 3, episodio 4, parte 2.')},
  '_K7G-_2d_EE':{'ja':('最後の一発 · Part 1','都に迫る闇を前に、ミン・ソア大尉と仲間たちは決死の戦いに挑む。シーズン3第4話・前編。'),'es':('La última bala · Parte 1','Mientras la oscuridad se cierne sobre la capital, la capitana Min Seo-a y sus compañeros afrontan una batalla desesperada. Temporada 3, episodio 4, parte 1.')},
  'DC9wgel53Jk':{'ja':('ソウルが目覚めた','私兵が屋敷を取り囲む夜。ミン大尉と仲間たちは、刃を前にしても退かない。朝鮮と現代のソウル。異なる時代に、同じ夜が訪れる。'),'es':('Seúl despierta','Los soldados privados rodean la mansión. Min y sus compañeros se niegan a retroceder ante las espadas. La misma noche llega a Joseon y al Seúl del presente.')},
  'S1v3yFoAK5w':{

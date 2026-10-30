@@ -1,14 +1,14 @@
 /* Last episode and completion flags stay in this browser. No network ledger. */
 (()=>{
  'use strict';
- const episodes=works=>works.filter(v=>/^s[1-9][0-9]*$/.test(v.category)&&(!v.releaseAt||Date.now()>=Date.parse(v.releaseAt))).sort((a,b)=>a.season-b.season||a.episode-b.episode);
+ const episodes=works=>works.filter(v=>/^s[1-9][0-9]*$/.test(v.category)&&(!v.releaseAt||Date.now()>=Date.parse(v.releaseAt))).sort((a,b)=>a.season-b.season||a.episode-b.episode||(a.part||0)-(b.part||0));
  function recommend(record,works){
   const list=episodes(works),last=list.find(v=>v.id===record?.lastId);if(!last)return null;
   const done=new Set(Array.isArray(record.completed)?record.completed:[]),season=list.filter(v=>v.season===last.season);
   const nextSeason=list.find(v=>v.season>last.season);
   if(season.every(v=>done.has(v.id)))return nextSeason?{work:nextSeason,nextSeason:true}:null;
   if(!done.has(last.id))return {work:last,nextSeason:false};
-  const next=season.find(v=>v.episode>last.episode&&!done.has(v.id))||season.find(v=>!done.has(v.id));
+  const next=season.slice(season.indexOf(last)+1).find(v=>!done.has(v.id))||season.find(v=>!done.has(v.id));
   return next?{work:next,nextSeason:false}:null;
  }
  if(typeof module!=='undefined')module.exports={recommend};
@@ -24,7 +24,7 @@
  function paintHome(){
   widget?.remove();if(!enabled||!record)return;const result=recommend(record,works);if(!result)return;
   const {work,nextSeason}=result;widget=document.createElement('section');widget.className='continue-watching';widget.setAttribute('aria-label',text.continue);
-  const link=document.createElement('a');link.href=work.path;const ep='S'+work.season+' · EP.'+String(work.episode).padStart(2,'0');
+  const link=document.createElement('a');link.href=work.path;const ep='S'+work.season+' · EP.'+String(work.episode).padStart(2,'0')+(work.part?' · Part '+work.part:'');
   link.textContent=nextSeason?text.next+' · '+ep:(lang==='ko'||lang==='ja'?ep+text.continue:text.continue+' '+ep);
   const note=document.createElement('span');note.textContent=text.note;
   const clear=document.createElement('button');clear.type='button';clear.textContent='×';clear.setAttribute('aria-label',text.clear);

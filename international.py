@@ -27,7 +27,7 @@ def build_series_index(out,origin,works,head,header,footer):
  cards='<a class="text-button" href="/fall-707/world/">FALL 707 세계관 살펴보기 →</a>'
  for season in sorted({w['season'] for w in works if w['season']}):
   cards+=f'<section class="editorial-section"><h2>FALL 707 · 시즌 {season}</h2><div class="series-grid">'
-  for w in sorted([w for w in works if w['category']==f's{season}'],key=lambda w:w['episode']):cards+=card(w)
+  for w in sorted([w for w in works if w['category']==f's{season}'],key=lambda w:(w['episode'],w.get('part',0))):cards+=card(w)
   cards+='</div></section>'
  cards+='<section class="editorial-section"><h2>FALL 707 몰아보기</h2><div class="series-grid">'+''.join(card(w) for w in works if w['category']=='full')+'</div></section>'
  body='<body class="watch-page">'+header()+'<main id="main" class="editorial-main"><a class="editorial-back" href="/">← 홈으로</a><header class="editorial-hero"><p class="section-eyebrow">FALL 707 / EPISODES</p><h1>'+title+'</h1><p>'+desc+'</p></header>'+cards+'</main>'+footer()+'</body></html>'
@@ -164,7 +164,7 @@ def build_languages(out,origin,works,data,head,header,footer,base_path=''):
   listing+='<section class="editorial-section"><h2>'+text('Full movies',lang)+'</h2><a class="text-button" href="/fall-707/world/">'+d['Explore the world of FALL 707 →']+'</a><div class="series-grid">'+''.join(card(w) for w in records if w['category']=='full')+'</div></section></main>'
   pages['/fall-707/']=head(d['FALL 707 회차 안내']+' | DRA9ON CINEMA',index_desc,'/fall-707/',{'@context':'https://schema.org','@type':'CollectionPage','name':d['FALL 707 회차 안내'],'description':index_desc,'url':origin+'/fall-707/'})+'<body class="watch-page">'+header()+listing+footer()+'</body></html>'
   for original in [w for w in works if w['season']]:
-   w=by_id[original['id']];siblings=sorted([v for v in records if v['category']==w['category']],key=lambda x:x['episode']);pos=siblings.index(w)
+   w=by_id[original['id']];siblings=sorted([v for v in records if v['category']==w['category']],key=lambda x:(x['episode'],x.get('part',0)));pos=siblings.index(w)
    next_work=siblings[pos+1] if pos+1<len(siblings) else next((v for v in records if v['category']==f's{w["season"]+1}' and v['episode']==1),None)
    frame=f'https://www.youtube-nocookie.com/embed/{w["id"]}?rel=0&amp;playsinline=1&amp;enablejsapi=1&amp;origin={escape(origin,quote=True)}&amp;hl={lang}'
    screen=f'<div class="watch-screen"><iframe src="{frame}" title="{escape(w["name"],quote=True)}" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>'

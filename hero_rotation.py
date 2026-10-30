@@ -12,6 +12,11 @@ def tr(*items):return dict(zip(LANGS,items))
 COPY=[
  {'title':tr('FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT'),
   'tab':tr('낙하 707 · 최신 회차','FALL 707 · Latest','FALL 707・最新話','FALL 707 · Lo más reciente'),
+  'label':tr('시즌 3 · EP.04 · PART 2','SEASON 3 · EP.04 · PART 2','シーズン3・EP.04 · PART 2','TEMPORADA 3 · EP.04 · PART 2'),
+  'description':tr('끝내야 할 싸움. 돌아가야 할 집. 시즌 3 4화 하편 「집에 데려가 주세요」 공개.','A fight that must end. A home to return to. Season 3, Episode 4, Part 2: Take Me Home.','終わらせるべき戦い。帰るべき家。シーズン3第4話・後編「家に連れて帰って」を公開。','Una lucha que debe terminar. Un hogar al que volver. Temporada 3, episodio 4, parte 2: Llévame a casa.'),
+  'path':'/watch/fall-707-s3-ep4-part2/'},
+ {'title':tr('FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT'),
+  'tab':tr('시즌 3 · 4화 상편','Season 3 · EP.4 Part 1','シーズン3・第4話 前編','Temporada 3 · EP.4 Parte 1'),
   'label':tr('시즌 3 · EP.04 · PART 1','SEASON 3 · EP.04 · PART 1','シーズン3・EP.04 · PART 1','TEMPORADA 3 · EP.04 · PART 1'),
   'description':tr('다섯 개의 기둥, 그리고 마지막 한 발. 시즌 3 4화 상편 공개.','Five pillars. One last round. Season 3, Episode 4, Part 1 is out now.','五つの柱、そして最後の一発。シーズン3第4話・前編を公開。','Cinco pilares. Una última bala. Ya disponible: temporada 3, episodio 4, parte 1.'),
   'path':'/watch/fall-707-s3-ep4-part1/'},
@@ -40,11 +45,7 @@ COPY=[
   'label':tr('DRA9ON 오리지널 · 판타지','DRA9ON ORIGINAL · FANTASY','DRA9ON ORIGINAL・ファンタジー','DRA9ON ORIGINAL · FANTASÍA'),
   'description':tr('끝나지 않는 삶과, 오늘도 찾아온 저승사자.','A life that will not end. A reaper who keeps coming back.','終わらない命と、今日も訪れる死神。','Una vida que no termina. Un segador que siempre vuelve.'),
   'path':'/watch/film-iVwqj1gUPDY/'},
- {'title':tr('AI 배우 에이전시','AI Actor Agency','AI俳優エージェンシー','Agencia de actores de IA'),
-  'tab':tr('AI 배우 · 새로운 얼굴','AI actors · Meet the cast','AI俳優・キャスト紹介','Actores IA · El reparto'),
-  'label':tr('오리지널 AI 캐릭터','ORIGINAL AI CHARACTERS','オリジナルAIキャラクター','PERSONAJES ORIGINALES DE IA'),
-  'description':tr('민서아 · 연화 · 유나 · 하슬. 드라마 밖에서 만나는 네 배우.','Min Seoa, Yeonhwa, Yuna and Haseul. Meet the cast beyond the drama.','ミン・ソア、ヨンファ、ユナ、ハスル。ドラマの外の四人に出会う。','Min Seoa, Yeonhwa, Yuna y Haseul. Conoce al reparto fuera del drama.'),
-  'path':'/actors/'}]
+]
 
 LABELS={
  'view':tr('작품 보기','Explore the work','作品を見る','Ver la obra'),

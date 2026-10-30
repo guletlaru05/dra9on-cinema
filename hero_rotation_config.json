@@ -1,15 +1,56 @@
 {
   "approved": true,
   "approvedOrder": [
+    "s3-ep4-part2",
     "01-min-current",
     "s3-ep3",
     "s3-ep2",
     "02-s2",
     "03-s1",
-    "04-immortal",
-    "05-actors"
+    "04-immortal"
   ],
   "clips": [
+    {
+      "id": "s3-ep4-part2",
+      "duration": 8,
+      "files": {
+        "mp4": "s3-ep4-part2-mp4.9f8c6c8d5e8a.mp4",
+        "webm": "s3-ep4-part2-webm.8a72afd86924.webm",
+        "mobile": "s3-ep4-part2-mobile.5f4ad72d0c20.mp4",
+        "poster": "s3-ep4-part2-poster.fc497eab0247.jpg",
+        "mobilePoster": "s3-ep4-part2-mobilePoster.f26fe0222eb0.webp"
+      },
+      "approved": true,
+      "bytes": {
+        "mp4": 3609441,
+        "webm": 1065824,
+        "mobile": 766427,
+        "poster": 63685,
+        "mobilePoster": 36294
+      },
+      "dimensions": {
+        "desktop": [
+          1344,
+          756
+        ],
+        "mobile": [
+          640,
+          1138
+        ]
+      },
+      "posterDimensions": {
+        "mobile": [
+          640,
+          1138
+        ]
+      },
+      "focus": {
+        "desktop": "50% 20%",
+        "mobile": "50% 0%"
+      },
+      "fit": "cover",
+      "focusTrack": []
+    },
     {
       "id": "01-min-current",
       "duration": 8,
@@ -355,41 +396,6 @@
           1138
         ]
       }
-    },
-    {
-      "id": "05-actors",
-      "duration": 8,
-      "files": {
-        "mp4": "05-actors.1d5a5f9e045f.mp4",
-        "webm": "05-actors.405207aaa511.webm",
-        "mobile": "05-actors-mobile.0817b1904c50.mp4",
-        "poster": "05-actors.966d5ec327c5.jpg",
-        "mobilePoster": "05-actors-phone.b7b01c1bad98.jpg"
-      },
-      "approved": true,
-      "bytes": {
-        "mp4": 1403815,
-        "webm": 536723,
-        "mobile": 573046,
-        "poster": 227518,
-        "mobilePoster": 105814
-      },
-      "dimensions": {
-        "desktop": [
-          1920,
-          1080
-        ],
-        "mobile": [
-          640,
-          1138
-        ]
-      },
-      "composition": "Same approved daily photos; feathered landscape right of copy and centred portrait; existing watermarks retained.",
-      "focus": {
-        "desktop": "50% 0%",
-        "mobile": "50% 0%"
-      },
-      "fit": "cover"
     }
   ]
 }

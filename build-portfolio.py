@@ -120,7 +120,7 @@ main=main.replace('<div class="about-links">','<div class="about-links"><a class
 (out/'index.html').write_text(head('드래곤시네마 DRA9ON CINEMA | 낙하 707 · FALL 707','드래곤시네마의 〈낙하 707: 리부트〉(낙하707, FALL 707). 현대 특수부대와 조선 시대가 만나는 밀리터리 판타지·사극 AI 영화. 시즌 1·2·3과 풀버전을 감상하세요.',schema=schema)+main,encoding='utf-8')
 paths=['/']
 for v in works:
- seq=sorted([w for w in works if w['category']==v['category']],key=lambda w:w['episode']) if re.fullmatch(r's\d+',v['category']) else [w for w in works if w['category']==v['category']]
+ seq=sorted([w for w in works if w['category']==v['category']],key=lambda w:(w['episode'],w.get('part',0))) if re.fullmatch(r's\d+',v['category']) else [w for w in works if w['category']==v['category']]
  pos=seq.index(v);next_season=season_works.get(v['season']+1,[]) if re.fullmatch(r's[1-9][0-9]*',v['category']) else []
  nextv=seq[pos+1] if pos+1<len(seq) else next_season[0] if next_season else None
  if v['id']=='sFw17ZPE42A' and s3:nextv=s3[0]
