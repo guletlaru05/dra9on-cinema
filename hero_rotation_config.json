@@ -14,24 +14,24 @@
       "id": "s3-ep4-part2",
       "duration": 8,
       "files": {
-        "mp4": "s3-ep4-part2-mp4.9f8c6c8d5e8a.mp4",
-        "webm": "s3-ep4-part2-webm.8a72afd86924.webm",
-        "mobile": "s3-ep4-part2-mobile.5f4ad72d0c20.mp4",
-        "poster": "s3-ep4-part2-poster.fc497eab0247.jpg",
-        "mobilePoster": "s3-ep4-part2-mobilePoster.f26fe0222eb0.webp"
+        "mp4": "s3-ep4-part2-hyeolmaek-mp4.226744efc527.mp4",
+        "webm": "s3-ep4-part2-hyeolmaek-webm.7f61f23f0888.webm",
+        "mobile": "s3-ep4-part2-hyeolmaek-mobile.61fc297ed158.mp4",
+        "poster": "s3-ep4-part2-hyeolmaek-poster.20ecb977ed7e.jpg",
+        "mobilePoster": "s3-ep4-part2-hyeolmaek-mobilePoster.6464a58d043b.webp"
       },
       "approved": true,
       "bytes": {
-        "mp4": 3609441,
-        "webm": 1065824,
-        "mobile": 766427,
-        "poster": 63685,
-        "mobilePoster": 36294
+        "mp4": 2544373,
+        "webm": 1402229,
+        "mobile": 875819,
+        "poster": 101219,
+        "mobilePoster": 30728
       },
       "dimensions": {
         "desktop": [
-          1344,
-          756
+          1600,
+          900
         ],
         "mobile": [
           640,
@@ -45,7 +45,7 @@
         ]
       },
       "focus": {
-        "desktop": "50% 20%",
+        "desktop": "50% 0%",
         "mobile": "50% 0%"
       },
       "fit": "cover",
