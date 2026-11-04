@@ -1,6 +1,7 @@
 {
   "approved": true,
   "approvedOrder": [
+    "s3-ep5-part1",
     "s3-ep4-part2",
     "01-min-current",
     "s3-ep3",
@@ -10,6 +11,47 @@
     "04-immortal"
   ],
   "clips": [
+    {
+      "id": "s3-ep5-part1",
+      "duration": 8,
+      "files": {
+        "mp4": "s3-ep5-part1-yeonhwa-mp4.f83afb1f229e.mp4",
+        "webm": "s3-ep5-part1-yeonhwa-webm.49b9363aee04.webm",
+        "mobile": "s3-ep5-part1-yeonhwa-mobile.dba19ac5b765.mp4",
+        "poster": "s3-ep5-part1-yeonhwa-poster.39cb0dcbf514.jpg",
+        "mobilePoster": "s3-ep5-part1-yeonhwa-mobilePoster.189986a1fe3c.webp"
+      },
+      "approved": true,
+      "bytes": {
+        "mp4": 3172400,
+        "webm": 953349,
+        "mobile": 609582,
+        "poster": 40013,
+        "mobilePoster": 13852
+      },
+      "dimensions": {
+        "desktop": [
+          1600,
+          900
+        ],
+        "mobile": [
+          640,
+          1138
+        ]
+      },
+      "posterDimensions": {
+        "mobile": [
+          640,
+          1138
+        ]
+      },
+      "focus": {
+        "desktop": "50% 0%",
+        "mobile": "50% 0%"
+      },
+      "fit": "cover",
+      "focusTrack": []
+    },
     {
       "id": "s3-ep4-part2",
       "duration": 8,

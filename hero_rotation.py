@@ -12,6 +12,11 @@ def tr(*items):return dict(zip(LANGS,items))
 COPY=[
  {'title':tr('FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT'),
   'tab':tr('낙하 707 · 최신 회차','FALL 707 · Latest','FALL 707・最新話','FALL 707 · Lo más reciente'),
+  'label':tr('시즌 3 · EP.05 · PART 1','SEASON 3 · EP.05 · PART 1','シーズン3・EP.05 · PART 1','TEMPORADA 3 · EP.05 · PART 1'),
+  'description':tr('연화가 다시 문을 연다. 시즌 3 5화 상편 「마지막 열쇠」.','Yeonhwa opens the gate again. The Last Key · Season 3, Episode 5, Part 1.','ヨンファが再び門を開く。シーズン3第5話・前編「最後の鍵」。','Yeonhwa vuelve a abrir el portal. La última llave · Temporada 3, episodio 5, parte 1.'),
+  'path':'/watch/fall-707-s3-ep5-part1/'},
+ {'title':tr('FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT'),
+  'tab':tr('시즌 3 · 4화 하편','Season 3 · EP.4 Part 2','シーズン3・第4話 後編','Temporada 3 · EP.4 Parte 2'),
   'label':tr('시즌 3 · EP.04 · PART 2','SEASON 3 · EP.04 · PART 2','シーズン3・EP.04 · PART 2','TEMPORADA 3 · EP.04 · PART 2'),
   'description':tr('끝내야 할 싸움. 돌아가야 할 집. 시즌 3 4화 하편 「집에 데려가 주세요」 공개.','A fight that must end. A home to return to. Season 3, Episode 4, Part 2: Take Me Home.','終わらせるべき戦い。帰るべき家。シーズン3第4話・後編「家に連れて帰って」を公開。','Una lucha que debe terminar. Un hogar al que volver. Temporada 3, episodio 4, parte 2: Llévame a casa.'),
   'path':'/watch/fall-707-s3-ep4-part2/'},
