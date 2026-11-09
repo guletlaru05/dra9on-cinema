@@ -11,7 +11,17 @@ def tr(*items):return dict(zip(LANGS,items))
 
 COPY=[
  {'title':tr('FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT'),
-  'tab':tr('낙하 707 · 최신 회차','FALL 707 · Latest','FALL 707・最新話','FALL 707 · Lo más reciente'),
+  'tab':tr('시즌 3 · 최종화','Season 3 · Finale','シーズン3・最終話','Temporada 3 · Final'),
+  'label':tr('시즌 3 · EP.06 · 최종화','SEASON 3 · EP.06 · FINALE','シーズン3・EP.06・最終話','TEMPORADA 3 · EP.06 · FINAL'),
+  'description':tr('전투는 끝났다. 하지만 아직 닫히지 않은 문이 하나 남아 있다.','The battle is over. But one door still refuses to close.','戦いは終わった。だが、まだ閉じない門がひとつ残っている。','La batalla ha terminado. Pero una puerta aún se resiste a cerrarse.'),
+  'path':'/watch/fall-707-s3-ep6/'},
+ {'title':tr('FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT'),
+  'tab':tr('시즌 3 · 5화 하편','Season 3 · EP.5 Part 2','シーズン3・第5話 後編','Temporada 3 · EP.5 Parte 2'),
+  'label':tr('시즌 3 · EP.05 · PART 2','SEASON 3 · EP.05 · PART 2','シーズン3・EP.05 · PART 2','TEMPORADA 3 · EP.05 · PART 2'),
+  'description':tr('연화가 조선의 하늘을 열고, 민 대위와 707이 도성 밖 들판에 선다.','Yeonhwa opens the sky over Joseon. Captain Min and the 707 take the field.','ヨンファが朝鮮の空を開き、ミン大尉と707部隊が都の外の戦場に立つ。','Yeonhwa abre el cielo de Joseon. La capitana Min y la unidad 707 se reúnen en el campo de batalla.'),
+  'path':'/watch/fall-707-s3-ep5-part2/'},
+ {'title':tr('FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT','FALL 707: REBOOT'),
+  'tab':tr('시즌 3 · 5화 상편','Season 3 · EP.5 Part 1','シーズン3・第5話 前編','Temporada 3 · EP.5 Parte 1'),
   'label':tr('시즌 3 · EP.05 · PART 1','SEASON 3 · EP.05 · PART 1','シーズン3・EP.05 · PART 1','TEMPORADA 3 · EP.05 · PART 1'),
   'description':tr('연화가 다시 문을 연다. 시즌 3 5화 상편 「마지막 열쇠」.','Yeonhwa opens the gate again. The Last Key · Season 3, Episode 5, Part 1.','ヨンファが再び門を開く。シーズン3第5話・前編「最後の鍵」。','Yeonhwa vuelve a abrir el portal. La última llave · Temporada 3, episodio 5, parte 1.'),
   'path':'/watch/fall-707-s3-ep5-part1/'},

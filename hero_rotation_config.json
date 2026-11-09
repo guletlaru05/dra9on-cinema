@@ -1,6 +1,8 @@
 {
   "approved": true,
   "approvedOrder": [
+    "s3-ep6",
+    "s3-ep5-part2",
     "s3-ep5-part1",
     "s3-ep4-part2",
     "01-min-current",
@@ -11,6 +13,89 @@
     "04-immortal"
   ],
   "clips": [
+    {
+      "id": "s3-ep6",
+      "duration": 8,
+      "approved": true,
+      "files": {
+        "mp4": "s3-ep6-gate-mp4.7d9c05633b8d.mp4",
+        "webm": "s3-ep6-gate-webm.3b6f6112aad1.webm",
+        "mobile": "s3-ep6-gate-mobile.c5528d6ee1d3.mp4",
+        "poster": "s3-ep6-gate-poster.5918587ba3f9.jpg",
+        "mobilePoster": "s3-ep6-gate-mobilePoster.562c2f2dc4aa.webp"
+      },
+      "bytes": {
+        "mp4": 2402803,
+        "webm": 1789255,
+        "mobile": 547430,
+        "poster": 55303,
+        "mobilePoster": 22442
+      },
+      "dimensions": {
+        "desktop": [
+          1600,
+          900
+        ],
+        "mobile": [
+          640,
+          1138
+        ]
+      },
+      "posterDimensions": {
+        "mobile": [
+          640,
+          1138
+        ]
+      },
+      "focus": {
+        "desktop": "60% 30%",
+        "mobile": "50% 30%"
+      },
+      "fit": "cover",
+      "focusTrack": [],
+      "selection": "Owner requested Captain Min closing the gate. Source 05:51–05:59; no resolution or epilogue. Mobile: 05:38–05:46 with shot-specific face-safe crop."
+    },
+    {
+      "id": "s3-ep5-part2",
+      "duration": 8,
+      "files": {
+        "mp4": "s3-ep5-part2-mp4.9d0f50571966.mp4",
+        "mobile": "s3-ep5-part2-mobile.55c056a6b901.mp4",
+        "webm": "s3-ep5-part2-webm.b68ea7f61cc8.webm",
+        "poster": "s3-ep5-part2-poster.8378a8eee361.jpg",
+        "mobilePoster": "s3-ep5-part2-mobilePoster.900c04db7e4b.webp"
+      },
+      "approved": true,
+      "bytes": {
+        "mp4": 1602773,
+        "mobile": 610988,
+        "webm": 985937,
+        "poster": 40213,
+        "mobilePoster": 24584
+      },
+      "dimensions": {
+        "desktop": [
+          1280,
+          720
+        ],
+        "mobile": [
+          640,
+          1138
+        ]
+      },
+      "posterDimensions": {
+        "mobile": [
+          640,
+          1138
+        ]
+      },
+      "focus": {
+        "desktop": "50% 30%",
+        "mobile": "50% 40%"
+      },
+      "fit": "cover",
+      "focusTrack": []
+    },
     {
       "id": "s3-ep5-part1",
       "duration": 8,
