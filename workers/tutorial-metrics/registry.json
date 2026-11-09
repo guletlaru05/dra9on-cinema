@@ -3,104 +3,56 @@
     "canonicalPath": "/",
     "type": "page"
   },
+  "/actors/": {
+    "canonicalPath": "/actors/",
+    "type": "page"
+  },
+  "/actors/haseul/": {
+    "canonicalPath": "/actors/haseul/",
+    "type": "page"
+  },
+  "/actors/min-seoa/": {
+    "canonicalPath": "/actors/min-seoa/",
+    "type": "page"
+  },
+  "/actors/yeonhwa/": {
+    "canonicalPath": "/actors/yeonhwa/",
+    "type": "page"
+  },
+  "/actors/yuna/": {
+    "canonicalPath": "/actors/yuna/",
+    "type": "page"
+  },
   "/en/": {
     "canonicalPath": "/",
     "type": "page"
   },
-  "/es/": {
-    "canonicalPath": "/",
+  "/en/actors/": {
+    "canonicalPath": "/actors/",
     "type": "page"
   },
-  "/fall-707/": {
-    "canonicalPath": "/fall-707/",
+  "/en/actors/haseul/": {
+    "canonicalPath": "/actors/haseul/",
     "type": "page"
   },
-  "/ja/": {
-    "canonicalPath": "/",
+  "/en/actors/min-seoa/": {
+    "canonicalPath": "/actors/min-seoa/",
     "type": "page"
   },
-  "/links/": {
-    "canonicalPath": "/links/",
+  "/en/actors/yeonhwa/": {
+    "canonicalPath": "/actors/yeonhwa/",
     "type": "page"
   },
-  "/lounge/": {
-    "canonicalPath": "/lounge/",
-    "type": "page"
-  },
-  "/notes/": {
-    "canonicalPath": "/notes/",
-    "type": "page"
-  },
-  "/press/": {
-    "canonicalPath": "/press/",
-    "type": "page"
-  },
-  "/privacy/": {
-    "canonicalPath": "/privacy/",
-    "type": "page"
-  },
-  "/questions/": {
-    "canonicalPath": "/questions/",
-    "type": "page"
-  },
-  "/stickers/": {
-    "canonicalPath": "/stickers/",
-    "type": "page"
-  },
-  "/terms/": {
-    "canonicalPath": "/terms/",
-    "type": "page"
-  },
-  "/tutorials/": {
-    "canonicalPath": "/tutorials/",
+  "/en/actors/yuna/": {
+    "canonicalPath": "/actors/yuna/",
     "type": "page"
   },
   "/en/fall-707/": {
     "canonicalPath": "/fall-707/",
     "type": "page"
   },
-  "/en/links/": {
-    "canonicalPath": "/links/",
-    "type": "page"
-  },
-  "/en/lounge/": {
-    "canonicalPath": "/lounge/",
-    "type": "page"
-  },
-  "/en/notes/": {
-    "canonicalPath": "/notes/",
-    "type": "page"
-  },
-  "/en/press/": {
-    "canonicalPath": "/press/",
-    "type": "page"
-  },
-  "/en/privacy/": {
-    "canonicalPath": "/privacy/",
-    "type": "page"
-  },
-  "/en/questions/": {
-    "canonicalPath": "/questions/",
-    "type": "page"
-  },
-  "/en/stickers/": {
-    "canonicalPath": "/stickers/",
-    "type": "page"
-  },
-  "/en/terms/": {
-    "canonicalPath": "/terms/",
-    "type": "page"
-  },
-  "/en/tutorials/": {
-    "canonicalPath": "/tutorials/",
-    "type": "page"
-  },
   "/en/fall-707/characters/": {
     "canonicalPath": "/fall-707/characters/",
-    "type": "page"
-  },
-  "/en/fall-707/world/": {
-    "canonicalPath": "/fall-707/world/",
     "type": "page"
   },
   "/en/fall-707/characters/elder-shaman/": {
@@ -139,6 +91,22 @@
     "canonicalPath": "/fall-707/characters/yuna/",
     "type": "page"
   },
+  "/en/fall-707/world/": {
+    "canonicalPath": "/fall-707/world/",
+    "type": "page"
+  },
+  "/en/links/": {
+    "canonicalPath": "/links/",
+    "type": "page"
+  },
+  "/en/lounge/": {
+    "canonicalPath": "/lounge/",
+    "type": "page"
+  },
+  "/en/notes/": {
+    "canonicalPath": "/notes/",
+    "type": "page"
+  },
   "/en/notes/fall-707-beginnings/": {
     "canonicalPath": "/notes/fall-707-beginnings/",
     "type": "page"
@@ -149,6 +117,30 @@
   },
   "/en/notes/workflow/": {
     "canonicalPath": "/notes/workflow/",
+    "type": "page"
+  },
+  "/en/press/": {
+    "canonicalPath": "/press/",
+    "type": "page"
+  },
+  "/en/privacy/": {
+    "canonicalPath": "/privacy/",
+    "type": "page"
+  },
+  "/en/questions/": {
+    "canonicalPath": "/questions/",
+    "type": "page"
+  },
+  "/en/stickers/": {
+    "canonicalPath": "/stickers/",
+    "type": "page"
+  },
+  "/en/terms/": {
+    "canonicalPath": "/terms/",
+    "type": "page"
+  },
+  "/en/tutorials/": {
+    "canonicalPath": "/tutorials/",
     "type": "page"
   },
   "/en/tutorials/blender-previs/": {
@@ -247,6 +239,34 @@
     "canonicalPath": "/watch/fall-707-s3-ep1/",
     "type": "page"
   },
+  "/en/watch/fall-707-s3-ep2/": {
+    "canonicalPath": "/watch/fall-707-s3-ep2/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s3-ep3/": {
+    "canonicalPath": "/watch/fall-707-s3-ep3/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s3-ep4-part1/": {
+    "canonicalPath": "/watch/fall-707-s3-ep4-part1/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s3-ep4-part2/": {
+    "canonicalPath": "/watch/fall-707-s3-ep4-part2/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s3-ep5-part1/": {
+    "canonicalPath": "/watch/fall-707-s3-ep5-part1/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s3-ep5-part2/": {
+    "canonicalPath": "/watch/fall-707-s3-ep5-part2/",
+    "type": "page"
+  },
+  "/en/watch/fall-707-s3-ep6/": {
+    "canonicalPath": "/watch/fall-707-s3-ep6/",
+    "type": "page"
+  },
   "/en/watch/fall-707-season-1-full/": {
     "canonicalPath": "/watch/fall-707-season-1-full/",
     "type": "page"
@@ -295,32 +315,36 @@
     "canonicalPath": "/watch/film-VCd4T8sLFjg/",
     "type": "page"
   },
+  "/es/": {
+    "canonicalPath": "/",
+    "type": "page"
+  },
+  "/es/actors/": {
+    "canonicalPath": "/actors/",
+    "type": "page"
+  },
+  "/es/actors/haseul/": {
+    "canonicalPath": "/actors/haseul/",
+    "type": "page"
+  },
+  "/es/actors/min-seoa/": {
+    "canonicalPath": "/actors/min-seoa/",
+    "type": "page"
+  },
+  "/es/actors/yeonhwa/": {
+    "canonicalPath": "/actors/yeonhwa/",
+    "type": "page"
+  },
+  "/es/actors/yuna/": {
+    "canonicalPath": "/actors/yuna/",
+    "type": "page"
+  },
   "/es/fall-707/": {
     "canonicalPath": "/fall-707/",
     "type": "page"
   },
-  "/es/lounge/": {
-    "canonicalPath": "/lounge/",
-    "type": "page"
-  },
-  "/es/press/": {
-    "canonicalPath": "/press/",
-    "type": "page"
-  },
-  "/es/questions/": {
-    "canonicalPath": "/questions/",
-    "type": "page"
-  },
-  "/es/tutorials/": {
-    "canonicalPath": "/tutorials/",
-    "type": "page"
-  },
   "/es/fall-707/characters/": {
     "canonicalPath": "/fall-707/characters/",
-    "type": "page"
-  },
-  "/es/fall-707/world/": {
-    "canonicalPath": "/fall-707/world/",
     "type": "page"
   },
   "/es/fall-707/characters/elder-shaman/": {
@@ -359,12 +383,36 @@
     "canonicalPath": "/fall-707/characters/yuna/",
     "type": "page"
   },
+  "/es/fall-707/world/": {
+    "canonicalPath": "/fall-707/world/",
+    "type": "page"
+  },
+  "/es/lounge/": {
+    "canonicalPath": "/lounge/",
+    "type": "page"
+  },
   "/es/notes/fall-707-beginnings/": {
     "canonicalPath": "/notes/fall-707-beginnings/",
     "type": "page"
   },
   "/es/notes/workflow/": {
     "canonicalPath": "/notes/workflow/",
+    "type": "page"
+  },
+  "/es/press/": {
+    "canonicalPath": "/press/",
+    "type": "page"
+  },
+  "/es/questions/": {
+    "canonicalPath": "/questions/",
+    "type": "page"
+  },
+  "/es/stickers/": {
+    "canonicalPath": "/stickers/",
+    "type": "page"
+  },
+  "/es/tutorials/": {
+    "canonicalPath": "/tutorials/",
     "type": "page"
   },
   "/es/tutorials/lighting-contrast/": {
@@ -423,6 +471,34 @@
     "canonicalPath": "/watch/fall-707-s3-ep1/",
     "type": "page"
   },
+  "/es/watch/fall-707-s3-ep2/": {
+    "canonicalPath": "/watch/fall-707-s3-ep2/",
+    "type": "page"
+  },
+  "/es/watch/fall-707-s3-ep3/": {
+    "canonicalPath": "/watch/fall-707-s3-ep3/",
+    "type": "page"
+  },
+  "/es/watch/fall-707-s3-ep4-part1/": {
+    "canonicalPath": "/watch/fall-707-s3-ep4-part1/",
+    "type": "page"
+  },
+  "/es/watch/fall-707-s3-ep4-part2/": {
+    "canonicalPath": "/watch/fall-707-s3-ep4-part2/",
+    "type": "page"
+  },
+  "/es/watch/fall-707-s3-ep5-part1/": {
+    "canonicalPath": "/watch/fall-707-s3-ep5-part1/",
+    "type": "page"
+  },
+  "/es/watch/fall-707-s3-ep5-part2/": {
+    "canonicalPath": "/watch/fall-707-s3-ep5-part2/",
+    "type": "page"
+  },
+  "/es/watch/fall-707-s3-ep6/": {
+    "canonicalPath": "/watch/fall-707-s3-ep6/",
+    "type": "page"
+  },
   "/es/watch/fall-707-season-1-full/": {
     "canonicalPath": "/watch/fall-707-season-1-full/",
     "type": "page"
@@ -439,12 +515,12 @@
     "canonicalPath": "/watch/film-hoFQL2ON9m4/",
     "type": "page"
   },
-  "/fall-707/characters/": {
-    "canonicalPath": "/fall-707/characters/",
+  "/fall-707/": {
+    "canonicalPath": "/fall-707/",
     "type": "page"
   },
-  "/fall-707/world/": {
-    "canonicalPath": "/fall-707/world/",
+  "/fall-707/characters/": {
+    "canonicalPath": "/fall-707/characters/",
     "type": "page"
   },
   "/fall-707/characters/elder-shaman/": {
@@ -483,32 +559,40 @@
     "canonicalPath": "/fall-707/characters/yuna/",
     "type": "page"
   },
+  "/fall-707/world/": {
+    "canonicalPath": "/fall-707/world/",
+    "type": "page"
+  },
+  "/ja/": {
+    "canonicalPath": "/",
+    "type": "page"
+  },
+  "/ja/actors/": {
+    "canonicalPath": "/actors/",
+    "type": "page"
+  },
+  "/ja/actors/haseul/": {
+    "canonicalPath": "/actors/haseul/",
+    "type": "page"
+  },
+  "/ja/actors/min-seoa/": {
+    "canonicalPath": "/actors/min-seoa/",
+    "type": "page"
+  },
+  "/ja/actors/yeonhwa/": {
+    "canonicalPath": "/actors/yeonhwa/",
+    "type": "page"
+  },
+  "/ja/actors/yuna/": {
+    "canonicalPath": "/actors/yuna/",
+    "type": "page"
+  },
   "/ja/fall-707/": {
     "canonicalPath": "/fall-707/",
     "type": "page"
   },
-  "/ja/lounge/": {
-    "canonicalPath": "/lounge/",
-    "type": "page"
-  },
-  "/ja/press/": {
-    "canonicalPath": "/press/",
-    "type": "page"
-  },
-  "/ja/questions/": {
-    "canonicalPath": "/questions/",
-    "type": "page"
-  },
-  "/ja/tutorials/": {
-    "canonicalPath": "/tutorials/",
-    "type": "page"
-  },
   "/ja/fall-707/characters/": {
     "canonicalPath": "/fall-707/characters/",
-    "type": "page"
-  },
-  "/ja/fall-707/world/": {
-    "canonicalPath": "/fall-707/world/",
     "type": "page"
   },
   "/ja/fall-707/characters/elder-shaman/": {
@@ -547,12 +631,36 @@
     "canonicalPath": "/fall-707/characters/yuna/",
     "type": "page"
   },
+  "/ja/fall-707/world/": {
+    "canonicalPath": "/fall-707/world/",
+    "type": "page"
+  },
+  "/ja/lounge/": {
+    "canonicalPath": "/lounge/",
+    "type": "page"
+  },
   "/ja/notes/fall-707-beginnings/": {
     "canonicalPath": "/notes/fall-707-beginnings/",
     "type": "page"
   },
   "/ja/notes/workflow/": {
     "canonicalPath": "/notes/workflow/",
+    "type": "page"
+  },
+  "/ja/press/": {
+    "canonicalPath": "/press/",
+    "type": "page"
+  },
+  "/ja/questions/": {
+    "canonicalPath": "/questions/",
+    "type": "page"
+  },
+  "/ja/stickers/": {
+    "canonicalPath": "/stickers/",
+    "type": "page"
+  },
+  "/ja/tutorials/": {
+    "canonicalPath": "/tutorials/",
     "type": "page"
   },
   "/ja/tutorials/lighting-contrast/": {
@@ -611,6 +719,34 @@
     "canonicalPath": "/watch/fall-707-s3-ep1/",
     "type": "page"
   },
+  "/ja/watch/fall-707-s3-ep2/": {
+    "canonicalPath": "/watch/fall-707-s3-ep2/",
+    "type": "page"
+  },
+  "/ja/watch/fall-707-s3-ep3/": {
+    "canonicalPath": "/watch/fall-707-s3-ep3/",
+    "type": "page"
+  },
+  "/ja/watch/fall-707-s3-ep4-part1/": {
+    "canonicalPath": "/watch/fall-707-s3-ep4-part1/",
+    "type": "page"
+  },
+  "/ja/watch/fall-707-s3-ep4-part2/": {
+    "canonicalPath": "/watch/fall-707-s3-ep4-part2/",
+    "type": "page"
+  },
+  "/ja/watch/fall-707-s3-ep5-part1/": {
+    "canonicalPath": "/watch/fall-707-s3-ep5-part1/",
+    "type": "page"
+  },
+  "/ja/watch/fall-707-s3-ep5-part2/": {
+    "canonicalPath": "/watch/fall-707-s3-ep5-part2/",
+    "type": "page"
+  },
+  "/ja/watch/fall-707-s3-ep6/": {
+    "canonicalPath": "/watch/fall-707-s3-ep6/",
+    "type": "page"
+  },
   "/ja/watch/fall-707-season-1-full/": {
     "canonicalPath": "/watch/fall-707-season-1-full/",
     "type": "page"
@@ -627,6 +763,18 @@
     "canonicalPath": "/watch/film-hoFQL2ON9m4/",
     "type": "page"
   },
+  "/links/": {
+    "canonicalPath": "/links/",
+    "type": "page"
+  },
+  "/lounge/": {
+    "canonicalPath": "/lounge/",
+    "type": "page"
+  },
+  "/notes/": {
+    "canonicalPath": "/notes/",
+    "type": "page"
+  },
   "/notes/fall-707-beginnings/": {
     "canonicalPath": "/notes/fall-707-beginnings/",
     "type": "page"
@@ -637,6 +785,30 @@
   },
   "/notes/workflow/": {
     "canonicalPath": "/notes/workflow/",
+    "type": "page"
+  },
+  "/press/": {
+    "canonicalPath": "/press/",
+    "type": "page"
+  },
+  "/privacy/": {
+    "canonicalPath": "/privacy/",
+    "type": "page"
+  },
+  "/questions/": {
+    "canonicalPath": "/questions/",
+    "type": "page"
+  },
+  "/stickers/": {
+    "canonicalPath": "/stickers/",
+    "type": "page"
+  },
+  "/terms/": {
+    "canonicalPath": "/terms/",
+    "type": "page"
+  },
+  "/tutorials/": {
+    "canonicalPath": "/tutorials/",
     "type": "page"
   },
   "/tutorials/blender-previs/": {
@@ -735,6 +907,34 @@
     "canonicalPath": "/watch/fall-707-s3-ep1/",
     "type": "page"
   },
+  "/watch/fall-707-s3-ep2/": {
+    "canonicalPath": "/watch/fall-707-s3-ep2/",
+    "type": "page"
+  },
+  "/watch/fall-707-s3-ep3/": {
+    "canonicalPath": "/watch/fall-707-s3-ep3/",
+    "type": "page"
+  },
+  "/watch/fall-707-s3-ep4-part1/": {
+    "canonicalPath": "/watch/fall-707-s3-ep4-part1/",
+    "type": "page"
+  },
+  "/watch/fall-707-s3-ep4-part2/": {
+    "canonicalPath": "/watch/fall-707-s3-ep4-part2/",
+    "type": "page"
+  },
+  "/watch/fall-707-s3-ep5-part1/": {
+    "canonicalPath": "/watch/fall-707-s3-ep5-part1/",
+    "type": "page"
+  },
+  "/watch/fall-707-s3-ep5-part2/": {
+    "canonicalPath": "/watch/fall-707-s3-ep5-part2/",
+    "type": "page"
+  },
+  "/watch/fall-707-s3-ep6/": {
+    "canonicalPath": "/watch/fall-707-s3-ep6/",
+    "type": "page"
+  },
   "/watch/fall-707-season-1-full/": {
     "canonicalPath": "/watch/fall-707-season-1-full/",
     "type": "page"
@@ -781,38 +981,6 @@
   },
   "/watch/film-VCd4T8sLFjg/": {
     "canonicalPath": "/watch/film-VCd4T8sLFjg/",
-    "type": "page"
-  },
-  "/en/watch/fall-707-s3-ep4-part2/": {
-    "canonicalPath": "/watch/fall-707-s3-ep4-part2/",
-    "type": "page"
-  },
-  "/es/watch/fall-707-s3-ep4-part2/": {
-    "canonicalPath": "/watch/fall-707-s3-ep4-part2/",
-    "type": "page"
-  },
-  "/ja/watch/fall-707-s3-ep4-part2/": {
-    "canonicalPath": "/watch/fall-707-s3-ep4-part2/",
-    "type": "page"
-  },
-  "/watch/fall-707-s3-ep4-part2/": {
-    "canonicalPath": "/watch/fall-707-s3-ep4-part2/",
-    "type": "page"
-  },
-  "/en/watch/fall-707-s3-ep5-part1/": {
-    "canonicalPath": "/watch/fall-707-s3-ep5-part1/",
-    "type": "page"
-  },
-  "/es/watch/fall-707-s3-ep5-part1/": {
-    "canonicalPath": "/watch/fall-707-s3-ep5-part1/",
-    "type": "page"
-  },
-  "/ja/watch/fall-707-s3-ep5-part1/": {
-    "canonicalPath": "/watch/fall-707-s3-ep5-part1/",
-    "type": "page"
-  },
-  "/watch/fall-707-s3-ep5-part1/": {
-    "canonicalPath": "/watch/fall-707-s3-ep5-part1/",
     "type": "page"
   }
 }
