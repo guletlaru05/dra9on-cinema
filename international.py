@@ -19,7 +19,7 @@ def local_work(work,lang):
  if work['season'] and work['id'] not in WORKS:
   name=f'FALL 707 · S{work["season"]} EP.{work["episode"]:02}'
   summary='時代を越えた兵士の戦いを描くFALL 707の新エピソード。' if lang=='ja' else 'Un nuevo episodio de FALL 707, la historia de una soldado atrapada en otra época.'
- result.update(name=name,summary=summary,title=name+' | FALL 707: REBOOT',path=('/'+lang if work['season'] else '/en')+work['path'],searchText=' '.join((name,summary,work['name'],en['name'])))
+ result.update(name=name,summary=summary,title=name+' | FALL 707: REBOOT',path=('/'+lang if work['season'] or work.get('category')=='spinoff' else '/en')+work['path'],searchText=' '.join((name,summary,work['name'],en['name'])))
  return result
 
 def build_series_index(out,origin,works,head,header,footer):
@@ -29,6 +29,7 @@ def build_series_index(out,origin,works,head,header,footer):
   cards+=f'<section class="editorial-section"><h2>FALL 707 · 시즌 {season}</h2><div class="series-grid">'
   for w in sorted([w for w in works if w['category']==f's{season}'],key=lambda w:(w['episode'],w.get('part',0))):cards+=card(w)
   cards+='</div></section>'
+ if any(w['category']=='spinoff' for w in works):cards+='<section class="editorial-section"><h2>FALL 707 · 외전</h2><div class="series-grid">'+''.join(card(w) for w in works if w['category']=='spinoff')+'</div></section>'
  cards+='<section class="editorial-section"><h2>FALL 707 몰아보기</h2><div class="series-grid">'+''.join(card(w) for w in works if w['category']=='full')+'</div></section>'
  body='<body class="watch-page">'+header()+'<main id="main" class="editorial-main"><a class="editorial-back" href="/">← 홈으로</a><header class="editorial-hero"><p class="section-eyebrow">FALL 707 / EPISODES</p><h1>'+title+'</h1><p>'+desc+'</p></header>'+cards+'</main>'+footer()+'</body></html>'
  schema={'@context':'https://schema.org','@type':'CollectionPage','name':title,'description':desc,'url':origin+'/fall-707/'}
@@ -71,6 +72,8 @@ def dictionary(lang,out):
  for ko,ja,es in [('작품 뒤의 방법, 직접 해보세요.','作品づくりの裏側を、あなたも。','Descubre cómo se crean las escenas.'),('처음 만드는 사람도 한 단계씩. 로판·현대 드라마·밀리터리·오컬트·SF 장면으로 제작 방법을 직접 실습합니다.','初めてでも、一歩ずつ。さまざまなジャンルの場面で制作方法を試せます。','Paso a paso, incluso si empiezas de cero. Practica con escenas de distintos géneros.'),('강좌 열기','記事を読む','Abrir tutorial'),('조명 4종 · 모델 비교 · 전체 프롬프트','照明4種・モデル比較・プロンプト全文','Cuatro luces · Modelos · Prompts completos'),('프롬프트 복사','プロンプトをコピー','Copiar prompt'),('복사했어요.','コピーしました。','Copiado.'),('복사하지 못했어요. 텍스트를 선택해 복사해 주세요.','コピーできませんでした。テキストを選択してコピーしてください。','No se pudo copiar. Selecciona el texto y cópialo.'),('AI 이미지의 미감 만들기 — 여백·색·질감','AI画像の美しさをつくる — 余白・色・質感','Imágenes cinematográficas con IA — espacio, color y textura')]:d[ko]=ja if lang=='ja' else es
  from min_stickers import translations as sticker_translations
  d.update(sticker_translations(lang))
+ d['FALL 707 · 외전']=d['FALL 707 · Spin-offs']='FALL 707 · 番外編' if lang=='ja' else 'FALL 707 · Historias paralelas'
+ d['외전']=d['Spin-offs']='番外編' if lang=='ja' else 'Historias paralelas'
  return d
 
 class PageLanguage(HTMLParser):
@@ -132,7 +135,7 @@ def supported_routes(works):
  from lounge import routes as lounge_routes
  from notes_workflow import routes as workflow_routes
  from actors import routes as actor_routes
- return {'/stickers/','/tutorials/','/tutorials/lighting-contrast/','/','/fall-707/','/press/',*[w['path'] for w in works if w['season']],*(['/fall-707/world/'] if WORLD_ENABLED else []),*note_routes(),*workflow_routes(),*lounge_routes(),*actor_routes()}
+ return {'/stickers/','/tutorials/','/tutorials/lighting-contrast/','/','/fall-707/','/press/',*[w['path'] for w in works if w['season'] or w.get('category')=='spinoff'],*(['/fall-707/world/'] if WORLD_ENABLED else []),*note_routes(),*workflow_routes(),*lounge_routes(),*actor_routes()}
 
 def build_languages(out,origin,works,data,head,header,footer,base_path=''):
  routes=supported_routes(works)
@@ -161,11 +164,12 @@ def build_languages(out,origin,works,data,head,header,footer,base_path=''):
   index_desc=d['시즌별 회차와 몰아보기를 한곳에서. 처음이라면 시즌 1의 첫 회차부터 시작하세요.']
   listing='<main id="main" class="editorial-main"><a class="editorial-back" href="/">'+PRESS['← Home'][0 if lang=='ja' else 1]+'</a><header class="editorial-hero"><p class="section-eyebrow">FALL 707 / EPISODES</p><h1>'+d['FALL 707 회차 안내']+'</h1><p>'+index_desc+'</p></header>'
   for season in sorted({w['season'] for w in records if w['season']}):listing+='<section class="editorial-section"><h2>'+('シーズン ' if lang=='ja' else 'Temporada ')+str(season)+'</h2><div class="series-grid">'+''.join(card(w) for w in records if w['category']==f's{season}')+'</div></section>'
+  if any(w['category']=='spinoff' for w in records):listing+='<section class="editorial-section"><h2>'+d['FALL 707 · 외전']+'</h2><div class="series-grid">'+''.join(card(w) for w in records if w['category']=='spinoff')+'</div></section>'
   listing+='<section class="editorial-section"><h2>'+text('Full movies',lang)+'</h2><a class="text-button" href="/fall-707/world/">'+d['Explore the world of FALL 707 →']+'</a><div class="series-grid">'+''.join(card(w) for w in records if w['category']=='full')+'</div></section></main>'
   pages['/fall-707/']=head(d['FALL 707 회차 안내']+' | DRA9ON CINEMA',index_desc,'/fall-707/',{'@context':'https://schema.org','@type':'CollectionPage','name':d['FALL 707 회차 안내'],'description':index_desc,'url':origin+'/fall-707/'})+'<body class="watch-page">'+header()+listing+footer()+'</body></html>'
-  for original in [w for w in works if w['season']]:
+  for original in [w for w in works if w['season'] or w.get('category')=='spinoff']:
    w=by_id[original['id']];siblings=sorted([v for v in records if v['category']==w['category']],key=lambda x:(x['episode'],x.get('part',0)));pos=siblings.index(w)
-   next_work=siblings[pos+1] if pos+1<len(siblings) else next((v for v in records if v['category']==f's{w["season"]+1}' and v['episode']==1),None)
+   next_work=siblings[pos+1] if pos+1<len(siblings) else None if w['category']=='spinoff' else next((v for v in records if v['category']==f's{w["season"]+1}' and v['episode']==1),None)
    frame=f'https://www.youtube-nocookie.com/embed/{w["id"]}?rel=0&amp;playsinline=1&amp;enablejsapi=1&amp;origin={escape(origin,quote=True)}&amp;hl={lang}'
    screen=f'<div class="watch-screen"><iframe src="{frame}" title="{escape(w["name"],quote=True)}" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>'
    view='<main id="main" class="watch-main"><nav class="breadcrumb"><a href="/fall-707/">FALL 707</a><span>/</span><span>'+w['label']+'</span></nav><div class="watch-layout"><div class="watch-primary">'+screen+'<div class="watch-heading"><div><p class="section-eyebrow">'+w['label']+' · '+str(w.get('duration') or '')+'</p><h1>'+escape(w['name'])+'</h1></div></div><p class="watch-description">'+escape(w['summary'])+'</p><div class="watch-meta"><span>DRA9ON CINEMA</span><span>'+str(w.get('uploadDate') or '')[:10]+'</span></div><div class="watch-actions"><a class="button button-white" href="https://www.youtube.com/watch?v='+w['id']+'" target="_blank" rel="noopener noreferrer">'+text('Watch on YouTube',lang)+'</a></div>'
