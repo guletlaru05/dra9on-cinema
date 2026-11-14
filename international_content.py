@@ -12,6 +12,9 @@ SEASONS={
   ('Las personas que vino a rescatar se han convertido en sus enemigos. Aun así, no puede abandonarlas.','Tras tres meses en Joseon, Min Seo-a encuentra una frágil calma junto a Yeonhwa en el invierno de Mokpojin. Una infiltración y el sonido de una campana sobrenatural vuelven a quebrarla. Para proteger a Yeonhwa y encontrar a sus compañeros, Min tendrá que luchar más allá de todo lo que conoce.')]
 }
 WORKS={
+ 'AeLNfwMiBvA':{
+  'ja':('私の休暇を台無しにするな · 番外編1','朝鮮へ落ちる前のミン・ソア大尉の物語。久しぶりの休暇に親友ヒョンジと出かけた彼女は、夕暮れの駐車場で姿を消した親友を捜し、ワンピース姿のまま救出に向かう。AIで制作した現代アクション・コメディ。'),
+  'es':('No arruines mis vacaciones · Historia paralela 1','Antes de caer en Joseon, la capitana Min Seo-a por fin se toma unos días de permiso. Cuando su amiga de toda la vida, Hyunji, desaparece de un estacionamiento al anochecer, Min sale a buscarla sin siquiera cambiarse de vestido. Comedia de acción creada con IA.')},
  'mwZaUitxlm8':{'ja': ('門を閉じる人・最終話', '戦いは終わり、皆が家へ帰る時が来た。だが、まだ閉じない門がひとつ残っている。ミン・ソア大尉の最後の選択。'), 'es': ('Quien cierra la puerta · Final', 'La batalla ha terminado y es hora de volver a casa. Pero una puerta aún se resiste a cerrarse. La última decisión de la capitana Min Seo-a.')},
  'N9r2KjycidE':{'ja': ('もう誰も失わない · 後編', 'ヨンファが朝鮮の空を開くと、陸海空の援軍が現れる。ミン大尉とハン軍曹は都の外で悪鬼の大軍と対峙する。'), 'es': ('Nadie más caerá · Parte 2', 'Yeonhwa abre el cielo de Joseon y llegan los refuerzos. La capitana Min y el sargento Han se enfrentan al ejército de demonios fuera de la capital.')},
  'dx_zf-47RTs':{'ja': ('最後の鍵 · Part 1', '二つの都が崩れ始める。ソウルに戻ったミン大尉は陣の柱をハン軍曹に託し、一人で朝鮮へ戻る。'), 'es': ('La última llave · Parte 1', 'Dos ciudades se desmoronan. De vuelta en Seúl, la capitana Min le confía al sargento Han uno de los pilares del ritual y regresa sola a Joseon.')},
