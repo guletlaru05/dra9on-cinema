@@ -58,6 +58,8 @@ EN_SUMMARIES = {
     'iVwqj1gUPDY': 'The Immortal Crazy X and the n-th Grim Reaper. An original film created with AI by DRA9ON CINEMA.',
 }
 UI = {
+    'FALL 707 · 외전': 'FALL 707 · Spin-offs',
+    '외전': 'Spin-offs',
     'FALL 707 REBOOT 시즌 3 — 민 대위': 'FALL 707 REBOOT Season 3 — Captain Min',
     '열지 말라던 문…': 'She was warned never to open it…',
     '그녀는 들어갔다.': 'She went in.',

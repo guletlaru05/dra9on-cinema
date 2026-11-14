@@ -8,7 +8,7 @@ HOME_EXCLUDED_TITLE = re.compile(r'몰아보기|풀버전|(?<![A-Za-z])(?:FULL|O
 
 def is_home_episode(work):
     """Filter only home presentation; never remove records from the catalog."""
-    return (bool(re.fullmatch(r's[1-9][0-9]*', work.get('category', '')))
+    return ((work.get('category') == 'spinoff' or bool(re.fullmatch(r's[1-9][0-9]*', work.get('category', ''))))
             and int(work.get('episode') or 0) > 0
             and not HOME_EXCLUDED_TITLE.search(str(work.get('title') or '')))
 

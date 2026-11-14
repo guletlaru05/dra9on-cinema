@@ -36,6 +36,7 @@ class HomeCards(HTMLParser):
 
 class HomePlayersTests(unittest.TestCase):
     def test_title_keywords_and_individual_episode_identity(self):
+        self.assertTrue(is_home_episode(dict(category='spinoff', episode=1, title='낙하 707 외전 1편 · 휴가')))
         base = {'category': 's3', 'episode': 2, 'title': 'FALL 707 S3 EP.2'}
         self.assertTrue(is_home_episode(base))
         self.assertTrue(is_home_episode({**base, 'title': '707 Captain Lost in Explosion'}))
