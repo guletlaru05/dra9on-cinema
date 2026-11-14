@@ -19,7 +19,7 @@ class InternationalPages(unittest.TestCase):
    source=(Path('dist')/lang/'catalog.js').read_text(encoding='utf-8')
    records=json.loads(source.split(' = ',1)[1].rstrip(';\n'))
    for record in records:
-    self.assertTrue(record['path'].startswith('/'+lang+'/watch/' if record['season'] else '/en/watch/'))
+    self.assertTrue(record['path'].startswith('/'+lang+'/watch/' if record['season'] or record.get('category')=='spinoff' else '/en/watch/'))
     self.assertFalse(re.search('[가-힣]',record['name']))
  def test_crop_dimensions_are_real_and_not_padded(self):
   from PIL import Image
