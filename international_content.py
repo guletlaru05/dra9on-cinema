@@ -12,6 +12,9 @@ SEASONS={
   ('Las personas que vino a rescatar se han convertido en sus enemigos. Aun así, no puede abandonarlas.','Tras tres meses en Joseon, Min Seo-a encuentra una frágil calma junto a Yeonhwa en el invierno de Mokpojin. Una infiltración y el sonido de una campana sobrenatural vuelven a quebrarla. Para proteger a Yeonhwa y encontrar a sus compañeros, Min tendrá que luchar más allá de todo lo que conoce.')]
 }
 WORKS={
+ 'IBwLFtkjCIM':{
+  'ja':('休暇を台無しにした代償は払ってもらう · 番外編2「母のごはん」','休暇4日目。ミン・ソア大尉は路地で男たちに連れ去られそうになっていた女性を助け、母の食堂へ連れていく。温かい食事が並ぶ頃、女性を追う組織が食堂の前の路地まで迫っていた。朝鮮へ落ちる前を描く、AI制作の現代アクション・コメディ。'),
+  'es':('Pagarán por arruinar mis vacaciones · Historia paralela 2: Comida casera','En el cuarto día de su permiso, la capitana Min Seo-a rescata a una mujer de unos hombres en un callejón y la lleva al restaurante de su madre. Mientras sirven una comida caliente, la organización que persigue a la mujer se acerca. Una comedia de acción creada con IA, ambientada antes de la llegada de Min a Joseon.')},
  'AeLNfwMiBvA':{
   'ja':('私の休暇を台無しにするな · 番外編1','朝鮮へ落ちる前のミン・ソア大尉の物語。久しぶりの休暇に親友ヒョンジと出かけた彼女は、夕暮れの駐車場で姿を消した親友を捜し、ワンピース姿のまま救出に向かう。AIで制作した現代アクション・コメディ。'),
   'es':('No arruines mis vacaciones · Historia paralela 1','Antes de caer en Joseon, la capitana Min Seo-a por fin se toma unos días de permiso. Cuando su amiga de toda la vida, Hyunji, desaparece de un estacionamiento al anochecer, Min sale a buscarla sin siquiera cambiarse de vestido. Comedia de acción creada con IA.')},
